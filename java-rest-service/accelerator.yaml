@@ -196,8 +196,27 @@ engine:
 
     - merge:
       - include: [ "**" ]
-        exclude: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
-      - include: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
+        exclude: [ "config/postgres.yaml", "config/workload-basic.yaml", "config/workload-api-provider.yaml", "config/test-pipeline.yaml" ]
+      - include: [ "config/workload-api-provider.yaml" ]
+        condition: "#exposeOpenAPIEndpoint"
+        chain:
+          - type: ReplaceText
+            condition: "#exposeOpenAPIEndpoint"
+            substitutions:
+              - text: "SYSTEM_VAL"
+                with: "#apiSystem"
+              - text: "OWNER_VAL"
+                with: "#apiOwner"
+              - text: "DESCRIPTION_VAL"
+                with: "#apiDescription"
+          - type: RewritePath
+            rewriteTo: "'config/workload.yaml'"
+      - include: [ "config/workload-basic.yaml" ]
+        condition: "!#exposeOpenAPIEndpoint"
+        chain:
+          - type: RewritePath
+            rewriteTo: "'config/workload.yaml'"
+      - include: [ "config/workload.yaml", "config/postgres.yaml", "config/test-pipeline.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
@@ -211,22 +230,6 @@ engine:
             substitutions:
               - text: "customerprofiledatabase"
                 with: "#databaseName"
-          - type: ReplaceText
-            condition: "#exposeOpenAPIEndpoint"
-            substitutions:
-              - text: "EXPOSE_ENDPOINT"
-                with: "\"true\""
-              - text: "#API_WORKLOAD_PARAMS"
-                with: "'  - name: api_descriptor\n    value:\n      type: openapi\n      location:\n        path: \"/v3/api-docs\"\n      owner: OWNER_VAL\n      system: SYSTEM_VAL\n      description: DESCRIPTION_VAL'"
-          - type: ReplaceText
-            condition: "#exposeOpenAPIEndpoint"
-            substitutions:
-              - text: "SYSTEM_VAL"
-                with: "#apiSystem"
-              - text: "OWNER_VAL"
-                with: "#apiOwner"
-              - text: "DESCRIPTION_VAL"
-                with: "#apiDescription"
     - merge:
       - type: InvokeFragment
         reference: java-version
