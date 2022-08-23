@@ -1,0 +1,28 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: rest-service-db
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: rest-service-db
+    apps.tanzu.vmware.com/has-tests: true
+spec:
+  serviceClaims:
+    - name: db
+      ref:
+        apiVersion: sql.tanzu.vmware.com/v1
+        kind: Postgres
+        name: customer-profile-database
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "11"
+  params:
+    - name: annotations
+      value:
+        autoscaling.knative.dev/minScale: "1"
+  source:
+    git:
+      url: https://github.com/sample-accelerators/rest-service-db.git
+      ref:
+        branch: main
