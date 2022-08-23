@@ -50,7 +50,31 @@ accelerator:
           text: Flyway (https://flywaydb.org/)
         - value: liquibase
           text: Liquibase (https://docs.liquibase.com/)
-
+    - name: exposeOpenAPIEndpoint
+      label: Expose OpenAPI endpoint?
+      dataType: boolean
+      defaultValue: false
+    - name: apiSystem
+      label: System API Belongs To
+      inputType: text
+      required: false
+      defaultValue: ''
+      dependsOn:
+        name: exposeOpenAPIEndpoint
+    - name: apiOwner
+      label: Owner of API
+      inputType: text
+      required: false
+      defaultValue: ''
+      dependsOn:
+        name: exposeOpenAPIEndpoint
+    - name: apiDescription
+      label: API Description
+      inputType: text
+      required: false
+      defaultValue: ''
+      dependsOn:
+        name: exposeOpenAPIEndpoint
   imports:
   - name: java-version
 
@@ -187,7 +211,22 @@ engine:
             substitutions:
               - text: "customerprofiledatabase"
                 with: "#databaseName"
-
+          - type: ReplaceText
+            condition: "#exposeOpenAPIEndpoint"
+            substitutions:
+              - text: "EXPOSE_ENDPOINT"
+                with: "\"true\""
+              - text: "#API_WORKLOAD_PARAMS"
+                with: "'  - name: api_descriptor\n    value:\n      type: openapi\n      location:\n        path: \"/v3/api-docs\"\n      owner: OWNER_VAL\n      system: SYSTEM_VAL\n      description: DESCRIPTION_VAL'"
+          - type: ReplaceText
+            condition: "#exposeOpenAPIEndpoint"
+            substitutions:
+              - text: "SYSTEM_VAL"
+                with: "#apiSystem"
+              - text: "OWNER_VAL"
+                with: "#apiOwner"
+              - text: "DESCRIPTION_VAL"
+                with: "#apiDescription"
     - merge:
       - type: InvokeFragment
         reference: java-version
