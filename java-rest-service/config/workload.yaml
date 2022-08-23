@@ -6,6 +6,7 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: rest-service-db
     apps.tanzu.vmware.com/has-tests: true
+    apis.apps.tanzu.vmware.com/register-api: "EXPOSE_ENDPOINT"
 spec:
   serviceClaims:
     - name: db
@@ -21,6 +22,7 @@ spec:
     - name: annotations
       value:
         autoscaling.knative.dev/minScale: "1"
+#API_WORKLOAD_PARAMS
   source:
     git:
       url: https://github.com/sample-accelerators/rest-service-db.git
