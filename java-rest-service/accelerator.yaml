@@ -50,7 +50,31 @@ accelerator:
           text: Flyway (https://flywaydb.org/)
         - value: liquibase
           text: Liquibase (https://docs.liquibase.com/)
-
+    - name: exposeOpenAPIEndpoint
+      label: Expose OpenAPI endpoint?
+      dataType: boolean
+      defaultValue: false
+    - name: apiSystem
+      label: System API Belongs To
+      inputType: text
+      required: false
+      defaultValue: ''
+      dependsOn:
+        name: exposeOpenAPIEndpoint
+    - name: apiOwner
+      label: Owner of API
+      inputType: text
+      required: false
+      defaultValue: ''
+      dependsOn:
+        name: exposeOpenAPIEndpoint
+    - name: apiDescription
+      label: API Description
+      inputType: text
+      required: false
+      defaultValue: ''
+      dependsOn:
+        name: exposeOpenAPIEndpoint
   imports:
   - name: java-version
 
@@ -172,8 +196,27 @@ engine:
 
     - merge:
       - include: [ "**" ]
-        exclude: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
-      - include: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
+        exclude: [ "config/postgres.yaml", "config/workload-basic.yaml", "config/workload-api-provider.yaml", "config/test-pipeline.yaml" ]
+      - include: [ "config/workload-api-provider.yaml" ]
+        condition: "#exposeOpenAPIEndpoint"
+        chain:
+          - type: ReplaceText
+            condition: "#exposeOpenAPIEndpoint"
+            substitutions:
+              - text: "SYSTEM_VAL"
+                with: "#apiSystem"
+              - text: "OWNER_VAL"
+                with: "#apiOwner"
+              - text: "DESCRIPTION_VAL"
+                with: "#apiDescription"
+          - type: RewritePath
+            rewriteTo: "'config/workload.yaml'"
+      - include: [ "config/workload-basic.yaml" ]
+        condition: "!#exposeOpenAPIEndpoint"
+        chain:
+          - type: RewritePath
+            rewriteTo: "'config/workload.yaml'"
+      - include: [ "config/workload.yaml", "config/postgres.yaml", "config/test-pipeline.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
@@ -187,7 +230,6 @@ engine:
             substitutions:
               - text: "customerprofiledatabase"
                 with: "#databaseName"
-
     - merge:
       - type: InvokeFragment
         reference: java-version
