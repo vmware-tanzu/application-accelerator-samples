@@ -26,7 +26,7 @@ spec:
       value:
         type: openapi
         location: 
-          path: "/v3/api-docs"
+          path: "/api-docs"
         owner: OWNER_VAL
         system: SYSTEM_VAL
         description: DESCRIPTION_VAL
