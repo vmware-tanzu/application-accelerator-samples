@@ -1,4 +1,4 @@
-# hello-fun repo
+# spring-cloud-function repo
 
 This repo provides a simple Hello web app based on Spring Boot and Spring Cloud Function.
 
