@@ -1,0 +1,49 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: rest-service-db-test-pipeline
+  labels:
+    apps.tanzu.vmware.com/pipeline: test
+spec:
+  params:
+    - name: source-url
+    - name: source-revision
+  tasks:
+    - name: test
+      params:
+        - name: source-url
+          value: $(params.source-url)
+        - name: source-revision
+          value: $(params.source-revision)
+      taskSpec:
+        params:
+          - name: source-url
+          - name: source-revision
+        steps:
+          - name: test
+            image: bellsoft/liberica-openjdk-alpine:18
+            script: |-
+              cd `mktemp -d`
+              wget -qO- $(params.source-url) | tar xvz -m
+              FILE="./mvnw"
+              if test -f "$FILE"; then
+                  ./mvnw verify
+              fi
+              FILE="./gradlew"
+              if test -f "$FILE"; then
+                  ./gradlew test
+              fi
+            volumeMounts:
+              - mountPath: /var/run/
+                name: dind-socket
+        sidecars:
+          - image: docker:20.10.17-dind
+            name: docker
+            securityContext:
+              privileged: true
+            volumeMounts:
+              - mountPath: /var/run/
+                name: dind-socket
+        volumes:
+          - name: dind-socket
+            emptyDir: { }

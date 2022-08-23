@@ -1,0 +1,217 @@
+accelerator:
+  displayName: Tanzu Java Restful Web App
+  description: A Spring Boot Restful web application including OpenAPI v3 document generation and database persistence,
+    based on a three-layer architecture.
+  iconUrl: https://raw.githubusercontent.com/sample-accelerators/icons/master/icon-data.png
+  tags:
+  - java
+  - spring
+  - web
+  - jpa
+  - postgresql
+  - tanzu
+
+  options:
+    - name: artifactId
+      inputType: text
+      defaultValue: "customer-profile"
+      label: Module artifact name
+      required: true
+    - name: groupId
+      inputType: text
+      defaultValue: "com.example"
+      label: Module group name
+      required: true
+    - name: packageName
+      inputType: text
+      defaultValue: "com.example.customerprofile"
+      label: Module root package
+      required: true
+    - name: databaseName
+      inputType: text
+      defaultValue: "customer-profile-database"
+      label: Database Instance Name this Application will use (can be existing one in the cluster)
+      required: true
+    - name: buildTool
+      inputType: select
+      required: true
+      defaultValue: maven
+      choices:
+        - value: maven
+          text: Maven (https://maven.apache.org/)
+        - value: gradle
+          text: Gradle (https://gradle.org/)
+    - name: databaseMigrationTool
+      inputType: select
+      required: true
+      defaultValue: flyway
+      choices:
+        - value: flyway
+          text: Flyway (https://flywaydb.org/)
+        - value: liquibase
+          text: Liquibase (https://docs.liquibase.com/)
+
+  imports:
+  - name: java-version
+
+engine:
+  let:
+    - name: packageDirectory
+      expression: '#packageName.replace(".", "/")'
+    - name: workloadResourceName
+      expression: '#artifactId.toLowerCase()'
+    - name: databaseResourceName
+      expression: '#databaseName.toLowerCase()'
+  chain:
+    # Maven is selected
+    - condition: "#buildTool == 'maven'"
+      exclude: [ "settings.gradle.kts", "build.gradle.kts", "gradlew*", "gradle/**"]
+      merge:
+        - include: [ "**" ]
+          exclude: [ "pom.xml", "README.md" ]
+        - include: [ "pom.xml" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "<groupId>com.vmware.tap.accelerators</groupId>"
+                  with: "'<groupId>' + #groupId + '</groupId>'"
+        - include: [ "README.md" ]
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartGradle[\\s\\S]+?--- EndGradle"
+                with: "''"
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartMaven\\s|--- EndMaven\\s"
+                with: "''"
+    # end of the Maven specific part
+
+    # Gradle is selected
+    - condition: "#buildTool == 'gradle'"
+      exclude: [ "pom.xml", "mvnw*", ".mvn/**"]
+      merge:
+        - include: [ "**" ]
+          exclude: [ "build.gradle.kts", "README.md" ]
+        - include: [ "build.gradle.kts" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "group = \"com.vmware.tap.accelerators\""
+                  with: "'group = \"' + #groupId + '\"'"
+        - include: [ "README.md" ]
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartMaven[\\s\\S]+?--- EndMaven"
+                with: "''"
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartGradle\\s|--- EndGradle\\s"
+                with: "''"
+    # end of the Gradle specific part
+
+    # Flyway is selected
+    - condition: "#databaseMigrationTool == 'flyway'"
+      exclude: [ "src/main/resources/db/changelog/**" ]
+      merge:
+        - include: [ "**" ]
+          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
+        - include: [ "pom.xml" ]
+          chain:
+            - type: OpenRewriteRecipe
+              recipe: org.openrewrite.maven.RemoveDependency
+              options:
+                groupId: "'org.liquibase'"
+                artifactId: "'liquibase-core'"
+        - include: [ "build.gradle.kts" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "    implementation(\"org.liquibase:liquibase-core\")"
+                  with: "''"
+        - include: [ "**/application.properties" ]
+          chain:
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.DeleteProperty
+            options:
+              propertyKey: "'spring.liquibase.*'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.ChangePropertyValue
+            options:
+              propertyKey: "'spring.flyway.enabled'"
+              newValue: "'true'"
+    # end of the Flyway specific part
+
+    # Liquibase is selected
+    - condition: "#databaseMigrationTool == 'liquibase'"
+      exclude: [ "src/main/resources/db/migration/**" ]
+      merge:
+        - include: [ "**" ]
+          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
+        - include: [ "pom.xml" ]
+          chain:
+            - type: OpenRewriteRecipe
+              recipe: org.openrewrite.maven.RemoveDependency
+              options:
+                groupId: "'org.flywaydb'"
+                artifactId: "'flyway-core'"
+        - include: [ "build.gradle.kts" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "    implementation(\"org.flywaydb:flyway-core\")"
+                  with: "''"
+        - include: [ "**/application.properties" ]
+          chain:
+            - type: OpenRewriteRecipe
+              recipe: org.openrewrite.properties.DeleteProperty
+              options:
+                propertyKey: "'spring.flyway.*'"
+    # end of the Liquibase specific part
+
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
+      - include: [ "config/postgres.yaml", "config/workload.yaml", "config/test-pipeline.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "rest-service-db"
+                with: "#workloadResourceName"
+          - type: ReplaceText
+            substitutions:
+              - text: "customer-profile-database"
+                with: "#databaseResourceName"
+          - type: ReplaceText
+            substitutions:
+              - text: "customerprofiledatabase"
+                with: "#databaseName"
+
+    - merge:
+      - type: InvokeFragment
+        reference: java-version
+      - include: [ "**" ]
+      onConflict: UseFirst
+
+    - merge:
+      - include: [ "**/*.java" ]
+        chain:
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.java.ChangePackage
+            options:
+              oldPackageName: "'com.vmware.tap.accelerators.restservicedb'"
+              newPackageName: "#packageName"
+      - exclude: [ "**/*.java" ]
+
+    - merge:
+      - include: [ "**/*.jar" ]
+      - exclude: [ "**/*.jar" ]
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: "rest-service-db"
+            with: "#artifactId"
+
+    - type: Exclude
+      patterns: [ "manifest.yaml" ]
