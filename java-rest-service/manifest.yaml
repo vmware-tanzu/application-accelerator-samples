@@ -1,0 +1,11 @@
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: rest-service-db
+  namespace: accelerator-system
+spec:
+  git:
+    url: ssh://git@github.com/pivotal/acc-content
+    ref:
+      branch: main
+    subPath: rest-service-db
