@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css"
+		  th:href="@{/webjars/bootstrap/css/bootstrap.css}"/>
+	<title>Index</title>
+</head>
+<body>
+
+<section class="container mt-3 text-center">
+	<section class="mt-3">
+		Welcome to java-server-side-ui!
+	</section>
+
+	<section class="mt-3">
+		<!-- Link to trigger AppSSO Auth Code Flow -->
+		<form th:action="@{/protected/profile}">
+			<button value="submit" class="btn btn-primary w-25 h-50 align-items-center">
+				Log in using AppSSO
+			</button>
+		</form>
+	</section>
+</section>
+
+</body>
+</html>

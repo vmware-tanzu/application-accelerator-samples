@@ -1,0 +1,11 @@
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: java-server-side-ui
+  namespace: accelerator-system
+spec:
+  git:
+    url: ssh://git@github.com/pivotal/acc-content
+    ref:
+      branch: main
+    subPath: java-server-side-ui
