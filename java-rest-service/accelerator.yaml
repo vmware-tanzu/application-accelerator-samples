@@ -143,11 +143,10 @@ engine:
           exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
         - include: [ "pom.xml" ]
           chain:
-            - type: OpenRewriteRecipe
-              recipe: org.openrewrite.maven.RemoveDependency
-              options:
-                groupId: "'org.liquibase'"
-                artifactId: "'liquibase-core'"
+            - type: ReplaceText
+              regex:
+                pattern: "<dependency>\\s+<groupId>org\\.liquibase</groupId>\\s+<artifactId>liquibase-core</artifactId>\\s+</dependency>\\s+"
+                with: "''"
         - include: [ "build.gradle.kts" ]
           chain:
             - type: ReplaceText
@@ -175,11 +174,10 @@ engine:
           exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
         - include: [ "pom.xml" ]
           chain:
-            - type: OpenRewriteRecipe
-              recipe: org.openrewrite.maven.RemoveDependency
-              options:
-                groupId: "'org.flywaydb'"
-                artifactId: "'flyway-core'"
+            - type: ReplaceText
+              regex:
+                pattern: "<dependency>\\s+<groupId>org\\.flywaydb</groupId>\\s+<artifactId>flyway-core</artifactId>\\s+</dependency>\\s+"
+                with: "''"
         - include: [ "build.gradle.kts" ]
           chain:
             - type: ReplaceText
