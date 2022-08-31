@@ -4,6 +4,6 @@ metadata:
   name: node-function
 spec:
   git:
-    url: https://github.com/bbtong/application-accelerator-samples/node-function
+    url: https://github.com/bbtong/application-accelerator-samples/tree/main/node-function
     ref:
       branch: main
