@@ -7,14 +7,14 @@ OUTPUT_TO_NULL_COMMAND = os.getenv("OUTPUT_TO_NULL_COMMAND", default=' > /dev/nu
 allow_k8s_contexts('your-k8s-context') # CHANGEME - replace `your-k8s-context` with your targeted Kubernetes context
 
 k8s_custom_deploy(
-    'my-java-fn',
+    'java-function',
     apply_cmd="tanzu apps workload apply -f config/workload.yaml --live-update" +
         " --local-path " + LOCAL_PATH +
         " --source-image " + SOURCE_IMAGE +
         " --namespace " + NAMESPACE +
         " --yes " +
         OUTPUT_TO_NULL_COMMAND +
-        " && kubectl get workload my-java-fn --namespace " + NAMESPACE + " -o yaml",
+        " && kubectl get workload java-function --namespace " + NAMESPACE + " -o yaml",
     delete_cmd="tanzu apps workload delete -f config/workload.yaml --namespace " + NAMESPACE + " --yes" ,
     deps=['pom.xml', './target/classes'],
     container_selector='workload',
@@ -23,5 +23,5 @@ k8s_custom_deploy(
     ]
 )
 
-k8s_resource('my-java-fn', port_forwards=["8080:8080"],
-    extra_pod_selectors=[{'serving.knative.dev/service': 'my-java-fn'}])
+k8s_resource('java-function', port_forwards=["8080:8080"],
+    extra_pod_selectors=[{'serving.knative.dev/service': 'java-function'}])

@@ -1,6 +1,6 @@
-# Python Function - Using Function Buildpacks for Knative
+# Python Function
 
-This repo contains a simple Python Function that can be built using Function Buildpacks and deployed as a TAP serverless workload.
+This repo contains a simple Python Function that can be deployed as a TAP workload.
 
 This function utilizes the buildpacks provided by VMware's open-source [Function Buildpacks for Knative](https://github.com/vmware-tanzu/function-buildpacks-for-knative) project.
 
@@ -9,7 +9,7 @@ This function utilizes the buildpacks provided by VMware's open-source [Function
 To begin editing your function, refer to the tree diagram below of the file to modify:
 
 ```
-my-python-fn
+python-function
     └── func.py // EDIT THIS FILE
 ```
 

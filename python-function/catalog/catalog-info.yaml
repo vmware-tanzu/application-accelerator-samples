@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: my-python-fn
+  name: python-function
   description: Functions Buildpacks for Knative Accelerator Template
   tags:
     - app-accelerator
@@ -10,7 +10,7 @@ metadata:
     - knative
     - tanzu
   annotations:
-    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=my-python-fn'
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=python-function'
 spec:
   type: service
   lifecycle: experimental

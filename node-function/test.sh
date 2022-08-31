@@ -49,5 +49,3 @@ popd
 
 # Remove the accelerator
 tanzu accelerator delete node-function -y
-
-# Check that it removed? 

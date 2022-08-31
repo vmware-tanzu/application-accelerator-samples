@@ -4,6 +4,6 @@ metadata:
   name: java-function
 spec:
   git:
-    url: https://github.com/bbtong/application-accelerator-samples/tree/main/java-function
+    url: https://github.com/sample-accelerators/java-functions-accelerator
     ref:
       branch: main

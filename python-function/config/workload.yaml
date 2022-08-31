@@ -1,11 +1,11 @@
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
-  name: my-python-fn
+  name: python-function
   namespace: default
   labels:
     apps.tanzu.vmware.com/workload-type: web
-    app.kubernetes.io/part-of: my-python-fn
+    app.kubernetes.io/part-of: python-function
 spec:
   source:
     git:

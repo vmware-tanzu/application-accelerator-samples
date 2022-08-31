@@ -28,9 +28,9 @@ accelerator:
     label: Event Type
     choices:
     - value: http
-      text: HTTP Function
+      text: HTTP
     - value: cloudevents
-      text: CloudEvents Function (Experimental)
+      text: CloudEvents
     defaultValue: http
     required: true
 
@@ -70,7 +70,7 @@ engine:
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: java-function
           with: "#artifactId"
 
     # Maven files
@@ -81,14 +81,14 @@ engine:
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: java-function
           with: "#artifactId"
     - include: [ "cloudevents/pom.xml", "cloudevents/jar-assembly.xml" ]
       condition: "#buildType == 'maven' && #interfaceType == 'cloudevents'"
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: java-function
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "#filename"
@@ -101,7 +101,7 @@ engine:
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: java-function
           with: "#artifactId"
     - include: [ "build.gradle" ]
       condition: "#buildType == 'gradle' && #interfaceType == 'http'"
@@ -128,7 +128,7 @@ engine:
               with: "#gitUrl"
             - text: main
               with: "#gitBranch"
-            - text: my-java-fn
+            - text: java-function
               with: "#artifactId"
         - type: RewritePath
           rewriteTo: "'config/' + #filename"
@@ -137,12 +137,12 @@ engine:
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: java-function
           with: "#artifactId"
     - include: [ "Tiltfile" ]
       condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: java-function
           with: "#artifactId"

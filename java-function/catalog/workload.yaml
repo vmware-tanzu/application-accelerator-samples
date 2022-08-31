@@ -1,10 +1,10 @@
 apiVersion: carto.run/v1alpa1
 kind: Workload
 metadata:
-  name: my-java-fn
+  name: java-function
   labels:
     apps.tanzu.vmware.com/workload-type: workload-type
-    app.kubernetes.io/part-of: my-java-fn
+    app.kubernetes.io/part-of: java-function
 spec:
   build:
     env:
