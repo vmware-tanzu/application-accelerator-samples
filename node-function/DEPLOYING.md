@@ -28,6 +28,12 @@ Build your image and run it using Docker:
 pack build node-function --path . --buildpack paketo-buildpacks/nodejs --builder paketobuildpacks/builder:base
 ```
 
+If using Jammy:
+
+```
+pack build node-function --path . --buildpack paketo-buildpacks/nodejs --builder paketobuildpacks/builder-jammy-buildpackless-base:latest
+```
+
 Where `node-function` is the name of your runnable function image.
 
 Then run via Docker:
