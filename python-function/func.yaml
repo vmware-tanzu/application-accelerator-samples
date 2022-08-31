@@ -1,0 +1,5 @@
+envs:
+- name: MODULE_NAME
+  value: func
+- name: FUNCTION_NAME
+  value: main
