@@ -6,4 +6,4 @@ spec:
   git:
     url: https://github.com/bbtong/application-accelerator-samples/tree/main/python-function
     ref:
-      branch: main
+      branch:
