@@ -13,7 +13,7 @@ accelerator:
   options:
     - name: artifactId
       inputType: text
-      defaultValue: "customer-profile"
+      defaultValue: "server-side-ui-starter"
       label: Application artifact name
       required: true
     - name: groupId
@@ -23,7 +23,7 @@ accelerator:
       required: true
     - name: packageName
       inputType: text
-      defaultValue: "com.example.customerprofile"
+      defaultValue: "com.example.serversideuistarter"
       label: Application root package
       required: true
     - name: buildTool
