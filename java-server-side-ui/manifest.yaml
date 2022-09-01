@@ -5,7 +5,7 @@ metadata:
   namespace: accelerator-system
 spec:
   git:
-    url: ssh://git@github.com/pivotal/acc-content
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     ref:
       branch: main
     subPath: java-server-side-ui
