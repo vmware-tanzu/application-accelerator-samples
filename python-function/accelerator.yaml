@@ -43,7 +43,7 @@ accelerator:
       name: includeTap
     dataType: string
     required: true
-    defaultValue: "https://github.com/sample-accelerators/python-functions-accelerator.git"
+    defaultValue: "https://github.com/vmware-tanzu/application-accelerator-samples.git"
     
   - name: gitBranch
     label: Git Repository Branch
@@ -97,7 +97,7 @@ engine:
           substitutions:
             - text: python-function
               with: "#artifactId"
-            - text: https://github.com/sample-accelerators/python-functions-accelerator.git
+            - text: https://github.com/vmware-tanzu/application-accelerator-samples.git
               with: "#gitUrl"
             - text: main
               with: "#gitBranch"

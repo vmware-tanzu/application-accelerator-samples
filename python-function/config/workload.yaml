@@ -11,4 +11,4 @@ spec:
     git:
       ref:
         branch: main
-      url: https://github.com/sample-accelerators/python-functions-accelerator.git
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
