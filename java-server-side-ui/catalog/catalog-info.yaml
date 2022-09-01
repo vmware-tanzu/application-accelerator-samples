@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: java-server-side-ui
+  description: Spring Boot application with server side rendered web UI. Application supports single sign-on (SSO) via Spring Security OAuth 2 Client library.
+  tags:
+    - java
+    - spring
+    - web
+    - tanzu
+    - appsso
+    - oidc
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=java-server-side-ui"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team

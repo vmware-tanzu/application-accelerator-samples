@@ -1,0 +1,165 @@
+accelerator:
+  displayName: Tanzu Java Web UI
+  description: Spring Boot application with server side rendered web UI. Application supports single sign-on (SSO) via Spring Security OAuth 2 Client library.
+  iconUrl: data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBvbHlnb24gcG9pbnRzPSI3LjQyNCAwLjIyIDcuNDI0IDAuOTI1IDIuNjEgMy4yNDMgMi4wNTcgMi44MDMgNy40MjQgMC4yMiIgZmlsbD0iIzAwYzFkNSIvPjxwb2x5Z29uIHBvaW50cz0iMTMuNzgyIDIuODAzIDEzLjIzIDMuMjQzIDguNDE2IDAuOTI1IDguNDE2IDAuMjIgMTMuNzgyIDIuODAzIiBmaWxsPSIjMDBjMWQ1Ii8+PHBvbHlnb24gcG9pbnRzPSIxNS41MjIgOC40ODggMTQuODcgOC40ODggMTMuODUgNC4wMTggMTQuNDAxIDMuNTggMTUuNTIyIDguNDg4IiBmaWxsPSIjMWQ0MjhhIi8+PHBvbHlnb24gcG9pbnRzPSIxLjk5IDQuMDE4IDAuODAxIDkuMjI4IDAuMTEzIDkuMzg2IDEuNDM5IDMuNTggMS45OSA0LjAxOCIgZmlsbD0iIzFkNDI4YSIvPjxwb2x5Z29uIHBvaW50cz0iNC4zNTMgMTQuMzc0IDQuMDQ3IDE1LjAxIDAuMzM0IDEwLjM1NCAxLjAyMSAxMC4xOTYgNC4zNTMgMTQuMzc0IiBmaWxsPSIjNzhiZTIwIi8+PHBvbHlnb24gcG9pbnRzPSI1LjI0OCAxNC44MDYgNy45ODIgMTQuODA2IDcuOTgyIDE1LjQ0MSA0Ljk0MiAxNS40NDEgNS4yNDggMTQuODA2IiBmaWxsPSIjMDBjMWQ1Ii8+PHBhdGggZD0iTTExLjQ1NiwxMS42di0uMDY0bTEuMDA1LTEuMjIxSDEyLjQzTTEwLjksMTIuMjM2aDB2MFptLjU1OC0uNjM2di0uMDY0IiBmaWxsPSJub25lIi8+PHBvbHlnb24gcG9pbnRzPSIxMy42OTEgOC40ODggMTMuMDM5IDguNDg4IDEyLjMgNS4yNSAxMi4zIDUuMjUgMTIuMTc2IDQuNzA4IDExLjY4NCA0LjQ3MSA4LjQxNiAyLjg5NyA3LjkyIDIuNjU4IDcuNDI0IDIuODk3IDQuMTU2IDQuNDcxIDMuNjYzIDQuNzA4IDMuNTQgNS4yNSAyLjczNCA4Ljc4MiAyLjYxMiA5LjMxNCAyLjk1OSA5Ljc0OSA1LjIxNiAxMi41NzkgNS41NTggMTMuMDA3IDcuOTgyIDEzLjAwNyA3Ljk4MiAxMy42NDMgNS4yNTIgMTMuNjQzIDQuOTEgMTMuMjE1IDIuMjczIDkuOTA3IDEuOTI0IDkuNDcxIDIuMDQ2IDguOTQxIDIuOTg4IDQuODExIDMuMTEyIDQuMjY5IDMuNjA0IDQuMDMyIDcuNDI0IDIuMTkyIDcuOTIgMS45NTMgOC40MTYgMi4xOTIgMTIuMjM2IDQuMDMyIDEyLjcyOCA0LjI2OSAxMi44NTIgNC44MTEgMTMuNjkxIDguNDg4IiBmaWxsPSIjMDA5MWRhIi8+PHBhdGggZD0iTTE0LjEwNywxMi4wNjRoLS41NTZ2LS43M2gtMi4xdi43M0g5LjE3NFYxNS4wNWg0LjYxN3YuNzNoMi4xVjEzLjY4NWgtMi4xdi43M0g5LjgwOVYxMi43aDEuNjQ3di43M2gyLjF2LS42MTloLS4wMDVsLjAwNS0uMDA3di0uMWgyLjMzNlY5LjY3OUgxMS4yNjl2LS43M2gtMi4xdjIuMWgyLjF2LS43MjloMy45ODJ2MS43NDlIMTQuMTQybS0zLjUwOC0xLjY1NUg5LjgwOVY5LjU4NGguODI1Wm0zLjc5MiwzLjkxMWguODI1di44MjVoLS44MjVaTTEwLjksMTIuMjM2aDBsMCwwWm0yLjAxNi41NTloLS44MjVWMTEuOTdoLjgyNVoiIGZpbGw9IiMxZDQyOGEiLz48cG9seWdvbiBwb2ludHM9IjEwLjkgMTIuMjMzIDEwLjkgMTIuMjM2IDEwLjg5OCAxMi4yMzYgMTAuOSAxMi4yMzMiIGZpbGw9IiMxZDQyOGEiLz48cGF0aCBkPSJNMTMuNTQ2LDEyLjgxMWguMDA1VjEyLjhaIiBmaWxsPSIjMWQ0MjhhIi8+PC9zdmc+
+  tags:
+    - java
+    - spring
+    - web
+    - tanzu
+    - appsso
+    - oidc
+
+  options:
+    - name: artifactId
+      inputType: text
+      defaultValue: "server-side-ui-starter"
+      label: Application artifact name
+      required: true
+    - name: groupId
+      inputType: text
+      defaultValue: "com.example"
+      label: Application group name
+      required: true
+    - name: packageName
+      inputType: text
+      defaultValue: "com.example.serversideuistarter"
+      label: Application root package
+      required: true
+    - name: buildTool
+      inputType: select
+      defaultValue: maven
+      label: Build Tool
+      required: true
+      choices:
+        - value: maven
+          text: Maven (https://maven.apache.org/)
+        - value: gradle
+          text: Gradle (https://gradle.org/)
+    - name: includeAppSsoIntegration
+      label: Include AppSSO (OIDC) integration?
+      dataType: boolean
+      defaultValue: true
+  imports:
+    - name: java-version
+    - name: app-sso-client
+      expose:
+        - name: workloadHost
+          dependsOn:
+            name: includeAppSsoIntegration
+            value: true
+        - name: appSsoServerLabel
+          dependsOn:
+            name: includeAppSsoIntegration
+            value: true
+    - name: spring-boot-app-sso-auth-code-flow
+
+engine:
+  let:
+    - name: packageDirectory
+      expression: '#packageName.replace(".", "/")'
+    - name: workloadResourceName
+      expression: '#artifactId.toLowerCase()'
+  chain:
+    # Maven is selected
+    - condition: "#buildTool == 'maven'"
+      exclude: [ "settings.gradle.kts", "build.gradle.kts", "gradlew*", "gradle/**"]
+      merge:
+        - include: [ "**" ]
+          exclude: [ "pom.xml", "README.md" ]
+        - include: [ "pom.xml" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "<groupId>com.vmware.tap.accelerators</groupId>"
+                  with: "'<groupId>' + #groupId + '</groupId>'"
+        - include: [ "README.md" ]
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartGradle[\\s\\S]+?--- EndGradle"
+                with: "''"
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartMaven\\s|--- EndMaven\\s"
+                with: "''"
+    # end of the Maven specific part
+
+    # Gradle is selected
+    - condition: "#buildTool == 'gradle'"
+      exclude: [ "pom.xml", "mvnw*", ".mvn/**"]
+      merge:
+        - include: [ "**" ]
+          exclude: [ "build.gradle.kts", "README.md" ]
+        - include: [ "build.gradle.kts" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "group = \"com.vmware.tap.accelerators\""
+                  with: "'group = \"' + #groupId + '\"'"
+        - include: [ "README.md" ]
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartMaven[\\s\\S]+?--- EndMaven"
+                with: "''"
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartGradle\\s|--- EndGradle\\s"
+                with: "''"
+    # end of the Gradle specific part
+
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "config/workload.yaml" ]
+      - include: [ "config/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "java-server-side-ui"
+                with: "#workloadResourceName"
+
+    - merge:
+      - type: InvokeFragment
+        reference: java-version
+      - include: [ "**" ]
+      onConflict: UseFirst
+
+    - condition: "#includeAppSsoIntegration"
+      merge:
+        - type: InvokeFragment
+          reference: app-sso-client
+          let:
+            - name: workloadName
+              expression: "#workloadResourceName"
+        - include: [ "**" ]
+      onConflict: UseFirst
+
+    - condition: "#includeAppSsoIntegration"
+      merge:
+        - type: InvokeFragment
+          reference: spring-boot-app-sso-auth-code-flow
+        - include: [ "**" ]
+      onConflict: UseFirst
+
+    - merge:
+      - include: [ "**/com/vmware/tap/accelerators/javaserversideui/**/*.java" ]
+        chain:
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.java.ChangePackage
+            options:
+              oldPackageName: "'com.vmware.tap.accelerators.javaserversideui'"
+              newPackageName: "#packageName"
+      - exclude: [ "**/com/vmware/tap/accelerators/javaserversideui/**/*.java"]
+
+    - merge:
+      - include: [ "**/*.jar" ]
+      - exclude: [ "**/*.jar" ]
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: "java-server-side-ui"
+            with: "#artifactId"
+
+    - type: Exclude
+      patterns: [ "manifest.yaml" ]

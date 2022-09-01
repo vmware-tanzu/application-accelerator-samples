@@ -1,0 +1,7 @@
+ignore:
+  # This vulnerability has been already fixed in the spring-boot-starter-web version 2.7.2 which is included in this accelerator
+  - vulnerability: GHSA-36p3-wjmg-h94x
+    fix-state: fixed
+    package:
+      name: spring-boot-starter-web
+      type: java-archive
