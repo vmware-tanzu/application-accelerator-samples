@@ -10,7 +10,6 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 val springdocVersion = "1.6.9"
-val testcontainersVersion = "1.17.3"
 
 repositories {
     mavenCentral()
@@ -28,13 +27,9 @@ dependencies {
     // Infrastructure
     implementation("org.flywaydb:flyway-core")
     implementation("org.liquibase:liquibase-core")
-    implementation("org.postgresql:postgresql")
 
     // Test
     testImplementation ("org.springframework.boot:spring-boot-starter-test")
-
-    testImplementation(platform("org.testcontainers:testcontainers-bom:${testcontainersVersion}"))
-    testImplementation ("org.testcontainers:postgresql")
 }
 
 tasks.withType<Test> {

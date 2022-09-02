@@ -50,11 +50,6 @@ After that it is a good habit to compile the test classes and execute those test
 Spring Boot has its own integrated Web Server (Apache Tomcat (https://tomcat.apache.org/)). In order 
 to start the application a PostgreSQL instance should be running.
 
-Running a PostgreSQL instance can easily be done by using `docker-compose`:
-```bash
-docker-compose up -d
-```
-
 Launch application using profile `local`:
 --- StartMaven
 ```bash
@@ -92,24 +87,6 @@ curl -X GET http://localhost:8080/api/customer-profiles/{id}
 ## Tanzu Application Platform (TAP)
 Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
 Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
-
-As with the local deployment a PostgreSQL instance needs to be available at the cluster.
-When using VMware Tanzu SQL with Postgres for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html),
-one could apply for an instance, and it will be automatically provisioned.
-
-> Note: please define the storage class to be used for the PostgreSQL storage.
-
-```bash
-kubectl apply -f config/postgres.yaml
-```
-
-The `workload.yaml` contains a reference to the PostgreSQL instance.
-
-> Note: if your postgres instance is in another namespace than your developer namespace, add the following to the workload.yaml:
-```metadata:
-       annotations:
-         serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: '{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}'
-```
 
 Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
 namespace. Please execute following command.

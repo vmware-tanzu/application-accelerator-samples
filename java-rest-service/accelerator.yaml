@@ -27,11 +27,11 @@ accelerator:
       defaultValue: "com.example.customerprofile"
       label: Module root package
       required: true
-    - name: databaseName
-      inputType: text
-      defaultValue: "customer-profile-database"
-      label: Database Instance Name this Application will use (can be existing one in the cluster)
-      required: true
+#    - name: databaseName
+#      inputType: text
+#      defaultValue: "customer-profile-database"
+#      label: Database Instance Name this Application will use (can be existing one in the cluster)
+#      required: true
     - name: buildTool
       inputType: select
       required: true
@@ -77,6 +77,7 @@ accelerator:
         name: exposeOpenAPIEndpoint
   imports:
   - name: java-version
+  - name: spring-boot-postgresql
 
 engine:
   let:
@@ -84,8 +85,8 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
-    - name: databaseResourceName
-      expression: '#databaseName.toLowerCase()'
+#    - name: databaseResourceName
+#      expression: '#databaseName.toLowerCase()'
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -214,23 +215,29 @@ engine:
         chain:
           - type: RewritePath
             rewriteTo: "'config/workload.yaml'"
-      - include: [ "config/workload.yaml", "config/postgres.yaml", "config/test-pipeline.yaml" ]
+      - include: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
               - text: "rest-service-db"
                 with: "#workloadResourceName"
-          - type: ReplaceText
-            substitutions:
-              - text: "customer-profile-database"
-                with: "#databaseResourceName"
-          - type: ReplaceText
-            substitutions:
-              - text: "customerprofiledatabase"
-                with: "#databaseName"
+#          - type: ReplaceText
+#            substitutions:
+#              - text: "customer-profile-database"
+#                with: "#databaseResourceName"
+#          - type: ReplaceText
+#            substitutions:
+#              - text: "customerprofiledatabase"
+#                with: "#databaseName"
     - merge:
       - type: InvokeFragment
         reference: java-version
+      - include: [ "**" ]
+      onConflict: UseFirst
+
+    - merge:
+      - type: InvokeFragment
+        reference: spring-boot-postgresql
       - include: [ "**" ]
       onConflict: UseFirst
 

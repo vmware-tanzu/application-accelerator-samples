@@ -8,12 +8,6 @@ metadata:
     apps.tanzu.vmware.com/has-tests: true
     apis.apps.tanzu.vmware.com/register-api: "true"
 spec:
-  serviceClaims:
-    - name: db
-      ref:
-        apiVersion: sql.tanzu.vmware.com/v1
-        kind: Postgres
-        name: customer-profile-database
   build:
     env:
       - name: BP_JVM_VERSION
