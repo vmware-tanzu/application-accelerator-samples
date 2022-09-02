@@ -88,8 +88,6 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
-#    - name: databaseResourceName
-#      expression: '#databaseName.toLowerCase()'
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -238,6 +236,12 @@ engine:
       - include: [ "**" ]
       onConflict: UseFirst
 
+    - merge:
+      - type: InvokeFragment
+        reference: spring-boot-postgresql
+      - include: [ "**" ]
+      onConflict: UseFirst
+
     - condition: "#buildTool == 'maven'"
       merge:
         - type: InvokeFragment
@@ -249,12 +253,6 @@ engine:
         - type: InvokeFragment
           reference: tap-workload
         - include: [ "**" ]
-      onConflict: UseFirst
-
-    - merge:
-      - type: InvokeFragment
-        reference: spring-boot-postgresql
-      - include: [ "**" ]
       onConflict: UseFirst
 
     - merge:
