@@ -2,31 +2,31 @@
 
 ## Overview
 
-Application Accelerator for VMware Tanzu helps you bootstrap developing your applications and deploying them in a discoverable and repeatable way.
+Application Accelerators for VMware Tanzu helps you bootstrap developing your applications and deploying them in a discoverable and repeatable way.
 
 Enterprise Architects author and publish accelerator projects that provide developers and operators in their organization ready-made, enterprise-conformant code and configurations.
 
-Published accelerators projects are maintained in Git repositories. You can then use Application Accelerator to create new projects based on those accelerator projects.
+Published accelerator projects are maintained in Git repositories. You can then use Application Accelerators to create new projects based on those accelerator projects.
 
-The Application Accelerator user interface(UI) enables you to discover available accelerators, configure them, and generate new projects to download.
+The Application Accelerators user interface(UI) enables you to discover available accelerators, configure them, and generate new projects to download.
 
-## How does Application Accelerator work?
+## How does Application Accelerators work?
 
-Application Accelerator allows you to generate new projects from files in Git repositories. An accelerator.yaml file in the repository declares input options for the accelerator. This file also contains instructions for processing the files when you generate a new project.
+Application Accelerators allow you to generate new projects from files in Git repositories. An accelerator.yaml file in the repository declares input options for the accelerator. This file also contains instructions for processing the files when you generate a new project.
 
-Accelerator custom resources (CRs) control which repositories appear in the Application Accelerator UI. You can maintain CRs by using Kubernetes tools such as kubectl or by using the Tanzu CLI accelerator commands. The Accelerator controller reconciles the CRs with a Flux2 Source Controller to fetch files from GitHub or GitLab.
+Accelerator custom resources (CRs) control which repositories appear in the Application Accelerators UI. You can maintain CRs by using Kubernetes tools such as kubectl or by using the Tanzu CLI accelerator commands. The Accelerator controller reconciles the CRs with a Flux2 Source Controller to fetch files from GitHub or GitLab.
 
-The Application Accelerator UI and IDE extension gives you a searchable list of accelerators to choose from. After you select an accelerator, the UI and IDE extension presents input fields for any input options.
+The Application Accelerators UI and IDE extension gives you a searchable list of accelerators to choose from. After you select an accelerator, the UI and IDE extension present input fields for any input options.
 
-Application Accelerator sends the input values to the Accelerator Engine for processing. The Engine then returns the project in a ZIP file. You can open the project in your favorite integrated development environment (IDE) to develop further.
+Application Accelerators UI and IDE extension send the input values to the Accelerator Engine for processing. The Engine then returns the project in a ZIP file. You can open the project in your favorite integrated development environment (IDE) to develop further.
 
 ### Prerequisites
 
-To use these Application Accelerator samples you need to have access to an installation of [VMware Tanzu Application Platform](https://network.tanzu.vmware.com/products/tanzu-application-platform).
+To use these Application Accelerators samples you need to have access to an installation of [VMware Tanzu Application Platform](https://network.tanzu.vmware.com/products/tanzu-application-platform).
 
 ### Build & Run
 
-Each Application Accelerator is provided in a separate directory and is its own self contained project with a README file descibing how to build it.
+Each Accelerator is provided in a separate directory and is its own self contained project with a README file descibing how to build it.
 
 ## Documentation
 
