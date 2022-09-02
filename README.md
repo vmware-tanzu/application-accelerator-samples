@@ -34,7 +34,7 @@ _Application Accelerators for VMware Tanzu_ documentation is provided as part of
 
 ## Contributing
 
-The application-accelerator-samples-for-vmware-tanzu project team welcomes contributions from the community. Before you start working with application-accelerator-samples-for-vmware-tanzu, please
+The application-accelerator-samples project team welcomes contributions from the community. Before you start working with application-accelerator-samples, please
 read our [Developer Certificate of Origin](https://cla.vmware.com/dco). All contributions to this repository must be
 signed as described on that page. Your signature certifies that you wrote the patch or have the right to pass it on
 as an open-source patch. For more detailed information, refer to [CONTRIBUTING.md](CONTRIBUTING.md).

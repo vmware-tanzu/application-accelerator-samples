@@ -1,6 +1,6 @@
-# Contributing to application-accelerator-samples-for-vmware-tanzu
+# Contributing to application-accelerator-samples
 
-The application-accelerator-samples-for-vmware-tanzu project team welcomes contributions from the community. Before you start working with application-accelerator-samples-for-vmware-tanzu, please
+The application-accelerator-samples project team welcomes contributions from the community. Before you start working with application-accelerator-samples, please
 read our [Developer Certificate of Origin](https://cla.vmware.com/dco). All contributions to this repository must be
 signed as described on that page. Your signature certifies that you wrote the patch or have the right to pass it on
 as an open-source patch.
@@ -18,7 +18,7 @@ This is a rough outline of what a contributor's workflow looks like:
 Example:
 
 ``` shell
-git remote add upstream https://github.com/vmware-tanzu/application-accelerator-samples-for-vmware-tanzu.git
+git remote add upstream https://github.com/vmware-tanzu/application-accelerator-samples.git
 git checkout -b my-new-feature main
 git commit -a
 git push origin my-new-feature
