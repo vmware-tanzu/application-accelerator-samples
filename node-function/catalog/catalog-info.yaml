@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: node-function
+  description: Node Function
+  tags:
+    - node
+    - function
+    - serverless
+    - knative
+    - faas
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=node-function'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team
