@@ -51,18 +51,18 @@ class CustomerProfileServiceTest {
         assertThat(customerProfileEntity.getFirstName()).isEqualTo(customerProfile.getFirstName());
         assertThat(customerProfileEntity.getLastName()).isEqualTo(customerProfile.getLastName());
         assertThat(customerProfileEntity.getEmail()).isEqualTo(customerProfile.getEmail());
-        assertThat(customerProfileEntity.getId()).isEqualTo(UUID.fromString(result.getId()));
+        assertThat(customerProfileEntity.getId()).isEqualTo(result.getId());
     }
 
     @Test
     void shouldDelegateToRepositoryToRetrieveProfile() {
 
-        var id = UUID.randomUUID();
+        var id = UUID.randomUUID().toString();
         var entity = new CustomerProfileEntity().setId(id).setFirstName("Joe").setLastName("Doe").setEmail("joe.doe@test.org");
         when(repository.findById(any())).thenReturn(Optional.of(entity));
 
         // when
-        var resultOptional = subject.getById(id.toString());
+        var resultOptional = subject.getById(id);
 
         // then
         assertThat(resultOptional).isPresent();
@@ -71,21 +71,9 @@ class CustomerProfileServiceTest {
         assertThat(result.getFirstName()).isEqualTo(entity.getFirstName());
         assertThat(result.getLastName()).isEqualTo(entity.getLastName());
         assertThat(result.getEmail()).isEqualTo(entity.getEmail());
-        assertThat(result.getId()).isEqualTo(id.toString());
+        assertThat(result.getId()).isEqualTo(id);
 
         verify(repository).findById(id);
-    }
-
-    @Test
-    void shouldReturnEmptyIfIdIsInvalid() {
-
-        // when
-        var resultOptional = subject.getById("invalid-id");
-
-        // then
-        assertThat(resultOptional).isEmpty();
-
-        verifyNoInteractions(repository);
     }
 
     @Test

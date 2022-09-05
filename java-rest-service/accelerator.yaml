@@ -36,6 +36,16 @@ accelerator:
           text: Maven (https://maven.apache.org/)
         - value: gradle
           text: Gradle (https://gradle.org/)
+    - name: databaseType
+      inputType: select
+      label: Database to use
+      choices:
+        - value: "postgres"
+          text: PostgreSQL
+        - value: "mysql"
+          text: MySQL
+      defaultValue: "postgres"
+      required: true
     - name: databaseMigrationTool
       inputType: select
       required: true
@@ -72,6 +82,8 @@ accelerator:
         name: exposeOpenAPIEndpoint
   imports:
   - name: java-version
+  - name: spring-boot-postgresql
+  - name: spring-boot-mysql
   - name: live-update
     expose:
       - name: liveUpdateIDESupport
@@ -79,7 +91,6 @@ accelerator:
           name: buildTool
           value: 'maven'
       - name: sourceRepositoryPrefix
-  - name: spring-boot-postgresql
   - name: tap-workload
 
 engine:
@@ -236,9 +247,17 @@ engine:
       - include: [ "**" ]
       onConflict: UseFirst
 
-    - merge:
+    - condition: "#databaseType == 'postgres'"
+      merge:
+        - type: InvokeFragment
+          reference: spring-boot-postgresql
+        - include: [ "**" ]
+      onConflict: UseFirst
+
+    - condition: "#databaseType == 'mysql'"
+      merge:
       - type: InvokeFragment
-        reference: spring-boot-postgresql
+        reference: spring-boot-mysql
       - include: [ "**" ]
       onConflict: UseFirst
 

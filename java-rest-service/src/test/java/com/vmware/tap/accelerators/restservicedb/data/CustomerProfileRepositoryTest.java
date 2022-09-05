@@ -18,7 +18,7 @@ class CustomerProfileRepositoryTest {
 
     @Test
 	void shouldPersistCustomerProfile() {
-		var id = UUID.randomUUID();
+		var id = UUID.randomUUID().toString();
 		var entity = new CustomerProfileEntity()
 				.setFirstName("Joe")
 				.setLastName("Doe")
