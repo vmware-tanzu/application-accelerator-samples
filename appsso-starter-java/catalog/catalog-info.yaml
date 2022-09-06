@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: appsso-starter-java
+  description: Spring Boot application that supports single sign-on (SSO) via Spring Security OAuth 2 Client library.
+  tags:
+    - sso
+    - app-accelerator
+    - authentication
+    - openid
+    - spring
+    - java
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=appsso-starter-java'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team
