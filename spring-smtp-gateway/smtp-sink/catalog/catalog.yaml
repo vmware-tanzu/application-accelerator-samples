@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+ name: smtp-sink
+ description: A sink/desitination for SMTP Mime messages.  
+ tags:
+   - tanzu
+ links:
+   - url: https://github.com/sample-accelerators/spring-smtp-gateway/blob/main/README.md
+     title: README
+ annotations:
+   'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=spring-smtp-gateway'
+spec:
+ type: service
+ lifecycle: experimental
+ owner: default-team
+ system: spring-smtp-gateway

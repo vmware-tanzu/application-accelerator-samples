@@ -1,0 +1,50 @@
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: smtp-gateway
+  namespace: workloads
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: spring-smtp-gateway
+spec:
+  serviceClaims:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: rmq-1
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: main
+    subPath: spring-smtp-gateway/smtp-gateway
+  params:
+  - name: ports
+    value:
+    - port: 25
+      containerPort: 1026
+      name: smtp
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: smtp-sink
+  namespace: workloads  
+  labels:
+    apps.tanzu.vmware.com/workload-type: worker
+    app.kubernetes.io/part-of: spring-smtp-gateway
+spec:
+  serviceClaims:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: rmq-1
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: main
+    subPath: spring-smtp-gateway/smtp-sink

@@ -1,0 +1,14 @@
+spring: 
+  cloud: 
+    stream: 
+      function:
+        definition: processSMTPMessage
+    
+      bindings:  
+        processSMTPMessage-in-0:
+          destination: smtp-mq-gateway
+          group: msg-sink-mq-gateway-message-group
+          consumer:  
+            maxAttempts: 4
+            backOffInitialInterval: 15000
+            backOffMaxInterval: 60000  

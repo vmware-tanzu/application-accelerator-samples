@@ -1,0 +1,65 @@
+hungryman:
+  namespace: ${spring.cloud.kubernetes.client.namespace}
+  ui:
+    uri: http://hungryman-ui.${hungryman.namespace}/
+  search:
+    uri: http://hungryman-search.${hungryman.namespace}/
+  availability:
+    uri: http://hungryman-availability.${hungryman.namespace}/
+
+spring:
+  session:
+    timeout: 60m
+  cloud:
+    gateway:
+      forwarded.enabled: false
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      routes:
+      - id: hungryman_search_route
+        uri: ${hungryman.search.uri}
+        predicates:
+        - Path=/api/search/**      
+        - Host=hungryman**.**
+        filters:
+        - TokenRelay=
+        - RewritePath=/api/search(?<segment>/?.*), $\{segment}
+        - RemoveRequestHeader=Forwarded
+      - id: hungryman_availability_route
+        uri: ${hungryman.availability.uri}
+        predicates:
+        - Path=/api/availability/** 
+        - Host=hungryman**.**
+        filters:
+        - TokenRelay=
+        - RewritePath=/api/availability(?<segment>/?.*), $\{segment}
+        - RemoveRequestHeader=Forwarded
+      - id: hungryman_ui_route
+        uri: ${hungryman.ui.uri}
+        predicates:
+        - Host=hungryman**.**
+        - Path=/diningsearch
+      - id: hungryman_ui_route
+        uri: ${hungryman.ui.uri}
+        predicates:
+        - Host=hungryman**.**
+        - Path=/**
+
+---
+spring:
+  profiles: local
+
+
+#Local profile forwards to local instances  
+hungryman:
+  namespace: workloads
+  ui:
+    uri: http://localhost:3000/   # default used by npm start
+  search:
+    uri: http://localhost:8081/
+  availability:
+    uri: http://localhost:8082/

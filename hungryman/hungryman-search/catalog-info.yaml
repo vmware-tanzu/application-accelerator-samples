@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hungryman-search
+  annotations:
+    github.com/project-slug: sample-acclerators/hungryman-search
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=hungryman"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: meyerg@vmware.com

@@ -1,0 +1,120 @@
+---
+apiVersion: with.sql.tanzu.vmware.com/v1
+kind: MySQL
+metadata:
+  name: mysql_instance_name
+  namespace: mysql_service_namespace
+spec:
+
+#### Enable affinity
+  databasePodConfig:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: "app.kubernetes.io/component"
+                    operator: In
+                    values:
+                      - database
+                  - key: "app.kubernetes.io/instance"
+                    operator: In
+                    values:
+                      - hungryman
+    tolerations:
+    - key: node.kubernetes.io/disk-pressure
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 3600
+  proxyPodConfig:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: "app.kubernetes.io/component"
+                    operator: In
+                    values:
+                      - proxy
+                  - key: "app.kubernetes.io/instance"
+                    operator: In
+                    values:
+                      - hungryman
+    tolerations:
+    - key: node.kubernetes.io/memory-pressure
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 3600
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    resourceclaims.services.apps.tanzu.vmware.com/controller: "true"
+  name: mysql-for-kubernetes-mysqls-service-bindings-role
+rules:
+  - apiGroups: ["with.sql.tanzu.vmware.com"]
+    resources: ["mysqls"]
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+  - apiGroups:
+      - with.sql.tanzu.vmware.com
+    resources:
+      - mysqls/status
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mysql-app-operator-reader
+  labels:
+    apps.tanzu.vmware.com/aggregate-to-app-operator-cluster-access: "true"
+rules:
+- apiGroups: ["with.sql.tanzu.vmware.com"]
+  resources: ["mysqls"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: mysql
+spec:
+  description:
+    short: MySQL DB Instances
+  pool:
+    group: with.sql.tanzu.vmware.com
+    kind: MySQL  
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ResourceClaimPolicy
+metadata:
+  name: mysql-cross-namespace
+  namespace: mysql_service_namespace
+spec:
+  consumingNamespaces:
+  - '*'
+  subject:
+    group: with.sql.tanzu.vmware.com
+    kind: MySQL
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ResourceClaim
+metadata:
+  name: mysql_instance_name
+  namespace: mysql_workloads_namespace
+spec:
+  ref:
+    apiVersion: with.sql.tanzu.vmware.com/v1
+    kind: MySQL
+    name: mysql_instance_name
+    namespace: mysql_service_namespace

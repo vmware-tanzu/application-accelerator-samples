@@ -1,0 +1,16 @@
+# automatically expand info properties from the Maven project using resource filtering
+info:
+  build:
+    artifact: '@project.artifactId@'
+    name: '@project.name@'
+    description: '@project.description@'
+    version: '@project.version@'
+ 
+spring:
+  cloud:
+    stream:
+      # Need to define an explicit source binding name since we are using a StreamBridge
+      source: smtp-gateway-message
+      bindings:
+        smtp-gateway-message-out-0:
+          destination: smtp-mq-gateway

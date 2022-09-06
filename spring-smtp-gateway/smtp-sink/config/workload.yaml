@@ -1,0 +1,21 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: smtp-sink
+  namespace: workloads  
+  labels:
+    apps.tanzu.vmware.com/workload-type: queue
+    app.kubernetes.io/part-of: spring-smtp-gateway
+spec:
+  serviceClaims:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: rmq-1
+  source:
+    git:
+      url: https://github.com/sample-accelerators/spring-smtp-gateway
+      ref:
+        branch: main
+    subPath: smtp-sink
