@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hungryman-ui
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=hungryman"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: hungryman-team
+  system: hungryman
+  dependsOn: 
+    - component:hungryman-search
+    - component:hungryman-availability

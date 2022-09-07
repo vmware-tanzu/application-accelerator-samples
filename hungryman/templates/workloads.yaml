@@ -1,0 +1,193 @@
+#@ load("@ytt:data", "data")
+
+#@ def buildServiceClaimsBinding(usesDB,usesRMQ,usesSec):
+#@ if usesSec == True and data.values.enableSecurity == True:
+  - name: sso
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: #@ data.values.appSSOName
+#@ end
+#@ if usesRMQ == True:
+  - name: rmq
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: #@ data.values.rabbitMQName
+#@ end
+#@ if usesDB == True and data.values.dbType != "h2":
+  - name: db
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: #@ data.values.dbName   
+#@ end     
+#@ end
+
+#@ def buildAppEnv(addSecProf,addDBProf):
+#@ profiles = ""
+
+#@ if addSecProf == True and data.values.enableSecurity == True:
+#@ profiles = "secure"
+#@ end
+
+#@ if addDBProf == True and data.values.dbType == "mysql":
+#@ if profiles != "":
+#@    profiles = profiles + ","
+#@ end
+#@ profiles = profiles + "mysql"
+#@ end
+
+#@ if profiles != "":
+  - name: spring_profiles_active
+    value: #@ profiles
+#@ end
+#@ end
+
+#@ def buildUIGitBranch():
+#@ if data.values.enableSecurity == True:
+#@ return "secure-ui"
+#@ end
+#@ return "main"
+#@ end
+
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: hungryman
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: hungryman-api-gateway
+spec:
+  env: #@ buildAppEnv(True,False)
+  params:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/minScale: "1"  
+  serviceClaims: #@ buildServiceClaimsBinding(False, False, True)
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: main
+    subPath: hungryman/hungryman-api-gateway
+    
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: hungryman-search
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: hungryman-search
+    networking.knative.dev/visibility: cluster-local
+spec:
+  env: #@ buildAppEnv(True,True)
+  params:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims: #@ buildServiceClaimsBinding(True, True, True)
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: main
+    subPath: hungryman/hungryman-search
+---
+
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: hungryman-search-proc
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: hungryman-search-proc
+    networking.knative.dev/visibility: cluster-local
+spec:
+  params:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims: #@ buildServiceClaimsBinding(False, True, False)
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: main
+    subPath: hungryman/hungryman-search-proc
+    
+---
+
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: hungryman-notify
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: hungryman-notify
+    networking.knative.dev/visibility: cluster-local
+spec:
+  params:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims: #@ buildServiceClaimsBinding(False, True, False)
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: main
+    subPath: hungryman/hungryman-notify
+---
+
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: hungryman-availability
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: hungryman-availability
+    networking.knative.dev/visibility: cluster-local
+spec:
+  env: #@ buildAppEnv(True,True)
+  params:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/minScale: "1"
+  serviceClaims: #@ buildServiceClaimsBinding(True, True, True)
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: main
+    subPath: hungryman/hungryman-availability
+
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: hungryman-ui
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: hungryman-ui
+    networking.knative.dev/visibility: cluster-local
+spec:
+  params:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/minScale: "1"   
+      app.kubernetes.io/part-of: hungryman
+  source:
+    git:
+      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      ref:
+        branch: #@ buildUIGitBranch()
+    subPath: hungryman/hungryman-ui

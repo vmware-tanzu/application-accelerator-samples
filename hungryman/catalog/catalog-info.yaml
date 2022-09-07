@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: hungryman-catalog-info
+  description: Catalog atalog for the Hungryman application
+  annotations:
+    'backstage.io/techdocs-ref': dir:.
+spec:
+  targets:
+    - ./components/hungryman-api-gateway/hungryman-api-gateway.yaml  
+    - ./components/hungryman-ui/hungryman-ui.yaml
+    - ./components/hungryman-search/hungryman-search.yaml
+    - ./components/hungryman-search-proc/hungryman-search-proc.yaml
+    - ./components/hungryman-availability/hungryman-availability.yaml
+    - ./components/hungryman-notify/hungryman-notify.yaml
+    - ./groups/org.yaml
+    - ./systems/hungryman-system.yaml
+    - ./resources/db/hungryman-db-resource.yaml
+    - ./resources/messaging/hungryman-messaging-resource.yaml  

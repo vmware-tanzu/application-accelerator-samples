@@ -1,0 +1,11 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: hungryman
+spec:
+  virtualhost:
+    fqdn: hungryman.perfect300rock.com
+  routes:
+    - services:
+      - name: hungryman-api-gateway
+        port: 80
