@@ -11,5 +11,5 @@ spec:
     git:
       ref:
         branch: main
-      url: https://github.com/vmware-tanzu/application-accelerator-samples
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: node-express
