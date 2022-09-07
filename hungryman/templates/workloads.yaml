@@ -69,7 +69,7 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(False, False, True)
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
     subPath: hungryman/hungryman-api-gateway
@@ -93,7 +93,7 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(True, True, True)
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
     subPath: hungryman/hungryman-search
@@ -116,7 +116,7 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(False, True, False)
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
     subPath: hungryman/hungryman-search-proc
@@ -140,7 +140,7 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(False, True, False)
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
     subPath: hungryman/hungryman-notify
@@ -164,7 +164,7 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(True, True, True)
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
     subPath: hungryman/hungryman-availability
@@ -187,7 +187,7 @@ spec:
       app.kubernetes.io/part-of: hungryman
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples/
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: #@ buildUIGitBranch()
     subPath: hungryman/hungryman-ui

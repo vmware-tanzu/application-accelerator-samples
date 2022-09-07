@@ -13,7 +13,7 @@ spec:
       autoscaling.knative.dev/minScale: "1"
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
     subPath: hungryman/hungryman-api-gateway
