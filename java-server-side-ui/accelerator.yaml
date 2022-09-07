@@ -41,7 +41,6 @@ accelerator:
       dataType: boolean
       defaultValue: true
   imports:
-    - name: java-version
     - name: app-sso-client
       expose:
         - name: workloadHost
@@ -53,6 +52,7 @@ accelerator:
             name: includeAppSsoIntegration
             value: true
     - name: spring-boot-app-sso-auth-code-flow
+    - name: java-version
 
 engine:
   let:
