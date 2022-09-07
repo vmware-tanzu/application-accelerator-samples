@@ -1,0 +1,13 @@
+{
+  "name": "node-express",
+  "version": "1.0.0",
+  "description": "accelerator-description",
+  "main": "server.js",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "license": "Apache License, Version 2.0",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
