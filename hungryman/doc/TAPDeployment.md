@@ -104,12 +104,12 @@ kubectl get workload -n workloads
 You should see a result similar to the following:
 
 ```
-hungryman                https://github.com/sample-accelerators/hungryman   source-to-url   True    Ready    58m
-hungryman-availability   https://github.com/sample-accelerators/hungryman   source-to-url   True    Ready    58m
-hungryman-notify         https://github.com/sample-accelerators/hungryman   source-to-url   True    Ready    58m
-hungryman-search         https://github.com/sample-accelerators/hungryman   source-to-url   True    Ready    58m
-hungryman-search-proc    https://github.com/sample-accelerators/hungryman   source-to-url   True    Ready    58m
-hungryman-ui             https://github.com/sample-accelerators/hungryman   source-to-url   True    Ready    58m
+hungryman                https://github.com/acme-samples/hungryman   source-to-url   True    Ready    58m
+hungryman-availability   https://github.com/acme-samples/hungryman   source-to-url   True    Ready    58m
+hungryman-notify         https://github.com/acme-samples/hungryman   source-to-url   True    Ready    58m
+hungryman-search         https://github.com/acme-samples/hungryman   source-to-url   True    Ready    58m
+hungryman-search-proc    https://github.com/acme-samples/hungryman   source-to-url   True    Ready    58m
+hungryman-ui             https://github.com/acme-samples/hungryman   source-to-url   True    Ready    58m
 ```
 
 ## Configuration Option Overview  
