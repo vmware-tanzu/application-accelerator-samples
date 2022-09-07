@@ -1,0 +1,108 @@
+accelerator:
+  options:
+    - name: packageName
+      inputType: text
+      defaultValue: "com.example.customerprofile"
+      label: Application root package
+      required: true
+
+engine:
+  merge:
+    - type: Include
+      patterns: [ "**/profile.html", "**/application-local.yml" ]
+
+    - include: [ "**/OidcUserController.java", "**/WebSecurityConfiguration.java", "**/TestWebSecurityConfiguration.java" ]
+      chain:
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.java.ChangePackage
+          options:
+            oldPackageName: "'com.vmware.tap.fragments.appssoauthcodeflow'"
+            newPackageName: "#packageName"
+
+    - include: [ "pom.xml" ]
+      chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<artifactId>thymeleaf-extras-springsecurity5</artifactId>[\\s\\S]+</dependencies>))"
+            with: |
+              '${startOfDependencies}
+                      <dependency>
+                          <groupId>org.thymeleaf.extras</groupId>
+                          <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+                      </dependency>${existingDependencies}'
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<artifactId>spring-boot-starter-thymeleaf</artifactId>[\\s\\S]+</dependencies>))"
+            with: |
+              '${startOfDependencies}
+                      <dependency>
+                          <groupId>org.springframework.boot</groupId>
+                          <artifactId>spring-boot-starter-thymeleaf</artifactId>
+                      </dependency>${existingDependencies}'
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<artifactId>spring-boot-starter-oauth2-client</artifactId>[\\s\\S]+</dependencies>))"
+            with: |
+              '${startOfDependencies}
+                      <!-- AppSSO/OIDC Integration -->
+                      <dependency>
+                          <groupId>org.springframework.boot</groupId>
+                          <artifactId>spring-boot-starter-oauth2-client</artifactId>
+                      </dependency>${existingDependencies}'
+
+    - include: [ "build.gradle.kts" ]
+      chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation(\"org.thymeleaf.extras:thymeleaf-extras-springsecurity5\")[\\s\\S]+))"
+            with: |
+              '${startOfDependencies}
+                  implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")${existingDependencies}'
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\(\"org.springframework.boot:spring-boot-starter-thymeleaf\"\\)[\\s\\S]+))"
+            with: |
+              '${startOfDependencies}
+                  implementation("org.springframework.boot:spring-boot-starter-thymeleaf")${existingDependencies}'
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation(\"org.springframework.boot:spring-boot-starter-oauth2-client\")[\\s\\S]+))"
+            with: |
+              '${startOfDependencies}
+                  // AppSSO/OIDC Integration
+                  implementation("org.springframework.boot:spring-boot-starter-oauth2-client")${existingDependencies}'
+    - include: [ "README.md" ]
+      chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+            with: |
+              '${existingContent}
+              
+              > **_NOTE:_** Below you can find additional information concerning AppSSO integration. 
+              
+              ## AppSSO Configuration
+              Apart from the default `application.yaml` an `application-local.yaml` is included which can be used for
+              local development. Before using it the AppSSO registered client credentials must be filled in. You can
+              find them using following commands:
+
+              ```bash
+              NS=<your-developer-namespace>
+              SECRET=<your-client-registration>
+              CLIENT_ID=\$(kubectl get secret \$SECRET -n \$NS -o jsonpath="{.data.client-id}" | base64 -d)
+              CLIENT_SECRET=\$(kubectl get secret \$SECRET -n \$NS -o jsonpath="{.data.client-secret}" | base64 -d)
+              ISSUER_URI=\$(kubectl get secret \$SECRET -n \$NS -o jsonpath="{.data.issuer-uri}" | base64 -d)
+
+              echo "CLIENT_ID: \$CLIENT_ID"
+              echo "CLIENT_SECRET: \$CLIENT_SECRET"
+              echo "ISSUER_URI: \$ISSUER_URI"
+              ```
+
+              In order to do a simple test if these credentials work:
+
+              ```bash
+              \$ curl -XPOST "\$ISSUER_URI/oauth2/token?grant_type=client_credentials&scope=openid" -u "\$CLIENT_ID:\$CLIENT_SECRET"
+              ```
+
+              > If you start the application locally please be sure that `local` profile is active.
+              '

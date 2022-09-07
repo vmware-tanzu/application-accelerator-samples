@@ -1,0 +1,42 @@
+accelerator:
+  displayName: TAP Initialize
+
+  options:
+    - name: liveUpdateIDESupport
+      inputType: checkbox
+      label: Include TAP IDE Support for Java Workloads
+      dataType: boolean
+      defaultValue: true
+
+    - name: sourceRepositoryPrefix
+      inputType: text
+      label: The source repository prefix to use when pushing the source
+      description: The prefix for the repository where source can be stored during development
+      defaultValue: dev.local
+      dependsOn:
+        name: liveUpdateIDESupport
+
+engine:
+  merge:
+    - condition: "#liveUpdateIDESupport"
+      include: ["Tiltfile"]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: my-project
+              with: "#artifactId"
+        - type: ReplaceText
+          substitutions:
+            - text: dev.local
+              with: "#sourceRepositoryPrefix"
+    - condition: "#liveUpdateIDESupport"
+      include: ["DEPLOYING.md"]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: my-project
+              with: "#artifactId"
+        - type: ReplaceText
+          substitutions:
+            - text: dev.local
+              with: "#sourceRepositoryPrefix"
