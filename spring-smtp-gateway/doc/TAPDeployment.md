@@ -2,12 +2,6 @@
 
 The SMTP server deployment options are enabled through a Tanzu application accelerator that will generate all necessary configuration for you.  
 
-To install the accelerator into your TAP cluster, run the following command:
-
-```
-tanzu acc create smtp-gateway --git-repo https://github.com/sample-accelerators/spring-smtp-gateway --git-branch tap-1-3
-```
-
 ## Prerequisites
 
 These instructions assume that you have a TAP 1.2.x or greater iterate cluster (or some variant similar to an iterate cluster) up and running with the following packages installed and [kubectl](https://kubernetes.io/docs/tasks/tools/) and the Tanzu CLI installed and configured to access your TAP cluster:
