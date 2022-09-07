@@ -11,6 +11,7 @@ metadata:
 spec:
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples/weatherforecast-steeltoe
+      url: https://github.com/vmware-tanzu/application-accelerator-samples
       ref:
         branch: main
+    subPath: weatherforecast-steeltoe
