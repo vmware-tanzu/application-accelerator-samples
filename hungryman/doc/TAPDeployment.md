@@ -255,7 +255,7 @@ The Hungryman source repo contains a full TAP catalog configuration that is loca
 Ex:
 
 ```
-https://github.com/sample-accelerators/hungryman/blob/tap-1-3/catalog/catalog-info.yaml
+https://github.com/vmware-tanzu/application-accelerator-samples/hungryman/blob/main/catalog/catalog-info.yaml
 ```
 
 **NOTE:** It is highly recommended that you create your own code repository first and then import the catalog from your repository.  You will most likely need update the URLs in the files below to properly import the catalog which contains component API configuration (API Docs). 
