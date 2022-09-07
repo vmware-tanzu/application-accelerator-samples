@@ -1,0 +1,34 @@
+accelerator:
+  options:
+    - name: workloadName
+      inputType: text
+      label: Workload name
+      required: true
+    - name: workloadHost
+      inputType: text
+      label: Workload host name. (A fully qualified domain name the app will be available on, e.g your-app.your-company.com)
+      required: true
+    - name: appSsoServerLabel
+      inputType: text
+      label: "AppSSO server label (e.g. 'name: authserver')"
+      required: true
+
+engine:
+  merge:
+    - include: [ "**/client-registration.yaml", "**/client-registration-claim.yaml" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "<my-workload>"
+              with: "#workloadName"
+            - text: "<my-workload-hostname>"
+              with: "#workloadHost"
+            - text: "<auth-server-selector>"
+              with: "#appSsoServerLabel"
+    - include: [ "**/workload.yaml" ]
+      chain:
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.yaml.MergeYaml
+          options:
+            key: "'$.spec'"
+            yaml: "'serviceClaims:\n  - name: ' + #workloadName + '\n    ref:\n      apiVersion: services.apps.tanzu.vmware.com/v1alpha1\n      kind: ResourceClaim\n      name: ' + #workloadName + '-client-registration-claim'"

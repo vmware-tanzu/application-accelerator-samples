@@ -1,0 +1,15 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          appsso:
+            client-id: <your-client-registration-id>
+            client-secret: <your-client-registration-secret>
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+        provider:
+          appsso:
+            issuer-uri: <your-appsso-url>

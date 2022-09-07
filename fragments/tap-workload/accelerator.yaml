@@ -1,0 +1,25 @@
+engine:
+  condition: "#bsGitRepository != null"
+  merge:
+    - includes: [ "**/workload.yaml" ]
+      onConflict: NWayDiff
+      merge:
+        - type: ReplaceText # No-Op. In combination with NWayDiff, allows keeping the workload.yaml
+          # file untouched if the $.spec.source.git.url is NOT present (OpenRewrite emits nothing otherwise)
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.yaml.ChangeValue
+          options:
+            oldKeyPath: '"$.spec.source.git.url"'
+            value: "#repoUrl.scheme + '://' + #repoUrl.host + '/' + #repoUrl.queryParams['owner'][0] + '/' + #repoUrl.queryParams['repo'][0]"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.yaml.ChangeValue
+          options:
+            oldKeyPath: '"$.spec.source.git.ref.branch"'
+            value: "#bsGitBranch"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.yaml.DeleteProperty
+          options:
+            propertyKey: '"$.spec.source.git.subPath"' # subPath is not supported atm
+      let:
+        - name: repoUrl
+          expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString(#bsGitRepository).build(true)"

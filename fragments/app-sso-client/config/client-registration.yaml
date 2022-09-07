@@ -1,0 +1,17 @@
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: ClientRegistration
+metadata:
+  name: <my-workload>-client-registration
+spec:
+  authServerSelector:
+    matchLabels:
+      <auth-server-selector>
+  authorizationGrantTypes:
+    - authorization_code
+    - refresh_token
+  clientAuthenticationMethod: basic
+  requireUserConsent: false
+  redirectURIs:
+    - "http://<my-workload-hostname>/login/oauth2/code/<my-workload>"
+  scopes:
+    - name: openid
