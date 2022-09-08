@@ -53,6 +53,13 @@ accelerator:
             value: true
     - name: spring-boot-app-sso-auth-code-flow
     - name: java-version
+    - name: live-update
+      expose:
+        - name: liveUpdateIDESupport
+          dependsOn:
+            name: buildTool
+            value: 'maven'
+        - name: sourceRepositoryPrefix
     - name: tap-workload
 
 engine:
@@ -140,6 +147,13 @@ engine:
       merge:
         - type: InvokeFragment
           reference: spring-boot-app-sso-auth-code-flow
+        - include: [ "**" ]
+      onConflict: UseFirst
+
+    - condition: "#buildTool == 'maven'"
+      merge:
+        - type: InvokeFragment
+          reference: live-update
         - include: [ "**" ]
       onConflict: UseFirst
 
