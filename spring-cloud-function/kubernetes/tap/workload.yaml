@@ -6,6 +6,10 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: hello-fun
 spec:
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "11"
   source:
     git:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
