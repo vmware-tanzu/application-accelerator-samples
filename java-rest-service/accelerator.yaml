@@ -76,8 +76,15 @@ accelerator:
       dependsOn:
         name: exposeOpenAPIEndpoint
   imports:
-    - name: java-version
-    - name: tap-workload
+  - name: java-version
+  - name: live-update
+    expose:
+      - name: liveUpdateIDESupport
+        dependsOn:
+          name: buildTool
+          value: 'maven'
+      - name: sourceRepositoryPrefix
+  - name: tap-workload
 
 engine:
   let:
@@ -233,6 +240,13 @@ engine:
       - type: InvokeFragment
         reference: java-version
       - include: [ "**" ]
+      onConflict: UseFirst
+
+    - condition: "#buildTool == 'maven'"
+      merge:
+        - type: InvokeFragment
+          reference: live-update
+        - include: [ "**" ]
       onConflict: UseFirst
 
     - merge:
