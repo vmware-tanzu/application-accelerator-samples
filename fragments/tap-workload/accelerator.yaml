@@ -5,7 +5,7 @@ engine:
       - includes: [ "**/workload.yaml" ]
         let:
           - name: repoUrl
-            expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString(#bsGitRepository).build(true)"
+            expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString('https://' + #bsGitRepository).build(true)"
         chain:
           - type: OpenRewriteRecipe
             recipe: org.openrewrite.yaml.ChangeValue
