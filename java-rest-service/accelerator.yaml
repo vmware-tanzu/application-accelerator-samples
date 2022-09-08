@@ -76,7 +76,8 @@ accelerator:
       dependsOn:
         name: exposeOpenAPIEndpoint
   imports:
-  - name: java-version
+    - name: java-version
+    - name: tap-workload
 
 engine:
   let:
@@ -232,6 +233,12 @@ engine:
       - type: InvokeFragment
         reference: java-version
       - include: [ "**" ]
+      onConflict: UseFirst
+
+    - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
       onConflict: UseFirst
 
     - merge:
