@@ -46,7 +46,7 @@
 
 #@ def buildUIGitBranch():
 #@ if data.values.enableSecurity == True:
-#@ return "secure-ui"
+#@ return "main"
 #@ end
 #@ return "main"
 #@ end
