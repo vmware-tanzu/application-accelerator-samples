@@ -53,6 +53,7 @@ accelerator:
             value: true
     - name: spring-boot-app-sso-auth-code-flow
     - name: java-version
+    - name: tap-workload
 
 engine:
   let:
@@ -139,6 +140,12 @@ engine:
       merge:
         - type: InvokeFragment
           reference: spring-boot-app-sso-auth-code-flow
+        - include: [ "**" ]
+      onConflict: UseFirst
+
+    - merge:
+        - type: InvokeFragment
+          reference: tap-workload
         - include: [ "**" ]
       onConflict: UseFirst
 

@@ -32,12 +32,19 @@ engine:
       substitutions:
       - text: your-registry.io/project
         with: "#repositoryPrefix"
+
   - include: [ "config/*.yaml" ]
     chain:
     - type: ReplaceText
       substitutions:
       - text: ": tanzu-java-web-app"
         with: "': ' + #artifactId.toLowerCase()"
+    - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
+      onConflict: UseFirst
+
   - include: [ "README.md" ]
     chain:
     - type: ReplaceText
@@ -52,7 +59,3 @@ engine:
         with: "#artifactId"
     - type: RewritePath
       rewriteTo: "#filename"
-  - include: [ "config/workload.yaml"]
-    chain:
-    - type: InvokeFragment
-      reference: tap-workload
