@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: hungryman-availability
   annotations:
-    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=hungryman"
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=hungryman-availability"
 spec:
   type: service
   lifecycle: experimental
