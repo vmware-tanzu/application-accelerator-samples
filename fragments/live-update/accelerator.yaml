@@ -10,8 +10,8 @@ accelerator:
 
     - name: sourceRepositoryPrefix
       inputType: text
-      label: The source repository prefix to use when pushing the source
-      description: The prefix for the repository where source can be stored during development
+      label: The source image repository prefix to use when pushing the source
+      description: The prefix for the source image repository where source can be stored during development
       defaultValue: dev.local
       dependsOn:
         name: liveUpdateIDESupport
