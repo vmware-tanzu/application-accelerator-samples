@@ -33,28 +33,9 @@ accelerator:
     inputType: checkbox
     dataType: boolean
     defaultValue: true
-    
-  - name: gitUrl
-    label: Git Repository URL
-    display: true
-    description: Change this to the Git repository you will use to store this accelerator's files
-    inputType: text
-    dependsOn:
-      name: includeTap
-    dataType: string
-    required: true
-    defaultValue: "https://github.com/vmware-tanzu/application-accelerator-samples.git"
-    
-  - name: gitBranch
-    label: Git Repository Branch
-    display: true
-    description: The corresponding branch of the Git repository
-    inputType: text
-    dependsOn:
-      name: includeTap
-    dataType: string
-    required: true
-    defaultValue: "main"
+
+  imports:
+    - name: tap-workload
 
 engine:
   merge:
@@ -97,12 +78,13 @@ engine:
           substitutions:
             - text: python-function
               with: "#artifactId"
-            - text: https://github.com/vmware-tanzu/application-accelerator-samples.git
-              with: "#gitUrl"
-            - text: main
-              with: "#gitBranch"
         - type: RewritePath
           rewriteTo: "'config/' + #filename"
+        - merge:
+            - type: InvokeFragment
+              reference: tap-workload
+            - include: [ "**" ]
+          onConflict: UseFirst
     - include: [ "catalog/catalog-info.yaml" ]
       condition: "#includeTap"
       chain:

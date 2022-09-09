@@ -13,7 +13,10 @@ accelerator:
 
   imports:
     - name: tap-initialize
+      expose:
+        - name: "includeHasTests"
     - name: live-update
+    - name: tap-workload
 
 engine:
   merge:
@@ -25,11 +28,21 @@ engine:
           substitutions:
             - text: my-project
               with: "#targetProject"
-    - type: InvokeFragment
-      let:
-      - name: artifactId
-        expression: "#targetProject"
-      reference: tap-initialize
+
+    - chain:
+      - type: InvokeFragment
+        let:
+        - name: artifactId
+          expression: "#targetProject"
+        - name: gitRepository
+          expression: "'https://git.example.com/my-repo'"
+        reference: tap-initialize
+      - merge:
+          - type: InvokeFragment
+            reference: tap-workload
+          - include: [ "**" ]
+        onConflict: UseFirst
+
     - type: InvokeFragment
       let:
       - name: artifactId

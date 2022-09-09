@@ -17,6 +17,9 @@ accelerator:
     defaultValue: Sample
     required: true
 
+  imports:
+    - name: tap-workload
+
 engine:
   merge:
   - include: [ "**" ]
@@ -38,3 +41,8 @@ engine:
         with: "#artifactId.toLowerCase()"
       - text: Sample
         with: "#applicationName"
+    - merge:
+      - type: InvokeFragment
+        reference: tap-workload
+      - include: [ "**" ]
+      onConflict: UseFirst

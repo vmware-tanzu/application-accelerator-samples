@@ -15,6 +15,9 @@ accelerator:
     dataType: boolean
     defaultValue: true
 
+  imports:
+    - name: tap-workload
+
 engine:
   merge:
     - include: [ "**" ]
@@ -32,6 +35,11 @@ engine:
         substitutions:
         - text: node-express
           with: "#artifactId"
+      - merge:
+          - type: InvokeFragment
+            reference: tap-workload
+          - include: [ "**" ]
+        onConflict: UseFirst
     - include: [ "catalog/catalog-info.yaml" ]
       condition: "#includeTap"
       chain:

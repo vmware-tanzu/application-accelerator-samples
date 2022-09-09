@@ -33,6 +33,7 @@ accelerator:
       value: workload
   imports:
   - name: java-version
+  - name: tap-workload
 
 engine:
   chain:
@@ -72,6 +73,11 @@ engine:
           with: "': ' + #artifactId"
       - type: RewritePath
         rewriteTo: "'config/' + #filename"
+      - merge:
+          - type: InvokeFragment
+            reference: tap-workload
+          - include: [ "**" ]
+        onConflict: UseFirst
     - include: [ "kubernetes/tap/Tiltfile" ]
       condition: "#deploymentType == 'workload'"
       chain:
