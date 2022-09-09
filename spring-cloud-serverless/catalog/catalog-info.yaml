@@ -8,7 +8,6 @@ metadata:
     - java
     - spring
     - cloud
-    - function
     - serverless
     - tanzu
   annotations:

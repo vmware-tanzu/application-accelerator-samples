@@ -15,4 +15,4 @@ spec:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: spring-cloud-function
+    subPath: spring-cloud-serverless

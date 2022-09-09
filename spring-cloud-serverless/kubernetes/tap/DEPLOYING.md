@@ -29,7 +29,7 @@ These are the basic steps to use live update:
 
 If you make modifications to the source and push to your own Git repository, then you can update the `spec.source.git` information in the `config/workload.yaml` file.
 
-When you are done developing your function app, you can simply deploy it using:
+When you are done developing your serverless app, you can simply deploy it using:
 
 ```
 tanzu apps workload apply -f config/workload.yaml
@@ -60,7 +60,7 @@ You can assign the URL to a variable to make it easier to reference it:
 URL=$(kubectl get services.serving.knative.dev/hello-fun -o=jsonpath='{.status.url}')
  ```
 
-To invoke the deployed function run the following `curl` command in another terminal window:
+To invoke the deployed app run the following `curl` command in another terminal window:
 
 ```
 curl ${URL} -w'\n' -H 'Content-Type: text/plain' -d Fun
