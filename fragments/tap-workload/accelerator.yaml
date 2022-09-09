@@ -12,15 +12,14 @@ engine:
             options:
               oldKeyPath: '"$.spec.source.git.url"'
               value: "#repoUrl.scheme + '://' + #repoUrl.host + '/' + #repoUrl.queryParams['owner'][0] + '/' + #repoUrl.queryParams['repo'][0]"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.yaml.ChangeValue
-            options:
-              oldKeyPath: '"$.spec.source.git.ref.branch"'
-              value: "#bsGitBranch"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.yaml.DeleteKey
-            options:
-              keyPath: "'$.spec.source.subPath'" # subPath is not supported atm
+          - type: ReplaceText
+            regex:
+              pattern: "(?<beforeBranch>[\\s\\S]+)(?<branch>branch: [\\S]+)(?<rest>[\\S\\s]*)"
+              with: "'${beforeBranch}branch: ' + #bsGitBranch + '${rest}'"
+          - type: ReplaceText
+            regex:
+              pattern: "(?<beforeSubPath>[\\s\\S]+)(?<subPath>subPath: [\\S]+)(?<rest>[\\S\\s]*)"
+              with: "'${beforeSubPath}${rest}'"
 
     - condition: "#bsGitRepository == null"
       type: Exclude
