@@ -13,6 +13,10 @@ accelerator:
     inputType: text
     defaultValue: Sample
     required: true
+
+  imports:
+    - name: tap-workload
+
 engine:
   merge:
   - include: [ "**" ]
@@ -32,3 +36,8 @@ engine:
       substitutions:
       - text: sample-app
         with: "#artifactId.toLowerCase()"
+    - merge:
+      - type: InvokeFragment
+        reference: tap-workload
+      - include: [ "**" ]
+      onConflict: UseFirst

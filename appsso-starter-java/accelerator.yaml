@@ -8,3 +8,12 @@ accelerator:
     - openid
     - spring
     - java
+  imports:
+    - name: tap-workload
+
+engine:
+  merge:
+  - type: InvokeFragment
+    reference: tap-workload
+  - include: [ "**" ]
+  onConflict: UseFirst
