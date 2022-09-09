@@ -12,7 +12,7 @@
 	<artifactId>hello-fun</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>hello-fun</name>
-	<description>Demo of a Spring Cloud Function</description>
+	<description>Demo of a Spring Cloud Function serverless app</description>
 
 	<properties>
 		<java.version>11</java.version>

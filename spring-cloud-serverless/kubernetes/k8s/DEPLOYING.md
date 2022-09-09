@@ -40,7 +40,7 @@ tilt down
 
 If you don't have `curl` installed it can be installed using downloads here: https://curl.se/download.html
 
-To invoke the deployed function run the following `curl` command in another terminal window:
+To invoke the deployed app run the following `curl` command in another terminal window:
 
 ```
 curl localhost:8080 -w'\n' -H 'Content-Type: text/plain' -d Fun
