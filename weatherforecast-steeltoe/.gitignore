@@ -3,6 +3,12 @@ bin/
 obj/
 publish/
 
+# local tools
+tools/
+
+# user-specific state
+*.sln.DotSettings.user
+
 # Visual Studio
 /.vs/
 
