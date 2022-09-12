@@ -19,6 +19,22 @@ engine:
             oldPackageName: "'com.vmware.tap.fragments.appssoauthcodeflow'"
             newPackageName: "#packageName"
 
+    - include: [ "**/index.html" ]
+      chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<existingContent>[\\S\\s]*)(?<closingTag></body>[\\S\\s]*)"
+            with: |
+              '${existingContent}<!-- Link to trigger AppSSO Auth Code Flow -->
+              <section class="mt-3"> 
+                <form th:action="@{/protected/profile}">
+                  <button value="submit" class="btn btn-primary w-25 h-50 align-items-center">
+                    Log in using AppSSO
+                  </button>
+                </form>
+              </section>
+              ${closingTag}'
+
     - include: [ "pom.xml" ]
       chain:
         - type: ReplaceText
