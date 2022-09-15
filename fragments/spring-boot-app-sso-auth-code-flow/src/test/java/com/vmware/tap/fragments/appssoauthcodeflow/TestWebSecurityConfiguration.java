@@ -14,20 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class TestWebSecurityConfiguration {
 
     @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests
-                                // Permit all during tests
-                                .anyRequest().permitAll()
-                );
-        return http.build();
-    }
-
-    @Bean
     ClientRegistrationRepository mockClientRestrationRepository() {
-        System.err.println("Mock is loaded!");
         return mock(ClientRegistrationRepository.class);
     }
 }

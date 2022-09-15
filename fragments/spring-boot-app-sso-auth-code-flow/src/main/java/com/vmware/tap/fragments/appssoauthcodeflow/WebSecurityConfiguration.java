@@ -20,8 +20,7 @@ public class WebSecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests
+                .authorizeRequests(authorize -> authorize
                                 // Permit all public paths explicitly
                                 .antMatchers("/",
                                         "/livez",
@@ -34,8 +33,9 @@ public class WebSecurityConfiguration {
                                 .anyRequest().authenticated()
                 )
                 // After a successful logout, redirect to /.
-                .logout().logoutSuccessHandler(oidcLogoutSuccessHandler()).logoutSuccessUrl("/")
-                .and()
+                .logout(logout ->
+                        logout.logoutSuccessHandler(oidcLogoutSuccessHandler())
+                              .logoutSuccessUrl("/"))
                 .oauth2Login(withDefaults())
                 .oauth2Client(withDefaults());
         return http.build();
