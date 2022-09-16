@@ -11,7 +11,7 @@ engine:
     - type: Include
       patterns: [ "**/profile.html", "**/application-local.yml" ]
 
-    - include: [ "**/OidcUserController.java", "**/WebSecurityConfiguration.java", "**/TestWebSecurityConfiguration.java" ]
+    - include: [ "**/OidcUserController.java", "**/OidcUserControllerTest.java", "**/WebSecurityConfiguration.java", "**/TestWebSecurityConfiguration.java" ]
       chain:
         - type: OpenRewriteRecipe
           recipe: org.openrewrite.java.ChangePackage
@@ -65,6 +65,17 @@ engine:
                           <groupId>org.springframework.boot</groupId>
                           <artifactId>spring-boot-starter-oauth2-client</artifactId>
                       </dependency>${existingDependencies}'
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<artifactId>spring-security-test</artifactId>[\\s\\S]+</dependencies>))"
+            with: |
+              '${startOfDependencies}
+                      <!-- Spring Security Test -->
+                      <dependency>
+                          <groupId>org.springframework.security</groupId>
+                          <artifactId>spring-security-test</artifactId>
+                          <scope>test</scope>
+                      </dependency>${existingDependencies}'
 
     - include: [ "build.gradle.kts" ]
       chain:
@@ -87,6 +98,13 @@ engine:
               '${startOfDependencies}
                   // AppSSO/OIDC Integration
                   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")${existingDependencies}'
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation(\"org.springframework.security:spring-security-test\")[\\s\\S]+))"
+            with: |
+              '${startOfDependencies}
+                  // AppSSO/OIDC Integration
+                  testImplementation("org.springframework.security:spring-security-test")${existingDependencies}'
     - include: [ "README.md" ]
       chain:
         - type: ReplaceText

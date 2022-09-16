@@ -11,7 +11,8 @@ public class OidcUserController {
 
     @GetMapping("/protected/profile")
     public String user(Model model, @AuthenticationPrincipal OidcUser authenticatedUser) {
-        model.addAttribute("username", authenticatedUser.getClaims().get("sub"));
+        // getName() will be set to the 'sub' claim of the JWT
+        model.addAttribute("username", authenticatedUser.getName());
         return "protected/profile.html";
     }
 }
