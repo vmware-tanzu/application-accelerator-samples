@@ -1,0 +1,23 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  labels:
+    app.kubernetes.io/part-of: appsso-starter-java
+    apps.tanzu.vmware.com/workload-type: web
+  name: appsso-starter-java
+spec:
+  params:
+    - name: live-update
+      value: "true"
+  serviceClaims:
+    - name: appsso-starter-java
+      ref:
+        apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+        kind: ResourceClaim
+        name: appsso-starter-java
+  source:
+    git:
+      ref:
+        branch: main
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: appsso-starter-java

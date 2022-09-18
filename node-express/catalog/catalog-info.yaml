@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: node-express
+  description: Node Express Sample App
+  tags:
+    - app-accelerator
+    - node
+    - express
+    - tanzu
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=node-express'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team

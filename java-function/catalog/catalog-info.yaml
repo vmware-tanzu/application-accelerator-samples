@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: java-function
+  description: Java function powered by Function Buildpacks for Knative
+  tags:
+    - app-accelerator
+    - functions
+    - buildpacks
+    - knative
+    - tanzu
+    - java
+    - spring
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=java-function'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team

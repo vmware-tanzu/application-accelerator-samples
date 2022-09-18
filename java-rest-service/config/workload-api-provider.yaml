@@ -26,6 +26,7 @@ spec:
         description: DESCRIPTION_VAL
   source:
     git:
-      url: https://github.com/sample-accelerators/rest-service-db.git
       ref:
         branch: main
+      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: java-rest-service

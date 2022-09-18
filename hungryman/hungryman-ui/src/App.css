@@ -1,0 +1,282 @@
+.App {
+	margin:10px;
+	padding:0;
+	height:100%;
+  width: 800px;
+  max-width: 800px;
+  margin: auto;
+
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bannerHeader {
+  background-color:#5891be;
+  color:white;
+  padding:10px;  
+  margin-bottom: 10px;
+}
+
+.bannerCenter
+{
+	text-align:center;
+  margin:0 auto !important; 
+}
+
+.bannerLabel
+{
+  font-size: 2.5em;	
+  margin-left: 10px;    
+}
+
+.welcomeContent
+{
+  background: white;
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  position: relative;
+  color: #666666;
+  border-radius: 10px;
+  margin: 0 auto; 
+  padding-bottom: 20px;
+}
+
+#submissionForm label 
+{
+	font-weight: bold;	
+    padding-left:26px;
+    width:170px;
+    display:inline-block;
+    margin-top: 10px;
+}
+
+#submissionForm input 
+{
+    width:270px;
+}
+
+#submissionForm body {
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  padding-top: 20px;    
+}
+
+#submissionForm .submissionContainer {
+  width: 510px;
+  max-width: 510px;
+  margin: auto;
+
+}
+
+#submissionForm form header {
+  background: #3399cc;
+  padding: 10px 10px;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0;
+
+}
+
+#submissionForm #inputForm {
+
+  box-shadow: 
+      0px 0px 0px 5px rgba( 255,255,255,0.4 ), 
+      0px 4px 20px rgba( 0,0,0,0.33 );
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  display: table;
+  position: static;
+}
+
+#login  button
+{
+    width: 20%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none;
+        background: -moz-linear-gradient(
+        top,
+        #b9c5dd 0%,
+        #a4b0cb);
+    background: #3399cc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #737b8d;
+    -moz-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    -webkit-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    text-shadow:
+        0px 1px 3px rgba(000,000,000,0.3),
+        0px 0px 0px rgba(255,255,255,0);
+    display: table;
+    position: static;
+    clear: both;
+}
+
+#logout  button
+{
+    width: 22%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none;
+        background: -moz-linear-gradient(
+        top,
+        #b9c5dd 0%,
+        #a4b0cb);
+    background: #3399cc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #737b8d;
+    -moz-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    -webkit-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    text-shadow:
+        0px 1px 3px rgba(000,000,000,0.3),
+        0px 0px 0px rgba(255,255,255,0);
+    display: table;
+    position: static;
+    clear: both;
+}
+
+#submissionForm #submitSearch  button
+{
+    width: 30%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none;
+        background: -moz-linear-gradient(
+        top,
+        #b9c5dd 0%,
+        #a4b0cb);
+    background: #3399cc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #737b8d;
+    -moz-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    -webkit-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    text-shadow:
+        0px 1px 3px rgba(000,000,000,0.3),
+        0px 0px 0px rgba(255,255,255,0);
+    display: table;
+    position: static;
+    clear: both;
+}
+
+#diningSearches #searchesHeader {
+  margin-left: auto;
+  margin-right: auto;
+  width: 8em;
+  font-weight: bold;	
+}
+
+.availability .diningLabel
+{
+  font-style: italic;
+  font-weight: bold;	
+  padding-left:26px;
+  display:inline-block;
+}
+
+.availability .generalLabel
+{
+  font-weight: bold;	
+  padding-left:26px;
+  display:inline-block;
+}
+
+.availability .noTimeWindows
+{
+  color: red;
+  font-weight: bold;	
+  padding-left:26px;
+  display:inline-block;
+}
+
+.availability .timeWindowHeader
+{
+  color: rgb(1, 50, 32);
+  font-weight: bold;	
+  padding-left:26px;
+  display:inline-block;
+}
+
+.availability .timeWindow
+{
+  font-weight: bold;	
+  padding-left:52px;
+  display:inline-block;
+}
+

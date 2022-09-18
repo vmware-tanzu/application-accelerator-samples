@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: python-function
+  description: Functions Buildpacks for Knative Accelerator Template
+  tags:
+    - app-accelerator
+    - functions
+    - buildpacks
+    - knative
+    - tanzu
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=python-function'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team

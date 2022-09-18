@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: hungryman-team
+  description: The hungryman app team
+spec:
+  type: team
+  profile:
+    displayName: Hungryman dev team
+    email: hungryman@example.com
+  children: []
+    

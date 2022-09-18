@@ -1,0 +1,19 @@
+# build output
+bin/
+obj/
+publish/
+
+# local tools
+tools/
+
+# user-specific state
+*.sln.DotSettings.user
+
+# Visual Studio
+/.vs/
+
+# Visual Studio Code
+/.vscode/
+
+# JetBrains Rider
+/.idea/

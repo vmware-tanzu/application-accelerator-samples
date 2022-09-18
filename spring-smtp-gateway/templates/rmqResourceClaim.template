@@ -1,0 +1,59 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: resource-claims-rmq
+  labels:
+    resourceclaims.services.apps.tanzu.vmware.com/controller: "true"
+rules:
+- apiGroups: ["rabbitmq.com"]
+  resources: ["rabbitmqclusters"]
+  verbs: ["get", "list", "watch", "update"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: rabbitmqcluster-app-operator-reader
+  labels:
+    apps.tanzu.vmware.com/aggregate-to-app-operator-cluster-access: "true"
+rules:
+- apiGroups: ["rabbitmq.com"]
+  resources: ["rabbitmqclusters"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: rabbitmq
+spec:
+  description:
+    short: RabbitMQ Clusters
+  pool:
+    group: rabbitmq.com
+    kind: RabbitmqCluster
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ResourceClaimPolicy
+metadata:
+  name: rabbitmqcluster-cross-namespace
+  namespace: rmq_service_namespace
+spec:
+  consumingNamespaces:
+  - '*'
+  subject:
+    group: rabbitmq.com
+    kind: RabbitmqCluster
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ResourceClaim
+metadata:
+  name: rmq_instance_name
+  namespace: rmq_workloads_namespace
+spec:
+  ref:
+    apiVersion: rabbitmq.com/v1beta1
+    kind: RabbitmqCluster
+    name: rmq_instance_name
+    namespace: rmq_service_namespace
