@@ -13,5 +13,6 @@ spec:
   requireUserConsent: false
   redirectURIs:
     - "http://<my-workload-hostname>/login/oauth2/code/<my-workload>"
+    - "https://<my-workload-hostname>/login/oauth2/code/<my-workload>"
   scopes:
     - name: openid
