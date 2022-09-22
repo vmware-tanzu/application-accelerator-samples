@@ -14,8 +14,8 @@ It changes your `workload.yaml` to reference the Client Registration Claim: this
 This fragment requires the following parameters:
 - `workloadName`
   this is the reference to the Tanzu Application Platform Workload
-- `workloadHost`
-  As AppSSO needs to know upfront which redirect-url are valid, this hostname is used for generating a valid redirection url in `client-registration.yaml`
+- `workloadURL`
+  As AppSSO needs to know upfront which redirect-url are valid, this URL is used for generating a valid redirection URL in `client-registration.yaml`
 - `appSsoServerLabel` which defines root package of an application to be generated. If your accelerator doesn't have this option you can include it by importing this fragment in your `accelerator.yaml`
   The ClientRegistration will be registered at one of the AppSSO instances at your environment. Please specify the metadata label to uniquely identify one. Refer to the deployed AuthServers in your cluster.
 
