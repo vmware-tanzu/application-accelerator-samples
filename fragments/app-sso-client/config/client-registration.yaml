@@ -12,6 +12,6 @@ spec:
   clientAuthenticationMethod: basic
   requireUserConsent: false
   redirectURIs:
-    - "http://<my-workload-hostname>/login/oauth2/code/<my-workload>"
+    - "<my-workload-url>/login/oauth2/code/<my-workload>"
   scopes:
     - name: openid
