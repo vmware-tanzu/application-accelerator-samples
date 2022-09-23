@@ -6,7 +6,7 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>hungryman-parent</name>
-    <description>Hungrym dining search application.</description>    
+    <description>Hungrym dining search application.</description>
     <modules>
         <module>./hungryman-api-gateway</module>    
         <module>./hungryman-search</module>
