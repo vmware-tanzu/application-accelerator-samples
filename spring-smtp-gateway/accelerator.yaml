@@ -69,7 +69,7 @@ accelerator:
 engine:
   merge:
   - exclude: 
-      ["**/templates/**", "**/icons/**", "**/.git/**"]
+      ["**/templates/**", "**/icons/**", "**/.git/**", "**/catalog/catalog.yaml"]
   - include: ["**/config/workload.yaml", "**/templates/workloads.template"]
     chain:
     - type: ReplaceText
@@ -81,10 +81,26 @@ engine:
         - text: "1026"
           with: "#containerPort"     
         - text: "25"
-          with: "#servicePort"    
+          with: "#servicePort"
+        - text: "name: smtp-gateway"
+          with: "'name: ' + #artifactId.toLowerCase() + '-smtp-gateway'"
+        - text: "name: smtp-sink"
+          with: "'name: ' + #artifactId.toLowerCase() + '-smtp-sink'"
+        - text: "app.kubernetes.io/part-of: spring-smtp-gateway"
+          with: "'app.kubernetes.io/part-of: ' + #artifactId.toLowerCase()"
     - type: RewritePath
       regex: 'templates/workloads.template'
-      rewriteTo: "'config/developer/workloads.yaml'"                
+      rewriteTo: "'config/developer/workloads.yaml'"
+  - include: [ "**/catalog/catalog.yaml" ]
+    chain:
+      - type: ReplaceText
+        substitutions:
+          - text: "name: smtp-gateway"
+            with: "'name: ' + #artifactId.toLowerCase() + '-smtp-gateway'"
+          - text: "name: smtp-sink"
+            with: "'name: ' + #artifactId.toLowerCase() + '-smtp-sink'"
+          - text: "app.kubernetes.io/part-of=spring-smtp-gateway"
+            with: "'app.kubernetes.io/part-of=' + #artifactId.toLowerCase()"
   - condition:
       "#createRabbitMQCluster"
     include: ["**/rmqCluster.template"]

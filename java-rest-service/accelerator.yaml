@@ -229,14 +229,6 @@ engine:
             substitutions:
               - text: "rest-service-db"
                 with: "#workloadResourceName"
-#          - type: ReplaceText
-#            substitutions:
-#              - text: "customer-profile-database"
-#                with: "#databaseResourceName"
-#          - type: ReplaceText
-#            substitutions:
-#              - text: "customerprofiledatabase"
-#                with: "#databaseName"
     - merge:
       - type: InvokeFragment
         reference: java-version
