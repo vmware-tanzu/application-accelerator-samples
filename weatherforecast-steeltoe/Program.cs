@@ -1,7 +1,5 @@
 using Microsoft.Extensions.FileProviders;
-using Microsoft.OpenApi.Models;
 using Steeltoe.Management.Endpoint;
-using Steeltoe.Management.Tracing;
 
 var builder = WebApplication.CreateBuilder(args);
 

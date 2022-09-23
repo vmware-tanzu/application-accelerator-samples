@@ -16,9 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Steeltoe.Extensions.Logging.DynamicLogger" Version="$(SteeltoeVersion)" />
     <PackageReference Include="Steeltoe.Management.EndpointCore" Version="$(SteeltoeVersion)" />
-    <PackageReference Include="Steeltoe.Management.TracingCore" Version="$(SteeltoeVersion)" />
   </ItemGroup>
 
   <ItemGroup>
