@@ -27,11 +27,6 @@ accelerator:
       defaultValue: "com.example.customerprofile"
       label: Module root package
       required: true
-#    - name: databaseName
-#      inputType: text
-#      defaultValue: "customer-profile-database"
-#      label: Database Instance Name this Application will use (can be existing one in the cluster)
-#      required: true
     - name: buildTool
       inputType: select
       required: true
@@ -57,22 +52,22 @@ accelerator:
     - name: apiSystem
       label: System API Belongs To
       inputType: text
-      required: false
-      defaultValue: ''
+      required: true
+      defaultValue: "Profile Management"
       dependsOn:
         name: exposeOpenAPIEndpoint
     - name: apiOwner
       label: Owner of API
       inputType: text
-      required: false
-      defaultValue: ''
+      required: true
+      defaultValue: "Customer Relations Department"
       dependsOn:
         name: exposeOpenAPIEndpoint
     - name: apiDescription
       label: API Description
       inputType: text
-      required: false
-      defaultValue: ''
+      required: true
+      defaultValue: "Manage customer profiles"
       dependsOn:
         name: exposeOpenAPIEndpoint
   imports:
@@ -201,6 +196,7 @@ engine:
                 propertyKey: "'spring.flyway.*'"
     # end of the Liquibase specific part
 
+    # OpenAPI Endpoint Auto-registration
     - merge:
       - include: [ "**" ]
         exclude: [ "config/postgres.yaml", "config/workload-basic.yaml", "config/workload-api-provider.yaml", "config/test-pipeline.yaml" ]
@@ -223,12 +219,19 @@ engine:
         chain:
           - type: RewritePath
             rewriteTo: "'config/workload.yaml'"
+    # End OpenAPI Endpoint Auto-registration
+
+    # Workload Resource name
+    - merge:
+      - exclude: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
       - include: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
               - text: "rest-service-db"
                 with: "#workloadResourceName"
+    # End Workload Resource name
+
     - merge:
       - type: InvokeFragment
         reference: java-version
