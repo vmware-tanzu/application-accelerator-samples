@@ -12,8 +12,26 @@ accelerator:
     - name: tap-workload
 
 engine:
-  merge:
-  - type: InvokeFragment
-    reference: tap-workload
-  - include: [ "**" ]
-  onConflict: UseFirst
+  chain:
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "catalog/*.yaml", "config/workload.yaml" ]
+      - include: [ "catalog/*.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "appsso-starter-java"
+                with: "#artifactId.toLowerCase()"
+      - include: [ "config/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "\n  name: appsso-starter-java"
+                with: "'\n  name: ' + #artifactId.toLowerCase()"
+              - text: "app.kubernetes.io/part-of: appsso-starter-java"
+                with: "'app.kubernetes.io/part-of: ' + #artifactId.toLowerCase()"
+    - merge:
+      - type: InvokeFragment
+        reference: tap-workload
+      - include: [ "**" ]
+      onConflict: UseFirst

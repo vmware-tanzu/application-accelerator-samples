@@ -5,7 +5,6 @@ metadata:
   description: Spring Boot application that supports single sign-on (SSO) via Spring Security OAuth 2 Client library.
   tags:
     - sso
-    - app-accelerator
     - authentication
     - openid
     - spring
