@@ -43,7 +43,7 @@ accelerator:
   imports:
     - name: app-sso-client
       expose:
-        - name: workloadHost
+        - name: workloadURL
           dependsOn:
             name: includeAppSsoIntegration
             value: true

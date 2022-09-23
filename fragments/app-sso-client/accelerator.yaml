@@ -4,13 +4,15 @@ accelerator:
       inputType: text
       label: Workload name
       required: true
-    - name: workloadHost
+    - name: workloadURL
       inputType: text
-      label: Workload host name. (A fully qualified domain name the app will be available on, e.g your-app.your-company.com)
+      label: Workload URL
+      description: "A fully qualified URL the app will be available on including a protocol (e.g 'https://{application-artifact-name}.{namespace}.{tapclusterdomain}')"
       required: true
     - name: appSsoServerLabel
       inputType: text
-      label: "AppSSO server label (e.g. 'name: authserver')"
+      label: AppSSO server label
+      description: "Enter the key: value pair that is the identifying label on Authserver in the form of  'identifier: authserver-identifier' (e.g. 'name: authserver')"
       required: true
 
 engine:
@@ -21,8 +23,8 @@ engine:
           substitutions:
             - text: "<my-workload>"
               with: "#workloadName"
-            - text: "<my-workload-hostname>"
-              with: "#workloadHost"
+            - text: "<my-workload-url>"
+              with: "#workloadURL"
             - text: "<auth-server-selector>"
               with: "#appSsoServerLabel"
     - include: [ "**/workload.yaml" ]
@@ -32,3 +34,38 @@ engine:
           options:
             key: "'$.spec'"
             yaml: "'serviceClaims:\n  - name: ' + #workloadName + '\n    ref:\n      apiVersion: services.apps.tanzu.vmware.com/v1alpha1\n      kind: ResourceClaim\n      name: ' + #workloadName + '-client-registration-claim'"
+    - include: [ "README.md" ]
+      chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+            with: |
+              '${existingContent}
+              
+              > **_NOTE:_** Below you can find additional information concerning creation of AppSSO relevant resources. 
+
+              ## Resources needed for AppSSO integration
+              
+              Please first familiarize yourself with basic concepts around using AppSSO to secure your workload on TAP following 
+              ["Securing your first Workload" tutorial](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.3/tap/GUID-app-sso-app-operators-tutorials-index.html)
+              .
+  
+              As stated in the mentioned above tutorial a ClientRegistration custom resource definition is a starting point of
+              an AppSSO integration. There is a `client-registration.yaml` file generated in the `config` directory. You can
+              deploy it applying following command in your project root directory.
+              
+              ```bash
+              \$ kubectl apply -f config/client-registration.yaml
+              ```
+              
+              The next step is to deploy a ResourceClaim which will be used to bind your workload with previously
+              created ClientRegistration. There is a correct `client-registration-claim.yaml` file generated for you
+              in the `config` directory. It can be used to deploy this ResourceClaim.
+              
+              ```bash
+              \$ kubectl apply -f config/client-registration-claim.yaml
+              ```
+              
+              Now you are ready to deploy your Workload with an AppSSO integration. Your `workload.yaml` is already prepared
+              and it includes a service claim referencing the ResourceClaim you created before. 
+              '
