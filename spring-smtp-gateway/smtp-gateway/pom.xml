@@ -13,7 +13,7 @@
     <parent>
 	   <groupId>org.springframework.boot</groupId>
 	   <artifactId>spring-boot-starter-parent</artifactId>
-	   <version>2.7.3</version>
+	   <version>2.7.4</version>
 	   <relativePath />
     </parent>	
     <developers>
@@ -27,17 +27,18 @@
         </developer>         
     </developers>
 	<properties>
-                <java.version>11</java.version>
+		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<subethasmtp.version>3.1.7</subethasmtp.version>
 		<commons-net.version>3.8.0</commons-net.version>
+		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>   
 	<dependencyManagement>
 		<dependencies>											
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.7.3</version> 
+				<version>2.7.4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>				

@@ -1,13 +1,15 @@
 
 plugins {
-    id("org.springframework.boot") version "2.7.3"
-    id("io.spring.dependency-management") version "1.0.13.RELEASE"
+    id("org.springframework.boot") version "2.7.4"
+    id("io.spring.dependency-management") version "1.0.14.RELEASE"
     id("java")
 }
 
 group = "com.vmware.tap.accelerators"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
+
+extra["snakeyaml.version"] = "1.32"
 
 repositories {
     mavenCentral()

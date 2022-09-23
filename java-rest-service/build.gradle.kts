@@ -1,7 +1,7 @@
 
 plugins {
-    id("org.springframework.boot") version "2.7.2"
-    id("io.spring.dependency-management") version "1.0.12.RELEASE"
+    id("org.springframework.boot") version "2.7.4"
+    id("io.spring.dependency-management") version "1.0.14.RELEASE"
     id("java")
 }
 
@@ -10,6 +10,7 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 val springdocVersion = "1.6.9"
+extra["snakeyaml.version"] = "1.32"
 
 repositories {
     mavenCentral()
