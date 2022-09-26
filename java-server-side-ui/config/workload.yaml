@@ -5,7 +5,7 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: java-server-side-ui
-    apps.tanzu.vmware.com/has-tests: true
+    apps.tanzu.vmware.com/has-tests: "true"
 spec:
   build:
     env:
