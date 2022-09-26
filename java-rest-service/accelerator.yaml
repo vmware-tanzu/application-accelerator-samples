@@ -53,14 +53,14 @@ accelerator:
       label: System API Belongs To
       inputType: text
       required: true
-      defaultValue: "Profile Management"
+      defaultValue: "profile-management"
       dependsOn:
         name: exposeOpenAPIEndpoint
     - name: apiOwner
       label: Owner of API
       inputType: text
       required: true
-      defaultValue: "Customer Relations Department"
+      defaultValue: "customer-relations-department"
       dependsOn:
         name: exposeOpenAPIEndpoint
     - name: apiDescription
