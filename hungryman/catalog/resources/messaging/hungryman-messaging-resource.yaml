@@ -1,9 +1,0 @@
-apiVersion: backstage.io/v1alpha1
-kind: Resource
-metadata:
-  name: hungryman-messaging
-  description: Hungryman application asynch messaging
-spec:
-  type: message-broker
-  owner: hungryman-team
-  system: hungryman

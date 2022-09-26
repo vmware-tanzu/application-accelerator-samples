@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: where-for-dinner-availability
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=where-for-dinner-availability"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: where-for-dinner-team
+  system: where-for-dinner
+  dependsOn: 
+    - resource:where-for-dinner-db
+    - resource:where-for-dinner-messaging
+    - component:where-for-dinner-search-proc
+  providesApis:
+    - where-for-dinner-availability
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: where-for-dinner-availability
+  description: The Availability API
+  tags:
+    - api
+    - tanzu
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: where-for-dinner-team
+  system: where-for-dinner
+  definition:
+    $text: https://where-for-dinner.perfect300rock.com/api/availability/v3/api-docs/

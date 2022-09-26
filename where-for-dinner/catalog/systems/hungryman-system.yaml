@@ -1,0 +1,7 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: where-for-dinner
+  description: Where for Dinner Application
+spec:
+  owner: where-for-dinner-team

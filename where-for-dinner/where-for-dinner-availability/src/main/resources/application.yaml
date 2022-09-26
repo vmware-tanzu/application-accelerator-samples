@@ -1,0 +1,35 @@
+server:
+  port: 8082
+  # When running behind a reverse proxy, this stradedgy needs to be set to ensure
+  # that OpenAPI endpoint returns the correct server URLs
+  # https://springdoc.org/faq.html#_how_can_i_deploy_springdoc_openapi_ui_behind_a_reverse_proxy
+  forward-headers-strategy: framework
+  
+spring: 
+  sql.init.mode: ALWAYS
+  
+  cloud: 
+    stream:
+      function:
+        definition: processAvailability
+      bindings: 
+        processAvailability-in-0: 
+          destination: where-for-dinner-search-result
+          group: where-for-dinner-search-result-group
+          consumer: 
+            maxAttempts: 4
+            backOffInitialInterval: 15000
+            backOffMaxInterval: 60000 
+            
+springdoc:
+  packages-to-scan: com.java.example.tanzu.hungryman.resources
+  show-spring-cloud-functions: false
+  
+---
+spring:
+  config.activate.on-profile: mysql
+
+  r2dbc: 
+    #Default properties to work with MariaDB driver
+    properties.sslMode: TRUST  
+    properties.tlsVersion: TLSv1.2  

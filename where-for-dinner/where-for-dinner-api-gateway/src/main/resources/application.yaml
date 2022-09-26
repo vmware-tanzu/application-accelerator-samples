@@ -1,0 +1,65 @@
+where-for-dinner:
+  namespace: ${spring.cloud.kubernetes.client.namespace}
+  ui:
+    uri: http://where-for-dinner-ui.${where-for-dinner.namespace}/
+  search:
+    uri: http://where-for-dinner-search.${where-for-dinner.namespace}/
+  availability:
+    uri: http://where-for-dinner-availability.${where-for-dinner.namespace}/
+
+spring:
+  session:
+    timeout: 60m
+  cloud:
+    gateway:
+      forwarded.enabled: false
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      routes:
+      - id: where-for-dinner_search_route
+        uri: ${where-for-dinner.search.uri}
+        predicates:
+        - Path=/api/search/**      
+        - Host=where-for-dinner**.**
+        filters:
+        - TokenRelay=
+        - RewritePath=/api/search(?<segment>/?.*), $\{segment}
+        - RemoveRequestHeader=Forwarded
+      - id: where-for-dinner_availability_route
+        uri: ${where-for-dinner.availability.uri}
+        predicates:
+        - Path=/api/availability/** 
+        - Host=where-for-dinner**.**
+        filters:
+        - TokenRelay=
+        - RewritePath=/api/availability(?<segment>/?.*), $\{segment}
+        - RemoveRequestHeader=Forwarded
+      - id: where-for-dinner_ui_route
+        uri: ${where-for-dinner.ui.uri}
+        predicates:
+        - Host=where-for-dinner**.**
+        - Path=/diningsearch
+      - id: where-for-dinner_ui_route
+        uri: ${where-for-dinner.ui.uri}
+        predicates:
+        - Host=where-for-dinner**.**
+        - Path=/**
+
+---
+spring:
+  profiles: local
+
+
+#Local profile forwards to local instances  
+where-for-dinner:
+  namespace: workloads
+  ui:
+    uri: http://localhost:3000/   # default used by npm start
+  search:
+    uri: http://localhost:8081/
+  availability:
+    uri: http://localhost:8082/

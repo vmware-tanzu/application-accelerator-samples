@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: where-for-dinner-messaging
+  description: Where for Dinner application async messaging
+spec:
+  type: message-broker
+  owner: where-for-dinner-team
+  system: where-for-dinner
