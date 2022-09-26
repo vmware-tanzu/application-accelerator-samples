@@ -23,7 +23,7 @@ accelerator:
 engine:
   merge:
   - include: [ "**" ]
-    exclude: [ "README.md", "Sample.csproj", "config/**", "catalog/**" ]
+    exclude: [ "README.md", "Sample.csproj", "config/**", "catalog/**", "Tiltfile" ]
     chain:
     - type: ReplaceText
       substitutions:
@@ -33,7 +33,7 @@ engine:
     chain:
     - type: RewritePath
       rewriteTo: "#applicationName + '.csproj'"
-  - include: [ "README.md", "config/*.yaml", "catalog/*.yaml" ]
+  - include: [ "README.md", "config/*.yaml", "catalog/*.yaml", "Tiltfile" ]
     chain:
     - type: ReplaceText
       substitutions:
