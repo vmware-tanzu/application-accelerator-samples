@@ -1,0 +1,20 @@
+where-for-dinner:
+  notifications:
+    logger:
+       enabled: true
+
+server.port: 8085
+
+spring:
+  cloud: 
+    stream:
+      function:
+        definition: notifyAvailability
+      bindings: 
+        notifyAvailability-in-0: 
+          destination: where-for-dinner-search-result
+          group: where-for-dinner-notify-group
+          consumer: 
+            maxAttempts: 4
+            backOffInitialInterval: 15000
+            backOffMaxInterval: 60000 

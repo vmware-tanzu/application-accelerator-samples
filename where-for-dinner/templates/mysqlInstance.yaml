@@ -1,0 +1,53 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: with.sql.tanzu.vmware.com/v1
+kind: MySQL
+metadata:
+  name: #@ data.values.dbName
+  namespace: #@ data.values.serviceNamespace
+spec:
+  databasePodConfig:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: "app.kubernetes.io/component"
+                    operator: In
+                    values:
+                      - database
+                  - key: "app.kubernetes.io/instance"
+                    operator: In
+                    values:
+                      - where-for-dinner
+    tolerations:
+    - key: node.kubernetes.io/disk-pressure
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 3600
+  proxyPodConfig:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: "kubernetes.io/hostname"
+              labelSelector:
+                matchExpressions:
+                  - key: "app.kubernetes.io/component"
+                    operator: In
+                    values:
+                      - proxy
+                  - key: "app.kubernetes.io/instance"
+                    operator: In
+                    values:
+                      - where-for-dinner
+    tolerations:
+    - key: node.kubernetes.io/memory-pressure
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 3600

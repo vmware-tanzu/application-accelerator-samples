@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: where-for-dinner-notify
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=where-for-dinner-notify"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: where-for-dinner-team
+  system: where-for-dinner
+  dependsOn: 
+    - resource:where-for-dinner-messaging
+    - component:where-for-dinner-search-proc
