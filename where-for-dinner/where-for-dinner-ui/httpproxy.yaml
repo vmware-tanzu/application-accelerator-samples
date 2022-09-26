@@ -1,0 +1,11 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: where-for-dinner
+spec:
+  virtualhost:
+    fqdn: where-for-dinner.perfect300rock.com
+  routes:
+    - services:
+      - name: where-for-dinner-api-gateway
+        port: 80

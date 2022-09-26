@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: where-for-dinner-search
+  annotations:
+    github.com/project-slug: sample-acclerators/where-for-dinner-search
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=where-for-dinner"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: meyerg@vmware.com

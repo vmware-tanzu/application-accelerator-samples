@@ -1,0 +1,33 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: where-for-dinner-search
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=where-for-dinner-search"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: where-for-dinner-team
+  system: where-for-dinner
+  providesApis:
+    - where-for-dinner-search
+  dependsOn: 
+    - resource:where-for-dinner-db
+    - resource:where-for-dinner-messaging
+    - component:where-for-dinner-search-proc
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: where-for-dinner-search
+  description: The Search API
+  tags:
+    - api
+    - tanzu
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: where-for-dinner-team
+  system: where-for-dinner
+  definition:
+    $text: https://where-for-dinner.perfect300rock.com/api/search/v3/api-docs/

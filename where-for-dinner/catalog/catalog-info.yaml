@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: where-for-dinner-catalog-info
+  description: "Catalog for the 'Where for Dinner' application"
+  annotations:
+    'backstage.io/techdocs-ref': dir:.
+spec:
+  targets:
+    - ./components/where-for-dinner-api-gateway/where-for-dinner-api-gateway.yaml  
+    - ./components/where-for-dinner-ui/where-for-dinner-ui.yaml
+    - ./components/where-for-dinner-search/where-for-dinner-search.yaml
+    - ./components/where-for-dinner-search-proc/where-for-dinner-search-proc.yaml
+    - ./components/where-for-dinner-availability/where-for-dinner-availability.yaml
+    - ./components/where-for-dinner-notify/where-for-dinner-notify.yaml
+    - ./groups/org.yaml
+    - ./systems/where-for-dinner-system.yaml
+    - ./resources/db/where-for-dinner-db-resource.yaml
+    - ./resources/messaging/where-for-dinner-messaging-resource.yaml  
