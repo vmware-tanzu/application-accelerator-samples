@@ -123,7 +123,7 @@ In addition, the Where for Dinner application has additional deployment options 
 * H2 (In Memory) vs MySQL vs Postgres database options
 * Security enablement with AppSSO
 
-The simplest configuration is to use Spring Cloud Streams; however, using KNative eventing provides for extended capabilities such as scale to zero and auto scaling.  In both options, a Spring Cloud Streams binding implementation is required for moving messages from the `where-for-dinner-search` application; RabbitMQ is the default binding provided.  Neither option requires a change in source code, however different runtime dependencies are configured at build time depending on which eventing implementation is desired.  
+The simplest configuration is to use Spring Cloud Streams; however, using Knative eventing provides for extended capabilities such as scale to zero and auto scaling.  In both options, a Spring Cloud Streams binding implementation is required for moving messages from the `where-for-dinner-search` application; RabbitMQ is the default binding provided.  Neither option requires a change in source code, however different runtime dependencies are configured at build time depending on which eventing implementation is desired.  
 
 For database configuration, the default H2 in memory database is the simplest option and requires no additional database services to be installed, however you will lose all database information with an application restart and can not scale past one instance.  The MySQL and Postgres options give you persistence and scalability, but require you to install a database operator and provision database instances.  
 
@@ -147,7 +147,7 @@ If successfully installed, there will be an RabbitMQ cluster operator pod runnin
 
 ### RabbitMQ Topology Operator (Experimental)
 
-If you choose to use the KNative eventing deployment option, you will also need to deploy the RabbitMQ Topology Operator.  This operator allows for the declarative creation of resources like RabbitMQ exchanges, queues, and bindings.  The topology operator is a dependency of the KNative RabbitMQ Source resource which will be covered in the next section. 
+If you choose to use the Knative eventing deployment option, you will also need to deploy the RabbitMQ Topology Operator.  This operator allows for the declarative creation of resources like RabbitMQ exchanges, queues, and bindings.  The topology operator is a dependency of the Knative RabbitMQ Source resource which will be covered in the next section. 
 
 To install the RabbitMQ Topology operator, run the following command against your cluster. 
 
@@ -157,7 +157,7 @@ kubectl apply -f "https://github.com/rabbitmq/messaging-topology-operator/releas
 
 ### RabbitMQ Eventing Source (Experimental)
 
-If you choose to use the KNative eventing deployment option, you also need to deploy the KNatvie RabbitMQ Eventing Source resources.  The eventing source acts as a bridge between messages emitted by the `where-for-dinner-search` application and the rest of the downstream services.
+If you choose to use the Knative eventing deployment option, you also need to deploy the KNatvie RabbitMQ Eventing Source resources.  The eventing source acts as a bridge between messages emitted by the `where-for-dinner-search` application and the rest of the downstream services.
 
 *NOTE:* The RabbitMQ Eventing source is pre-installed into your TAP deployment if you have chosen to deploy the Cloud Native Runtimes package.  However; TAP versions 1.2.x and below do not have an up to date version that will work with some of the declared resources in these instructions.  These instruction require RabbitMQ Eventing 1.4.0 or later.
 
