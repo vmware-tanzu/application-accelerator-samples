@@ -3,9 +3,8 @@ kind: Accelerator
 metadata:
   name: node-function
 spec:
-  source:
-    git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-      ref:
-        branch: main
+  git:
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    ref:
+      branch: main
     subPath: node-function
