@@ -66,6 +66,17 @@ spec:
     subPath: fragments/tap-workload
 ---
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: spring-boot-postgresql
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: fragments/spring-boot-postgresql
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
 metadata:
   name: appsso-starter-java
