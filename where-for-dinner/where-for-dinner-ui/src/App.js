@@ -78,8 +78,8 @@ function App() {
 		   	  </div>      	
 		    </div>
         <div className="container welcomeContent">
-              The Where for Dinner Dining Availability application continously searches for dining availability based on desired search
-              parameters.  Once a search is submitted, the Hugryman system will continously scour different sources for dining
+              The Where for Dinner Dining Availability application continuously searches for dining availability based on desired search
+              parameters.  Once a search is submitted, the system will continuously scour different sources for dining
               availability that match your preferences and display dining availability in near real time.  Searches will continue even 
               after you leave the application, so you may return a later time to check to see if any new availability has been found.
 		    </div>        
