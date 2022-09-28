@@ -258,14 +258,19 @@ engine:
       onConflict: UseFirst
 
     - merge:
-      - include: [ "**/*.java" ]
-        chain:
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.java.ChangePackage
-            options:
-              oldPackageName: "'com.vmware.tap.accelerators.restservicedb'"
-              newPackageName: "#packageName"
       - exclude: [ "**/*.java" ]
+      - include: [ "**/*.java" ]
+        let:
+          - name: packageDirectory
+            expression: '#packageName.replace(".", "/")'
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "com.vmware.tap.accelerators.restservicedb"
+                with: "#packageName"
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)restservicedb(?<untouchedpath>.*)"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #untouchedpath"
 
     - merge:
       - include: [ "**/*.jar" ]
