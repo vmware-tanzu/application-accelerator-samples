@@ -4,6 +4,7 @@ metadata:
   name: python-function
   description: Python function powered by Function Buildpacks for Knative
   tags:
+    - app-accelerator
     - beta
     - function
     - buildpacks
