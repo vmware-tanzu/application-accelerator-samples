@@ -18,3 +18,5 @@ k8s_custom_deploy(
     ]
 )
 
+k8s_resource('smtp-sink', port_forwards=[],
+    extra_pod_selectors=[{'carto.run/workload-name': 'smtp-sink', 'app.kubernetes.io/component': 'run'}])
