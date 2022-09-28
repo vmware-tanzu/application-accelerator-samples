@@ -1,4 +1,4 @@
-SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='your-registry.io/project/spring-smtp-gateway-source')
+SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='your-registry.io/project/smtp-gateway-source')
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
 
@@ -18,5 +18,5 @@ k8s_custom_deploy(
     ]
 )
 
-k8s_resource('spring-smtp-gateway', port_forwards=["1025:1025"],
-    extra_pod_selectors=[{'serving.knative.dev/service': 'spring-smtp-gateway'}])
+k8s_resource('spring-smtp-gateway', port_forwards=["1026:1026"],
+    extra_pod_selectors=[{'carto.run/workload-name': 'spring-smtp-gateway', 'app.kubernetes.io/component': 'run'}])
