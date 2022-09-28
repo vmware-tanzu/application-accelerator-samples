@@ -7,8 +7,7 @@
     "start": "faas-js-runtime ./index.js", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT 2.0",
   "dependencies": {
     "faas-js-runtime": "^0.9.0"
   }

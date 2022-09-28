@@ -4,8 +4,8 @@ metadata:
   name: java-function
   description: Java function powered by Function Buildpacks for Knative
   tags:
-    - app-accelerator
-    - functions
+    - beta
+    - function
     - buildpacks
     - knative
     - tanzu
