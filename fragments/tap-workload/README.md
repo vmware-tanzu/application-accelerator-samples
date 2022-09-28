@@ -8,10 +8,12 @@ It changes your `workload.yaml` to contain the source of the generated applicati
 ## Using the fragment
 
 This fragment requires the following parameters:
-- `repoUrl`
-  a construct provided by the engine containing scheme, host, owner.
+- `bsGitRepository`
+  a construct, normally provided by the engine, containing public host of Git provider, owner and repository. For example scheme, host, owner.
+  `github.com?owner=your-organization&repo=java-rest-service-repo`.
+  > Note: HTTPS scheme will be used to read from your repository. Be sure that your TAP Installation has read access.
 - `bsGitBranch`
-  the branch to use
+  the branch to use, for example: `main` or `feature/first-iteration`
 
 > As it is used by the Accelerator system itself, it needs to be available, but not recommended to use it from a self-authored Accelerator. 
 
