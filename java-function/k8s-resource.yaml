@@ -3,9 +3,8 @@ kind: Accelerator
 metadata:
   name: java-function
 spec:
-  source:
-    git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-      ref:
-        branch: main
-    subPath: java-function
+  git:
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    ref:
+      branch: main
+  subPath: java-function
