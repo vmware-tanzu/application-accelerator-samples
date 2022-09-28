@@ -199,7 +199,7 @@ engine:
     # OpenAPI Endpoint Auto-registration
     - merge:
       - include: [ "**" ]
-        exclude: [ "config/postgres.yaml", "config/workload-basic.yaml", "config/workload-api-provider.yaml", "config/test-pipeline.yaml" ]
+        exclude: [ "config/workload-basic.yaml", "config/workload-api-provider.yaml" ]
       - include: [ "config/workload-api-provider.yaml" ]
         condition: "#exposeOpenAPIEndpoint"
         chain:
