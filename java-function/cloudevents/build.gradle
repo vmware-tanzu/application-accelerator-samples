@@ -1,0 +1,27 @@
+plugins {
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.vmware.functions'
+version = '0.0.1'
+sourceCompatibility = '11'
+
+ext['snakeyaml.version'] = '1.32'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+dependencies {
+    implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.4')
+
+	implementation 'org.springframework.cloud:spring-cloud-function-context:3.2.1'
+}
