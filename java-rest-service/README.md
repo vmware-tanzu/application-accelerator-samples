@@ -19,7 +19,6 @@ different types of tests which can be utilized to verify different parts of an a
 In order to further develop this application the following tools needs to be setup:
 - Java Development Kit (https://bell-sw.com/)
 - Visual Studio Code or IntelliJ IDEA as Integrated Development Environment (IDE)
-- Tanzu Developer Tools plugin for mentioned IDE
 - Docker Desktop to execute integration tests or run the application locally
 
 # Local
@@ -112,49 +111,81 @@ curl -X PATCH -H 'Content-Type: application/json' http://localhost:8080/api/cust
 Use the `id` received by previous creation call.
 ```bash
 curl -X DELETE http://localhost:8080/api/customer-profiles/{id}
+
+## Deploying to Azure Spring Apps with Azure CLI
+
+Here, we will deploy the application on Azure Spring Apps, ensure that all prerequisites are met
+
+Prerequisites:
+
+* Completion of [Create Azure Spring Apps service instance](../SPRING_APPS.md)
+
+### Create an Azure Database for Postgres
+
+Using the Azure CLI, create an Azure Database for PostgreSQL
+
+```shell
+az postgres server create --name ${POSTGRES_SERVER} \
+    --resource-group ${RESOURCE_GROUP} \
+    --location ${REGION} \
+    --admin-user ${POSTGRES_SERVER_USER} \
+    --admin-password ${POSTGRES_SERVER_PASSWORD} \
+    --yes
+
+# Allow connections from other Azure Services
+az postgres server firewall-rule create --name all-azure-ips \
+     --server ${POSTGRES_SERVER} \
+     --resource-group ${RESOURCE_GROUP} \
+     --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+```
+> Note: The PostgreSQL Flexible Server will take 5-10 minutes to deploy
+
+Create a database for the application:
+
+```shell
+export DB_NAME="development"
+
+az postgres db create \
+  --name ${DB_NAME} \
+  --server-name ${POSTGRES_SERVER}
 ```
 
-# Cluster Deployment
+### Create the application in Azure Spring Apps
 
-## Database
+Create an application:
 
-You will need a local database running, see [DATABASE.md](DATABASE.md#kubernetes).
-
-## Tanzu Application Platform (TAP)
-
-Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
-Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
-
-> The workload is set up by default to autoconfigure the actuators. This results in that the Spring Actuators are available at TCP port 8081 and will be used by Application Live View.
-> Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
-> annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
-
-Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
-namespace. Please execute following command.
-
-```bash
-kubectl apply -f config/test-pipeline.yaml
+```shell
+az spring app create --name ${SERVICE_APP} \
+  --assign-endpoint true \
+  --instance-count 1 \
+  --memory 1Gi \
+  --env "SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_SERVER}.postgres.database.azure.com:5432/${DB_NAME}" \
+     "SPRING_DATASOURCE_USERNAME=${POSTGRES_SERVER_USER}@${POSTGRES_SERVER}" \
+     "SPRING_DATASOURCE_PASSWORD=${POSTGRES_SERVER_PASSWORD}"
 ```
+> Note: The app will take around 2-3 minutes to create.
 
-### Tanzu CLI
+### Build and Deploy the Application
 
-Using the Tanzu CLI one could apply the workload using the local sources:
-```bash
-tanzu apps workload apply \
-  --file config/workload.yaml \
-  --namespace <namespace> --source-image <image-registry> \
-  --local-path . \
-  --yes \
-  --tail
+Deploy and build the application, specifying its required parameters
+
+```shell
+az spring app deploy --name ${SERVICE_APP} \
+   --source-path java-rest-service 
 ```
+> Note: Deploying the application will take 5-10 minutes
 
-Note: change the namespace to where you would like to deploy this workload. Also define the (private) image registry you
-are allowed to push the source-image, like: `docker.io/username/repository`.
+### Test the Application
 
-### Visual Studio Code Tanzu Plugin
-When developing local but would like to deploy the local code to the cluster the Tanzu Plugin could help.
-By using `Tanzu: Apply` on the `workload.yaml` it will create the Workload resource with the local source (pushed to an image registry) as
-starting point.
+Run the following commands
+
+```shell
+export APP_URL=$(az spring app show --name ${SERVICE_APP} --query properties.url | tr -d '"')
+
+curl "${APP_URL}/api-docs"
+```
 
 # How to proceed from here?
 Having the application locally running and deployed to a cluster you could add your domain logic, related persistence and new RESTful controller.
+
+
