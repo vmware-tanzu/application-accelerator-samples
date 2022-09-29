@@ -88,7 +88,7 @@ Here, we will deploy the application on Azure Spring Apps, ensure that all prere
 
 Prerequisites:
 
-* Completion of [Create Azure Spring Apps service instance](../SPRING_APPS.md)
+* Completion of [Create Azure Spring Apps service instance](https://github.com/Azure-Samples/acme-fitness-store/blob/Azure/README.md#create-azure-spring-apps-service-instance)
 
 ### Create an Azure Database for Postgres
 
