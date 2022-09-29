@@ -17,7 +17,6 @@ different types of tests which can be utilized to verify different parts of an a
 In order to further develop this application the following tools needs to be setup:
 - Java Development Kit (https://bell-sw.com/)
 - Visual Studio Code or IntelliJ IDEA as Integrated Development Environment (IDE)
-- Tanzu Developer Tools plugin for mentioned IDE
 - Docker Desktop to execute integration tests or run the application locally
 
 # Local
@@ -83,37 +82,80 @@ Use the `id` received by previous POST call.
 curl -X GET http://localhost:8080/api/customer-profiles/{id}
 ```
 
-# Deployment
-## Tanzu Application Platform (TAP)
-Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
-Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
+## Deploying to Azure Spring Apps with Azure CLI
 
-Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
-namespace. Please execute following command.
+Here, we will deploy the application on Azure Spring Apps, ensure that all prerequisites are met
 
-```bash
-kubectl apply -f config/test-pipeline.yaml
+Prerequisites:
+
+* Completion of [Create Azure Spring Apps service instance](../SPRING_APPS.md)
+
+### Create an Azure Database for Postgres
+
+Using the Azure CLI, create an Azure Database for PostgreSQL
+
+```shell
+az postgres server create --name ${POSTGRES_SERVER} \
+    --resource-group ${RESOURCE_GROUP} \
+    --location ${REGION} \
+    --admin-user ${POSTGRES_SERVER_USER} \
+    --admin-password ${POSTGRES_SERVER_PASSWORD} \
+    --yes
+
+# Allow connections from other Azure Services
+az postgres server firewall-rule create --name all-azure-ips \
+     --server ${POSTGRES_SERVER} \
+     --resource-group ${RESOURCE_GROUP} \
+     --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
+```
+> Note: The PostgreSQL Flexible Server will take 5-10 minutes to deploy
+
+Create a database for the application:
+
+```shell
+export DB_NAME="development"
+
+az postgres db create \
+  --name ${DB_NAME} \
+  --server-name ${POSTGRES_SERVER}
 ```
 
+### Create the application in Azure Spring Apps
 
-### Tanzu CLI
-Using the Tanzu CLI one could apply the workload using the local sources:
-```bash
-tanzu apps workload apply \
-  --file config/workload.yaml \
-  --namespace <namespace> --source-image <image-registry> \
-  --local-path . \
-  --yes \
-  --tail
-````
+Create an application:
 
-Note: change the namespace to where you would like to deploy this workload. Also define the (private) image registry you
-are allowed to push the source-image, like: `docker.io/username/repository`.
+```shell
+az spring app create --name ${SERVICE_APP} \
+  --assign-endpoint true \
+  --instance-count 1 \
+  --memory 1Gi \
+  --env "SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_SERVER}.postgres.database.azure.com:5432/${DB_NAME}" \
+     "SPRING_DATASOURCE_USERNAME=${POSTGRES_SERVER_USER}@${POSTGRES_SERVER}" \
+     "SPRING_DATASOURCE_PASSWORD=${POSTGRES_SERVER_PASSWORD}"
+```
+> Note: The app will take around 2-3 minutes to create.
 
-### Visual Studio Code Tanzu Plugin
-When developing local but would like to deploy the local code to the cluster the Tanzu Plugin could help.
-By using `Tanzu: Apply` on the `workload.yaml` it will create the Workload resource with the local source (pushed to an image registry) as
-starting point.
+### Build and Deploy the Application
+
+Deploy and build the application, specifying its required parameters
+
+```shell
+az spring app deploy --name ${SERVICE_APP} \
+   --source-path java-rest-service 
+```
+> Note: Deploying the application will take 5-10 minutes
+
+### Test the Application
+
+Run the following commands
+
+```shell
+export APP_URL=$(az spring app show --name ${SERVICE_APP} --query properties.url | tr -d '"')
+
+curl "${APP_URL}/api-docs"
+```
 
 # How to proceed from here?
 Having the application locally running and deployed to a cluster you could add your domain logic, related persistence and new RESTful controller.
+
+
