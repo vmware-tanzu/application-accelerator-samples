@@ -140,8 +140,8 @@ accelerator:
     dependsOn: 
       name: enableDefaultDevAccount
   - label: Dev Account BCrypt Password
-    description: "A BCrypted version of the password.  You can use the following online tool to create a bycrypt string: https://www.browserling.com/tools/bcrypt"
-    defaultValue: "$2a$10$J/EWz6Q8zxRHYCr2UwJewe5hN6uKhbytUuGGC2yHvEJ2zhH.dLvZe"
+    description: "Plain text version of the dev password."
+    defaultValue: "letseat"
     name: devDefaultAccountPassword
     inputType: text
     dataType: string

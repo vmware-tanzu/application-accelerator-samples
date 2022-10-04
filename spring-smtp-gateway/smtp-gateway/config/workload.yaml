@@ -2,7 +2,6 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   name: smtp-gateway
-  namespace: workloads
   labels:
     apps.tanzu.vmware.com/workload-type: server
     app.kubernetes.io/part-of: spring-smtp-gateway
