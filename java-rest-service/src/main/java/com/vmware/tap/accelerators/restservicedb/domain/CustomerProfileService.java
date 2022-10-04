@@ -33,8 +33,7 @@ public class CustomerProfileService {
 
     @Transactional
     public Optional<CustomerProfileResponse> change(String id, CustomerProfileChangeRequest dto) {
-        return safeConvertToUUID(id)
-                .flatMap(repository::findById)
+        return repository.findById(id)
                 .map(entity -> {
                     entity.setFirstName(dto.getFirstName());
                     entity.setLastName(dto.getLastName());
@@ -45,7 +44,7 @@ public class CustomerProfileService {
 
     @Transactional
     public void delete(String id) {
-        safeConvertToUUID(id).ifPresent(repository::deleteById);
+        repository.deleteById(id);
     }
 
     @Transactional(readOnly = true)

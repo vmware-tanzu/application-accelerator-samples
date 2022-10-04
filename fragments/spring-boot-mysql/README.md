@@ -22,6 +22,8 @@ engine:
       let:
         - name: databaseName
           expression: "#databaseName"
+        - name: databaseIntegrationTestType
+          expression: "'testcontainers'"
 ```
 
 ## Creating the fragment resource
