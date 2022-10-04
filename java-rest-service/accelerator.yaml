@@ -278,6 +278,3 @@ engine:
           substitutions:
           - text: "rest-service-db"
             with: "#artifactId"
-
-    - type: Exclude
-      patterns: [ "manifest.yaml" ]
