@@ -1,5 +1,6 @@
 package com.vmware.tap.accelerators.restservicedb.api;
 
+import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileChangeRequest;
 import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileCreateRequest;
 import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileResponse;
 import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileService;
@@ -13,12 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CustomerProfileController.class)
@@ -86,6 +87,56 @@ class CustomerProfileControllerTest {
     }
 
     @Nested
+    class Update {
+
+        @Test
+        void shouldDelegateToService() throws Exception {
+
+            when(service.change(any(), any()))
+                    .thenReturn(Optional.of(new CustomerProfileResponse("profile-id", "Joe", "Doe", "joe.doe@test.org")));
+
+            var requestBody = "{" +
+                    "\"firstName\": \"Joe\"," +
+                    "\"lastName\": \"Doe\"" +
+                    "}";
+
+            mockMvc.perform(patch("/api/customer-profiles/profile-id")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(requestBody))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json("{" +
+                            "\"id\": \"profile-id\"," +
+                            "\"firstName\": \"Joe\"," +
+                            "\"lastName\": \"Doe\"," +
+                            "\"email\": \"joe.doe@test.org\"" +
+                            "}"));
+
+            var profileCaptor = ArgumentCaptor.forClass(CustomerProfileChangeRequest.class);
+            verify(service).change(eq("profile-id"), profileCaptor.capture());
+
+            var profile = profileCaptor.getValue();
+            assertThat(profile).isNotNull();
+            assertThat(profile.getFirstName()).isEqualTo("Joe");
+            assertThat(profile.getLastName()).isEqualTo("Doe");
+        }
+    }
+
+    @Nested
+    class Delete {
+
+        @Test
+        void shouldDelegateToService() throws Exception {
+
+            mockMvc.perform(delete("/api/customer-profiles/profile-id")
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+
+            verify(service).delete(eq("profile-id"));
+        }
+    }
+
+    @Nested
     class Get {
 
         @Test
@@ -106,6 +157,25 @@ class CustomerProfileControllerTest {
                             "}"));
 
             verify(service).getById(id);
+        }
+
+        @Test
+        void shouldReadAllDelegateToService() throws Exception {
+
+            when(service.getAll())
+                    .thenReturn(Stream.of(new CustomerProfileResponse("customer-profile-id", "Joe", "Doe", "joe.doe@test.org")));
+
+            mockMvc.perform(get("/api/customer-profiles/")
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json("[{" +
+                            "\"id\": \"customer-profile-id\"," +
+                            "\"firstName\": \"Joe\"," +
+                            "\"lastName\": \"Doe\"," +
+                            "\"email\": \"joe.doe@test.org\"" +
+                            "}]"));
+
+            verify(service).getAll();
         }
 
         @Test
