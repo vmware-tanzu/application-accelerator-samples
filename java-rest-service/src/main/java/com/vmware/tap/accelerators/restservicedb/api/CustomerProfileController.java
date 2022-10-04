@@ -1,7 +1,10 @@
 package com.vmware.tap.accelerators.restservicedb.api;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileChangeRequest;
 import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileCreateRequest;
 import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileResponse;
 import com.vmware.tap.accelerators.restservicedb.domain.CustomerProfileService;
@@ -15,8 +18,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,6 +72,34 @@ public class CustomerProfileController {
                 .body(customerProfileResponse);
     }
 
+    @Operation(summary = "Update customer profile.", method = "PATCH", tags = "Customer Profile CRUD")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Customer profile successfully saved."
+            )
+    })
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomerProfileResponse> update(@PathVariable("id") String id, @Valid @RequestBody CustomerProfileChangeRequest body) {
+        var customerProfileResponse = service.change(id, body);
+        return customerProfileResponse.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(customerProfileResponse.get());
+    }
+
+    @Operation(summary = "Delete customer profile.", method = "DELETE", tags = "Customer Profile CRUD")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Customer profile successfully deleted."
+            )
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "Get customer profile.", method = "GET", tags = "Customer Profile CRUD")
     @ApiResponses({
             @ApiResponse(
@@ -83,5 +117,19 @@ public class CustomerProfileController {
         return customerProfileResponse.isEmpty()
                 ? ResponseEntity.notFound().build()
                 : ResponseEntity.ok(customerProfileResponse.get());
+    }
+
+    @Operation(summary = "Get all customer profiles.", method = "GET", tags = "Customer Profile CRUD")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Customer profiles retrieved successfully."
+            )
+    })
+    @Transactional(readOnly = true)
+    @GetMapping("/")
+    public ResponseEntity<List<CustomerProfileResponse>> getAll() {
+        List<CustomerProfileResponse> all = service.getAll().collect(Collectors.toList());
+        return ResponseEntity.ok(all);
     }
 }

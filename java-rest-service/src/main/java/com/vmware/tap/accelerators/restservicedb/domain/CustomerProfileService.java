@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,6 +29,28 @@ public class CustomerProfileService {
 
         var persistedEntity = repository.save(entity);
         return entityToDto(persistedEntity);
+    }
+
+    @Transactional
+    public Optional<CustomerProfileResponse> change(String id, CustomerProfileChangeRequest dto) {
+        return safeConvertToUUID(id)
+                .flatMap(repository::findById)
+                .map(entity -> {
+                    entity.setFirstName(dto.getFirstName());
+                    entity.setLastName(dto.getLastName());
+                    return repository.save(entity);
+                })
+                .map(this::entityToDto);
+    }
+
+    @Transactional
+    public void delete(String id) {
+        safeConvertToUUID(id).ifPresent(repository::deleteById);
+    }
+
+    @Transactional(readOnly = true)
+    public Stream<CustomerProfileResponse> getAll() {
+        return repository.streamAll().map(this::entityToDto);
     }
 
     public Optional<CustomerProfileResponse> getById(String idRepresentation) {

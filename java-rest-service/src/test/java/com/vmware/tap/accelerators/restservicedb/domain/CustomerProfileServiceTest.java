@@ -11,6 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -84,5 +86,61 @@ class CustomerProfileServiceTest {
         assertThat(resultOptional).isEmpty();
 
         verifyNoInteractions(repository);
+    }
+
+    @Test
+    void changeShouldUpdateNames() {
+        // given
+        var customerProfileChangeRequest = new CustomerProfileChangeRequest("John", "Does");
+
+        var id = UUID.randomUUID();
+        var entity = new CustomerProfileEntity().setId(id).setFirstName("Joe").setLastName("Doe").setEmail("joe.doe@test.org");
+        when(repository.findById(any())).thenReturn(Optional.of(entity));
+
+        // when
+        subject.change(id.toString(), customerProfileChangeRequest);
+
+        // then
+        var entityCaptor = ArgumentCaptor.forClass(CustomerProfileEntity.class);
+        verify(repository).save(entityCaptor.capture());
+
+        var profile = entityCaptor.getValue();
+        assertThat(profile.getFirstName()).isEqualTo("John");
+        assertThat(profile.getLastName()).isEqualTo("Does");
+    }
+
+    @Test
+    void deleteShouldRemoveFromRepository() {
+        // given
+        var id = UUID.randomUUID();
+
+        // when
+        subject.delete(id.toString());
+
+        // then
+        verify(repository).deleteById(id);
+    }
+
+    @Test
+    void getAllShouldDelegateToRepositoryToRetrieveProfile() {
+
+        var id = UUID.randomUUID();
+        var entity = new CustomerProfileEntity().setId(id).setFirstName("Joe").setLastName("Doe").setEmail("joe.doe@test.org");
+        when(repository.streamAll()).thenReturn(Stream.of(entity));
+
+        // when
+        var result = subject.getAll();
+
+        // then
+        verify(repository).streamAll();
+
+        var listResult = result.collect(Collectors.toList());
+        assertThat(listResult).hasSize(1);
+
+        var firstResponse = listResult.get(0);
+        assertThat(firstResponse.getFirstName()).isEqualTo(entity.getFirstName());
+        assertThat(firstResponse.getLastName()).isEqualTo(entity.getLastName());
+        assertThat(firstResponse.getEmail()).isEqualTo(entity.getEmail());
+        assertThat(firstResponse.getId()).isEqualTo(id.toString());
     }
 }
