@@ -1,0 +1,100 @@
+accelerator:
+  displayName: Demo Input Types
+  description: "Accelerator with options for each inputType"
+  iconUrl: https://raw.githubusercontent.com/simple-starters/icons/master/icon-tanzu-light.png
+  tags: ["demo", "options"]
+
+  options:
+
+  - name: text
+    description: 'Enter some text'
+    display: true
+    defaultValue: Text value
+
+  - name: toggle
+    inputType: checkbox
+    display: true
+    dataType: boolean
+    defaultValue: true
+
+  - name: textarea
+    inputType: textarea
+    display: true
+    defaultValue: |
+      Text line 1
+      Text line 2
+
+  - name: checkbox
+    inputType: checkbox
+    display: true
+    dataType: [string]
+    defaultValue:
+      - value-2
+    choices:
+      - text: Checkbox choice 1
+        value: value-1
+      - text: Checkbox choice 2
+        value: value-2
+      - text: Checkbox choice 3
+        value: value-3
+
+  - name: checkbox2
+    description: 'This option is dependend on - select "choice 3" only to see that option below'
+    inputType: checkbox
+    display: true
+    dataType: [string]
+    defaultValue:
+      - value-1
+    choices:
+      - text: Checkbox2 choice 1
+        value: value-1
+      - text: Checkbox2 choice 2
+        value: value-2
+      - text: Checkbox2 choice 3
+        value: value-3
+
+  - name: dependsOnCheckbox2
+    description: Visibility depends on the checkbox2 option containing a checked value value-3 (Checkbox2 choice 3).
+    dependsOn:
+      name: checkbox2
+      value: [value-3]
+    defaultValue: text value
+
+  - name: select
+    inputType: select
+    display: true
+    defaultValue: value-2
+    choices:
+      - text: Select choice 1
+        value: value-1
+      - text: Select choice 2
+        value: value-2
+      - text: Select choice 3
+        value: value-3
+
+  - name: radio
+    inputType: radio
+    display: true
+    defaultValue: value-2
+    choices:
+      - text: Radio choice 1
+        value: value-1
+      - text: Radio choice 2
+        value: value-2
+      - text: Radio choice 3
+        value: value-3
+
+  - name: regexValidation
+    label: Regex Validation
+    inputType: text
+    display: true
+    validationRegex: "^[a-zA-Z]{1,3}$"
+
+  - name: required
+    label: Required Field
+    inputType: text
+    display: true
+    required: true
+
+engine:
+  type: YTT
