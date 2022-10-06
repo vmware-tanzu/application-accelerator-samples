@@ -68,6 +68,17 @@ spec:
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Fragment
 metadata:
+  name: spring-boot-h2
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: fragments/spring-boot-h2
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
   name: spring-boot-postgresql
 spec:
   git:
@@ -75,6 +86,17 @@ spec:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/spring-boot-postgresql
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: spring-boot-mysql
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: fragments/spring-boot-mysql
 ---
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator

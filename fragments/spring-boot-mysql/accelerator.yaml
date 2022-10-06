@@ -17,255 +17,210 @@ accelerator:
           text: "Java In-Memory Database (H2)"
       defaultValue: "testcontainers"
       required: true
+  imports:
+    - name: spring-boot-h2
 
 engine:
   let:
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
-  merge:
-    - include: [ "docker-compose-mysql.yaml" ]
-      condition: "#databaseIntegrationTestType == 'testcontainers'"
+  chain:
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "docker-compose-mysql.yaml", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "**/workload.yaml", "config/mysql.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
 
-    - include: [ "**/src/main/resources/application-local.properties" ]
-      condition: "#databaseIntegrationTestType == 'testcontainers'"
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:mysql://localhost:3306/development?currentSchema=local_test'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.username'"
-            value: "'local_test'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.password'"
-            value: "'password'"
+      - include: [ "docker-compose-mysql.yaml" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
 
-    - include: [ "**/src/main/resources/application-local.properties" ]
-      condition: "#databaseIntegrationTestType == 'in-memory'"
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:h2:mem:testdb'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.driverClassName'"
-            value: "'org.h2.Driver'"
+      - include: [ "**/src/main/resources/application-local.properties" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:mysql://localhost:3306/development?currentSchema=local_test'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.username'"
+              value: "'local_test'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.password'"
+              value: "'password'"
 
-    - include: [ "**/src/test/resources/application-test.properties" ]
-      condition: "#databaseIntegrationTestType == 'testcontainers'"
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:tc:mysql:8.0.30:///test'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.driverClassName'"
-            value: "'org.testcontainers.jdbc.ContainerDatabaseDriver'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.test.database.replace'"
-            value: "'NONE'"
+      - include: [ "**/src/test/resources/application-test.properties" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:tc:mysql:8.0.30:///test'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.driverClassName'"
+              value: "'org.testcontainers.jdbc.ContainerDatabaseDriver'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.test.database.replace'"
+              value: "'NONE'"
 
-    - include: [ "**/src/test/resources/application-test.properties" ]
-      condition: "#databaseIntegrationTestType == 'in-memory'"
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:h2:mem:testdb'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.driverClassName'"
-            value: "'org.h2.Driver'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.test.database.replace'"
-            value: "'NONE'"
+      - include: [ "**/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "mysql-database"
+                with: "#databaseResourceName"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.yaml.MergeYaml
+            options:
+              key: "'$.spec'"
+              yaml: "'serviceClaims:\n  - name: mysql-db\n    ref:\n      apiVersion: with.sql.tanzu.vmware.com/v1\n      kind: MySQL\n      name: ' + #databaseResourceName"
 
-    - include: [ "**/workload.yaml" ]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "mysql-database"
-              with: "#databaseResourceName"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.yaml.MergeYaml
-          options:
-            key: "'$.spec'"
-            yaml: "'serviceClaims:\n  - name: mysql-db\n    ref:\n      apiVersion: with.sql.tanzu.vmware.com/v1\n      kind: MySQL\n      name: ' + #databaseName"
+      - include: [ "config/mysql.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "mysql-database"
+                with: "#databaseResourceName"
+          - type: ReplaceText
+            substitutions:
+              - text: "mysqldatabase"
+                with: "#databaseName"
 
-    - include: [ "config/mysql.yaml" ]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "mysql-database"
-              with: "#databaseResourceName"
-        - type: ReplaceText
-          substitutions:
-            - text: "mysqldatabase"
-              with: "#databaseName"
+      - include: [ "pom.xml" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>mysql</groupId>\\s*<artifactId>mysql-connector-java</artifactId>[\\s\\S]+</dependencies>))"
+              with: |
+                '${startOfDependencies}
+                        <dependency>
+                            <groupId>mysql</groupId>
+                            <artifactId>mysql-connector-java</artifactId>
+                        </dependency>${existingDependencies}'
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfFlywayDependency><dependency>[\\s]*<groupId>org.flywaydb</groupId>\\s*<artifactId>flyway-core</artifactId>[\\s]*</dependency>)(?<theRestOfPom>[\\s\\S]*)"
+              with: |
+                '${startOfFlywayDependency}
+                        <dependency>
+                            <groupId>org.flywaydb</groupId>
+                            <artifactId>flyway-mysql</artifactId>
+                        </dependency>${theRestOfPom}'
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>mysql</artifactId>[\\s\\S]+</dependencies>))"
+              with: |
+                '${startOfDependencies}
+                        <dependency>
+                            <groupId>org.testcontainers</groupId>
+                            <artifactId>mysql</artifactId>
+                            <version>1.17.3</version>
+                            <scope>test</scope>
+                        </dependency>${existingDependencies}'
 
-    - include: [ "pom.xml" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>mysql</groupId>\\s*<artifactId>mysql-connector-java</artifactId>[\\s\\S]+</dependencies>))"
-            with: |
-              '${startOfDependencies}
-                      <dependency>
-                          <groupId>mysql</groupId>
-                          <artifactId>mysql-connector-java</artifactId>
-                      </dependency>${existingDependencies}'
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfFlywayDependency><dependency>[\\s]*<groupId>org.flywaydb</groupId>\\s*<artifactId>flyway-core</artifactId>[\\s]*</dependency>)(?<theRestOfPom>[\\s\\S]*)"
-            with: |
-              '${startOfFlywayDependency}
-                      <dependency>
-                          <groupId>org.flywaydb</groupId>
-                          <artifactId>flyway-mysql</artifactId>
-                      </dependency>${theRestOfPom}'
-        - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'testcontainers'"
-          regex:
-            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>mysql</artifactId>[\\s\\S]+</dependencies>))"
-            with: |
-              '${startOfDependencies}
-                      <dependency>
-                          <groupId>org.testcontainers</groupId>
-                          <artifactId>mysql</artifactId>
-                          <version>1.17.3</version>
-                          <scope>test</scope>
-                      </dependency>${existingDependencies}'
-        - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'in-memory'"
-          regex:
-            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.h2database</groupId>\\s*<artifactId>h2</artifactId>[\\s\\S]+</dependencies>))"
-            with: |
-              '${startOfDependencies}
-                      <dependency>
-                          <groupId>com.h2database</groupId>
-                          <artifactId>h2</artifactId>
-                          <scope>runtime</scope>
-                      </dependency>${existingDependencies}'
+      - include: [ "build.gradle.kts" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"mysql:mysql-connector-java[\\s\\S]+))"
+              with: |
+                '${startOfDependencies}
+                    implementation("mysql:mysql-connector-java")${existingDependencies}'
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
+              with: |
+                '${startOfFlywayDependency}
+                    implementation("org.flywaydb:flyway-mysql")${theRestOfBuild}'
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
+              with: |
+                '${startOfDependencies}
+                    testImplementation("org.testcontainers:mysql:1.17.3")${existingDependencies}'
 
-    - include: [ "build.gradle.kts" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"mysql:mysql-connector-java[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  implementation("mysql:mysql-connector-java")${existingDependencies}'
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
-            with: |
-              '${startOfFlywayDependency}
-                  implementation("org.flywaydb:flyway-mysql")${theRestOfBuild}'
-        - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'testcontainers'"
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  testImplementation("org.testcontainers:mysql:1.17.3")${existingDependencies}'
-        - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'in-memory'"
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"com.h2database:h2[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  implementation("com.h2database:h2")${existingDependencies}'
-
-    - include: [ "README.md" ]
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: ReplaceText
-          regex:
-            pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
-            with: |
-              '${existingContent}
-
-              > **_NOTE:_** Below you can find additional information concerning MySQL integration. 
-              
-              ## MySQL
-              ### Deployment
-              #### Tanzu Application Platform (TAP)
-              Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
-              Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
-
-              As with the local deployment a MySQL instance needs to be available at the cluster.
-              When using VMware Tanzu SQL with MySQL for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-MySQL-for-Kubernetes/index.html),
-              one could apply for an instance, and it will be automatically provisioned.
-
-              ```bash
-              \$ kubectl apply -f config/mysql.yaml
-              ```
-
-              The `workload.yaml` contains a reference to the MySQL instance.
-
-              > Note: if your mysql instance is in another namespace than your developer namespace, add the following to the workload.yaml:
-              ```metadata:
-                   annotations:
-                     serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: ''{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}''
-              ```
-              '
-        - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'in-memory'"
-          regex:
-            pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
-            with: |
-              '${existingContent}
-                  
-              ### Local
-              For local development an in-memory database is provided and configured with the local profile. 
+      - include: [ "README.md" ]
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: ReplaceText
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: |
+                '${existingContent}
+  
+                > **_NOTE:_** Below you can find additional information concerning MySQL integration. 
                 
-              > If you start the application locally please be sure that `local` profile is active.
-              '
-        - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'testcontainers'"
-          regex:
-            pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
-            with: |
-              '${existingContent}
-              
-              ### Local
-              Running a MySQL instance can easily be done by using `docker-compose`:
-              
-              ```bash
-              \$ docker-compose -f ./docker-compose-mysql.yaml up -d
-              ```
-              
-              > If you start the application locally please be sure that `local` profile is active.
-              '
-        
+                ## MySQL
+                ### Deployment
+                #### Tanzu Application Platform (TAP)
+                Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
+                Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
+  
+                As with the local deployment a MySQL instance needs to be available at the cluster.
+                When using VMware Tanzu SQL with MySQL for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-MySQL-for-Kubernetes/index.html),
+                one could apply for an instance, and it will be automatically provisioned.
+  
+                ```bash
+                \$ kubectl apply -f config/mysql.yaml
+                ```
+  
+                The `workload.yaml` contains a reference to the MySQL instance.
+  
+                > Note: if your mysql instance is in another namespace than your developer namespace, add the following to the workload.yaml:
+                ```metadata:
+                     annotations:
+                       serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: ''{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}''
+                ```
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'in-memory'"
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: |
+                '${existingContent}
+                    
+                ### Local
+                For local development an in-memory database is provided and configured with the local profile. 
+                  
+                > If you start the application locally please be sure that `local` profile is active.
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: |
+                '${existingContent}
+                
+                ### Local
+                Running a MySQL instance can easily be done by using `docker-compose`:
+                
+                ```bash
+                \$ docker-compose -f ./docker-compose-mysql.yaml up -d
+                ```
+                
+                > If you start the application locally please be sure that `local` profile is active.
+                '
+    
+    - condition: "#databaseIntegrationTestType == 'in-memory'"
+      merge:
+        - type: InvokeFragment
+          reference: spring-boot-h2
+        - include: [ "**" ]
+      onConflict: UseFirst
