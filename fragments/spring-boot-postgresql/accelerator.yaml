@@ -171,7 +171,7 @@ engine:
               pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"org.postgresql:postgresql[\\s\\S]+))"
               with: |
                 '${startOfDependencies}
-                    implementation("org.postgresql:postgresql")${existingDependencies}'
+                    runtimeOnly("org.postgresql:postgresql")${existingDependencies}'
           - type: ReplaceText
             condition: "#databaseIntegrationTestType == 'testcontainers'"
             regex:
