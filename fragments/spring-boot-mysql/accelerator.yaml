@@ -109,6 +109,7 @@ engine:
                         <dependency>
                             <groupId>mysql</groupId>
                             <artifactId>mysql-connector-java</artifactId>
+                            <scope>runtime</scope>
                         </dependency>${existingDependencies}'
           - type: ReplaceText
             regex:
@@ -139,7 +140,7 @@ engine:
               pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"mysql:mysql-connector-java[\\s\\S]+))"
               with: |
                 '${startOfDependencies}
-                    implementation("mysql:mysql-connector-java")${existingDependencies}'
+                    runtimeOnly("mysql:mysql-connector-java")${existingDependencies}'
           - type: ReplaceText
             regex:
               pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
