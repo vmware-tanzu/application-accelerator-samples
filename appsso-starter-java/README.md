@@ -4,15 +4,13 @@ This repository provides an example application used to set up an authentication
 
 ## Usage
 
-See ["Securing your first Workload" tutorial](https://docs.vmware.com/en/Application-Single-Sign-On-for-VMware-Tanzu/1.0/appsso/GUID-app-operators-tutorials-index.html)
+See ["Securing your first Workload" tutorial](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.3/tap/GUID-app-sso-app-operators-tutorials-securing-first-workload.html)
 on how to use this accelerator.
 
 ## Tips
 
-In order to succesfully deploy this sample, you need to perform the following steps:
+In order to successfully deploy this sample, you need to perform the following steps:
 
-- [Provision an AuthServer](https://docs.vmware.com/en/Application-Single-Sign-On-for-VMware-Tanzu/1.0/appsso/GUID-getting-started-provision-auth-server.html)
-    - Provide `issuerURI` that works for the shared doamin used for your cluster
-- [Expose your authorization server through HTTPProxy](https://docs.vmware.com/en/Application-Single-Sign-On-for-VMware-Tanzu/1.0/appsso/GUID-getting-started-expose-httpproxy.html)
-    - Set the `spec.virtualhost.fqdn` to match your `issuerURI` provided above
-- [Deploying the sample application as a Workload](https://docs.vmware.com/en/Application-Single-Sign-On-for-VMware-Tanzu/1.0/appsso/GUID-app-operators-tutorials-index.html#deploying-the-sample-application-as-a-workload-4)
+- [Provision an AuthServer](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.3/tap/GUID-app-sso-getting-started-provision-auth-server.html)
+- [Provision a ClientRegistration](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.3/tap/GUID-app-sso-getting-started-client-registration.html)
+- [Deploying the sample application as a Workload](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.3/tap/GUID-app-sso-app-operators-tutorials-securing-first-workload.html#deploying-the-sample-application-as-a-workload-4)
