@@ -2,166 +2,253 @@ accelerator:
   options:
     - name: databaseName
       inputType: text
-      defaultValue: "postgres-database"
+      defaultValue: "customer-database"
       label: Database Instance Name
       description: The name of the database instance this application will use (can be existing one in the cluster)
       required: true
+    - name: databaseIntegrationTestType
+      inputType: select
+      label: Use testcontainers or in-memory database for integration testing
+      description: "In order to test database interaction you can choose between testcontainers (https://www.testcontainers.org/) or in-memory database (H2). Preferable use testcontainers as that is providing the target database technology."
+      choices:
+        - value: "testcontainers"
+          text: "Testcontainers"
+        - value: "in-memory"
+          text: "Java In-Memory Database (H2)"
+      defaultValue: "testcontainers"
+      required: true
+
+  imports:
+    - name: spring-boot-h2
 
 engine:
   let:
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
-  merge:
-    - include: [ "docker-compose-postgresql.yaml" ]
+  chain:
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "docker-compose-postgresql.yaml", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "**/workload.yaml", "config/postgres.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
 
-    - include: [ "**/src/main/resources/application-local.properties" ]
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:postgresql://localhost:5432/development'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.username'"
-            value: "'user'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.password'"
-            value: "'password'"
+      - include: [ "docker-compose-postgresql.yaml" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
 
-    - include: [ "**/src/test/resources/application-test.properties" ]
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:tc:postgresql:14:////postgres'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.driverClassName'"
-            value: "'org.testcontainers.jdbc.ContainerDatabaseDriver'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.test.database.replace'"
-            value: "'NONE'"
+      - include: [ "**/src/main/resources/application-local.properties" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:postgresql://localhost:5432/development'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.username'"
+              value: "'user'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.password'"
+              value: "'password'"
 
-    - include: [ "**/workload.yaml" ]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "postgres-database"
-              with: "#databaseResourceName"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.yaml.MergeYaml
-          options:
-            key: "'$.spec'"
-            yaml: "'serviceClaims:\n  - name: postgres-db\n    ref:\n      apiVersion: sql.tanzu.vmware.com/v1\n      kind: Postgres\n      name: ' + #databaseName"
+      - include: [ "**/src/main/resources/application-local.properties" ]
+        condition: "#databaseIntegrationTestType == 'in-memory'"
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:h2:mem:testdb'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.driverClassName'"
+              value: "'org.h2.Driver'"
 
-    - include: [ "config/postgres.yaml" ]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "postgres-database"
-              with: "#databaseResourceName"
-        - type: ReplaceText
-          substitutions:
-            - text: "postgresdatabase"
-              with: "#databaseName"
+      - include: [ "**/src/test/resources/application-test.properties" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:tc:postgresql:14:////postgres'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.driverClassName'"
+              value: "'org.testcontainers.jdbc.ContainerDatabaseDriver'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.test.database.replace'"
+              value: "'NONE'"
 
-    - include: [ "pom.xml" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
-            with: |
-              '${startOfDependencies}
-                      <dependency>
-                          <groupId>org.postgresql</groupId>
-                          <artifactId>postgresql</artifactId>
-                          <scope>runtime</scope>
-                      </dependency>${existingDependencies}'
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
-            with: |
-              '${startOfDependencies}
-                      <dependency>
-                          <groupId>org.testcontainers</groupId>
-                          <artifactId>postgresql</artifactId>
-                          <version>1.17.3</version>
-                          <scope>test</scope>
-                      </dependency>${existingDependencies}'
+      - include: [ "**/src/test/resources/application-test.properties" ]
+        condition: "#databaseIntegrationTestType == 'in-memory'"
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:h2:mem:testdb'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.driverClassName'"
+              value: "'org.h2.Driver'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.test.database.replace'"
+              value: "'NONE'"
 
-    - include: [ "build.gradle.kts" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"org.postgresql:postgresql[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  implementation("org.postgresql:postgresql")${existingDependencies}'
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:postgresql[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  implementation("org.testcontainers:postgresql:1.17.3")${existingDependencies}'
+      - include: [ "**/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "postgres-database"
+                with: "#databaseResourceName"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.yaml.MergeYaml
+            options:
+              key: "'$.spec'"
+              yaml: "'serviceClaims:\n  - name: postgres-db\n    ref:\n      apiVersion: sql.tanzu.vmware.com/v1\n      kind: Postgres\n      name: ' + #databaseResourceName"
 
-    - include: [ "README.md" ]
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: ReplaceText
-          regex:
-            pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
-            with: |
-              '${existingContent}
+      - include: [ "config/postgres.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "postgres-database"
+                with: "#databaseResourceName"
+          - type: ReplaceText
+            substitutions:
+              - text: "postgresdatabase"
+                with: "#databaseName"
 
-              ##########################################################################################
-              > **_NOTE:_** Below you can find additional information concerning PostgreSQL integration. 
-              
-              ## PostgreSQL
-              ### Local
-              Running a PostgreSQL instance can easily be done by using `docker-compose`:
+      - include: [ "pom.xml" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
+              with: |
+                '${startOfDependencies}
+                        <dependency>
+                            <groupId>org.postgresql</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <scope>runtime</scope>
+                        </dependency>${existingDependencies}'
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
+              with: |
+                '${startOfDependencies}
+                        <dependency>
+                            <groupId>org.testcontainers</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <version>1.17.3</version>
+                            <scope>test</scope>
+                        </dependency>${existingDependencies}'
+
+      - include: [ "build.gradle.kts" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"org.postgresql:postgresql[\\s\\S]+))"
+              with: |
+                '${startOfDependencies}
+                    runtimeOnly("org.postgresql:postgresql")${existingDependencies}'
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:postgresql[\\s\\S]+))"
+              with: |
+                '${startOfDependencies}
+                    testImplementation("org.testcontainers:postgresql:1.17.3")${existingDependencies}'
+
+      - include: [ "README.md" ]
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: ReplaceText
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: |
+                '${existingContent}
+  
+                > **_NOTE:_** Below you can find additional information concerning PostgreSQL integration. 
                 
-              ```bash
-              \$ docker-compose -f ./docker-compose-postgresql.yml up -d
-              ```
+                ## PostgreSQL
+                ### Deployment
+                #### Tanzu Application Platform (TAP)
+                Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
+                Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
+  
+                As with the local deployment a PostgreSQL instance needs to be available at the cluster.
+                When using VMware Tanzu SQL with Postgres for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html),
+                one could apply for an instance, and it will be automatically provisioned.
+  
+                > Note: please define the storage class to be used for the PostgreSQL storage.
+  
+                ```bash
+                \$ kubectl apply -f config/postgres.yaml
+                ```
+  
+                The `workload.yaml` contains a reference to the PostgreSQL instance.
+  
+                > Note: if your postgres instance is in another namespace than your developer namespace, add the following to the workload.yaml:
+                ```metadata:
+                     annotations:
+                       serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: ''{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}''
+                ```
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'in-memory'"
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: |
+                '${existingContent}
                 
-              > If you start the application locally please be sure that `local` profile is active.
-              
-              ### Deployment
-              #### Tanzu Application Platform (TAP)
-              Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
-              Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
-              
-              As with the local deployment a PostgreSQL instance needs to be available at the cluster.
-              When using VMware Tanzu SQL with Postgres for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html),
-              one could apply for an instance, and it will be automatically provisioned.
-              
-              > Note: please define the storage class to be used for the PostgreSQL storage.
-              
-              ```bash
-              \$ kubectl apply -f config/postgres.yaml
-              ```
-              
-              The `workload.yaml` contains a reference to the PostgreSQL instance.
-              
-              > Note: if your postgres instance is in another namespace than your developer namespace, add the following to the workload.yaml:
-              ```metadata:
-                   annotations:
-                     serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: ''{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}''
-              ```
-              '
+                ### Local
+                For local development an in-memory database is provided and configured with the local profile. 
+                
+                > If you start the application locally please be sure that `local` profile is active.
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: |
+                '${existingContent}
+                
+                ### Local
+                Running a PostgreSQL instance can easily be done by using `docker-compose`:
+                
+                ```bash
+                \$ docker-compose -f ./docker-compose-postgresql.yml up -d
+                ```
+                
+                > If you start the application locally please be sure that `local` profile is active.
+                '
+
+    - condition: "#databaseIntegrationTestType == 'in-memory'"
+      merge:
+        - type: InvokeFragment
+          reference: spring-boot-h2
+        - include: [ "**" ]
+      onConflict: UseFirst

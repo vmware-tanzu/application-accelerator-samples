@@ -83,6 +83,24 @@ Use the `id` received by previous POST call.
 curl -X GET http://localhost:8080/api/customer-profiles/{id}
 ```
 
+### Get all customer profiles
+```bash
+curl -X GET http://localhost:8080/api/customer-profiles/
+```
+
+### Update customer profile
+Use the `id` received by previous creation call.
+```bash
+curl -X PATCH -H 'Content-Type: application/json' http://localhost:8080/api/customer-profiles/{id} -d '{"firstName": "Jane", "lastName": "Little"}'
+```
+
+### Delete customer profile
+Use the `id` received by previous creation call.
+```bash
+curl -X DELETE http://localhost:8080/api/customer-profiles/{id}
+```
+
+
 # Deployment
 ## Tanzu Application Platform (TAP)
 Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a

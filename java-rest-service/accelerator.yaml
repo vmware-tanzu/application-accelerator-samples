@@ -36,6 +36,16 @@ accelerator:
           text: Maven (https://maven.apache.org/)
         - value: gradle
           text: Gradle (https://gradle.org/)
+    - name: databaseType
+      inputType: select
+      label: Database to use
+      choices:
+        - value: "postgres"
+          text: PostgreSQL
+        - value: "mysql"
+          text: MySQL
+      defaultValue: "postgres"
+      required: true
     - name: databaseMigrationTool
       inputType: select
       required: true
@@ -72,6 +82,8 @@ accelerator:
         name: exposeOpenAPIEndpoint
   imports:
   - name: java-version
+  - name: spring-boot-postgresql
+  - name: spring-boot-mysql
   - name: live-update
     expose:
       - name: liveUpdateIDESupport
@@ -79,7 +91,6 @@ accelerator:
           name: buildTool
           value: 'maven'
       - name: sourceRepositoryPrefix
-  - name: spring-boot-postgresql
   - name: tap-workload
 
 engine:
@@ -88,8 +99,6 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
-#    - name: databaseResourceName
-#      expression: '#databaseName.toLowerCase()'
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -238,6 +247,20 @@ engine:
       - include: [ "**" ]
       onConflict: UseFirst
 
+    - condition: "#databaseType == 'postgres'"
+      merge:
+        - type: InvokeFragment
+          reference: spring-boot-postgresql
+        - include: [ "**" ]
+      onConflict: UseFirst
+
+    - condition: "#databaseType == 'mysql'"
+      merge:
+      - type: InvokeFragment
+        reference: spring-boot-mysql
+      - include: [ "**" ]
+      onConflict: UseFirst
+
     - condition: "#buildTool == 'maven'"
       merge:
         - type: InvokeFragment
@@ -249,12 +272,6 @@ engine:
         - type: InvokeFragment
           reference: tap-workload
         - include: [ "**" ]
-      onConflict: UseFirst
-
-    - merge:
-      - type: InvokeFragment
-        reference: spring-boot-postgresql
-      - include: [ "**" ]
       onConflict: UseFirst
 
     - merge:

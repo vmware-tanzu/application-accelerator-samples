@@ -22,7 +22,7 @@ public class CustomerProfileService {
     @Transactional
     public CustomerProfileResponse create(CustomerProfileCreateRequest dto) {
         var entity = new CustomerProfileEntity()
-                .setId(UUID.randomUUID())
+                .setId(UUID.randomUUID().toString())
                 .setFirstName(dto.getFirstName())
                 .setLastName(dto.getLastName())
                 .setEmail(dto.getEmail());
@@ -33,8 +33,7 @@ public class CustomerProfileService {
 
     @Transactional
     public Optional<CustomerProfileResponse> change(String id, CustomerProfileChangeRequest dto) {
-        return safeConvertToUUID(id)
-                .flatMap(repository::findById)
+        return repository.findById(id)
                 .map(entity -> {
                     entity.setFirstName(dto.getFirstName());
                     entity.setLastName(dto.getLastName());
@@ -45,7 +44,7 @@ public class CustomerProfileService {
 
     @Transactional
     public void delete(String id) {
-        safeConvertToUUID(id).ifPresent(repository::deleteById);
+        repository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
@@ -54,23 +53,12 @@ public class CustomerProfileService {
     }
 
     public Optional<CustomerProfileResponse> getById(String idRepresentation) {
-        return safeConvertToUUID(idRepresentation)
-                .flatMap(repository::findById)
-                .map(this::entityToDto);
-    }
-
-    private Optional<UUID> safeConvertToUUID(String stringRepresentation) {
-        try {
-            return Optional.of(UUID.fromString(stringRepresentation));
-        }
-        catch (IllegalArgumentException ignorable) {
-            return Optional.empty();
-        }
+        return repository.findById(idRepresentation).map(this::entityToDto);
     }
 
     private CustomerProfileResponse entityToDto(CustomerProfileEntity entity) {
         return new CustomerProfileResponse(
-                entity.getId().toString(),
+                entity.getId(),
                 entity.getFirstName(),
                 entity.getLastName(),
                 entity.getEmail());

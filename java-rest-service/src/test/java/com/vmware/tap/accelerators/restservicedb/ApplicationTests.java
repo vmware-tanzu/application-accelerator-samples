@@ -54,7 +54,7 @@ class ApplicationTests {
         assertThat(location).isNotNull();
 
         var profileId = location.getPath().substring(location.getPath().lastIndexOf("/") + 1);
-        var profile = repository.findById(UUID.fromString(profileId));
+        var profile = repository.findById(profileId);
         assertThat(profile).isPresent();
     }
 
@@ -62,7 +62,7 @@ class ApplicationTests {
     void shouldReturnCustomerProfileOnGetRequest() {
 
         var entity = new CustomerProfileEntity()
-                .setId(UUID.randomUUID())
+                .setId(UUID.randomUUID().toString())
                 .setFirstName("Joe")
                 .setLastName("Doe")
                 .setEmail("joe.doe@test.org");

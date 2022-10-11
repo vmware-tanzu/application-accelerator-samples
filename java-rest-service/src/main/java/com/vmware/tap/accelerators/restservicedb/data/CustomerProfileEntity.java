@@ -6,11 +6,11 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity(name = "CustomerProfile")
-@Table(name = "CUSTOMER_PROFILE")
+@Table(name = "customer_profile")
 public class CustomerProfileEntity {
 
     @Id
-    private UUID id;
+    private String id;
 
     private String firstName;
 
@@ -18,11 +18,11 @@ public class CustomerProfileEntity {
 
     private String email;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public CustomerProfileEntity setId(UUID id) {
+    public CustomerProfileEntity setId(String id) {
         this.id = id;
         return this;
     }
