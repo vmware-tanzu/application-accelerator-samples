@@ -1,0 +1,28 @@
+### Git ###
+.git/
+.github/
+.gitmodules
+**/.gitattributes
+**/.gitignore
+
+### VS Code ###
+.vscode/
+
+### JetBrains ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Tilt ###
+Tiltfile
+
+### Node and Angular ###
+.angular/
+dist/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+### Accelerator ###
+accelerator-log.md
