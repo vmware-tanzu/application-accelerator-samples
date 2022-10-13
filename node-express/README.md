@@ -1,24 +1,3 @@
-# spring-cloud-serverless repo
-
-This repo provides a simple serverless Hello web app based on Spring Boot and Spring Cloud Function.
-
-It can be deployed as a standalone web app or as a Kubernetes Deployment and Service or on Azure Spring Apps.
-
-## The code
-
-> **NOTE**: The project is configured for Java 11, if you prefer a different version, then modify the `java.version` property in `pom.xml`.
-
-The project contains the following Function bean definition:
-
-```text
-	@Bean
-	public Function<String, String> hello() {
-		return (in) -> {
-			return "Hello " + in;
-		};
-	}
-```
-
 # node-express
 
 This is a starter ExpressJs project, you can run it as a standalone
