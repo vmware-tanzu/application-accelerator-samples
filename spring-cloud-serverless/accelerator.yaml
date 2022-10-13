@@ -31,11 +31,23 @@ accelerator:
     dependsOn:
       name: deploymentType
       value: workload
-  imports:
-  - name: java-version
-  - name: tap-workload
+  - name: javaVersion
+    inputType: select
+    label: Java version to use
+    choices:
+      - value: "1.8"
+        text: Java 8
+      - value: "11"
+        text: Java 11
+      - value: "17"
+        text: Java 17
+    defaultValue: "11"
+    required: true
 
 engine:
+  let:
+  - name: workloadJavaVersion
+    expression: "#javaVersion == '1.8' ? '8' : #javaVersion"
   chain:
   - merge:
     - include: [ "**" ]
@@ -73,11 +85,6 @@ engine:
           with: "': ' + #artifactId"
       - type: RewritePath
         rewriteTo: "'config/' + #filename"
-      - merge:
-          - type: InvokeFragment
-            reference: tap-workload
-          - include: [ "**" ]
-        onConflict: UseFirst
     - include: [ "kubernetes/tap/Tiltfile" ]
       condition: "#deploymentType == 'workload'"
       chain:
@@ -127,7 +134,43 @@ engine:
             with: "#artifactId"
         - type: RewritePath
           rewriteTo: "'README.md'"
+
+  # Java Version
   - merge:
     - include: [ "**" ]
-    - type: InvokeFragment
-      reference: java-version
+    # Maven
+    - include: [ "pom.xml" ]
+      chain:
+      - type: ReplaceText
+        regex:
+          pattern: "<java.version>.*<"
+          with: "'<java.version>' + #javaVersion + '<'"
+
+    # Gradle Kotlin DSL
+    - include: [ "build.gradle.kts" ]
+      chain:
+      - type: ReplaceText
+        regex:
+          pattern: "(?<unmodified>JavaVersion\\.VERSION_)(\\d+)"
+          with: "'${unmodified}' + #javaVersion.replace('.', '_')"
+
+    # workload.yaml
+    # This requires that BP_JVM_VERSION is already defined in the workload.yaml
+    - include: [ "config/workload.yaml" ]
+      chain:
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
+        options:
+          oldKeyPath: '"$.spec.build.env[?(@.name == ''BP_JVM_VERSION'')].value"'
+          value: "#workloadJavaVersion"
+
+    # *.yaml
+    # Targeting Pipeline definitions. Update versions of OpenJdk image.
+    - include: [ "config/*.yaml" ]
+      exclude: [ "config/workload.yaml" ]
+      chain:
+      - type: ReplaceText
+        regex:
+          pattern: "(?<unmodified>image: bellsoft/liberica-openjdk-\\w*:)(\\d+)"
+          with: "'${unmodified}' + #workloadJavaVersion"
+  # End Java Version
