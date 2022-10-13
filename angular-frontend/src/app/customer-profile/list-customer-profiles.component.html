@@ -1,0 +1,12 @@
+<span *ngIf="couldNotRetrieve">
+  Could not retrieve customer profiles...
+</span>
+<table mat-table [dataSource]="dataSource">
+  <mat-text-column name="id" headerText="#" class="header-cell"></mat-text-column>
+  <mat-text-column name="firstName" headerText="First Name"></mat-text-column>
+  <mat-text-column name="lastName" headerText="Last Name"></mat-text-column>
+  <mat-text-column name="email" headerText="Email"></mat-text-column>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+</table>
