@@ -69,17 +69,24 @@ accelerator:
       defaultValue: "Manage customer profiles"
       dependsOn:
         name: exposeOpenAPIEndpoint
-  imports:
-  - name: java-version
-  - name: live-update
-    expose:
-      - name: liveUpdateIDESupport
-        dependsOn:
-          name: buildTool
-          value: 'maven'
-      - name: sourceRepositoryPrefix
-  - name: spring-boot-postgresql
-  - name: tap-workload
+    - name: javaVersion
+      inputType: select
+      label: Java version to use
+      choices:
+        - value: "1.8"
+          text: Java 8
+        - value: "11"
+          text: Java 11
+        - value: "17"
+          text: Java 17
+      defaultValue: "11"
+      required: true
+    - name: databaseName
+      inputType: text
+      defaultValue: "postgres-database"
+      label: Database Instance Name
+      description: The name of the database instance this application will use (can be existing one in the cluster)
+      required: true
 
 engine:
   let:
@@ -87,8 +94,10 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
-#    - name: databaseResourceName
-#      expression: '#databaseName.toLowerCase()'
+    - name: databaseResourceName
+      expression: '#databaseName.toLowerCase()'
+    - name: workloadJavaVersion
+      expression: "#javaVersion == '1.8' ? '8' : #javaVersion"
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -231,30 +240,193 @@ engine:
                 with: "#workloadResourceName"
     # End Workload Resource name
 
+    # Java Version
     - merge:
-      - type: InvokeFragment
-        reference: java-version
       - include: [ "**" ]
-      onConflict: UseFirst
+      # Maven
+      - include: [ "pom.xml" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "<java.version>.*<"
+              with: "'<java.version>' + #javaVersion + '<'"
 
-    - condition: "#buildTool == 'maven'"
-      merge:
-        - type: InvokeFragment
-          reference: live-update
-        - include: [ "**" ]
-      onConflict: UseFirst
+      # Gradle Kotlin DSL
+      - include: [ "build.gradle.kts" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<unmodified>JavaVersion\\.VERSION_)(\\d+)"
+              with: "'${unmodified}' + #javaVersion.replace('.', '_')"
 
+      # workload.yaml
+      # This requires that BP_JVM_VERSION is already defined in the workload.yaml
+      - include: [ "config/workload.yaml" ]
+        chain:
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.yaml.ChangeValue
+            options:
+              oldKeyPath: '"$.spec.build.env[?(@.name == ''BP_JVM_VERSION'')].value"'
+              value: "#workloadJavaVersion"
+
+      # *.yaml
+      # Targeting Pipeline definitions. Update versions of OpenJdk image.
+      - include: [ "config/*.yaml" ]
+        exclude: [ "config/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<unmodified>image: bellsoft/liberica-openjdk-\\w*:)(\\d+)"
+              with: "'${unmodified}' + #workloadJavaVersion"
+    # End Java Version
+
+    # Postgres Database
     - merge:
-        - type: InvokeFragment
-          reference: tap-workload
-        - include: [ "**" ]
-      onConflict: UseFirst
-
-    - merge:
-      - type: InvokeFragment
-        reference: spring-boot-postgresql
       - include: [ "**" ]
-      onConflict: UseFirst
+
+      - include: [ "docker-compose-postgresql.yaml" ]
+
+      - include: [ "src/main/resources/application-local.properties" ]
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:postgresql://localhost:5432/development'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.username'"
+              value: "'user'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.password'"
+              value: "'password'"
+
+      - include: [ "src/test/resources/application-test.properties" ]
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:tc:postgresql:14:////postgres'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.driverClassName'"
+              value: "'org.testcontainers.jdbc.ContainerDatabaseDriver'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.test.database.replace'"
+              value: "'NONE'"
+
+      - include: [ "config/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "postgres-database"
+                with: "#databaseResourceName"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.yaml.MergeYaml
+            options:
+              key: "'$.spec'"
+              yaml: "'serviceClaims:\n  - name: postgres-db\n    ref:\n      apiVersion: sql.tanzu.vmware.com/v1\n      kind: Postgres\n      name: ' + #databaseName"
+
+      - include: [ "pom.xml" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
+              with: |
+                '${startOfDependencies}
+                        <dependency>
+                            <groupId>org.postgresql</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <scope>runtime</scope>
+                        </dependency>${existingDependencies}'
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
+              with: |
+                '${startOfDependencies}
+                        <dependency>
+                            <groupId>org.testcontainers</groupId>
+                            <artifactId>postgresql</artifactId>
+                            <version>1.17.3</version>
+                            <scope>test</scope>
+                        </dependency>${existingDependencies}'
+
+      - include: [ "build.gradle.kts" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"org.postgresql:postgresql[\\s\\S]+))"
+              with: |
+                '${startOfDependencies}
+                    implementation("org.postgresql:postgresql")${existingDependencies}'
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:postgresql[\\s\\S]+))"
+              with: |
+                '${startOfDependencies}
+                    implementation("org.testcontainers:postgresql:1.17.3")${existingDependencies}'
+
+      - include: [ "README.md" ]
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: ReplaceText
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: |
+                '${existingContent}
+  
+                ##########################################################################################
+                > **_NOTE:_** Below you can find additional information concerning PostgreSQL integration. 
+                
+                ## PostgreSQL
+                ### Local
+                Running a PostgreSQL instance can easily be done by using `docker-compose`:
+                
+                ```bash
+                \$ docker-compose -f ./docker-compose-postgresql.yml up -d
+                ```
+                
+                > If you start the application locally please be sure that `local` profile is active.
+                
+                ### Deployment
+                #### Tanzu Application Platform (TAP)
+                Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
+                Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
+                
+                As with the local deployment a PostgreSQL instance needs to be available at the cluster.
+                When using VMware Tanzu SQL with Postgres for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html),
+                one could apply for an instance, and it will be automatically provisioned.
+                
+                > Note: please define the storage class to be used for the PostgreSQL storage.
+                
+                ```bash
+                \$ kubectl apply -f config/postgres.yaml
+                ```
+                
+                The `workload.yaml` contains a reference to the PostgreSQL instance.
+                
+                > Note: if your postgres instance is in another namespace than your developer namespace, add the following to the workload.yaml:
+                ```metadata:
+                     annotations:
+                       serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: ''{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}''
+                ```
+                '
+    # End Postgres Database
 
     - merge:
       - exclude: [ "**/*.java" ]

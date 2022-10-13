@@ -7,17 +7,6 @@ accelerator:
   - express
   - tanzu
 
-  # options for the UI
-  options:
-  - name: includeTap
-    label: "Include TAP deployment resources?"
-    inputType: checkbox
-    dataType: boolean
-    defaultValue: true
-
-  imports:
-    - name: tap-workload
-
 engine:
   merge:
     - include: [ "**" ]
@@ -29,19 +18,12 @@ engine:
         - text: node-express
           with: "#artifactId"
     - include: [ "config/workload.yaml" ]
-      condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
         - text: node-express
           with: "#artifactId"
-      - merge:
-          - type: InvokeFragment
-            reference: tap-workload
-          - include: [ "**" ]
-        onConflict: UseFirst
     - include: [ "catalog/catalog-info.yaml" ]
-      condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
@@ -58,7 +40,6 @@ engine:
           - text: node-express
             with: "#artifactId"
       - include: [ "DEPLOYING.md" ]
-        condition: "#includeTap"
         chain:
         - type: ReplaceText
           substitutions:
