@@ -20,4 +20,3 @@ spec:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: java-server-side-ui

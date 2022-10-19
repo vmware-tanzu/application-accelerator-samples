@@ -19,7 +19,7 @@ spec:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: spring-smtp-gateway/smtp-gateway
+    subPath: smtp-gateway
   params:
   - name: ports
     value:
@@ -47,4 +47,4 @@ spec:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: spring-smtp-gateway/smtp-sink
+    subPath: smtp-sink

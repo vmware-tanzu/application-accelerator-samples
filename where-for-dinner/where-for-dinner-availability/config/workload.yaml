@@ -1,7 +1,7 @@
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
-  name: where-for-dinner-notify
+  name: where-for-dinner-availability
   labels:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: where-for-dinner
@@ -21,4 +21,4 @@ spec:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: where-for-dinner/where-for-dinner-notify
+    subPath: where-for-dinner-availability
