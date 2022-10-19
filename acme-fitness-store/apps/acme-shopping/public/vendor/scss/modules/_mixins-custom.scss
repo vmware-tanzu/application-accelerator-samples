@@ -1,0 +1,135 @@
+@mixin ondrTransition($duration: 0.2s, $ease: ease-out) {
+    -webkit-transition: all $duration $ease;
+    -moz-transition: all $duration $ease;
+    transition: all $duration $ease;
+}
+
+@mixin textShadow ($x-axis: 0, $y-axis: 1px, $blur: 1px, $color: #fff) {
+    text-shadow: $x-axis $y-axis $blur $color;
+}
+
+@mixin rounded($radius: 5px) {
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin uppercase() {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+@mixin no-uppercase() {
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+@mixin horizontal-gradient($startColor: #eee, $endColor: white) {
+    background-color: $startColor;
+    background-image: -webkit-gradient(linear, left top, right top, from($startColor), to($endColor));
+    background-image: -webkit-linear-gradient(left, $startColor, $endColor);
+    background-image: -moz-linear-gradient(left, $startColor, $endColor);
+    background-image: -ms-linear-gradient(left, $startColor, $endColor);
+    background-image: -o-linear-gradient(left, $startColor, $endColor);
+    background-image: linear-gradient(left, $startColor, $endColor);
+}
+
+@mixin gradient($direction, $startColor: rgb(184,205,6), $endColor: rgb(12,224,184)) {
+    background-image: -moz-linear-gradient( $direction, $startColor 0%, $endColor 100%);
+    background-image: -webkit-linear-gradient( $direction, $startColor 0%, $endColor 100%);
+    background-image: -ms-linear-gradient( $direction, $startColor 0%, $endColor 100%);
+    background-image: linear-gradient( $direction, $startColor 0%, $endColor 100%);
+}
+
+// Position Mixin
+@mixin position($pos: null, $top: null, $right: null, $bottom: null, $left: null) {
+   position: $pos;
+   top: $top;
+   right: $right;
+   bottom: $bottom;
+   left: $left;
+}
+
+// Font Mixin
+@mixin font($size: null, $weight: null, $color: null, $line-height: null) {
+   font-size: $size;
+   font-weight: $weight;
+   color: $color;
+   line-height: $line-height;
+}
+
+// Square Mixin
+@mixin square($dimension: null, $background: null, $color: null,  $text-align: null) {
+   width: $dimension;
+   height: $dimension;
+   line-height: $dimension;
+   background: $background;
+   color: $color;
+   text-align: $text-align;
+}
+
+// Size Mixin
+@mixin size($width, $height, $background: null) {
+    width: $width;
+    height: $height;
+}
+
+// Font Mixin
+@mixin font($size, $weight, $color, $line-height, $align, $transform, $spacing) {
+    font-size: $size;
+    font-weight: $weight;
+    color: $color;
+    line-height: $line-height;
+    text-align: $align;
+    text-transform: $transform;
+    letter-spacing: $spacing;
+}
+
+// Placeholder Mixin
+@mixin placeholder {
+  &::-moz-placeholder { @content }
+  &::-webkit-input-placeholder { @content }
+  &:-ms-input-placeholder { @content }
+}
+
+
+@mixin button-outline-white-variant($color, $color-hover: color-yiq($color), $active-background: $color, $active-border: $color) {
+    color: $color;
+    background-color: #fff;
+    background-image: none;
+    border-color: $color;
+  
+    &:hover {
+      color: $color-hover;
+      background-color: $active-background;
+      border-color: $active-border;
+    }
+  
+    &:focus,
+    &.focus {
+      box-shadow: 0 0 0 $btn-focus-width rgba($color, .5);
+    }
+  
+    &.disabled,
+    &:disabled {
+      color: $color;
+      background-color: transparent;
+    }
+  
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+      color: color-yiq($active-background);
+      background-color: $active-background;
+      border-color: $active-border;
+  
+      &:focus {
+        // Avoid using mixin so we can pass custom focus shadow properly
+        @if $enable-shadows and $btn-active-box-shadow != none {
+          box-shadow: $btn-active-box-shadow, 0 0 0 $btn-focus-width rgba($color, .5);
+        } @else {
+          box-shadow: 0 0 0 $btn-focus-width rgba($color, .5);
+        }
+      }
+    }
+  }

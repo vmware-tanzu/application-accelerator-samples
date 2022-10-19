@@ -1,0 +1,15 @@
+[
+  {
+    "predicates": [
+      "Path=/**",
+      "Method=GET"
+    ],
+    "order": "1000",
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "frontend"
+    ]
+  }
+]

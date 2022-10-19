@@ -1,0 +1,56 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGateway
+metadata:
+  name: gateway
+spec:
+  api:
+    serverUrl: http://acme-fitness.my.domain.io
+    title: "ACME Fitness Gateway"
+    description: "ACME Fitness application for Spring Cloud Gateway commercial product demos."
+    documentation: "https://github.com/spring-cloud-services-samples/acme_fitness_demo/"
+    version: "1.0.0-K8s"
+    cors:
+      allowedOrigins:
+      - "http://api-portal.my.domain.io"
+  observability:
+    metrics:
+      wavefront:
+        enabled: true
+    tracing:
+      wavefront:
+        enabled: true
+    wavefront:
+      secret: wavefront-secret
+      application: acme-fitness-demo
+      service: acme-gateway
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: scg-ingress
+spec:
+  rules:
+  - host: acme-fitness.my.domain.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: gateway
+            port:
+              number: 80
+
+# Use v1beta1 Ingress if v1 is not available on your cluster
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: scg-ingress
+# spec:
+#   rules:
+#     - host: acme-fitness.my.domain.io
+#       http:
+#         paths:
+#           - backend:
+#               serviceName: gateway
+#               servicePort: 80

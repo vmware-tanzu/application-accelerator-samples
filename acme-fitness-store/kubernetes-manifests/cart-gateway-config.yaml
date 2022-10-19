@@ -1,0 +1,54 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: cart-route-config
+spec:
+  service:
+    name: cart
+    port: 5000
+  routes:
+    - predicates:
+        - Path=/cart/item/add/{userId}
+        - Method=POST
+      filters:
+        - StripPrefix=0
+      tags:
+        - cart
+    - predicates:
+        - Path=/cart/item/modify/{userId}
+        - Method=POST
+      filters:
+        - StripPrefix=0
+      tags:
+        - cart
+    - predicates:
+        - Path=/cart/items/{userId}
+        - Method=GET
+      filters:
+        - StripPrefix=0
+      tags:
+        - cart
+    - predicates:
+        - Path=/cart/clear/{userId}
+        - Method=GET
+      filters:
+        - StripPrefix=0
+      tags:
+        - cart
+    - predicates:
+        - Path=/cart/total/{userId}
+        - Method=GET
+      filters:
+        - StripPrefix=0
+      tags:
+        - cart
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: cart-routes
+spec:
+  gatewayRef:
+    name: gateway
+  routeConfigRef:
+    name: cart-route-config

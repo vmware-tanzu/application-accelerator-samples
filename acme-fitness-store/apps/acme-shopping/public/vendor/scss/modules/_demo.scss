@@ -1,0 +1,29 @@
+/*
+
+=====================
+STYLE SWITCHER FOR DEMO
+=====================
+
+*/
+
+#style-switch-button {
+    position: fixed;
+    top: 120px;
+    left: 0px;
+    border-radius: 0;
+    z-index: 2;
+}
+
+#style-switch {
+    width: 300px;
+    padding: 20px;
+    position: fixed;
+    top: 160px;
+    left: 0;
+    background: #fff;
+    border: solid 1px $gray-lighter;
+    z-index: 2000;
+    h4 {
+        color: $gray;
+    }
+}

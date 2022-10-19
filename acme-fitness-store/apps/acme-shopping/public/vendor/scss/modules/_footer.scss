@@ -1,0 +1,48 @@
+/*
+   /////////////////////////////////////////////////////
+     FOOTER
+   /////////////////////////////////////////////////////
+*/
+
+#footer {
+    background: $gray-lightest;
+    padding: 60px 0;
+    ul {
+        padding-left: 0;
+        list-style: none;
+        a {
+            color: $gray-light;
+            &:hover {
+                color: $brand-primary;
+                text-decoration: none;
+            }
+        }
+    }
+    .social {
+        a {
+            color: $gray;
+            font-size: 25px;
+            margin: 0 10px 0 0;
+            &:hover {
+                color: $brand-primary;
+            }
+        }
+    }
+}
+
+#copyright {
+    background: #333;
+    color: #ccc;
+    padding: 20px 0;
+    font-size: $font-size-sm;
+    line-height: 28px;
+    p {
+        margin: 0;
+        @include media-breakpoint-down(md) {
+            float: none !important;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+    }
+}

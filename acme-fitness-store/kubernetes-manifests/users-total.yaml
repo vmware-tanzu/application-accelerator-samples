@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: users
+  labels:
+    app: acmefit
+    service: users
+spec:
+  ports:
+    - name: http-users
+      protocol: TCP
+      port: 8083
+  selector:
+    app: acmefit
+    service: users
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users
+  labels:
+    app: acmefit
+    service: users
+spec:
+  selector:
+    matchLabels:
+      app: acmefit
+      service: users
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: acmefit
+        service: users
+    spec:
+      volumes:
+      - name: acmefit-users-data
+        emptyDir: {}
+      containers:
+      - image: springcloudservices/fitness-users:wavefront
+        imagePullPolicy: "Always"
+        name: users
+        env:
+        - name: USERS_DB_HOST
+          value: 'users-mongo'
+        - name: USERS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: users-mongo-pass
+              key: password
+        - name: USERS_DB_PORT
+          value: '27017'
+        - name: USERS_DB_USERNAME
+          value: 'mongoadmin'
+        - name: USERS_PORT
+          value: '8083'
+        - name: REDIS_HOST
+          value: 'users-redis'
+        - name: REDIS_PORT
+          value: '6379'
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: users-redis-pass
+              key: password
+        - name: ZIPKIN_URL
+          value: http://wavefront-proxy:9411
+        ports:
+        - containerPort: 8083
+          name: users
+        volumeMounts:
+        - mountPath: "/data"
+          name: "acmefit-users-data"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"

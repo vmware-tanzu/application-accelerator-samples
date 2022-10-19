@@ -1,0 +1,49 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: acme-fitness
+
+secretGenerator:
+- name: cart-redis-pass
+  envs:
+  - .env.secret
+- name: catalog-mongo-pass
+  envs:
+  - .env.secret
+- name: order-postgres-pass
+  envs:
+  - .env.secret
+- name: users-mongo-pass
+  envs:
+  - .env.secret
+- name: users-redis-pass
+  envs:
+  - .env.secret
+- name: wavefront-secret
+  envs:
+  - .env.wavefront.secret
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+  - namespace.yaml
+  - wavefront.yaml
+  - gateway.yaml
+  - cart-redis-total.yaml
+  - cart-total.yaml
+  - cart-gateway-config.yaml
+  - catalog-db-initdb-configmap.yaml
+  - catalog-db-total.yaml
+  - catalog-total.yaml
+  - catalog-gateway-config.yaml
+  - payment-total.yaml
+  - order-db-total.yaml
+  - order-total.yaml
+  - order-gateway-config.yaml
+  - users-db-initdb-configmap.yaml
+  - users-db-total.yaml
+  - users-redis-total.yaml
+  - users-total.yaml
+  - users-gateway-config.yaml
+  - frontend-total.yaml
+  - frontend-gateway-config.yaml

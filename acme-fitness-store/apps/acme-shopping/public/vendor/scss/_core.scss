@@ -1,0 +1,42 @@
+
+/*
+=========================================
+=========================================
+
+     M I N I M A L  T E M P L A T E
+
+=========================================
+========================================= */
+
+// functions.scss - Bootstrap functions
+@import "modules/functions";
+// bootstrap mixins
+@import "modules/mixins";
+// variables-custom.scss - to change colour variant, rounded corners, etc.
+@import "modules/variables-custom";
+// custom mixins
+@import "modules/mixins-custom";
+
+// navbar
+@import "modules/navbar";
+// general styles - body, .ribbon, .box
+@import "modules/general";
+// homepage elements - advantages, slider, full screen homepage
+@import "modules/homepage";
+// ecommerce stuff
+@import "modules/products"; 
+// pages - 404, contact, text page
+@import "modules/pages"; 
+// blog
+@import "modules/blog"; 
+// basket, checkout, customer pages
+@import "modules/checkout-customer";
+// footer
+@import "modules/footer";
+// demo styling
+@import "modules/demo";
+// bootstrap base stylesheet overrides
+@import "theme";
+// megamenu
+@import "modules/yamm";
+

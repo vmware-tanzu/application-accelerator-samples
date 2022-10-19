@@ -1,0 +1,141 @@
+#!/usr/bin/python
+
+import logging
+import os
+from statsd import StatsClient
+from logging.config import dictConfig
+from logging.handlers import SysLogHandler
+import random
+
+random.seed(999)
+
+import redis
+import pickle
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['wsgi'],
+        'propagate': True,
+    }
+})
+
+#statsd = StatsClient(host='localhost',
+#                     port=8125,
+#                     prefix='fitcycle-api-server',
+#                     maxudpsize=512)
+
+import json
+import requests
+from requests.auth import HTTPBasicAuth
+
+from flask import Flask, render_template, jsonify, flash, request
+app = Flask(__name__)
+app.debug=True
+
+try:
+    rConn=redis.StrictRedis(host='localhost', port=6379, password='', db=0)
+    app.logger.info('initiated redis connection %s', rConn)
+    rConn.ping()
+    app.logger.info('Connected to redis')
+except Exception as ex:
+    app.logger.error('Error for redis connection %s', ex)
+    exit('Failed to connect, terminating')
+
+def insertData():
+
+    app.logger.info('inserting data')
+
+    rConn.flushall()
+
+    keys = ['bill', 'dan', 'shri']
+
+    data=[
+        {"item1":{'description':'fitband', 'quantity':1, 'price':4.5}},
+        {"item2":{'description':'redpants', 'quantity':1, 'price':400}},
+        ]
+
+    payload=json.dumps(data)
+
+    for x in keys:
+        rConn.set(x, payload)
+
+#    rConn.set('test', 'this better work')
+
+
+def getitems(userid):
+
+    if rConn.exists(userid):
+        unpacked_data = json.loads(rConn.get(userid).decode('utf-8'))
+        app.logger.info('got data')
+    else:
+        app.logger.info('empty - no data for key %s', userid)
+        unpacked_data = 0
+
+    return unpacked_data
+
+#@statsd.timer('getCartItems')
+@app.route('/getcartitems/<userid>', methods=['GET'])
+def getcartitems(userid):
+    app.logger.info('getting all items on cart')
+    PPTable = getitems(userid)
+    if PPTable:
+        packed_data=jsonify({userid+'-cart': PPTable})
+    else:
+        app.logger.info('no items in cart found for %s', userid)
+        return ('',204)
+
+    return packed_data
+
+@app.route('/getallcarts', methods=['GET'])
+def getallcarts():
+    app.logger.info('getting carts')
+
+    carts=[]
+    cart={}
+
+    for x in rConn.keys():
+        cleankey=x.decode('utf-8')
+        cart['id']=cleankey
+        cart['cart']=json.loads(rConn.get(cleankey).decode('utf-8'))
+        carts.append(cart)
+        cart={}
+
+    return jsonify({'all carts': carts})
+
+@app.route('/additem/<userid>', methods=['GET', 'POST'])
+def add_message(userid):
+    content = request.json
+    app.logger.info('inserting cart for %s with following contents %s',userid, json.dumps(content))
+
+    jsonobj=getitems(userid)
+    if (jsonobj):
+        jsonobj.append(content)
+        payload=json.dumps(jsonobj)
+        rConn.set(userid, payload)
+    else:
+        payload=json.dumps(content)
+        rConn.set(userid, payload)
+
+    return jsonify({"userid":userid})
+
+
+
+@app.route('/')
+def hello_world(name=None):
+	return render_template('hello.html')
+
+
+if __name__ == '__main__':
+
+    insertData()
+    app.run(host='0.0.0.0', port=5000)

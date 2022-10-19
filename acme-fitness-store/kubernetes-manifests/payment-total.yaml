@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  labels:
+    app: acmefit
+    service: payment
+spec:
+  ports:
+    - name: http-payment
+      protocol: TCP
+      port: 9000
+  selector:
+    app: acmefit
+    service: payment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  labels:
+    app: acmefit
+    service: payment
+spec:
+  selector:
+    matchLabels:
+      app: acmefit
+      service: payment
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: acmefit
+        service: payment
+    spec:
+      containers:
+      - image: springcloudservices/fitness-payment:wavefront
+        name: payment
+        env:
+        - name: PAYMENT_PORT
+          value: '9000'
+        - name: USERS_HOST
+          value: 'users'
+        - name: USERS_PORT
+          value: '8083'
+        - name: ZIPKIN_URL
+          value: http://wavefront-proxy:9411
+        ports:
+        - containerPort: 9000
+          name: payment

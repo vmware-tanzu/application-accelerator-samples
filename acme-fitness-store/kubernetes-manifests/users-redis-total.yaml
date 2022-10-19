@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-redis
+  labels:
+    app: acmefit
+    service: users-redis
+spec:
+  ports:
+    - port: 6379
+      name: redis-users
+  selector:
+    app: acmefit
+    service: users-redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-redis
+  labels:
+    app: acmefit
+    service: users-redis
+spec:
+  selector:
+    matchLabels:
+      app: acmefit  # has to match .spec.template.metadata.labels
+      service: users-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: acmefit  # has to match .spec.selector.matchLabels
+        service: users-redis
+    spec:
+      containers:
+        - name: users-redis
+          image: bitnami/redis
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "100Mi"
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: "TCP"
+          env:
+          - name: REDIS_HOST
+            value: 'users-redis'
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: users-redis-pass
+                key: password
+          volumeMounts:
+            - mountPath: /var/lib/redis
+              name: users-redis-data
+#            - mountPath: /etc/redis
+#              name: redis-config
+      volumes:
+        - name: users-redis-data
+          emptyDir: {}
+#        - name: redis-config
+#          configMap:
+#            name: redis-config
+#            items:
+#              - key: redis-config
+#                path: redis.conf

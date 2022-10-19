@@ -1,0 +1,179 @@
+/*
+   /////////////////////////////////////////////////////
+     NAVBAR
+   /////////////////////////////////////////////////////
+*/
+
+.navbar {
+    background: #fff;
+    border-bottom: solid 1px $gray-200;
+    font-family: $font-family-sans-serif;
+    .dropdown-menu {
+        border-radius: 0;
+        margin-top: .5rem;
+        border-color: $gray-200;
+        @include media-breakpoint-down(md) {
+            border: none;
+        }
+    }
+    .nav-item.active .nav-link {
+        font-weight: bold;
+    }
+    .nav-link {
+        font-size: 13px;
+        @include uppercase();
+        text-decoration: none;
+    }
+    .yamm-fw .dropdown-menu {
+        padding: 0;
+    }
+    .normal-dropdown .dropdown-item {
+        font-size: 13px;
+        @include uppercase();
+        font-weight: 400;
+    }
+    .footer {
+        background: $brand-primary;
+        padding: 30px 30px;
+        h4 {
+            font-size: $h3-font-size;
+            @include uppercase();
+            color: #fff;
+            margin: 5px 0 0 0;
+        }
+        .buttons {
+            .btn,
+            .btn.btn-default {
+                @include uppercase();
+                color: $gray;
+            }
+        }
+    }
+    /*  content of the megamenu */
+    .yamm-content {
+        h3 {
+            font-size: $h4-font-size;
+            font-weight: 700;
+            @include uppercase();
+            padding-bottom: 10px;
+            margin-top: 5px;
+            border-bottom: dotted 1px $gray-lighter;
+            @include media-breakpoint-down(md) {
+                font-size: $h5-font-size;
+            }
+        }
+        h5 {
+            @include uppercase();
+            margin-top: 5px;
+            padding-bottom: 10px;
+            border-bottom: solid 1px $gray-400;
+        }
+        ul {
+            margin-bottom: 1.5rem;
+            padding: 0;
+            li {
+                list-style-type: none;
+                border-bottom: solid 1px $gray-200;
+                @include uppercase();
+                padding: 8px 0;
+                a {
+                    color: $gray-light;
+                    font-size: $font-size-sm;
+                    display: block;
+                    &:hover {
+                        color: $brand-primary;
+                        text-decoration: none;
+                    }
+                }
+                &:last-of-type {
+                    border-bottom: 0;
+                }
+            }
+        }
+        .banner {
+            margin-bottom: 10px;
+        }
+    }
+    /* search area */
+    .search-area {
+        display: none;
+    }
+    .search-area-inner {
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        form {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px;
+        }
+        .form-group {
+            position: relative;
+        }
+        input {
+            background: none;
+            border: none;
+            border-bottom: 1px solid #aaa;
+            width: 100%;
+            padding: 15px 0;
+            font-family: $font-family-base;
+            outline: none;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        button {
+            position: absolute;
+            right: 0;
+            bottom: 15px;
+            background: none;
+            border: none;
+            outline: none;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            cursor: pointer;
+            color: #555;
+        }
+    }
+}
+
+.fixed-top .navbar-collapse {
+    max-height: 340px;
+    overflow-y: auto;
+}
+
+/*
+   /////////////////////////////////////////////////////
+     MODAL LOGIN
+   /////////////////////////////////////////////////////
+*/
+
+#login-modal {
+    overflow: hidden;
+    .modal-header {
+        h4 {
+            @include uppercase();
+        }
+    }
+    form {
+        margin-bottom: $line-height-computed;
+    }
+    a {
+        color: $brand-primary;
+    }
+    p {
+        font-weight: 300;
+        margin-bottom: $line-height-computed;
+        font-size: $font-size-base - 1;
+    }
+}
+
+.modal-backdrop {
+    z-index: 1035;
+}
