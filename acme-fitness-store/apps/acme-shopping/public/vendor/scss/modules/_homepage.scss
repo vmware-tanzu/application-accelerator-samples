@@ -1,0 +1,217 @@
+#intro {
+    background: url('../img/home.jpg') no-repeat center top;
+    height: calc(#{"100vh - 60px"});
+    min-height: 650px;
+    background-size: cover !important;
+    background-position: center center !important;
+    .intro-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        text-align: center;
+        transform: translate(-50%, -30%);
+        font-family: $font-family-sans-serif;
+        text-shadow: 0 1px 2px rgba(0,0,0,.6);
+        h1 {
+            @include uppercase();
+            font-size: 50px;
+            color: #fff;
+            margin-bottom: 40px;
+            @include media-breakpoint-down(md) {
+                font-size: 40px;
+            }
+            @include media-breakpoint-down(sm) {
+                font-size: 25px;
+            }
+        }
+        h3 {
+            color: #fff;
+            margin-bottom: 40px;
+            @include media-breakpoint-down(sm) {
+                font-size: 15px;
+                margin-bottom: 20px;
+            }
+        }
+        .btn {
+            text-shadow: none;
+            @include media-breakpoint-down(md) {
+                font-size: 14px;
+            }
+        }
+        .carousel-caption {
+            @include media-breakpoint-down(md) {
+                left: 10%;
+                right: 10%;
+            }
+        }
+    }
+    .container,
+    .row {
+        position: relative;
+    }
+}
+
+
+/* advantages homepage */
+
+#advantages {
+    margin-top: $grid-gutter-width;
+    p {
+        clear: both;
+        color: $gray;
+        text-align: center;
+        margin-bottom: 40px;
+        font-style: italic;
+        font-size: $font-size-lg;
+        strong {
+            color: $brand-primary;
+        }
+    }
+    .box.no-border {
+        text-align: left;
+        margin: 0;
+        .icon {
+            color: $gray-500;
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        h4 {
+            font-size: 16px;
+            margin-top: 5px;
+            font-weight: 400;
+            @include uppercase();
+            color: #ccc;
+            a {
+                color: #ccc;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
+
+
+/* homepage slider */
+
+#slider {
+    .item {
+        margin: 0 15px;
+    }
+    a img {
+        @include ondrTransition;
+    }
+    a:hover img {
+        opacity: .8;
+    }
+}
+
+
+/* Homepage fullscreen slider */
+
+.hero {
+    margin-top: -30px;
+    color: #fff;
+    background: none;
+    padding: 0 !important;
+    &::before {
+        display: none;
+    }
+    .item {
+        padding: 10px 0;
+        min-height: calc(#{"100vh - 60px"});
+        background-size: cover !important;
+        background-position: center center !important;
+        color: #fff;
+    }
+    h5 {
+        font-family: $font-family-serif !important;
+        font-weight: 400;
+        @include uppercase;
+        color: #fff;
+        text-shadow: $carousel-text-shadow;
+    }
+    h1 {
+        @include uppercase;
+        font-size: 3em;
+        color: #fff;
+        text-shadow: $carousel-text-shadow;
+    }
+    p {
+        font-family: $font-family-serif !important;
+        font-style: italic;
+        font-size: 1.2em;
+        padding: 0 50px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+        text-shadow: $carousel-text-shadow;
+    }
+    .owl-prev,
+    .owl-next {
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        text-align: center;
+        color: #333;
+        line-height: 40px;
+        top: 50%;
+        margin-top: -20px;
+        border-radius: 50%;
+        opacity: 1;
+        transition: all 0.4s;
+        font-size: 18px;
+        position: absolute;
+        &:hover {
+            background: $brand-primary;
+            color: #fff;
+        }
+    }
+    .owl-prev {
+        left: 20px;
+    }
+    .owl-next {
+        right: 20px;
+    }
+    .owl-dots {
+        position: absolute;
+        bottom: 20px;
+        text-align: center;
+        width: 100%;
+    }
+    .owl-dots .owl-dot {
+        display: inline-block;
+        zoom: 1;
+        *display: inline;
+    }
+    .owl-dots .owl-dot span {
+        width: 10px;
+        height: 10px;
+        margin: 5px 7px;
+        background: #D6D6D6;
+        display: block;
+        transition: opacity 200ms ease;
+        border-radius: 30px;
+    }
+    .owl-dots .owl-dot.active span,
+    .owl-dots .owl-dot:hover span {
+        background: $brand-primary;
+    }
+}
+
+
+/* breadcrumbs */
+
+.breadcrumb {
+    font-family: $font-family-sans-serif;
+    font-size: .75rem;
+    @include uppercase();
+    background-color: $white;
+}
+
+.breadcrumb-item {
+    // The separator between breadcrumbs (by default, a forward-slash: "/")
+    + .breadcrumb-item::before {
+      color: $breadcrumb-divider-color;
+      content: "#{$breadcrumb-divider}";
+    }
+}

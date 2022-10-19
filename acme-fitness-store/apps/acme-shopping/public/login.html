@@ -1,0 +1,69 @@
+<div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Customer login</h4>
+            <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+        </div>
+        <div class="modal-body">
+            <div id="login-message"></div>
+            <p class="text-center">
+                <button id="login" class="btn btn-outline-primary"><i class="fa fa-sign-in"></i> Log in
+                </button>
+            </p>
+        </div>
+    </div>
+</div>
+<script src="js/client.js"></script>
+<script src="js/jwt-decode.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.ajaxSetup({
+            contentType: "application/json; charset=utf-8"
+        });
+
+        $('#login').click(function () {
+            location.href = '/acme-login'
+        });
+
+        getUserInfo(function ({userId, userName}) {
+
+            console.log("This is user id " + userId);
+            if (userName) {
+                $.cookie('user_id', userId)
+                console.log('user logged in: ', userName);
+                $("#login-modal").find('.modal-title').text('Customer Info')
+                $("#login-modal").find('.modal-body').html('Logged in as <strong>' + userName + '</strong> <p></p> ' +
+                    '<button id="logout" type="button" class="btn btn-primary">Logout</button>')
+
+                $('#logout').click(function () {
+                    $.ajax({
+                        url: "/scg-logout?redirect=/",
+                        type: 'GET',
+                        success: function (data, textStatus, jqXHR) {
+                            $.removeCookie('logged_in', { path: '/' });
+                            $.removeCookie('refresh_token', { path: '/' });
+                            $.removeCookie('SCG-SESSION', { path: '/' });
+                            $.removeCookie('user_id', { path: '/' });
+                            $.removeCookie('currency', { path: '/' });
+                            sessionStorage.clear();
+                            location.reload();
+                            console.log("Successfully Logged out user")
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log('error: ' + JSON.stringify(jqXHR));
+                            console.log('error: ' + textStatus);
+                            console.log('error: ' + errorThrown);
+                            $("#login-message").html('<div class="alert alert-danger">Failed to logout</div>');
+                        }
+                    });
+                });
+
+            } else {
+                console.log('user not logged in');
+            }
+
+        });
+
+    });
+</script>

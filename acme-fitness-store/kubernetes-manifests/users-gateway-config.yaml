@@ -1,0 +1,59 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: users-route-config
+spec:
+  service:
+    name: users
+    port: 8083
+  routes:
+    - predicates:
+        - Path=/login
+        - Method=POST
+      filters:
+        - StripPrefix=0
+      tags:
+        - users
+      model:
+        requestBody:
+          description: Authenticate and Login user. The payload to a valid response contains an `access_token` which is used to make requests to other services to get data. The `refresh_token` is used to request new `access_token`. If both `refresh_token` and `access_token` expire, then the user needs to log back in again.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+    - predicates:
+        - Path=/users/{id}
+        - Method=GET
+      filters:
+        - StripPrefix=0
+      tags:
+        - users
+    - predicates:
+        - Path=/users/logout
+        - Method=POST
+      filters:
+        - StripPrefix=1
+      tags:
+        - users
+    - predicates:
+        - Path=/verify-token
+        - Method=POST
+      filters:
+        - StripPrefix=0
+      tags:
+        - users
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: users-routes
+spec:
+  gatewayRef:
+    name: gateway
+  routeConfigRef:
+    name: users-route-config

@@ -1,0 +1,382 @@
+/*
+   /////////////////////////////////////////////////////
+     ECOMMERCE PAGES
+   /////////////////////////////////////////////////////
+*/
+
+.sidebar-menu {
+    background: #fff;
+    margin: 0 0 1.5rem;
+    border-left: none !important;
+    border-right: none !important;
+    .card-body {
+        .custom-control-label {
+            &::before {
+                top: 0;
+            }
+            &::after {
+                top: 0;
+            }
+        }
+        span.colour {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: solid 1px $gray-400;
+            vertical-align: top;
+            margin-right: 5px;
+            &.white {
+                background: #fff;
+            }
+            &.red {
+                background: red;
+            }
+            &.green {
+                background: green;
+            }
+            &.blue {
+                background: blue;
+            }
+            &.yellow {
+                background: yellow;
+            }
+        }
+        label {
+            color: $gray-light;
+            font-size: $font-size-sm;
+            &:hover {
+                color: $gray;
+            }
+        }
+    }
+    ul.nav.category-menu {
+        margin-bottom: $line-height-computed;
+        @include uppercase();
+        font-weight: 700;
+        >li>a {
+            font-family: $font-family-sans-serif;
+            .badge {
+                font-weight: bold;
+                background: $gray-lighter;
+                margin-top: .2rem;
+            }
+            &.active,
+            &:hover {
+                .badge {
+                    color: $brand-primary;
+                    background: $white;
+                }
+            }
+            &:hover {
+                background: $brand-primary;
+                color: $white;
+            }
+        }
+    }
+    ul.nav ul {
+        list-style: none;
+        padding-left: 0;
+        font-family: $font-family-sans-serif;
+        li {
+            display: block;
+            a {
+                position: relative;
+                font-weight: normal;
+                display: block;
+                padding: .7rem 1rem;
+                padding-left: 30px;
+                font-size: $font-size-sm;
+                color: $gray-light;
+                &:hover,
+                &:focus &.active {
+                    text-decoration: none;
+                    background-color: $gray-lightest;
+                }
+            }
+        }
+    }
+}
+
+.info-bar {
+    line-height: 32px;
+    vertical-align: middle;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    .products-showing {
+        @include media-breakpoint-down(md) {
+            text-align: center;
+        }
+    }
+    .products-number-sort {
+        font-size: 13px;
+        @include media-breakpoint-down(md) {
+            text-align: center;
+            margin-top: 10px;
+        }
+    }
+    .products-number {
+        text-align: center;
+        strong {
+            margin-right: 10px;
+        }
+    }
+    .products-sort-by {
+        text-align: right;
+        select {
+            margin-left: 10px;
+            width: 100px;
+        }
+    }
+}
+
+.product {
+    background: #fff;
+    border-bottom: solid 1px darken(#fff, 10%);
+    margin-bottom: $grid-gutter-width;
+    overflow: hidden;
+    text-align: center;
+    .image {
+        overflow: hidden;
+        position: relative;
+        img {
+            @include ondrTransition;
+        }
+        @include media-breakpoint-down(sm) {
+            img.img-fluid {
+                min-width: 100%;
+            }
+        }
+        .quick-view-button {
+            position: absolute;
+            top: 50%;
+            margin-top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            @include ondrTransition;
+            .btn {
+                opacity: 0;
+                font-size: 11px;
+                text-align: center;
+            }
+            @include media-breakpoint-down(sm) {
+                display: none;
+            }
+        }
+    }
+    .text {
+        padding: 10px;
+        h3 {
+            font-size: $h4-font-size;
+            font-weight: 700;
+            height: $h4-font-size * $headings-line-height * 2;
+            a {
+                color: $gray;
+            }
+        }
+        p.price {
+            font-size: $h4-font-size;
+            del {
+                color: $gray-light;
+            }
+        }
+    }
+    .buttons {
+        clear: both;
+        position: absolute;
+        display: none;
+        bottom: 0;
+        width: 100%;
+        border: solid 1px transparent;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        @include ondrTransition;
+        text-align: center;
+        .btn {
+            margin-bottom: 20px;
+        }
+    }
+    &:hover {
+        border-bottom: solid 1px darken(#fff, 50%);
+        top: 0;
+        .quick-view-button {
+            .btn {
+                opacity: .8;
+            }
+        }
+        .image {
+            img {
+                transform: scale(1.1, 1.1);
+            }
+        }
+    }
+}
+
+.banner {
+    margin-bottom: $grid-gutter-width;
+    text-align: center;
+    img {
+        margin: 0 auto;
+    }
+    a:hover img {
+        opacity: .8;
+        @include ondrTransition;
+    }
+}
+
+.pages {
+    text-align: center;
+    .loadMore {
+        text-align: center;
+    }
+}
+
+.quick-view-main-image {
+    text-align: center;
+    img {
+        max-height: 350px;
+        margin: 0 auto;
+    }
+}
+
+#productMain,
+.quick-view {
+    margin-bottom: $grid-gutter-width;
+    .goToDescription {
+        font-size: $font-size-sm;
+        text-align: center;
+        a {
+            color: $gray-light;
+            text-decoration: underline;
+        }
+    }
+    .sizes {
+        text-align: center;
+        a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            background: #ccc;
+            margin-right: 10px;
+            line-height: 40px;
+            color: $gray;
+            text-align: center;
+            text-decoration: none;
+            font-family: $font-family-sans-serif;
+            font-size: 0.8rem;
+            &.active,
+            &:hover {
+                background: $brand-primary;
+                color: #fff;
+            }
+        }
+        input {
+            display: none;
+        }
+    }
+    .price {
+        font-size: 40px;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+}
+
+.quick-view {
+    margin-bottom: 20px;
+    .box {
+        margin-top: 20px;
+    }
+    h2 {
+        margin-top: 1rem;
+        text-align: center;
+    }
+    .sizes {
+        h3 {
+            font-size: $h4-font-size;
+            margin-top: 10px;
+        }
+        a {
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            line-height: 30px;
+        }
+    }
+    .price {
+        font-size: 28px;
+        margin: 20px 0;
+    }
+}
+
+.thumbs,
+#thumbs {
+    a {
+        display: block;
+        border: solid 1px transparent;
+        &.active {
+            border-color: $brand-primary;
+        }
+    }
+}
+
+.quick-view {
+    .thumbs {
+        margin-top: $grid-gutter-width;
+    }
+}
+
+.quick-view-social,
+#product-social {
+    text-align: center;
+    h4 {
+        font-weight: 700;
+        margin-bottom: 10px;
+        @include uppercase();
+        font-size: $h5-font-size;
+    }
+    p {
+        line-height: 26px;
+        a {
+            margin: 0 10px 0 0;
+            color: #fff;
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            border-radius: 13px;
+            line-height: 26px;
+            font-size: 15px;
+            text-align: center;
+            @include ondrTransition;
+            vertical-align: bottom;
+            i {
+                vertical-align: bottom;
+                line-height: 26px;
+            }
+            &.facebook {
+                background-color: #4460ae;
+            }
+            &.gplus {
+                background-color: #c21f25;
+            }
+            &.twitter {
+                background-color: #3cf;
+            }
+            &.instagram {
+                background-color: #cd4378;
+            }
+            &.email {
+                background-color: #4a7f45;
+            }
+        }
+    }
+    @include media-breakpoint-down(md) {
+        text-align: center;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    .modal-lg {
+        max-width: 1000px;
+    }
+}

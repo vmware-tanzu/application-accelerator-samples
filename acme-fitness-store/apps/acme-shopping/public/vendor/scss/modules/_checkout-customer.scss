@@ -1,0 +1,89 @@
+/*
+   /////////////////////////////////////////////////////
+     CHECKOUT + CUSTOMER ZONE
+   /////////////////////////////////////////////////////
+*/
+
+#checkout {
+    .nav {
+        margin-bottom: 20px;
+        border-bottom: solid 1px $brand-primary;
+        .nav-item {
+            .nav-link {
+                border-radius: 0;
+            }
+        }
+    }
+}
+
+#order-summary {
+    table {
+        margin-top: 20px;
+        td {
+            color: $gray-light;
+        }
+        tr.total {
+            td,
+            th {
+                font-size: $font-size-lg;
+                color: $gray;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+#checkout,
+#basket,
+#customer-order {
+    .table {
+        tbody {
+            tr {
+                td {
+                    vertical-align: middle;
+                    input {
+                        width: 50px;
+                        text-align: right;
+                    }
+                    img {
+                        width: 50px;
+                    }
+                }
+            }
+        }
+        tfoot {
+            font-size: $font-size-lg;
+        }
+    }
+}
+
+#customer-orders {
+    table {
+        tr {
+            th,
+            td {
+                vertical-align: baseline;
+            }
+        }
+    }
+}
+
+#customer-order {
+    .table {
+        tfoot th {
+            font-size: $font-size-lg;
+            font-weight: 300;
+        }
+    }
+    .addresses {
+        text-align: right;
+        margin-bottom: $grid-gutter-width;
+        p {
+            font-weight: 300;
+        }
+    }
+}
+
+#customer-account {
+    margin-bottom: $grid-gutter-width;
+}

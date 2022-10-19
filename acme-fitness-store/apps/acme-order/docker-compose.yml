@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: order_service_postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rootpassword
+      POSTGRES_DB: acmefit
+    ports:
+      - "5432:5432"

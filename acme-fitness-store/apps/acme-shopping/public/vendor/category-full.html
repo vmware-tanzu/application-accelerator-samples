@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minimal | e-commerce template</title>
+    <meta name="keywords" content="">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Google fonts - Montserrat and Merriweather-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Merriweather:400,400italic" rel="stylesheet" type="text/css">
+    <!-- Font Awesome css-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Owl Carousel-->
+    <link rel="stylesheet" href="vendor/owl.carousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendor/owl.carousel/assets/owl.theme.default.min.css">
+    <!-- Theme stylesheet-->
+    <link id="theme-stylesheet" href="css/style.default.css" rel="stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link href="css/custom.css" rel="stylesheet">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="favicon.png">
+  </head>
+  <body>
+    <!-- *** NAVBAR *** -->
+    <nav id="navbar" role="navigation" class="navbar navbar-light fixed-top navbar-expand-lg yamm justify-content-between">
+      <div class="search-area">
+        <div class="search-area-inner d-flex align-items-center justify-content-center">
+          <div class="close-btn"><i class="fa fa-close"></i></div>
+          <form action="#">
+            <div class="form-group">
+              <input type="search" name="search" id="search" placeholder="What are you looking for?">
+              <button type="submit" class="submit"><i class="fa fa-search"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="container"><a href="index.html" class="navbar-brand home"><img src="img/logo.png" alt="Minimal logo" class="d-none d-md-inline-block"><img src="img/logo-small.png" alt="Minimal logo" class="d-md-none"><span class="sr-only">Minimal - go to homepage</span></a>
+        <div class="navbar-buttons d-lg-none">
+          <button type="button" data-toggle="modal" data-target="#login-modal" class="btn btn-outline-secondary mr-1"><span class="sr-only">User login</span><i class="fa fa-users"></i></button>
+          <button class="btn btn-outline-secondary search mr-1"><span class="sr-only">Toggle search</span><i class="fa fa-search">               </i></button> <a href="basket.html" class="btn btn-outline-primary mr-1"><i class="fa fa-shopping-cart"></i><span class="d-none d-sm-inline">3 items in cart                </span></a>
+          <button type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" class="btn btn-outline-primary"><i class="fa fa-align-justify"></i><span class="sr-only">Toggle navigation</span></button>
+        </div>
+        <div id="navigation" class="navbar-collapse collapse">
+          <div class="navbar-nav mr-auto">
+            <div class="nav-item active dropdown normal-dropdown"><a id="homeDropdown" href="index.html" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Home</a>
+              <div aria-labelledby="homeDropdown" class="dropdown-menu"><a href="index.html" class="dropdown-item">Home - default</a><a href="index2.html" class="dropdown-item">Home - intro image</a><a href="index3.html" class="dropdown-item">Home - fullscreen slider <span class="badge badge-success">New</span></a></div>
+            </div>
+            <div class="nav-item dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">Men<b class="caret"></b></a>
+              <div class="dropdown-menu">
+                <div class="yamm-content">
+                  <div class="row">
+                    <div class="col-lg-3 d-none d-lg-inline-block"><img src="img/men.jpg" alt="" class="img-fluid"></div>
+                    <div class="col-sm-4 col-lg-3">
+                      <h3>Clothing</h3>
+                      <ul>
+                        <li><a href="category.html">T-shirts</a></li>
+                        <li><a href="category.html">Shirts</a></li>
+                        <li><a href="category.html">Pants</a></li>
+                        <li><a href="category.html">Accessories</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-4 col-lg-3">
+                      <h3>Clothing</h3>
+                      <ul>
+                        <li><a href="category.html">T-shirts</a></li>
+                        <li><a href="category.html">Shirts</a></li>
+                        <li><a href="category.html">Pants</a></li>
+                        <li><a href="category.html">Accessories</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-4 col-lg-3">
+                      <h3>Shoes</h3>
+                      <ul>
+                        <li><a href="category.html">Trainers</a></li>
+                        <li><a href="category.html">Sandals</a></li>
+                        <li><a href="category.html">Hiking shoes</a></li>
+                        <li><a href="category.html">Casual</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer clearfix d-none d-lg-block">
+                  <h4 class="pull-right">Men</h4>
+                  <div class="buttons pull-left"><a href="#" class="btn btn-light btn-sm mr-2"><i class="fa fa-tags"></i> Sales</a><a href="#" class="btn btn-light btn-sm mr-2"><i class="fa fa-star-o"></i> Favourites</a><a href="#" class="btn btn-light btn-sm mr-2"><i class="fa fa-globe"></i> Brands</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-item dropdown yamm-fw"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">Women <b class="caret"></b></a>
+              <div class="dropdown-menu">
+                <div class="yamm-content">
+                  <div class="row">
+                    <div class="col-lg-3 d-none d-lg-inline-block"><img src="img/women.jpg" alt="" class="img-fluid"></div>
+                    <div class="col-sm-4 col-lg-3">
+                      <h3>Clothing</h3>
+                      <ul>
+                        <li><a href="category.html">T-shirts</a></li>
+                        <li><a href="category.html">Shirts</a></li>
+                        <li><a href="category.html">Pants</a></li>
+                        <li><a href="category.html">Accessories</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-4 col-lg-3">
+                      <h3>Clothing</h3>
+                      <ul>
+                        <li><a href="category.html">T-shirts</a></li>
+                        <li><a href="category.html">Shirts</a></li>
+                        <li><a href="category.html">Pants</a></li>
+                        <li><a href="category.html">Accessories</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-4 col-lg-3">
+                      <h3>Shoes</h3>
+                      <ul>
+                        <li><a href="category.html">Trainers</a></li>
+                        <li><a href="category.html">Sandals</a></li>
+                        <li><a href="category.html">Hiking shoes</a></li>
+                        <li><a href="category.html">Casual</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer clearfix d-none d-lg-block">
+                  <h4 class="pull-right">Women</h4>
+                  <div class="buttons pull-left"><a href="#" class="btn btn-light btn-sm mr-2"><i class="fa fa-tags"></i> Sales</a><a href="#" class="btn btn-light btn-sm mr-2"><i class="fa fa-star-o"></i> Favourites</a><a href="#" class="btn btn-light btn-sm mr-2"><i class="fa fa-globe"></i> Brands</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-item dropdown yamm-fw"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" class="nav-link dropdown-toggle">Template <b class="caret"></b></a>
+              <div class="dropdown-menu">
+                <div class="yamm-content">
+                  <div class="row">
+                    <div class="col-sm-6 col-lg-3">
+                      <h5>Homepage</h5>
+                      <ul>
+                        <li><a href="index.html">Homepage - with slideshow</a></li>
+                        <li><a href="index2.html">Homepage - with intro image</a></li>
+                        <li><a href="index3.html">Homepage - fullscreen slider <span class="badge badge-success">New</span></a></li>
+                      </ul>
+                      <h5>Shop</h5>
+                      <ul>
+                        <li><a href="category.html">Category - sidebar right</a></li>
+                        <li><a href="category-left.html">Category - sidebar left</a></li>
+                        <li><a href="category-full.html">Category - full width</a></li>
+                        <li><a href="detail.html">Product detail</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                      <h5>User</h5>
+                      <ul>
+                        <li><a href="register.html">Register / login</a></li>
+                        <li><a href="customer-orders.html">Orders history</a></li>
+                        <li><a href="customer-order.html">Order history detail</a></li>
+                        <li><a href="customer-wishlist.html">Wishlist</a></li>
+                        <li><a href="customer-account.html">Customer account / change password</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                      <h5>Order process</h5>
+                      <ul>
+                        <li><a href="basket.html">Shopping cart</a></li>
+                        <li><a href="checkout1.html">Checkout - step 1</a></li>
+                        <li><a href="checkout2.html">Checkout - step 2</a></li>
+                        <li><a href="checkout3.html">Checkout - step 3</a></li>
+                        <li><a href="checkout4.html">Checkout - step 4</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                      <h5>Pages and blog</h5>
+                      <ul>
+                        <li><a href="blog.html">Blog listing</a></li>
+                        <li><a href="post.html">Blog Post</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="about.html">About <span class="badge badge-success">New</span></a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="text.html">Text page</a></li>
+                        <li><a href="text-left.html">Text page - left sidebar</a></li>
+                        <li><a href="404.html">404 page</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.yamm-content-->
+              </div>
+            </div>
+            <div class="nav-item"><a href="contact.html" class="nav-link">Contact</a></div>
+          </div>
+          <div class="d-none d-lg-block">
+            <button type="button" data-toggle="modal" data-target="#login-modal" class="btn btn-outline-secondary mr-1"><span class="sr-only">User login</span><i class="fa fa-users"></i></button> 
+            <button class="btn btn-outline-secondary search mr-1"><span class="sr-only">Toggle search</span><i class="fa fa-search">  </i></button> <a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-shopping-cart"></i><span class="hidden-sm">3 items <span class="hidden-md">in cart   </span></span></a>
+          </div>
+        </div>
+        <!-- /.nav-collapse-->
+      </div>
+    </nav>
+    <!-- /#navbar-->
+    <!-- *** NAVBAR END ***-->
+    <!--  *** LOGIN MODAL ***-->
+    <div tabindex="-1" role="dialog" class="modal">
+      <div role="document" class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true" class="modal fade">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Customer login</h4>
+            <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+          </div>
+          <div class="modal-body">
+            <form action="customer-orders.html" method="get">
+              <div class="form-group">
+                <input id="email" type="text" placeholder="email" class="form-control">
+              </div>
+              <div class="form-group">
+                <input id="password" type="password" placeholder="password" class="form-control">
+              </div>
+              <p class="text-center">
+                <button class="btn btn-outline-primary"><i class="fa fa-sign-in"></i> Log in</button>
+              </p>
+            </form>
+            <p class="text-center text-muted">Not registered yet?</p>
+            <p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is easy and done in 1 minute and gives you access
+              					to special discounts and much more!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- *** LOGIN MODAL END ***-->
+    <div id="all"> 
+      <div id="content">
+        <div class="container">
+          <ul class="breadcrumb justify-content-md-end justify-content-center">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Ladies      </li>
+          </ul>
+          <div class="box text-center">
+            <div class="row">
+              <div class="col-md-10 offset-md-1">
+                <h1>Ladies</h1>
+                <p class="text-muted">
+                  In our Ladies department we offer wide selection of the best products we have found and carefully selected
+                  worldwide. Pellentesque habitant morbi tristique senectus et netuss.
+                </p>
+              </div>
+            </div>
+            <div class="info-bar">
+              <div class="row">
+                <div class="col-lg-4 products-showing">Showing <strong>12</strong> of <strong>25</strong> products</div>
+                <div class="col-lg-8 products-number-sort">
+                  <form class="form-inline"></form>
+                  <div class="row">
+                    <div class="col-6 col-lg-7">
+                      <div class="products-number"><strong>Show</strong><a href="#" class="btn btn-sm btn-outline-primary mr-1">12</a> <a href="#" class="btn btn-outline-secondary btn-sm mr-1">24</a> <a href="#" class="btn btn-outline-secondary btn-sm mr-1">All</a> products</div>
+                    </div>
+                    <div class="col-6 col-lg-5">
+                      <div class="products-sort-by d-flex justify-content-end"><strong>Sort by</strong>
+                        <select name="sort-by" class="form-control form-control-sm">
+                          <option>Price</option>
+                          <option>Name</option>
+                          <option>Sales first</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row products">
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product1.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">Fur coat with very but very very long name</a></h3>
+                    <p class="price">$143.00</p>
+                  </div>
+                  <!-- /.text-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product2.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">White Blouse Armani</a></h3>
+                    <p class="price">
+                      <del>$280</del> $143.00
+                    </p>
+                  </div>
+                  <!-- /.text-->
+                  <div class="ribbon sale">
+                    <div class="theribbon">SALE</div>
+                    <div class="ribbon-background"></div>
+                  </div>
+                  <!-- /.ribbon-->
+                  <div class="ribbon new">
+                    <div class="theribbon">NEW</div>
+                    <div class="ribbon-background"></div>
+                  </div>
+                  <!-- /.ribbon-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product3.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">Black Blouse Versace</a></h3>
+                    <p class="price">$143.00</p>
+                  </div>
+                  <!-- /.text-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product4.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">Black Blouse Versace</a></h3>
+                    <p class="price">$143.00</p>
+                  </div>
+                  <!-- /.text-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product3.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">White Blouse Armani</a></h3>
+                    <p class="price">
+                      <del>$280</del> $143.00
+                    </p>
+                  </div>
+                  <!-- /.text-->
+                  <div class="ribbon sale">
+                    <div class="theribbon">SALE</div>
+                    <div class="ribbon-background"></div>
+                  </div>
+                  <!-- /.ribbon-->
+                  <div class="ribbon new">
+                    <div class="theribbon">NEW</div>
+                    <div class="ribbon-background"></div>
+                  </div>
+                  <!-- /.ribbon-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product4.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">White Blouse Versace</a></h3>
+                    <p class="price">$143.00</p>
+                  </div>
+                  <!-- /.text-->
+                  <div class="ribbon new">
+                    <div class="theribbon">NEW</div>
+                    <div class="ribbon-background"></div>
+                  </div>
+                  <!-- /.ribbon-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product2.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">White Blouse Versace</a></h3>
+                    <p class="price">$143.00</p>
+                  </div>
+                  <!-- /.text-->
+                  <div class="ribbon new">
+                    <div class="theribbon">NEW</div>
+                    <div class="ribbon-background"></div>
+                  </div>
+                  <!-- /.ribbon-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <div class="col-md-3 col-sm-4">
+                <div class="product">
+                  <div class="image"><a href="detail.html"><img src="img/product1.jpg" alt="" class="img-fluid image1"></a>
+                    <div class="quick-view-button"><a href="#" data-toggle="modal" data-target="#product-quick-view-modal" class="btn btn-outline-white-secondary btn-sm">Quick view</a></div>
+                  </div>
+                  <!-- /.image-->
+                  <div class="text">
+                    <h3><a href="detail.html">Fur coat</a></h3>
+                    <p class="price">$143.00</p>
+                  </div>
+                  <!-- /.text-->
+                </div>
+                <!-- /.product-->
+              </div>
+              <!-- /.col-md-4-->
+              <div id="product-quick-view-modal" tabindex="-1" role="dialog" aria-hidden="false" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                      <div class="row quick-view product-main">
+                        <div class="col-sm-6">
+                          <div class="quick-view-main-image"><img src="img/detailbig1.jpg" alt="" class="img-fluid"></div>
+                          <div class="ribbon ribbon-quick-view sale">
+                            <div class="theribbon">SALE</div>
+                            <div class="ribbon-background"></div>
+                          </div>
+                          <!-- /.ribbon-->
+                          <div class="ribbon ribbon-quick-view new">
+                            <div class="theribbon">NEW</div>
+                            <div class="ribbon-background"></div>
+                          </div>
+                          <!-- /.ribbon-->
+                          <div class="row thumbs">
+                            <div class="col-4"><a href="img/detailbig1.jpg" class="thumb"><img src="img/detailsquare.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="col-4"><a href="img/detailbig2.jpg" class="thumb"><img src="img/detailsquare2.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="col-4"><a href="img/detailbig3.jpg" class="thumb"><img src="img/detailsquare3.jpg" alt="" class="img-fluid"></a></div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <h2>White Blouse Armani</h2>
+                          <p class="text-muted text-small text-center">White lace top, woven, has a round neck, short sleeves, has knitted lining attached</p>
+                          <div class="box">
+                            <form>
+                              <div class="sizes">
+                                <h3>Available sizes</h3>
+                                <label for="size_s"><a href="#">S</a>
+                                  <input id="size_s" type="radio" name="size" value="s" class="size-input">
+                                </label>
+                                <label for="size_m"><a href="#">M</a>
+                                  <input id="size_m" type="radio" name="size" value="m" class="size-input">
+                                </label>
+                                <label for="size_l"><a href="#">L</a>
+                                  <input id="size_l" type="radio" name="size" value="l" class="size-input">
+                                </label>
+                              </div>
+                              <p class="price">$124.00</p>
+                              <p class="text-center">
+                                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-shopping-cart"></i> Add to cart</button>
+                                <button type="submit" data-toggle="tooltip" data-placement="top" title="Add to wishlist" class="btn btn-outline-secondary"><i class="fa fa-heart-o"></i></button>
+                              </p>
+                            </form>
+                          </div>
+                          <!-- /.box-->
+                          <div class="quick-view-social">
+                            <h4>Show it to your friends</h4>
+                            <p><a href="#" data-animate-hover="pulse" class="external facebook"><i class="fa fa-facebook"></i></a><a href="#" data-animate-hover="pulse" class="external gplus"><i class="fa fa-google-plus"></i></a><a href="#" data-animate-hover="pulse" class="external twitter"><i class="fa fa-twitter"></i></a><a href="#" data-animate-hover="pulse" class="email"><i class="fa fa-envelope"></i></a></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.modal-dialog-->
+              </div>
+              <!-- /.modal-->
+            </div>
+            <!-- /.products-->
+          </div>
+          <div class="banner"><a href="#"><img src="img/banner2.jpg" alt="" class="img-fluid"></a></div>
+          <div class="pages">
+            <p class="loadMore"><a href="#" class="btn btn-outline-primary"><i class="fa fa-chevron-down"></i> Load more</a></p>
+            <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-4">
+              <ul class="pagination">
+                <li class="page-item"><a href="#" class="page-link">«</a></li>
+                <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                <li class="page-item"><a href="#" class="page-link">3</a></li>
+                <li class="page-item"><a href="#" class="page-link">»</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <!-- *** FOOTER ***-->
+      <div id="footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-md-6">
+              <h4>Pages</h4>
+              <ul>
+                <li><a href="text.html">About us</a></li>
+                <li><a href="text-left.html">Terms and conditions</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact us</a></li>
+              </ul>
+              <hr>
+              <h4>User section</h4>
+              <ul>
+                <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+              </ul>
+              <hr class="d-block d-lg-none">
+            </div>
+            <!-- /.col-lg-3-->
+            <div class="col-lg-3 col-md-6">
+              <h4>Top categories</h4>
+              <h5>Men</h5>
+              <ul>
+                <li><a href="category.html">T-shirts</a></li>
+                <li><a href="category.html">Shirts</a></li>
+                <li><a href="category.html">Accessories</a></li>
+              </ul>
+              <h5>Ladies</h5>
+              <ul>
+                <li><a href="category.html">T-shirts</a></li>
+                <li><a href="category.html">Skirts</a></li>
+                <li><a href="category.html">Pants</a></li>
+                <li><a href="category.html">Accessories</a></li>
+              </ul>
+              <hr class="d-block d-lg-none">
+            </div>
+            <!-- /.col-lg-3-->
+            <div class="col-lg-3 col-md-6">
+              <h4>Where to find us</h4>
+              <p><strong>Obaju Ltd.</strong><br>13/25 New Avenue<br>		New Heaven<br>		45Y 73J<br>		England<br><strong>Great Britain</strong></p><a href="contact.html">Go to contact page</a>
+              <hr class="d-block d-md-none">
+            </div>
+            <!-- /.col-lg-3-->
+            <div class="col-lg-3 col-md-6">
+              <h4>Get the news</h4>
+              <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+              <form>
+                <div class="input-group">
+                  <input type="text" class="form-control">
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary"> <i class="fa fa-send">              </i></button>
+                  </div>
+                </div>
+                <!-- /input-group-->
+              </form>
+              <hr>
+              <h4>Stay in touch</h4>
+              <p class="social"><a href="#"><i class="fa fa-facebook-square"></i></a><a href="#"><i class="fa fa-instagram"></i></a><a href="#"><i class="fa fa-google-plus"></i></a><a href="#"><i class="fa fa-envelope"></i></a></p>
+            </div>
+            <!-- /.col-lg-3-->
+          </div>
+          <!-- /.row-->
+        </div>
+        <!-- /.container-->
+      </div>
+      <!-- /#footer-->
+      <!-- *** FOOTER END ***-->
+      <!-- *** COPYRIGHT ***-->
+      <div id="copyright">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 text-center text-md-left">© 2014 - 2018. Minimal is responsive template by <a href="http://www.ondrejsvestka.cz" class="external">Ondrej Svestka</a>.</div>
+            <div class="col-md-6 text-center text-md-right"><img src="img/payment.png" alt="payments accepted"></div>
+          </div>
+        </div>
+      </div>
+      <!-- /#copyright-->
+      <!-- *** COPYRIGHT END ***-->
+    </div>
+    <!-- #### JavaScript files ###-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="vendor/owl.carousel/owl.carousel.min.js"></script>
+    <!-- main script-->
+    <script src="js/front.js"> </script>
+  </body>
+</html>

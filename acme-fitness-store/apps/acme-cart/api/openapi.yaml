@@ -1,0 +1,345 @@
+openapi: 3.0.0
+info:
+  title: Cart
+  version: v0.1.0
+  license:
+    name: MIT
+    url: 'https://github.com/vmwarecloudadvocacy/cart/blob/master/LICENSE'
+  contact:
+    name: VMware Cloud Advocacy team
+    url: 'https://github.com/vmwarecloudadvocacy'
+  description: |
+    This is the REST API documentation for the [Cart](https://github.com/vmwarecloudadvocacy/cart) Service app of the [ACME Fitness Shop](https://github.com/vmwarecloudadvocacy/acme_fitness_demo).
+servers:
+  - url: 'http://localhost:5000'
+paths:
+  '/cart/total/{userid}':
+    parameters:
+      - type: string
+        name: userid
+        in: path
+        required: true
+    get:
+      summary: Get Cart Total
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  carttotal:
+                    type: number
+                  userid:
+                    type: string
+              examples:
+                sample:
+                  value:
+                    carttotal: 804.5
+                    userid: dan
+      operationId: get_cart_total
+      description: Get total amount in users cart
+  '/cart/item/modify/{userid}':
+    parameters:
+      - type: string
+        name: userid
+        in: path
+        required: true
+    post:
+      summary: Modify Cart Item
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: string
+              examples:
+                sample:
+                  value:
+                    userid: dan
+      operationId: post_modify_cart_item
+      description: Update an item in the cart of a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itemid:
+                  type: string
+                quantity:
+                  type: integer
+            examples:
+              sample:
+                value:
+                  itemid: sfsdsda3343
+                  quantity: 2
+        description: Cart item payload
+  '/cart/modify/{userid}':
+    parameters:
+      - type: string
+        name: userid
+        in: path
+        required: true
+    post:
+      summary: Modify Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: string
+              examples:
+                sample:
+                  value:
+                    userid: dan
+      operationId: post_modify_cart
+      description: Modify the contents of a cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cart:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                      itemid:
+                        type: string
+                      price:
+                        type: number
+                      quantity:
+                        type: integer
+                userid:
+                  type: string
+            examples:
+              sample:
+                value:
+                  cart:
+                    - description: fitband for any age - even babies
+                      itemid: sdfsdfsfs
+                      name: fitband
+                      price: 4.5
+                      quantity: 1
+                    - description: the most awesome redpants in the world
+                      itemid: sfsdsda3343
+                      name: redpant
+                      price: 400
+                      quantity: 1
+                  userid: dan
+        description: Modify cart payload
+  '/cart/item/add/{userid}':
+    parameters:
+      - type: string
+        name: userid
+        in: path
+        required: true
+    post:
+      summary: Add Item
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userid:
+                    type: string
+              examples:
+                sample:
+                  value:
+                    userid: shri
+      operationId: post_add_item
+      description: Add item to cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itemid:
+                  type: string
+                quantity:
+                  type: integer
+            examples:
+              sample:
+                value:
+                  itemid: xyz
+                  quantity: 3
+        description: Add item payload
+  '/cart/items/total/{userid}':
+    parameters:
+      - type: string
+        name: userid
+        in: path
+        required: true
+    get:
+      summary: Get Cart Items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cartitemtotal:
+                    type: integer
+                  userid:
+                    type: string
+              examples:
+                sample:
+                  value:
+                    cartitemtotal: 5
+                    userid: shri
+      operationId: get_cart_items
+      description: Get the total number of items in a cart
+  '/cart/clear/{userid}':
+    parameters:
+      - type: string
+        name: userid
+        in: path
+        required: true
+    get:
+      summary: Clear Cart Items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples: {}
+      operationId: get_clear_cart
+      description: Clear all items from the cart
+  '/cart/items/{userid}':
+    parameters:
+      - type: string
+        name: userid
+        in: path
+        required: true
+    get:
+      summary: Get All Cart Items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cart:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        description:
+                          type: string
+                        itemid:
+                          type: string
+                        name:
+                          type: string
+                        quantity:
+                          type: integer
+                        price:
+                          type: number
+                  userid:
+                    type: string
+              examples:
+                sample:
+                  value:
+                    cart:
+                      - description: fitband for any age - even babies
+                        itemid: sdfsdfsfs
+                        name: fitband
+                        price: 4.5
+                        quantity: 1
+                      - description: the most awesome redpants in the world
+                        itemid: sfsdsda3343
+                        name: redpant
+                        price: 400
+                        quantity: 1
+                    userid: dan
+      operationId: get_cart_items
+      description: Get all items in a cart
+  /cart/all:
+    get:
+      summary: Get All Carts
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  all_carts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        cart:
+                          type: object
+                          properties:
+                            description:
+                              type: string
+                            itemid:
+                              type: string
+                            price:
+                              type: number
+                            quantity:
+                              type: integer
+                        userid:
+                          type: string
+              examples:
+                sample:
+                  value:
+                    all carts:
+                      - cart:
+                          - description: fitband for any age - even babies
+                            itemid: sdfsdfsfs
+                            name: fitband
+                            price: 4.5
+                            quantity: 1
+                          - description: the most awesome redpants in the world
+                            itemid: sfsdsda3343
+                            name: redpant
+                            price: 400
+                            quantity: 1
+                        id: shri
+                      - cart:
+                          - description: fitband for any age - even babies
+                            itemid: sdfsdfsfs
+                            name: fitband
+                            price: 4.5
+                            quantity: 1
+                          - description: the most awesome redpants in the world
+                            itemid: sfsdsda3343
+                            name: redpant
+                            price: 400
+                            quantity: 1
+                        id: dan
+      description: Get all the carts
+      operationId: get_all_carts
+components:
+  schemas: {}

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-portal-ingress
+  namespace: api-portal
+spec:
+  rules:
+  - host: api-portal.my.domain.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: api-portal-server
+            port:
+              number: 8080
