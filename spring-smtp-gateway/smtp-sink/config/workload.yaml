@@ -17,4 +17,4 @@ spec:
       ref:
         branch: main
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: spring-smtp-gateway/smtp-sink
+    subPath: smtp-sink

@@ -22,4 +22,4 @@ spec:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: where-for-dinner/where-for-dinner-search-proc
+    subPath: where-for-dinner-search-proc

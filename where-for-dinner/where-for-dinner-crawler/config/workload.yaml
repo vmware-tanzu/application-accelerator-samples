@@ -15,4 +15,4 @@ spec:
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: where-for-dinner/where-for-dinner-crawler
+    subPath: where-for-dinner-crawler
