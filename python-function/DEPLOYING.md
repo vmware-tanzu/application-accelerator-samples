@@ -14,7 +14,7 @@ In order to further develop this application the following tools may be needed:
 To quickly test locally, run this command in the directory where `func.py` exists.
 
 ```
-pack build python-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.0.12
+pack build python-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.1.0 --env BP_FUNCTION=func.main
 ```
 
 Where `python-function` is the name of your runnable function image.
@@ -124,3 +124,11 @@ If you'd like to test this function, you may use this CloudEvent saved as `cloud
 ```
 curl -i -w'\n' -X POST -H "Content-Type: application/cloudevents+json" -d @cloudevent.json <URL>
 ```
+
+## Runtime Configuration
+
+This accelerator makes use of the
+[Function Buildpack for Knative](https://github.com/vmware-tanzu/function-buildpacks-for-knative) Python buildpack. 
+Reference its [documentation](https://github.com/vmware-tanzu/function-buildpacks-for-knative/tree/main/buildpacks/python) for
+further details.  For example, Knative's `func.yaml` file can be used to configure runtime 
+environment variables and deployment scaling options. 
