@@ -20,4 +20,3 @@ spec:
       ref:
         branch: main
       url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: appsso-starter-java
