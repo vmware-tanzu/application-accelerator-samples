@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ACME Fitness</title>
+    <meta name="keywords" content="">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Google fonts - Montserrat and Merriweather-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Merriweather:400,400italic" rel="stylesheet" type="text/css">
+    <!-- Font Awesome css-->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Owl Carousel-->
+    <link rel="stylesheet" href="vendor/owl.carousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendor/owl.carousel/assets/owl.theme.default.min.css">
+    <!-- Theme stylesheet-->
+    <link id="theme-stylesheet" href="css/style.default.css" rel="stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link href="css/custom.css" rel="stylesheet">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="favicon.png">
+    <!-- <script src="js/client.js"></script>
+    <script src="js/jwt-decode.min.js"></script>
+    <script>
+      window.onload = function() {
+
+        // Add an event listener for form submissions
+        document.getElementById('review').addEventListener('submit', function() {
+          //GET cart
+          var cartGet = new XMLHttpRequest();
+
+          //Build blob
+          var orderBlob = {};
+          orderBlob['userid'] = sessionStorage.userid;
+          orderBlob['firstname'] = sessionStorage.firstname;
+          orderBlob['lastname'] = sessionStorage.lastname;
+          var address = {};
+          address['street'] = sessionStorage.street;
+          address['city'] = sessionStorage.city;
+          address['zip'] = sessionStorage.zip;
+          address['state'] = sessionStorage.state;
+          address['country'] = sessionStorage.country;
+          orderBlob['address'] = address;
+          orderBlob['email'] = sessionStorage.email;
+          orderBlob['delivery'] = sessionStorage.delivery;
+          var card = {};
+          card['type'] = sessionStorage.type;
+          card['number'] = sessionStorage.cardnum;
+          card['ccv'] = sessionStorage.ccv;
+          card['expMonth'] = sessionStorage.expMonth;
+          card['expYear'] = sessionStorage.expYear;
+          orderBlob['card'] = card;
+
+          //Make POST call to order service
+          url: "/order/add/" + user,
+
+          var orderPost = new XMLHttpRequest();
+          orderPost.open("POST", url, true);
+          orderPost.setRequestHeader('Content-Type', 'application/json');
+          orderPost.send(orderBlob);
+
+          //Clear sessionStorage
+          sessionStorage.clear();
+        });
+
+      }
+    </script> -->
+  </head>
+  <body>
+    <!-- *** NAVBAR *** -->
+    <nav id="navbar" role="navigation" class="navbar navbar-light fixed-top navbar-expand-lg yamm justify-content-between">
+    </nav>
+    <!-- /#navbar-->
+    <!-- *** NAVBAR END ***-->
+    <!--  *** LOGIN MODAL ***-->
+    <div tabindex="-1" role="dialog" class="modal">
+      <div role="document" class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div class="modal-footer" id="login-modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true" class="modal fade">
+    </div>
+    <!-- *** LOGIN MODAL END ***-->
+    <div id="all">
+      <div id="content">
+        <div class="container">
+          <ul class="breadcrumb justify-content-md-end justify-content-center">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Checkout - Order review      </li>
+          </ul>
+          <div class="box text-center">
+            <div class="row">
+              <div class="col-md-10 offset-md-1">
+                <h1>Checkout - Order review</h1>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div id="checkout" class="col-lg-9">
+              <div class="box">
+                <form id="review" method="get" action="#">
+                  <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item"><a href="checkout1.html" class="nav-link"><i class="fa fa-map-marker"></i><br>Address</a></li>
+                    <li class="nav-item"><a href="checkout2.html" class="nav-link"><i class="fa fa-truck"></i><br>Delivery Method</a></li>
+                    <li class="nav-item"><a href="checkout3.html" class="nav-link"><i class="fa fa-money"></i><br>Payment Method</a></li>
+                    <li class="nav-item"><a href="checkout4.html" class="nav-link active"><i class="fa fa-eye"></i><br>Order Review</a></li>
+                  </ul>
+                  <div class="content">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th colspan="2">Product</th>
+                            <th>Quantity</th>
+                            <th>Unit price</th>
+                            <th>Discount</th>
+                            <th>Total</th>
+                          </tr>
+                        </thead>
+                        <tbody id="orderCartList">
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th colspan="5">Total</th>
+                            <th id="orderCartTotal" colspan="2"></th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <!-- /.table-responsive-->
+                  </div>
+                  <!-- /.content-->
+                  <div class="box-footer">
+                    <div class="pull-left"><a href="checkout3.html" class="btn btn-outline-white-secondary"><i class="fa fa-chevron-left"></i>Back to Payment method</a></div>
+                    <div class="pull-right">
+                      <button type="submit" class="btn btn-outline-white-primary">Place an order<i class="fa fa-chevron-right"></i></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /.box-->
+            </div>
+            <!-- /.col-lg-9-->
+            <div class="col-lg-3">
+              <div id="order-summary" class="box">
+                <div class="box-header">
+                  <h3>Order summary</h3>
+                </div>
+                <p class="text-muted">Shipping and additional costs may vary</p>
+                <div class="table-responsive">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <td>Order subtotal</td>
+                        <th id="orderSubtotal"></th>
+                      </tr>
+                      <tr>
+                        <td>Shipping and handling</td>
+                        <th>Free</th>
+                      </tr>
+                      <tr>
+                        <td>Tax</td>
+                        <th>0.00</th>
+                      </tr>
+                      <tr class="total">
+                        <td>Total</td>
+                        <th id="orderTotal"></th>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- /.col-lg-3-->
+          </div>
+        </div>
+      </div>
+      <!-- *** FOOTER ***-->
+      <div id="footer">
+      </div>
+      <!-- /#footer-->
+    </div>
+    <!-- #### JavaScript files ###-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="vendor/owl.carousel/owl.carousel.min.js"></script>
+    <!-- main script-->
+    <script src="js/front.js"> </script>
+    <script src="js/client.js"></script>
+    <script src="js/jwt-decode.min.js"></script>
+    <script>
+        window.onload = function() {
+
+          // Add an event listener for form submissions
+          document.getElementById('review').addEventListener('submit', function() {
+            //Build blob
+            var orderBlob = {};
+            var userid = getUserID();
+            if (userid == "guest") {
+              window.location.href = "/Unauthorized.html"
+            }
+            orderBlob['userid'] = userid;
+            orderBlob['firstname'] = sessionStorage.firstname;
+            orderBlob['lastname'] = sessionStorage.lastname;
+            orderBlob['total'] = sessionStorage.total
+            var address = {};
+            address['street'] = sessionStorage.street;
+            address['city'] = sessionStorage.city;
+            address['zip'] = sessionStorage.zip;
+            address['state'] = sessionStorage.state;
+            address['country'] = sessionStorage.country;
+            orderBlob['address'] = address;
+            orderBlob['email'] = sessionStorage.email;
+            orderBlob['delivery'] = sessionStorage.delivery;
+            var card = {};
+            card['type'] = sessionStorage.type;
+            card['number'] = sessionStorage.cardnum;
+            card['ccv'] = sessionStorage.ccv;
+            card['expMonth'] = sessionStorage.expMonth;
+            card['expYear'] = sessionStorage.expYear;
+            orderBlob['card'] = card;
+            orderBlob['cart'] = JSON.parse(sessionStorage.cart);
+
+
+            // Send data to order service
+            $.ajax({
+              url: "/order/add/" + userid,
+              type: "POST",
+              data: JSON.stringify(orderBlob),
+              success: function(data,textStatus, jqXHR) {
+
+                console.log('Successful call to order')
+
+                if(jqXHR.status === 200) {
+
+                  if (data !=null) {
+
+                    if (data.payment.status === 200) {
+                      sessionStorage.orderID = data.order_id
+                      sessionStorage.transactionID = data.payment.transactionID
+                      // Redirect to Transaction page
+                      window.location.href = "/transaction.html"
+                    }
+                    else {
+                      console.log("payment status: " + data.payment.status)
+                      alert(data.payment.message)
+                      //location.reload()
+                    }
+                  }
+
+                }// End of jqXHR.status
+                else {
+                  console.log("order status " + jqXHR.status)
+                  window.location.href = "/Unauthorized.html"
+
+                }
+
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                console.log('Error with order ' + textStatus + '|' + errorThrown)
+                alert(errorThrown + " \nPayment service may be down")
+              }
+            }); // end AJAX
+          });
+        }
+      </script>
+    <script>
+      $(document).ready(function() {
+        $.ajaxSetup({
+              contentType: "application/json; charset=utf-8"
+          });
+
+          $("#navbar").load("navbar.html")
+          $("#login-modal").load("login.html")
+          $("#footer").load("footer.html")
+
+          // Check if the user is logged in
+          // Returns userid if user is logged in, if not returns "guest"
+
+          var userid = getUserID();
+
+          $.ajax({
+
+            url: "/cart/items/" + userid,
+            type:"GET",
+            success: function(body, textStatus, jqXHR) {
+
+              if(jqXHR.status == 200) {
+
+                if(body !=null){
+
+                  var content = ''
+                  var cartTotal = 0;
+                  var quantity = 0;
+                  var image = '';
+
+                  // Convert cart to string and add to session Storage
+                  // This will be used by orderBlob to call order service
+                  sessionStorage.cart = JSON.stringify(body.cart)
+
+                  $.each(body.cart, function(index, item) {
+
+                    // Get the image URI for displaying on cart page
+                    image = getImageUrl(item.itemid, function(imageurl){
+                                    return imageurl;
+                                });
+
+                    content += '<tr id="' + item.itemid + '">\
+                                <td>\
+                                  <a href="detail.html?id=' + item.itemid + '"' + '><img src=' + image + ' alt=""></a>\
+                                </td>\
+                                <td><a href="detail.html?id='+ item.itemid + '">'+item.name+'</a></td>\
+                                <td>\
+                                    '+ item.quantity +'\
+                                </td>\
+                                <td>'+ item.price + '</td>\
+                                <td>0.00</td>\
+                                <td>'+ (item.price * item.quantity).toFixed(2) +'</td>\
+                            </tr>'
+
+                            quantity += item.quantity;
+                  });
+
+                  // Get the total from session Storage
+                  cartTotal = sessionStorage.total
+
+                  $('#orderCartList').append(content);
+                  $("#orderCartTotal").text(cartTotal)
+
+                  $("#orderSubtotal").text(cartTotal)
+                  $("#orderTotal").text(cartTotal)
+
+                  }
+              }
+              else {
+
+                  console.log('Status : ' + jqXHR.status)
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log('Error from while retrieving items from cart ' + textStatus + ' | ' + errorThrown)
+            }
+          });
+
+      }) // End of script
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: order-route-config
+spec:
+  service:
+    name: order
+    port: 6000
+  routes:
+    - predicates:
+        - Path=/order/add/{userId}
+        - Method=POST
+      filters:
+        - StripPrefix=0
+      tags:
+        - order
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: order-routes
+spec:
+  gatewayRef:
+    name: gateway
+  routeConfigRef:
+    name: order-route-config

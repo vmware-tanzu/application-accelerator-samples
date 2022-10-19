@@ -1,0 +1,243 @@
+/*
+   /////////////////////////////////////////////////////
+     GENERIC STYLING
+   /////////////////////////////////////////////////////
+*/
+
+body {
+    padding-top: 100px;
+    &.no-padding {
+        padding-top: 0;
+    }
+}
+
+a,
+button {
+    @include ondrTransition;
+    i.fa {
+        margin: 0 5px;
+    }
+}
+
+.clickable {
+    cursor: pointer !important;
+}
+
+.required {
+    color: $brand-primary;
+}
+
+.accent {
+    color: $brand-primary;
+}
+
+.text-uppercase {
+    @include uppercase();
+}
+
+.card-header a:focus {
+    color: #fff;
+}
+
+.input-group-btn .btn {
+    font-size: 14px;
+}
+
+.badge {
+    font-family: $font-family-sans-serif;
+    font-weight: normal;
+    @include uppercase;
+}
+
+.form-control {
+    &:focus {
+        color: $input-focus-color;
+        background-color: $input-focus-bg;
+        border-color: $input-focus-border-color;
+        outline: 0;
+        box-shadow: $input-focus-box-shadow;
+      }
+}
+
+
+/* universal box */
+
+.box {
+    background: #fff;
+    margin: 0 0 $grid-gutter-width;
+    border: solid 1px #ccc;
+    padding: 30px 20px 20px;
+    border-left: none;
+    border-right: none;
+    .box-header {
+        @include clearfix;
+        background: $gray-lightest;
+        margin: -30px -20px 20px;
+        padding: 30px 20px 10px;
+        border-bottom: solid 1px $gray-lighter;
+    }
+    .box-footer {
+        @include clearfix;
+        background: $gray-lightest;
+        margin: 30px -20px -20px;
+        padding: 20px;
+        border-top: solid 1px $gray-lighter;
+        @include media-breakpoint-down(md) {
+            .btn {
+                margin-bottom: 20px;
+            }
+        }
+    }
+    &.no-border {
+        border: none;
+    }
+}
+
+
+/* ribbons for product sales etc. */
+
+.ribbon {
+    position: absolute;
+    top: 50px;
+    padding-left: 51px;
+    .ribbon-background {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .theribbon {
+        position: relative;
+        width: 80px;
+        padding: 6px 20px 6px 20px;
+        margin: 30px 10px 10px -71px;
+        color: #fff;
+        background-color: $brand-primary;
+        font-family: $font-family-sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        font-size: .8rem;
+        &:before,
+        &:after {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+        &:after {
+            left: 0px;
+            top: 100%;
+            border-width: 5px 10px;
+            border-style: solid;
+            border-color: darken(#333, 20%) darken(#333, 20%) transparent transparent;
+        }
+    }
+    &.ribbon-quick-view {
+        padding-left: 36px;
+        .theribbon {
+            margin-left: -59px;
+            &:after {
+                border-width: 4px 4px;
+            }
+        }
+    }
+}
+
+.ribbon.sale {
+    top: 0;
+}
+
+.ribbon.new {
+    top: 50px;
+    .theribbon {
+        background-color: $brand-info;
+        text-shadow: 0px 1px 2px #bbb;
+        &:after {
+            border-color: darken($brand-info, 20%) darken($brand-info, 20%) transparent transparent;
+        }
+    }
+}
+
+.ribbon.gift {
+    top: 100px;
+    .theribbon {
+        background-color: $brand-success;
+        text-shadow: 0px 1px 2px #bbb;
+        &:after {
+            border-color: darken($brand-success, 20%) darken($brand-success, 20%) transparent transparent;
+        }
+    }
+}
+
+.icon {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    color: #fff;
+    line-height: 80px;
+    border-radius: 40px;
+    border: solid 1px #fff;
+    font-size: 20px;
+    margin-bottom: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    &.icon-lg {
+        font-size: 30px;
+        border-width: 2px;
+    }
+}
+
+.bar {
+    position: relative;
+    padding: 50px 0;
+    margin: 50px 0 50px+$grid-gutter-width;
+    &.background-gray {
+        background: $gray-lighter;
+    }
+    &.background-gray-dark {
+        background: $gray;
+    }
+    &.background-white {
+        background: #fff;
+    }
+    &.background-image-fixed-1 {
+        background: url('../img/fixed-background-1.jpg') center top no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+    &.background-image-fixed-2 {
+        background: url('../img/fixed-background-2.jpg') center top no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+    &.color-white {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p {
+            color: #fff;
+        }
+    }
+    &.padding-big {
+        padding: 50px 0;
+    }
+    &.padding-horizontal {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    &.margin-vertical {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .dark-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        opacity: .3;
+    }
+}

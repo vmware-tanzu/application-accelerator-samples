@@ -1,0 +1,712 @@
+/* ========================================= 
+   THEMING OF BOOTSTRAP COMPONENTS           
+   ========================================= */
+
+/*
+ * 1. NAVBAR
+ */
+
+.navbar {
+    padding: $navbar-padding-y $navbar-padding-x;
+}
+
+.navbar-brand {
+    display: inline-block;
+    padding-top: $navbar-brand-padding-y;
+    padding-bottom: $navbar-brand-padding-y;
+    margin-right: $navbar-padding-x;
+    font-size: $navbar-brand-font-size;
+}
+
+.navbar-toggler {
+    padding: $navbar-toggler-padding-y $navbar-toggler-padding-x;
+    font-size: $navbar-toggler-font-size;
+    line-height: 1;
+    border: $border-width solid transparent; // remove default button style
+    @include border-radius($navbar-toggler-border-radius);
+}
+
+// Dark links against a light background
+.navbar-light {
+    .navbar-brand {
+        color: $navbar-light-active-color;
+        @include hover-focus {
+            color: $navbar-light-active-color;
+        }
+    }
+    .navbar-nav {
+        .nav-link {
+            color: $navbar-light-color;
+            @include hover-focus {
+                color: $navbar-light-hover-color;
+            }
+            &.disabled {
+                color: $navbar-light-disabled-color;
+            }
+        }
+        .show>.nav-link,
+        .active>.nav-link,
+        .nav-link.show,
+        .nav-link.active {
+            color: $navbar-light-active-color;
+        }
+    }
+    .navbar-toggler {
+        color: $navbar-light-color;
+        border-color: $navbar-light-toggler-border-color;
+    }
+    .navbar-toggler-icon {
+        background-image: $navbar-light-toggler-icon-bg;
+    }
+    .navbar-text {
+        color: $navbar-light-color;
+    }
+}
+
+// White links against a dark background
+.navbar-dark {
+    .navbar-brand {
+        color: $navbar-dark-active-color;
+        @include hover-focus {
+            color: $navbar-dark-active-color;
+        }
+    }
+    .navbar-nav {
+        .nav-link {
+            color: $navbar-dark-color;
+            @include hover-focus {
+                color: $navbar-dark-hover-color;
+            }
+            &.disabled {
+                color: $navbar-dark-disabled-color;
+            }
+        }
+        .show>.nav-link,
+        .active>.nav-link,
+        .nav-link.show,
+        .nav-link.active {
+            color: $navbar-dark-active-color;
+        }
+    }
+    .navbar-toggler {
+        color: $navbar-dark-color;
+        border-color: $navbar-dark-toggler-border-color;
+    }
+    .navbar-toggler-icon {
+        background-image: $navbar-dark-toggler-icon-bg;
+    }
+    .navbar-text {
+        color: $navbar-dark-color;
+    }
+}
+
+/*
+ * 2. BUTTONS
+ */
+
+.btn {
+    font-weight: $btn-font-weight;
+    border: $input-btn-border-width solid transparent;
+    font-family: $font-family-sans-serif;
+    @include uppercase;
+    @include button-size($input-btn-padding-y, $input-btn-padding-x, .8rem, $input-btn-line-height, $btn-border-radius);
+    @include transition($btn-transition);
+    &:focus,
+    &.focus {
+        outline: 0;
+        box-shadow: $input-btn-focus-box-shadow;
+    }
+    &.disabled,
+    &:disabled {
+        opacity: .65;
+        @include box-shadow(none);
+    }
+    &:not([disabled]):not(.disabled):active,
+    &:not([disabled]):not(.disabled).active {
+        background-image: none;
+        @include box-shadow($input-btn-focus-box-shadow, $btn-active-box-shadow);
+    }
+}
+
+//
+// Alternate buttons
+//
+@each $color,
+$value in $theme-colors {
+    .btn-#{$color} {
+        @include button-variant($value, $value);
+    }
+}
+
+@each $color,
+$value in $theme-colors {
+    .btn-outline-#{$color} {
+        @include button-outline-variant($value, #fff);
+    }
+    .btn-outline-white-#{$color} {
+        @include button-outline-white-variant($value, #fff);
+    }
+}
+
+.btn-outline-white {
+    @include button-outline-variant(#fff, #000);
+}
+
+//
+// Button Sizes
+//
+.btn-lg {
+    @include button-size($input-btn-padding-y-lg, $input-btn-padding-x-lg, $font-size-lg, $line-height-lg, $btn-border-radius-lg);
+}
+
+.btn-sm {
+    @include button-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-sm, $line-height-sm, $btn-border-radius-sm);
+}
+
+/*
+ * 3. TYPE  
+ */
+
+body {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    font-weight: $font-weight-base;
+    line-height: $line-height-base;
+    color: $body-color;
+    background-color: $body-bg;
+}
+
+a {
+    color: $link-color;
+    text-decoration: $link-decoration;
+    @include hover-focus {
+        color: $link-hover-color;
+        text-decoration: $link-hover-decoration;
+    }
+}
+
+//
+// Headings
+//
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    margin-bottom: $headings-margin-bottom;
+    font-family: $headings-font-family;
+    font-weight: $headings-font-weight;
+    line-height: $headings-line-height;
+    color: $headings-color;
+}
+
+h1,
+.h1 {
+    font-size: $h1-font-size;
+}
+
+h2,
+.h2 {
+    font-size: $h2-font-size;
+}
+
+h3,
+.h3 {
+    font-size: $h3-font-size;
+}
+
+h4,
+.h4 {
+    font-size: $h4-font-size;
+}
+
+h5,
+.h5 {
+    font-size: $h5-font-size;
+}
+
+h6,
+.h6 {
+    font-size: $h6-font-size;
+}
+
+.lead {
+    font-size: $lead-font-size;
+    font-weight: $lead-font-weight;
+}
+
+// Type display classes
+.display-1 {
+    font-size: $display1-size;
+    font-weight: $display1-weight;
+    line-height: $display-line-height;
+}
+
+.display-2 {
+    font-size: $display2-size;
+    font-weight: $display2-weight;
+    line-height: $display-line-height;
+}
+
+.display-3 {
+    font-size: $display3-size;
+    font-weight: $display3-weight;
+    line-height: $display-line-height;
+}
+
+.display-4 {
+    font-size: $display4-size;
+    font-weight: $display4-weight;
+    line-height: $display-line-height;
+}
+
+//
+// Horizontal rules
+//
+hr {
+    border-top: $hr-border-width solid $hr-border-color;
+}
+
+//
+// Emphasis
+//
+small,
+.small {
+    font-size: $small-font-size;
+    font-weight: $font-weight-normal;
+}
+
+mark,
+.mark {
+    padding: $mark-padding;
+    background-color: $mark-bg;
+}
+
+// Blockquotes
+blockquote,
+.blockquote {
+    padding: $spacer;
+    margin-bottom: $spacer * 2;
+    font-size: $blockquote-font-size;
+    border-left: 5px solid theme-color();
+    font-weight: 300;
+    :last-child {
+        margin-bottom: 0;
+    }
+}
+
+.blockquote-footer {
+    color: $blockquote-small-color;
+    &::before {
+        content: "\2014 \00A0"; // em dash, nbsp
+    }
+}
+
+@include text-emphasis-variant('.text-primary', $brand-primary);
+/*
+ * 4. PAGINATION
+ */
+
+.page-item {
+    &:first-child {
+        .page-link {
+            @include border-left-radius($border-radius);
+        }
+    }
+    &:last-child {
+        .page-link {
+            @include border-right-radius($border-radius);
+        }
+    }
+    &.active .page-link {
+        color: $pagination-active-color;
+        background-color: $pagination-active-bg;
+        border-color: $pagination-active-border-color;
+    }
+    &.disabled .page-link {
+        color: $pagination-disabled-color;
+        background-color: $pagination-disabled-bg;
+        border-color: $pagination-disabled-border-color;
+    }
+}
+
+.page-link {
+    padding: $pagination-padding-y $pagination-padding-x;
+    line-height: $pagination-line-height;
+    color: $pagination-color;
+    background-color: $pagination-bg;
+    border: $pagination-border-width solid $pagination-border-color;
+    @include hover-focus {
+        color: $pagination-hover-color;
+        text-decoration: none;
+        background-color: $pagination-hover-bg;
+        border-color: $pagination-hover-border-color;
+    }
+}
+
+//
+// Sizing
+//
+.pagination-lg {
+    @include pagination-size($pagination-padding-y-lg, $pagination-padding-x-lg, $font-size-lg, $line-height-lg, $border-radius-lg);
+}
+
+.pagination-sm {
+    @include pagination-size($pagination-padding-y-sm, $pagination-padding-x-sm, $font-size-sm, $line-height-sm, $border-radius-sm);
+}
+
+/*
+* 5. UTILITIES
+*/
+
+@each $color,
+$value in $theme-colors {
+    @include bg-variant('.bg-#{$color}', $value);
+}
+
+@each $color,
+$value in $theme-colors {
+    .border-#{$color} {
+        border-color: $value !important;
+    }
+}
+
+@each $color,
+$value in $theme-colors {
+    @include text-emphasis-variant('.text-#{$color}', $value);
+}
+
+@each $color,
+$value in $theme-colors {
+    .badge-#{$color} {
+        @include badge-variant($value);
+    }
+}
+
+/*
+* 6. NAV
+*/
+
+.nav-link {
+    padding: $nav-link-padding-y $nav-link-padding-x;
+    &.disabled {
+        color: $nav-link-disabled-color;
+    }
+}
+
+.nav-tabs {
+    //border-bottom: $nav-tabs-border-width solid $nav-tabs-border-color;
+    .nav-item {
+        margin-bottom: -$nav-tabs-border-width;
+    }
+    .nav-link {
+        border: $nav-tabs-border-width solid transparent;
+        @include border-top-radius($nav-tabs-border-radius);
+        @include hover-focus {
+            border-color: $nav-tabs-link-hover-border-color;
+        }
+        &.disabled {
+            color: $nav-link-disabled-color;
+        }
+    }
+    .nav-link.active,
+    .nav-item.show .nav-link {
+        color: $nav-tabs-link-active-color;
+        background-color: $nav-tabs-link-active-bg; //border-color: $nav-tabs-link-active-border-color;
+    }
+    .dropdown-menu {
+        margin-top: -$nav-tabs-border-width;
+    }
+}
+
+.nav-pills {
+    .nav-link {
+        @include border-radius($nav-pills-border-radius);
+    }
+    .nav-link.active,
+    .show>.nav-link {
+        color: $nav-pills-link-active-color;
+        background-color: $nav-pills-link-active-bg;
+    }
+}
+
+/*
+* 7. CARD
+*/
+
+.card {
+    background-color: $card-bg;
+    border: $card-border-width solid $card-border-color;
+    @include border-radius($card-border-radius);
+    >.list-group:first-child {
+        .list-group-item:first-child {
+            @include border-top-radius($card-border-radius);
+        }
+    }
+    >.list-group:last-child {
+        .list-group-item:last-child {
+            @include border-bottom-radius($card-border-radius);
+        }
+    }
+}
+
+.card-body {
+    padding: $card-spacer-x;
+}
+
+.card-title {
+    margin-bottom: $card-spacer-y;
+}
+
+.card-subtitle {
+    margin-top: -($card-spacer-y / 2);
+}
+
+.card-link {
+    +.card-link {
+        margin-left: $card-spacer-x;
+    }
+} //
+// Optional textual caps
+//
+.card-header {
+    padding: $card-spacer-y $card-spacer-x;
+    background-color: $card-cap-bg;
+    border-bottom: 1px solid $card-border-color;
+    &:first-child {
+        @include border-radius($card-inner-border-radius $card-inner-border-radius 0 0);
+    }
+}
+
+.card-header-transparent {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-bottom: none;
+}
+
+.card-footer {
+    padding: $card-spacer-y $card-spacer-x;
+    background-color: $gray-100;
+    border-top: 1px solid $card-border-color;
+    &:last-child {
+        @include border-radius(0 0 $card-inner-border-radius $card-inner-border-radius);
+    }
+}
+
+.card-header-tabs {
+    margin-right: -($card-spacer-x / 2);
+    margin-bottom: -$card-spacer-y;
+    margin-left: -($card-spacer-x / 2);
+    border-bottom: 0;
+}
+
+.card-header-pills {
+    margin-right: -($card-spacer-x / 2);
+    margin-left: -($card-spacer-x / 2);
+}
+
+.card-img-overlay {
+    padding: $card-img-overlay-padding;
+}
+
+.card-img-overlay-opacity {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.card-img {
+    @include border-radius($card-inner-border-radius);
+} // Card image caps
+.card-img-top {
+    @include border-top-radius($card-inner-border-radius);
+}
+
+.card-img-bottom {
+    @include border-bottom-radius($card-inner-border-radius);
+} // Card deck
+.card-deck {
+    .card {
+        margin-bottom: $card-deck-margin;
+    }
+    @include media-breakpoint-up(sm) {
+        margin-right: -$card-deck-margin;
+        margin-left: -$card-deck-margin;
+        .card {
+            margin-right: $card-deck-margin;
+            margin-left: $card-deck-margin;
+        }
+    }
+}
+
+/*
+* 10. DROPDOWNS
+*/
+
+.dropdown-menu {
+    min-width: $dropdown-min-width;
+    padding: 0;
+    margin: $dropdown-spacer 0 0; // override default ul
+    font-size: $font-size-base; // Redeclare because nesting can cause inheritance issues
+    color: $body-color;
+    background-color: $dropdown-bg;
+    border: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    @include border-radius(0);
+    @include box-shadow($dropdown-box-shadow);
+}
+
+.dropdown-item {
+    padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+    font-weight: $font-weight-normal;
+    color: $dropdown-link-color;
+    width: 100%;
+    font-size: 0.85rem;
+    @include hover-focus {
+        color: $dropdown-link-hover-color;
+        @include gradient-bg($dropdown-link-hover-bg);
+    }
+    &.active,
+    &:active {
+        color: $dropdown-link-active-color;
+        @include gradient-bg($dropdown-link-active-bg);
+    }
+    &.disabled,
+    &:disabled {
+        color: $dropdown-link-disabled-color;
+        @if $enable-gradients {
+            background-image: none;
+        }
+    }
+}
+
+// Custom control indicators
+//
+// Build the custom controls out of psuedo-elements.
+
+
+.custom-control-input {
+    position: absolute;
+    z-index: -1; // Put the input behind the label so it doesn't overlay text
+    opacity: 0;
+  
+    &:checked ~ .custom-control-label::before {
+      color: $custom-control-indicator-checked-color;
+      @include gradient-bg($custom-control-indicator-checked-bg);
+      @include box-shadow($custom-control-indicator-checked-box-shadow);
+    }
+  
+    &:focus ~ .custom-control-label::before {
+      // the mixin is not used here to make sure there is feedback
+      box-shadow: $custom-control-indicator-focus-box-shadow;
+    }
+  
+    &:active ~ .custom-control-label::before {
+      color: $custom-control-indicator-active-color;
+      background-color: $custom-control-indicator-active-bg;
+      @include box-shadow($custom-control-indicator-active-box-shadow);
+    }
+  
+    &:disabled {
+      ~ .custom-control-label {
+        color: $custom-control-label-disabled-color;
+  
+        &::before {
+          background-color: $custom-control-indicator-disabled-bg;
+        }
+      }
+    }
+  }
+
+.custom-control-label {
+    margin-bottom: 0;
+  
+    // Background-color and (when enabled) gradient
+    &::before {
+      position: absolute;
+      top:  (($line-height-base - $custom-control-indicator-size) / 2);
+      width: $custom-control-indicator-size;
+      height: $custom-control-indicator-size;
+      background-color: $custom-control-indicator-bg;
+      @include box-shadow($custom-control-indicator-box-shadow);
+    }
+  
+    // Foreground (icon)
+    &::after {
+      position: absolute;
+      top: (($line-height-base - $custom-control-indicator-size) / 2);
+      width: $custom-control-indicator-size;
+      height: $custom-control-indicator-size;
+      background-size: $custom-control-indicator-bg-size;
+    }
+  }
+  
+  
+  // Checkboxes
+  //
+  // Tweak just a few things for checkboxes.
+  
+  .custom-checkbox {
+    .custom-control-label::before {
+      @include border-radius($custom-checkbox-indicator-border-radius);
+    }
+  
+    .custom-control-input:checked ~ .custom-control-label {
+      &::before {
+        @include gradient-bg($custom-control-indicator-checked-bg);
+      }
+      &::after {
+        background-image: $custom-checkbox-indicator-icon-checked;
+      }
+    }
+  
+    .custom-control-input:indeterminate ~ .custom-control-label {
+      &::before {
+        @include gradient-bg($custom-checkbox-indicator-indeterminate-bg);
+        @include box-shadow($custom-checkbox-indicator-indeterminate-box-shadow);
+      }
+      &::after {
+        background-image: $custom-checkbox-indicator-icon-indeterminate;
+      }
+    }
+  
+    .custom-control-input:disabled {
+      &:checked ~ .custom-control-label::before {
+        background-color: $custom-control-indicator-checked-disabled-bg;
+      }
+      &:indeterminate ~ .custom-control-label::before {
+        background-color: $custom-control-indicator-checked-disabled-bg;
+      }
+    }
+  }
+  
+  // Radios
+  //
+  // Tweak just a few things for radios.
+  
+  .custom-radio {
+    .custom-control-label::before {
+      border-radius: $custom-radio-indicator-border-radius;
+    }
+  
+    .custom-control-input:checked ~ .custom-control-label {
+      &::before {
+        @include gradient-bg($custom-control-indicator-checked-bg);
+      }
+      &::after {
+        background-image: $custom-radio-indicator-icon-checked;
+      }
+    }
+  
+    .custom-control-input:disabled {
+      &:checked ~ .custom-control-label::before {
+        background-color: $custom-control-indicator-checked-disabled-bg;
+      }
+    }
+  }
+  
+  

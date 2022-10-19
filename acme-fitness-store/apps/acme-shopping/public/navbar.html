@@ -1,0 +1,98 @@
+<div class="container"><a href="index.html" class="navbar-brand home"><img src="img/logo.png" alt="ACME Fitness logo"
+                                                                           class="d-none d-md-inline-block"><img
+        src="img/logo-small.png" alt="ACME Fitness logo" class="d-md-none"><span class="sr-only">ACME Fitness - go to homepage</span></a>
+    <div class="currency-area .d-sm-none .d-md-block">
+        <select id="currency" class="form-control btn-outline-secondary mr-1">
+            <option value="USD" selected="USD">USD</option>
+            <option value="GBP">GBP</option>
+            <option value="YEN">YEN</option>
+        </select>
+    </div>
+    <div class="navbar-buttons d-lg-none">
+        <button type="button" data-toggle="modal" data-target="#login-modal" class="btn btn-outline-secondary mr-1">
+            <span class="sr-only">User login</span><i class="fa fa-users"></i></button>
+        <!---<button class="btn btn-outline-secondary search mr-1"><span class="sr-only">Toggle search</span><i class="fa fa-search">               </i></button>-->
+        <a href="cart.html" class="btn btn-outline-primary mr-1"><i class="fa fa-shopping-cart"></i><span
+                id="totalItems" class="d-none d-sm-inline"></span></a>
+        <button type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation"
+                aria-expanded="false" aria-label="Toggle navigation" class="btn btn-outline-primary"><i
+                class="fa fa-align-justify"></i><span class="sr-only">Toggle navigation</span></button>
+
+    </div>
+    <div id="navigation" class="navbar-collapse collapse">
+        <div class="navbar-nav mr-auto">
+            <div class="nav-item active dropdown normal-dropdown"><a id="homeDropdown" href="index.html"
+                                                                     aria-haspopup="true" aria-expanded="false"
+                                                                     class="nav-link">Home</a>
+            </div>
+            <div class="nav-item dropdown yamm-fw"><a href="catalog.html" id="catalog" class="nav-link">Catalog<b
+                    class="caret"></b></a>
+            </div>
+
+            <div class="nav-item"><a href="contact.html" class="nav-link">Contact</a></div>
+        </div>
+        <div class="d-none d-lg-block">
+            <button type="button" data-toggle="modal" data-target="#login-modal" class="btn btn-outline-secondary mr-1">
+                <span class="sr-only">User login</span><i class="fa fa-users"></i></button>
+            <!--<button class="btn btn-outline-secondary search mr-1"><span class="sr-only">Toggle search</span><i class="fa fa-search">  </i></button>-->
+            <a href="cart.html" class="btn btn-outline-primary"><i class="fa fa-shopping-cart"></i><span
+                    id="totalItemsMd" class="hidden-sm">0 items <span class="hidden-md">in cart   </span></span></a>
+        </div>
+    </div>
+    <!-- /.nav-collapse-->
+</div>
+<script src="js/client.js"></script>
+<script src="js/jwt-decode.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.ajaxSetup({
+            contentType: "application/json; charset=utf-8"
+        });
+
+        var userid = getUserID();
+
+        if (userid != "guest") {
+            $.ajax({
+
+                url: "/cart/items/" + userid,
+                type: "GET",
+                success: function (body, textStatus, jqXHR) {
+
+                    if (jqXHR.status == 200) {
+
+                        if (body != null) {
+
+                            var quantity = 0;
+
+                            $.each(body.cart, function (index, item) {
+
+                                quantity += item.quantity;
+
+                            });
+
+                            console.log('total quantity ' + quantity)
+
+                            $("#totalItems").text(quantity)
+                            $("#totalItemsMd").text(quantity + ' items in cart')
+
+                        }
+                    } else {
+
+                        console.log('status : ' + jqXHR.status)
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown)
+                }
+            });
+        } // End If
+
+        // @todo - Fix this to work with Currency service
+        var value = $("#currency").val()
+        $.cookie('currency', value)
+        console.log(value)
+
+    })
+</script>

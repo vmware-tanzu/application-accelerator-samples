@@ -1,0 +1,125 @@
+/*
+   /////////////////////////////////////////////////////
+     CONTENT PAGES
+   /////////////////////////////////////////////////////
+*/
+
+.text-content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    ul,
+    ol,
+    p {
+        margin-bottom: 2rem;
+    }
+    p {
+        color: $gray-700;
+    }
+}
+
+#error-page {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 100px;
+    h4 {
+        margin-bottom: 40px;
+    }
+    p.buttons {
+        margin-top: 40px;
+    }
+}
+
+#map {
+    height: 400px;
+}
+
+/*
+   /////////////////////////////////////////////////////
+    ACCORDION
+   /////////////////////////////////////////////////////
+*/
+
+.accordion {
+    h5 {
+        @include uppercase;
+        font-weight: 300;
+    }
+}
+
+/*
+   /////////////////////////////////////////////////////
+     TEAM MEMBERS
+   /////////////////////////////////////////////////////
+*/
+
+.team {
+    margin-top: 40px;
+}
+
+.team-member {
+    text-align: center;
+    margin-bottom: $line-height-computed * 2;
+    .image {
+        margin-bottom: 1rem;
+    }
+    h3 {
+        font-size: $h4-font-size;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        letter-spacing: 0.08em;
+        a {
+            color: $gray;
+        }
+    }
+    p.role {
+        color: $gray-light;
+        font-size: $font-size-sm;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+    .social {
+        margin-bottom: $line-height-computed;
+        a {
+            margin: 0 10px 0 0;
+            color: #fff;
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            border-radius: 13px;
+            line-height: 26px;
+            font-size: 15px;
+            text-align: center;
+            @include ondrTransition;
+            vertical-align: bottom;
+            i {
+                vertical-align: bottom;
+                line-height: 26px;
+            }
+            &.facebook {
+                background-color: #4460ae;
+            }
+            &.gplus {
+                background-color: #c21f25;
+            }
+            &.twitter {
+                background-color: #3cf;
+            }
+            &.instagram {
+                background-color: #cd4378;
+            }
+            &.email {
+                background-color: #4a7f45;
+            }
+        }
+    }
+    .text {
+        p {
+            color: $gray-light;
+            font-size: $font-size-sm;
+        }
+    }
+}

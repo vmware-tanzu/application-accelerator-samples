@@ -1,0 +1,34 @@
+[
+  {
+    "ssoEnabled": true,
+    "tokenRelay": true,
+    "title": "Create an order.",
+    "description": "Creates an order for the user.",
+    "predicates": [
+      "Path=/order/add/{userId}",
+      "Method=POST"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "order"
+    ]
+  },
+  {
+    "ssoEnabled": true,
+    "tokenRelay": true,
+    "title": "Retrieve User's Orders.",
+    "description": "Lookup all orders for the given user",
+    "predicates": [
+      "Path=/order/{userId}",
+      "Method=GET"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "tags": [
+      "order"
+    ]
+  }
+]

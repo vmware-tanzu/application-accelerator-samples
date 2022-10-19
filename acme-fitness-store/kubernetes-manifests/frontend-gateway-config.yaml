@@ -1,0 +1,27 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: frontend-route-config
+spec:
+  service:
+    name: frontend
+    port: 80
+  routes:
+    - predicates:
+        - Path=/**
+        - Method=GET
+      order: 1000
+      filters:
+        - StripPrefix=0
+      tags:
+        - frontend
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: frontend-routes
+spec:
+  gatewayRef:
+    name: gateway
+  routeConfigRef:
+    name: frontend-route-config
