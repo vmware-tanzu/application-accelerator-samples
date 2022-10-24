@@ -32,6 +32,6 @@ spec:
         description: DESCRIPTION_VAL
   source:
     git:
+      url: <https URL for your generated project's Git repository>
       ref:
         branch: main
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
