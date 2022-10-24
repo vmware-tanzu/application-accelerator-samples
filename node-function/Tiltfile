@@ -24,4 +24,4 @@ k8s_custom_deploy(
 )
 
 k8s_resource('node-function', port_forwards=["8080:8080"],
-    extra_pod_selectors=[{'serving.knative.dev/service': 'node-function'}])
+    extra_pod_selectors=[{'carto.run/workload-name': 'node-function', 'app.kubernetes.io/component': 'run'}])

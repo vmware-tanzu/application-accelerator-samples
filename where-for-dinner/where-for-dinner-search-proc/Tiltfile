@@ -19,4 +19,4 @@ k8s_custom_deploy(
 )
 
 k8s_resource('where-for-dinner-search-proc', port_forwards=["8080:8080"],
-    extra_pod_selectors=[{'serving.knative.dev/service': 'where-for-dinner-search-proc'}])
+    extra_pod_selectors=[{'carto.run/workload-name': 'where-for-dinner-search-proc', 'app.kubernetes.io/component': 'run'}])
