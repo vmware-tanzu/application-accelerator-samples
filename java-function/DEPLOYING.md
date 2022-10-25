@@ -14,7 +14,7 @@ In order to further develop this application the following tools may be needed:
 To quickly test locally, run this command in the root directory.
 
 ```
-pack build java-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.0.12
+pack build java-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.1.0 --env BP_FUNCTION=functions.Handler
 ```
 
 Where `java-function` is the name of your runnable function image, later used by Docker.
@@ -161,14 +161,7 @@ tilt up
 tilt down
 ```
 
-## Handy Tips
-
-### Naming The Function
-
-There is an environment variable BP_FUNCTION.  Use this to point to the Java class that contains your function. 
-Note that you can use this variable in the pack cli when building locally and in the config/workload.yaml file when using the Tanzu CLI (and also `tilt up`)
-
-### Java Dependencies
+## Java Dependencies
 
 If you need to add dependencies to your Java function, use Maven or Gradle in the normal fashion.  The Maven and Gradle build files default to building a fat runnable jar.  This allows your additional dependencies to be included and available during runtime. 
 
@@ -185,3 +178,10 @@ For example, you could add the following to pom.xml:
 ```
 
 which would allow you to add `import org.apache.commons.lang3.StringUtils;` to your Java code and make use of StringUtils.
+
+## Runtime Configuration
+
+This accelerator makes use of the
+[Function Buildpack for Knative](https://github.com/vmware-tanzu/function-buildpacks-for-knative) Java buildpack.
+Reference its [documentation](https://github.com/vmware-tanzu/function-buildpacks-for-knative/tree/main/buildpacks/java) for
+further details.  For example, Knative's `func.yaml` file can be used to configure runtime environment variables and deployment scaling options. 
