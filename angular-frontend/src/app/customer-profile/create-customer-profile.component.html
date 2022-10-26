@@ -1,0 +1,19 @@
+<div>
+  <div>
+    <label for="firstName">First Name</label>
+    <input id="firstName" name="firstName" [(ngModel)]="customerProfile.firstName" placeholder="John" data-testid="first-name"/>
+  </div>
+
+  <div>
+    <label for="lastName">Last Name</label>
+    <input id="lastName" name="lastName" [(ngModel)]="customerProfile.lastName" placeholder="Smith" data-testid="last-name"/>
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input id="email" name="email" [(ngModel)]="customerProfile.email" placeholder="john.smith@example.com" data-testid="email" />
+    <label *ngIf="!customerProfile.valid()" style="color: darkred; width: 200px">Email must be provided!</label>
+  </div>
+
+  <button type="button" (click)="onSubmit()" [attr.disabled]="customerProfile.valid() ? null : 'true'">Create</button>
+</div>

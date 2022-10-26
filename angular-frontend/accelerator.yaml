@@ -1,0 +1,42 @@
+accelerator:
+  displayName: Angular Frontend
+  description: Angular Single Page Application with client side rendered web UI. Application provides Service to interact with backend API's.
+  tags:
+    - angular
+    - web
+    - tanzu
+
+  options:
+    - name: artifactId
+      inputType: text
+      defaultValue: "client-side-ui-starter"
+      label: Application artifact name
+      required: true
+    - name: backendService
+      inputType: text
+      defaultValue: "customer-profile-backend.namespace.svc.cluster.local"
+      label: Hostname of the backend services app. If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
+      required: true
+  imports:
+    - name: tap-workload
+
+engine:
+  let:
+    - name: backendServiceResourceName
+      expression: '#backendService.toLowerCase()'
+  chain:
+    - merge:
+        - include: [ "**" ]
+          exclude: [ "nginx.conf" ]
+        - include: [ "nginx.conf" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "http://backend/api/"
+                  with: "'http://' + #backendServiceResourceName + '/api/'"
+
+    - merge:
+      - type: InvokeFragment
+        reference: tap-workload
+      - include: [ "**" ]
+      onConflict: UseFirst

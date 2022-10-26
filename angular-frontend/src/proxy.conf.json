@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "http://backend02.acc-dev-01.apps.tap-dev.fastdev.nl",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
