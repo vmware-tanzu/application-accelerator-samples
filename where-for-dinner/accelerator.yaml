@@ -139,7 +139,7 @@ accelerator:
     required: false
     dependsOn: 
       name: enableDefaultDevAccount
-  - label: Dev Account BCrypt Password
+  - label: Dev Account Password
     description: "Plain text version of the dev password."
     defaultValue: "letseat"
     name: devDefaultAccountPassword
