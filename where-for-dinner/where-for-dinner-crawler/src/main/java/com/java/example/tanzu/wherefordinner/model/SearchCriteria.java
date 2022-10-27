@@ -1,5 +1,7 @@
 package com.java.example.tanzu.wherefordinner.model;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -11,9 +13,9 @@ public class SearchCriteria
 	
 	private long endTime;
 	
-	private String diningTypes;
+	private List<String> diningTypes;
 	
-	private String diningNames;
+	private List<String> diningNames;
 	
 	private String postalCode;
 	

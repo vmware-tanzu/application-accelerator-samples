@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class Availability 
 {	
+	private String searchName;
+
 	private String diningName;
 
 	private String address;
@@ -22,6 +24,8 @@ public class Availability
 	private String phoneNumber;
 	
 	private String reservationURL;
+	
+	private String requestSubject;
 	
 	private List<AvailabilityWindow> availabilityWindows = new ArrayList<>();
 	
