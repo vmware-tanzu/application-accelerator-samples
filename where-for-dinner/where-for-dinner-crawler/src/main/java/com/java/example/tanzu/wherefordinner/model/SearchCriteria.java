@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.model;
+package com.java.example.tanzu.wherefordinner.model;
 
 import lombok.Data;
 
