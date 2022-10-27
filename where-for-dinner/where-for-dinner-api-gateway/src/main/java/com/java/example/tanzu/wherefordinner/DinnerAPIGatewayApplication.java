@@ -1,8 +1,7 @@
-package com.java.example.tanzu.hungryman;
+package com.java.example.tanzu.wherefordinner;
 
 import java.net.URI;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +18,11 @@ import org.springframework.security.web.server.authentication.logout.ServerLogou
 import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
 
 @SpringBootApplication
-public class HungrymanAPIGatewayApplication 
+public class DinnerAPIGatewayApplication 
 {		
 	public static void main(String[] args) 
 	{
-		SpringApplication.run(HungrymanAPIGatewayApplication.class, args);
+		SpringApplication.run(DinnerAPIGatewayApplication.class, args);
 	}
 	
 	@Profile("!secure")

@@ -1,0 +1,179 @@
+#@ load("@ytt:data", "data")
+
+---
+#@ def buildBrokerAnnotations():
+#@ if data.values.enableRabbitMQBroker == True:
+  eventing.knative.dev/broker.class: RabbitMQBroker
+#@ end
+#@ end
+
+#@ def buildBrokerConfig():
+#@ if data.values.enableRabbitMQBroker == True:
+  apiVersion: eventing.knative.dev/v1alpha1
+  kind: RabbitmqBrokerConfig
+  name: hungryman-rmq-broker-config
+#@ end
+#@ end
+
+#@ def buildTriggerAnnotations():
+#@ if data.values.enableRabbitMQBroker == True:
+  rabbitmq.eventing.knative.dev/parallelism: "5"
+#@ end
+#@ end
+
+
+#@ def buildBrokerURI():
+#@ if data.values.enableRabbitMQBroker == False:
+#@  return 'http://broker-ingress.knative-eventing.svc.cluster.local/' + data.values.workloadNamespace + '/hungryman'
+#@ end
+#@  return 'http://hungryman-broker-ingress.' + data.values.workloadNamespace + '.svc.cluster.local'
+#@ end
+
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: RabbitmqBrokerConfig
+metadata:
+  name: hungryman-rmq-broker-config
+  namespace: #@ data.values.workloadNamespace
+spec:
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+---
+apiVersion: eventing.knative.dev/v1
+kind: Broker
+metadata:
+  name: hungryman
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildBrokerAnnotations()
+spec:
+  config: #@ buildBrokerConfig()
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  labels:
+    eventing.knative.dev/broker: hungryman
+  name: hungrman-search-proc
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildTriggerAnnotations()
+spec:
+  broker: hungryman
+  filter:
+    attributes:
+      source: #@ '/apis/v1/namespaces/' + data.values.workloadNamespace + '/rabbitmqsources/hungryman-search-criteria-rabbit-source#hungryman-search-criteria'
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: hungryman-search-proc
+    uri: /processSearch
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  labels:
+    eventing.knative.dev/broker: hungryman
+  name: hungrman-notify
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildTriggerAnnotations()
+spec:
+  broker: hungryman
+  filter:
+    attributes:
+      source: 'http://spring.io/'
+      type: 'com.java.example.tanzu.hungryman.model.Availability'
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: hungryman-notify
+    uri: /notifyAvailability
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  labels:
+    eventing.knative.dev/broker: hungryman
+  name: hungrman-availability
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildTriggerAnnotations()
+spec:
+  broker: hungryman
+  filter:
+    attributes:
+      source: 'http://spring.io/'
+      type: 'com.java.example.tanzu.hungryman.model.Availability'
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: hungryman-availability
+    uri: /processAvailability
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: hungryman-search-criteria-rabbit-source
+  name: hungryman-search-criteria-exchnage
+  namespace: #@ data.values.workloadNamespace
+spec:
+  durable: true
+  name: hungryman-search-criteria
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  type: topic
+  vhost: /
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: hungryman-search-criteria-rabbit-source
+  name: hungryman-search-criteria-queue
+  namespace: #@ data.values.workloadNamespace
+spec:
+  durable: true
+  autoDelete: false
+  name: hungryman-search-criteria
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  type: quorum
+  vhost: /
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: hungryman-search-criteria-rabbit-source
+  name: hungryman-search-criteria-binding
+  namespace: #@ data.values.workloadNamespace
+spec:
+  source: hungryman-search-criteria
+  destination: hungryman-search-criteria
+  destinationType: queue
+  routingKey: "#"
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  vhost: /
+---
+apiVersion: sources.knative.dev/v1alpha1
+kind: RabbitmqSource
+metadata:
+  name: hungryman-search-criteria-rabbit-source
+  namespace: #@ data.values.workloadNamespace
+spec:
+
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  rabbitmqResourcesConfig:
+    predeclared: true 
+    parallelism: 5
+    queueName: hungryman-search-criteria
+  sink:
+    uri: #@ buildBrokerURI()

@@ -10,7 +10,7 @@ spec:
       matchLabels:
          name: #@ data.values.appSSOName
    redirectURIs: 
-     - #@ data.values.appSSORedirectURI
+     - #@ data.values.appWorkloadURL + '/login/oauth2/code/sso'
    requireUserConsent: false
    clientAuthenticationMethod: basic
    authorizationGrantTypes:

@@ -14,11 +14,6 @@
 #@ end            
 #@ end
 
-#@ def getURLHostName(url):
-#@   host = regexp.replace("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?", url, "$4")  
-#@   return host          
-#@ end
-
 ---
 apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
 kind: AuthServer
@@ -33,7 +28,8 @@ metadata:
     sso.apps.tanzu.vmware.com/allow-unsafe-identity-provider: ""
     sso.apps.tanzu.vmware.com/allow-unsafe-issuer-uri: ""
 spec:
-  issuerURI: #@ data.values.appSSOIssuerURI
+  tls: 
+    disabled: true
   tokenSignature:
     signAndVerifyKeyRef:
       name: #@ data.values.appSSOName +"-signing-key"
@@ -50,31 +46,4 @@ spec:
     stringData:
       key.pem: $(privateKey)      
       pub.pem: $(publicKey)
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: #@ data.values.appSSOName
-  namespace: workloads
-spec:
-  selector:
-    app.kubernetes.io/part-of: #@ data.values.appSSOName
-    app.kubernetes.io/component: authorization-server
-  ports:
-    - port: 80
-      targetPort: 8080
----
-apiVersion: projectcontour.io/v1
-kind: HTTPProxy
-metadata:
-  name: #@ data.values.appSSOName
-  namespace: workloads
-spec:
-  virtualhost:
-    fqdn: #@ getURLHostName(data.values.appSSOIssuerURI)
-  routes:
-    - conditions:
-        - prefix: /
-      services:
-        - name: #@ data.values.appSSOName
-          port: 80
+      
