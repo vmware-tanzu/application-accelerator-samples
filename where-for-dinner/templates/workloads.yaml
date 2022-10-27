@@ -238,7 +238,7 @@ spec:
       url: https://github.com/gm2552/application-accelerator-samples.git
       ref:
         branch: #@ buildUIGitBranch()
-    subPath: where-for-dinner-ui
+    subPath: where-for-dinner/where-for-dinner-ui
 ---
 apiVersion: carto.run/v1alpha1
 kind: Workload
@@ -261,4 +261,4 @@ spec:
       url: https://github.com/gm2552/application-accelerator-samples.git
       ref:
         branch: main
-    subPath: where-for-dinner-crawler
+    subPath: where-for-dinner/where-for-dinner-crawler
