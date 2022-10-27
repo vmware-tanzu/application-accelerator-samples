@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.config;
+package com.java.example.tanzu.wherefordinner.config;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import lombok.Data;
 
 @Configuration
-@ConfigurationProperties(prefix = "where-for-dinner.randomsearcher")
+@ConfigurationProperties(prefix = "where-for-dinner.randomsearcher") 
 @Data
 public class StaticDiningAvailability 
 {

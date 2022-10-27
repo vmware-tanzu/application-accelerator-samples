@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.functions;
+package com.java.example.tanzu.wherefordinner.functions;
 
 import java.util.function.Function;
 
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.java.example.tanzu.hungryman.model.Availability;
-import com.java.example.tanzu.hungryman.model.SearchCriteria;
-import com.java.example.tanzu.hungryman.processor.SearchProcessor;
+import com.java.example.tanzu.wherefordinner.model.Availability;
+import com.java.example.tanzu.wherefordinner.model.SearchCriteria;
+import com.java.example.tanzu.wherefordinner.processor.SearchProcessor;
 
 import reactor.core.publisher.Flux;
 

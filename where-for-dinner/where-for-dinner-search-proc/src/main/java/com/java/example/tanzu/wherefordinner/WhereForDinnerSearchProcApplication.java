@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman;
+package com.java.example.tanzu.wherefordinner;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -9,11 +9,11 @@ import reactivefeign.spring.config.EnableReactiveFeignClients;
 @SpringBootApplication
 @EnableReactiveFeignClients
 @EnableDiscoveryClient
-public class HungrymanSearchProcApplication {
+public class WhereForDinnerSearchProcApplication {
 
 	public static void main(String[] args) 
 	{
-		new SpringApplicationBuilder(HungrymanSearchProcApplication.class)
+		new SpringApplicationBuilder(WhereForDinnerSearchProcApplication.class)
 		 .run(args);
 	}
 

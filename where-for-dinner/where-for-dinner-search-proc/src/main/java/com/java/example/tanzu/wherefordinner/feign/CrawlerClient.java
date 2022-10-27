@@ -1,10 +1,10 @@
-package com.java.example.tanzu.hungryman.feign;
+package com.java.example.tanzu.wherefordinner.feign;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.java.example.tanzu.hungryman.model.Availability;
+import com.java.example.tanzu.wherefordinner.model.Availability;
 
 import reactivefeign.spring.config.ReactiveFeignClient;
 import reactor.core.publisher.Flux;
@@ -14,5 +14,6 @@ import reactor.core.publisher.Flux;
 public interface CrawlerClient 
 {
 	@GetMapping("/search")
-	public Flux<Availability> search(@RequestParam("diningNames") String diningNames, @RequestParam("diningTypes") String diningTypes);
+	public Flux<Availability> search(@RequestParam("diningNames") String diningNames, @RequestParam("diningTypes") String diningTypes,
+			@RequestParam("startTime") Long startTime, @RequestParam("endTime") Long endTime);
 }

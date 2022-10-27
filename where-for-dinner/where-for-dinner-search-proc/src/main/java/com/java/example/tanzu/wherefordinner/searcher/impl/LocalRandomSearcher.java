@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.searcher.impl;
+package com.java.example.tanzu.wherefordinner.searcher.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.java.example.tanzu.hungryman.config.StaticDiningAvailability;
-import com.java.example.tanzu.hungryman.model.Availability;
-import com.java.example.tanzu.hungryman.model.SearchCriteria;
-import com.java.example.tanzu.hungryman.searcher.Searcher;
+import com.java.example.tanzu.wherefordinner.config.StaticDiningAvailability;
+import com.java.example.tanzu.wherefordinner.model.Availability;
+import com.java.example.tanzu.wherefordinner.model.SearchCriteria;
+import com.java.example.tanzu.wherefordinner.searcher.Searcher;
 
 import reactor.core.publisher.Flux;
 
