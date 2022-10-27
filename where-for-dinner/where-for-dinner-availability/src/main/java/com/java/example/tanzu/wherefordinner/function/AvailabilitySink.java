@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.function;
+package com.java.example.tanzu.wherefordinner.function;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.java.example.tanzu.hungryman.model.Availability;
-import com.java.example.tanzu.hungryman.repository.AvailabilityRepository;
-import com.java.example.tanzu.hungryman.repository.AvailabilityWindowRepository;
+import com.java.example.tanzu.wherefordinner.model.Availability;
+import com.java.example.tanzu.wherefordinner.repository.AvailabilityRepository;
+import com.java.example.tanzu.wherefordinner.repository.AvailabilityWindowRepository;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -35,13 +35,13 @@ public class AvailabilitySink
 				
 				// check to see if this is an update or a new entry
 				return availRepo.findBySearchNameAndDiningNameAndRequestSubject(avail.getSearchName(), avail.getDiningName(), avail.getRequestSubject())
-					.switchIfEmpty(Mono.just(new com.java.example.tanzu.hungryman.entity.Availability(null, "", "", "", "","", "", "", "", "")))
+					.switchIfEmpty(Mono.just(new com.java.example.tanzu.wherefordinner.entity.Availability(null, "", "", "", "","", "", "", "", "")))
 					.flatMap(foundAvail -> 
 					{
 						// add a new availability entry if one does not already exist for this search/dining combo
-						final Mono<com.java.example.tanzu.hungryman.entity.Availability> saveAvail = (foundAvail.getId() != null) ?
+						final Mono<com.java.example.tanzu.wherefordinner.entity.Availability> saveAvail = (foundAvail.getId() != null) ?
 							Mono.just(foundAvail) : 
-								availRepo.save(new com.java.example.tanzu.hungryman.entity.Availability(null, avail.getSearchName(), avail.getDiningName(), 
+								availRepo.save(new com.java.example.tanzu.wherefordinner.entity.Availability(null, avail.getSearchName(), avail.getDiningName(), 
 										avail.getAddress(), avail.getLocality(), avail.getRegion(), avail.getPostalCode(), avail.getPhoneNumber(), 
 										avail.getReservationURL(), avail.getRequestSubject()));
 						
@@ -58,7 +58,7 @@ public class AvailabilitySink
 			}).then();
 	}
 	
-	protected Mono<Void> saveTimeWindows(Availability avail, com.java.example.tanzu.hungryman.entity.Availability savedAvail)
+	protected Mono<Void> saveTimeWindows(Availability avail, com.java.example.tanzu.wherefordinner.entity.Availability savedAvail)
 	{
 		  // no available windows... exit
 		  if (avail.getAvailabilityWindows().isEmpty())
@@ -67,9 +67,9 @@ public class AvailabilitySink
 		  log.info("Saving {} windows for dining name {} in search {}", avail.getAvailabilityWindows().size(), avail.getDiningName(), avail.getSearchName());
 		  
 		  // save available windows
-		  final var saveWindows = new ArrayList<com.java.example.tanzu.hungryman.entity.AvailabilityWindow>();
+		  final var saveWindows = new ArrayList<com.java.example.tanzu.wherefordinner.entity.AvailabilityWindow>();
 		  avail.getAvailabilityWindows().forEach(win ->  
-             saveWindows.add(new com.java.example.tanzu.hungryman.entity.AvailabilityWindow(savedAvail.getId(), win.getStartTime(), win.getEndTime())));
+             saveWindows.add(new com.java.example.tanzu.wherefordinner.entity.AvailabilityWindow(savedAvail.getId(), win.getStartTime(), win.getEndTime())));
 
 		  return availWinRepo.saveAll(saveWindows).then();						  
 		  

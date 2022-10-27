@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.entity;
+package com.java.example.tanzu.wherefordinner.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;

@@ -1,4 +1,4 @@
-	package com.java.example.tanzu.hungryman.resources;
+	package com.java.example.tanzu.wherefordinner.resources;
 
 import java.security.Principal;
 
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.java.example.tanzu.hungryman.model.Availability;
-import com.java.example.tanzu.hungryman.repository.AvailabilityRepository;
-import com.java.example.tanzu.hungryman.repository.AvailabilityWindowRepository;
+import com.java.example.tanzu.wherefordinner.model.Availability;
+import com.java.example.tanzu.wherefordinner.repository.AvailabilityRepository;
+import com.java.example.tanzu.wherefordinner.repository.AvailabilityWindowRepository;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Where for Dinner Availability Service",
-        		description = "Core hungryman service for retrieving dining availability"),
+        		description = "Core Where For Dinner service for retrieving dining availability"),
         tags = @Tag(
                 name = "Availability REST API",
                 description = "Operations for retrieving dining availability"))
@@ -96,14 +96,14 @@ public class AvailabilityResource
         )
     })
 	@GetMapping("{searchName}")
-	public Flux<com.java.example.tanzu.hungryman.model.Availability> getSearchAvailabilty(@PathVariable("searchName") String searchName, Principal oauth2User)
+	public Flux<com.java.example.tanzu.wherefordinner.model.Availability> getSearchAvailabilty(@PathVariable("searchName") String searchName, Principal oauth2User)
 	{
 		final var reqSub = getPrincipalName(oauth2User);
 		
 		return getAvailabilityFromFlux(availRepo.findBySearchNameAndRequestSubject(searchName, reqSub));
 	}
 	
-	protected Flux<Availability> getAvailabilityFromFlux(Flux<com.java.example.tanzu.hungryman.entity.Availability> flux)
+	protected Flux<Availability> getAvailabilityFromFlux(Flux<com.java.example.tanzu.wherefordinner.entity.Availability> flux)
 	{
 		return flux.flatMap(avail -> 
 		   {
@@ -118,7 +118,7 @@ public class AvailabilityResource
 			   retAvail.setReservationURL(avail.getReservationURL());
 			   
 			   return availWindowRepo.findByAvailabilityId(avail.getId())
-				  .switchIfEmpty(Mono.just(new com.java.example.tanzu.hungryman.entity.AvailabilityWindow(0L, 0L, 0L)))
+				  .switchIfEmpty(Mono.just(new com.java.example.tanzu.wherefordinner.entity.AvailabilityWindow(0L, 0L, 0L)))
 				  .map(win ->
 			      {
 			    	 if (win.getId() != null)
