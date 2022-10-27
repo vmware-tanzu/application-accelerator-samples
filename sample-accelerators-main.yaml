@@ -251,4 +251,14 @@ spec:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: weatherforecast-steeltoe
-
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: angular-frontend
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: angular-frontend
