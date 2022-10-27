@@ -1,10 +1,10 @@
-package com.java.example.tanzu.hungryman;
+package com.java.example.tanzu.wherefordinner;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HungrymanNotifyApplicationTests {
+class WhereForDinnerNotifyApplicationTests {
 
 	@Test
 	void contextLoads() {

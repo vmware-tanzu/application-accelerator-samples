@@ -1,13 +1,13 @@
-package com.java.example.tanzu.hungryman;
+package com.java.example.tanzu.wherefordinner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HungrymanNotifyApplication {
+public class WhereForDinnerNotifyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HungrymanNotifyApplication.class, args);
+		SpringApplication.run(WhereForDinnerNotifyApplication.class, args);
 	}
 
 }

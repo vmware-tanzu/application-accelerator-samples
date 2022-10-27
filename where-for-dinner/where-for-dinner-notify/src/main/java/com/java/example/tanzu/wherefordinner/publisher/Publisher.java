@@ -1,6 +1,6 @@
-package com.java.example.tanzu.hungryman.publisher;
+package com.java.example.tanzu.wherefordinner.publisher;
 
-import com.java.example.tanzu.hungryman.model.Availability;
+import com.java.example.tanzu.wherefordinner.model.Availability;
 
 import reactor.core.publisher.Mono;
 

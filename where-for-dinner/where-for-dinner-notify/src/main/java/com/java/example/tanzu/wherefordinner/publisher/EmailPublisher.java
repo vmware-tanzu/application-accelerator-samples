@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.publisher;
+package com.java.example.tanzu.wherefordinner.publisher;
 
 import java.text.DateFormat;
 import java.time.Instant;
@@ -13,8 +13,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.javamail.JavaMailSender;
 
-import com.java.example.tanzu.hungryman.config.EmailMessageConfigProperties;
-import com.java.example.tanzu.hungryman.model.Availability;
+import com.java.example.tanzu.wherefordinner.config.EmailMessageConfigProperties;
+import com.java.example.tanzu.wherefordinner.model.Availability;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
