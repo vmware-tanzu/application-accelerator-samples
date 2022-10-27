@@ -250,7 +250,7 @@ The application's home screen should look similar to the following (assuming you
 
 ## Application Catalog
 
-The Where for Dinner source repo contains a full TAP catalog configuration that is located in the repository's `catalog` directory including API docs links.  You can registry this catalog within TAP by pointing the Repository URL to the URL of catalog-info.yaml file in the `catalog` directory of the repository.  
+The Where for Dinner source repo contains a full TAP catalog configuration that is located in the repository's `catalog` directory including API docs links.  You can register this catalog within TAP by pointing the Repository URL to the URL of catalog-info.yaml file in the `catalog` directory of the repository.  
 
 Ex:
 

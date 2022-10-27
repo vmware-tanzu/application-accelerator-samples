@@ -43,7 +43,7 @@ accelerator:
   imports:
     - name: app-sso-client
       expose:
-        - name: workloadHost
+        - name: workloadURL
           dependsOn:
             name: includeAppSsoIntegration
             value: true
@@ -181,6 +181,3 @@ engine:
           substitutions:
           - text: "java-server-side-ui"
             with: "#artifactId"
-
-    - type: Exclude
-      patterns: [ "manifest.yaml" ]

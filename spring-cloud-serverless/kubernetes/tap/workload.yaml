@@ -12,7 +12,6 @@ spec:
         value: "11"
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+      url: <https URL for your generated project's Git repository>
       ref:
         branch: main
-    subPath: spring-cloud-serverless

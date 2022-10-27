@@ -5,7 +5,7 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: rest-service-db
-    apps.tanzu.vmware.com/has-tests: true
+    apps.tanzu.vmware.com/has-tests: "true"
     apis.apps.tanzu.vmware.com/register-api: "true"
 spec:
   serviceClaims:
@@ -32,7 +32,6 @@ spec:
         description: DESCRIPTION_VAL
   source:
     git:
+      url: <https URL for your generated project's Git repository>
       ref:
         branch: main
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: java-rest-service

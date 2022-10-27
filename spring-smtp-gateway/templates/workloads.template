@@ -16,10 +16,10 @@ spec:
       name: rmq-1
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+      url: <https URL for your generated project's Git repository>
       ref:
         branch: main
-    subPath: spring-smtp-gateway/smtp-gateway
+    subPath: smtp-gateway
   params:
   - name: ports
     value:
@@ -44,7 +44,7 @@ spec:
       name: rmq-1
   source:
     git:
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+      url: <https URL for your generated project's Git repository>
       ref:
         branch: main
-    subPath: spring-smtp-gateway/smtp-sink
+    subPath: smtp-sink

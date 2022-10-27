@@ -2,7 +2,6 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   name: smtp-gateway
-  namespace: workloads
   labels:
     apps.tanzu.vmware.com/workload-type: server
     app.kubernetes.io/part-of: spring-smtp-gateway
@@ -15,10 +14,10 @@ spec:
       name: rmq-1
   source:
     git:
+      url: <https URL for your generated project's Git repository>
       ref:
         branch: main
-      url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: spring-smtp-gateway/smtp-gateway
+    subPath: smtp-gateway
   params:
   - name: ports
     value:
