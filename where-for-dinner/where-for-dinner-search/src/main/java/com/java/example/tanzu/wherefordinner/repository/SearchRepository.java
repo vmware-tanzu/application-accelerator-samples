@@ -1,8 +1,8 @@
-package com.java.example.tanzu.hungryman.repository;
+package com.java.example.tanzu.wherefordinner.repository;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-import com.java.example.tanzu.hungryman.entity.Search;
+import com.java.example.tanzu.wherefordinner.entity.Search;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

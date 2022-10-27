@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.config;
+package com.java.example.tanzu.wherefordinner.config;
 
 import java.util.List;
 import java.util.Map;

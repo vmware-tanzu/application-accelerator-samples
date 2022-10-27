@@ -1,1 +1,1 @@
-org.springframework.cloud.bindings.boot.BindingsPropertiesProcessor=com.java.example.tanzu.hungryman.config.OAuth2BindingsPropertiesProcessor
+org.springframework.cloud.bindings.boot.BindingsPropertiesProcessor=com.java.example.tanzu.wherefordinner.config.OAuth2BindingsPropertiesProcessor

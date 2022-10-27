@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.resources;
+package com.java.example.tanzu.wherefordinner.resources;
 
 
 import java.security.Principal;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.java.example.tanzu.hungryman.entity.Search;
-import com.java.example.tanzu.hungryman.repository.SearchRepository;
+import com.java.example.tanzu.wherefordinner.entity.Search;
+import com.java.example.tanzu.wherefordinner.repository.SearchRepository;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -142,7 +142,7 @@ public class SearchResource
 		{
 			if (StringUtils.hasText(foundSearch.getName()))
 			{
-				log.error("Search name {} already exists.");
+				log.error("Search name {} already exists.", search.getName());
 				return Mono.error(new ResponseStatusException(HttpStatus.CONFLICT));
 			}
 				

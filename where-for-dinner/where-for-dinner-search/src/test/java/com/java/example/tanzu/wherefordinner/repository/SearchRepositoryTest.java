@@ -1,4 +1,4 @@
-package com.java.example.tanzu.hungryman.repository;
+package com.java.example.tanzu.wherefordinner.repository;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -6,8 +6,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.java.example.tanzu.hungryman.SpringBaseTest;
-import com.java.example.tanzu.hungryman.entity.Search;
+import com.java.example.tanzu.wherefordinner.SpringBaseTest;
+import com.java.example.tanzu.wherefordinner.entity.Search;
 
 import reactor.test.StepVerifier;
 
