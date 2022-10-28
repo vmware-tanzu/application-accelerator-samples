@@ -9,6 +9,10 @@ metadata:
     tanzu.app.live.view.application.flavours: steeltoe
     tanzu.app.live.view.application.name: weatherforecast-steeltoe
 spec:
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
   source:
     git:
       url: <https URL for your generated project's Git repository>
