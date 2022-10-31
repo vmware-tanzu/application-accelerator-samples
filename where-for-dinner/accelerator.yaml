@@ -83,13 +83,13 @@ accelerator:
       name: cacheType
       value: redisCache
   - label: Enable Cloud Events
-    description: "If set to true, the application will use CloudEvents and KNative as the internal eventing/messagiung model instead of spring cloud streams."
+    description: "If set to true, the application will use CloudEvents and Knative as the internal eventing/messagiung model instead of spring cloud streams."
     defaultValue: false
     name: enableCloudEvents
     inputType: checkbox
     dataType: boolean
     required: true
-  - label: Use RabbitMQ KNative Eventing Broker
+  - label: Use RabbitMQ Knative Eventing Broker
     description: "If set to true, the application will use a RabbitMQ backed eventing broker."
     defaultValue: false
     name: enableRabbitMQBroker

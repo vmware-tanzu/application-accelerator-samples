@@ -19,7 +19,7 @@ The Where for Dinner dining search solution is a multi micro-service application
 * State (Redis)
 * Security (oAuth and Tanzu AppSSO)
 
-Along with Spring Cloud Stream, CloudEvents and Knative eventing are supported as an alternative deployment option with a small change in application dependencies (but no source code changes).  This alternative deployment method also supports KNatvie scale to zero as well as auto scaling. 
+Along with Spring Cloud Stream, CloudEvents and Knative eventing are supported as an alternative deployment option with a small change in application dependencies (but no source code changes).  This alternative deployment method also supports Knatvie scale to zero as well as auto scaling. 
 
 The default application configuration supports static out of the box data sets; however, is also contains options to configure alternative data sources.  Lastly, the asynchronous messaging model supports the ability to add applications to the extend functionality.
 
@@ -43,7 +43,7 @@ Where for Dinner also has two optional components:
 
 The high level data flow looks like the following:
 
-![](doc/images/HungrymanHighLevelArch.png)
+![](doc/images/DinnerHighLevelArch.png)
 
 Note that the event channel protocols are not specified as they can be swapped out with different implementations.  By default, the application uses the RabbitMQ binding for Spring Cloud Streams, but could be swapped for any supported binding.  Because the channel end points are implements as Java `functions`, they are support `CloudEvents` and the event channels can be orchestrated through other mechanisms such as Knative eventing.  As you will see later on, there are provided deployment configurations in this repository for RabbitMQ service binding and Knative eventing.
 
@@ -53,12 +53,12 @@ The default build and deployment architecture uses Spring Cloud Streams as the a
 
 ![](doc/images/SCSMessaging.png)
 
-### KNative Eventing 
+### Knative Eventing 
 
 The *Cloud Events* option of the Where For Dinner application contains build configuration that removes Spring Cloud Streams dependencies and relies on the Spring Cloud Function webflux library for receiving events over HTTP.  Knative eventing fully embraces this paradigm and integrates seamlessly with functions exposed via the Spring Cloud Functions module.
 
-The architecture still uses Spring Cloud Streams as the messaging implementation for initially emitting searches, and a KNative `source` is inserted to create a bridge between the Spring Cloud Streams binding and the downstream Knative eventing concepts.  For the RabbitMQ implementation, a KNative RabbitMQ Source is declared to read events from a RabbitMQ exchange and propagate them through Knative eventing down to the subscribing services.  The following is a diagram of the Knative event concepts used for Where For Dinner:
+The architecture still uses Spring Cloud Streams as the messaging implementation for initially emitting searches, and a Knative `source` is inserted to create a bridge between the Spring Cloud Streams binding and the downstream Knative eventing concepts.  For the RabbitMQ implementation, a Knative RabbitMQ Source is declared to read events from a RabbitMQ exchange and propagate them through Knative eventing down to the subscribing services.  The following is a diagram of the Knative event concepts used for Where For Dinner:
 
-![](doc/images/KNativeEventing.png)  
+![](doc/images/KnativeEventing.png)  
 
 
