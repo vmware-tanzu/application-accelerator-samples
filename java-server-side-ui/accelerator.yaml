@@ -181,6 +181,3 @@ engine:
           substitutions:
           - text: "java-server-side-ui"
             with: "#artifactId"
-
-    - type: Exclude
-      patterns: [ "manifest.yaml" ]
