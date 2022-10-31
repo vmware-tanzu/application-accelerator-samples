@@ -116,7 +116,7 @@ accelerator:
     dependsOn: 
       name: enableSecurity                  
   - label: Workload URL
-    description: "The URL where the application will be published; used for AppSSO redirects.  Generally 'https://hungryman.<domain name>"
+    description: "The URL where the application will be published; used for AppSSO redirects.  Generally 'https://where-for-dinner.<domain name>"
     defaultValue: https://where-for-dinner.<UPDATE ME>
     name: appWorkloadURL
     inputType: text

@@ -62,11 +62,14 @@
 #@ end
 #@ end
 
-#@ def buildUIGitBranch():
+
+#@ def buildGuiAppEnv():
+#@ profile = "nonsecure"
 #@ if data.values.enableSecurity == True:
-#@ return "main"
+#@ profile = "secure"
 #@ end
-#@ return "main"
+  - name: REACT_APP_PROFILE
+    value: #@ profile
 #@ end
 
 
@@ -228,16 +231,16 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-ui
     networking.knative.dev/visibility: cluster-local
 spec:
+  env: #@ buildGuiAppEnv()
   params:
   - name: annotations
     value: 
       autoscaling.knative.dev/minScale: "1"   
-      app.kubernetes.io/part-of: where-for-dinner
   source:
     git:
       url: https://github.com/gm2552/application-accelerator-samples.git
       ref:
-        branch: #@ buildUIGitBranch()
+        branch: main
     subPath: where-for-dinner/where-for-dinner-ui
 ---
 apiVersion: carto.run/v1alpha1

@@ -18,14 +18,14 @@ metadata:
   name: #@ data.values.cacheName 
   namespace: #@ data.values.serviceNamespace
   labels:
-    app: hungryman
+    app: where-for-dinner
     service: #@ data.values.cacheName 
 spec:
   ports:
     - port: 6379
       name: redis
   selector:
-    app: hungryman
+    app: where-for-dinner
     service: #@ data.values.cacheName 
 ---
 apiVersion: apps/v1
@@ -34,18 +34,18 @@ metadata:
   name: #@ data.values.cacheName
   namespace: #@ data.values.serviceNamespace
   labels:
-    app: hungryman
+    app: where-for-dinner
     service: #@ data.values.cacheName 
 spec:
   selector:
     matchLabels:
-      app: hungryman  
+      app: where-for-dinner  
       service: #@ data.values.cacheName 
   replicas: 1
   template:
     metadata:
       labels:
-        app: hungryman  
+        app: where-for-dinner  
         service: #@ data.values.cacheName 
     spec:
       containers:

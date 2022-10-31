@@ -11,7 +11,7 @@
 #@ if data.values.enableRabbitMQBroker == True:
   apiVersion: eventing.knative.dev/v1alpha1
   kind: RabbitmqBrokerConfig
-  name: hungryman-rmq-broker-config
+  name: where-for-dinner-rmq-broker-config
 #@ end
 #@ end
 
@@ -24,16 +24,16 @@
 
 #@ def buildBrokerURI():
 #@ if data.values.enableRabbitMQBroker == False:
-#@  return 'http://broker-ingress.knative-eventing.svc.cluster.local/' + data.values.workloadNamespace + '/hungryman'
+#@  return 'http://broker-ingress.knative-eventing.svc.cluster.local/' + data.values.workloadNamespace + '/where-for-dinner'
 #@ end
-#@  return 'http://hungryman-broker-ingress.' + data.values.workloadNamespace + '.svc.cluster.local'
+#@  return 'http://where-for-dinner-broker-ingress.' + data.values.workloadNamespace + '.svc.cluster.local'
 #@ end
 
 ---
 apiVersion: eventing.knative.dev/v1alpha1
 kind: RabbitmqBrokerConfig
 metadata:
-  name: hungryman-rmq-broker-config
+  name: where-for-dinner-rmq-broker-config
   namespace: #@ data.values.workloadNamespace
 spec:
   rabbitmqClusterReference:
@@ -43,7 +43,7 @@ spec:
 apiVersion: eventing.knative.dev/v1
 kind: Broker
 metadata:
-  name: hungryman
+  name: where-for-dinner
   namespace: #@ data.values.workloadNamespace
   annotations: #@ buildBrokerAnnotations()
 spec:
@@ -53,74 +53,74 @@ apiVersion: eventing.knative.dev/v1
 kind: Trigger
 metadata:
   labels:
-    eventing.knative.dev/broker: hungryman
-  name: hungrman-search-proc
+    eventing.knative.dev/broker: where-for-dinner
+  name: where-for-dinner-search-proc
   namespace: #@ data.values.workloadNamespace
   annotations: #@ buildTriggerAnnotations()
 spec:
-  broker: hungryman
+  broker: where-for-dinner
   filter:
     attributes:
-      source: #@ '/apis/v1/namespaces/' + data.values.workloadNamespace + '/rabbitmqsources/hungryman-search-criteria-rabbit-source#hungryman-search-criteria'
+      source: #@ '/apis/v1/namespaces/' + data.values.workloadNamespace + '/rabbitmqsources/where-for-dinner-search-criteria-rabbit-source#where-for-dinner-search-criteria'
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1
       kind: Service
-      name: hungryman-search-proc
+      name: where-for-dinner-search-proc
     uri: /processSearch
 ---
 apiVersion: eventing.knative.dev/v1
 kind: Trigger
 metadata:
   labels:
-    eventing.knative.dev/broker: hungryman
-  name: hungrman-notify
+    eventing.knative.dev/broker: where-for-dinner
+  name: where-for-dinner-notify
   namespace: #@ data.values.workloadNamespace
   annotations: #@ buildTriggerAnnotations()
 spec:
-  broker: hungryman
+  broker: where-for-dinner
   filter:
     attributes:
       source: 'http://spring.io/'
-      type: 'com.java.example.tanzu.hungryman.model.Availability'
+      type: 'com.java.example.tanzu.wherefordinner.model.Availability'
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1
       kind: Service
-      name: hungryman-notify
+      name: where-for-dinner-notify
     uri: /notifyAvailability
 ---
 apiVersion: eventing.knative.dev/v1
 kind: Trigger
 metadata:
   labels:
-    eventing.knative.dev/broker: hungryman
-  name: hungrman-availability
+    eventing.knative.dev/broker: where-for-dinner
+  name: where-for-dinner-availability
   namespace: #@ data.values.workloadNamespace
   annotations: #@ buildTriggerAnnotations()
 spec:
-  broker: hungryman
+  broker: where-for-dinner
   filter:
     attributes:
       source: 'http://spring.io/'
-      type: 'com.java.example.tanzu.hungryman.model.Availability'
+      type: 'com.java.example.tanzu.wherefordinner.model.Availability'
   subscriber:
     ref:
       apiVersion: serving.knative.dev/v1
       kind: Service
-      name: hungryman-availability
+      name: where-for-dinner-availability
     uri: /processAvailability
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: Exchange
 metadata:
   labels:
-    eventing.knative.dev/SourceName: hungryman-search-criteria-rabbit-source
-  name: hungryman-search-criteria-exchnage
+    eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
+  name: where-for-dinner-search-criteria-exchnage
   namespace: #@ data.values.workloadNamespace
 spec:
   durable: true
-  name: hungryman-search-criteria
+  name: where-for-dinner-search-criteria
   rabbitmqClusterReference:
     name: #@ data.values.rabbitMQName
     namespace: #@ data.values.serviceNamespace
@@ -131,13 +131,13 @@ apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
   labels:
-    eventing.knative.dev/SourceName: hungryman-search-criteria-rabbit-source
-  name: hungryman-search-criteria-queue
+    eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
+  name: where-for-dinner-search-criteria-queue
   namespace: #@ data.values.workloadNamespace
 spec:
   durable: true
   autoDelete: false
-  name: hungryman-search-criteria
+  name: where-for-dinner-search-criteria
   rabbitmqClusterReference:
     name: #@ data.values.rabbitMQName
     namespace: #@ data.values.serviceNamespace
@@ -148,12 +148,12 @@ apiVersion: rabbitmq.com/v1beta1
 kind: Binding
 metadata:
   labels:
-    eventing.knative.dev/SourceName: hungryman-search-criteria-rabbit-source
-  name: hungryman-search-criteria-binding
+    eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
+  name: where-for-dinner-search-criteria-binding
   namespace: #@ data.values.workloadNamespace
 spec:
-  source: hungryman-search-criteria
-  destination: hungryman-search-criteria
+  source: where-for-dinner-search-criteria
+  destination: where-for-dinner-search-criteria
   destinationType: queue
   routingKey: "#"
   rabbitmqClusterReference:
@@ -164,7 +164,7 @@ spec:
 apiVersion: sources.knative.dev/v1alpha1
 kind: RabbitmqSource
 metadata:
-  name: hungryman-search-criteria-rabbit-source
+  name: where-for-dinner-search-criteria-rabbit-source
   namespace: #@ data.values.workloadNamespace
 spec:
 
@@ -174,6 +174,6 @@ spec:
   rabbitmqResourcesConfig:
     predeclared: true 
     parallelism: 5
-    queueName: hungryman-search-criteria
+    queueName: where-for-dinner-search-criteria
   sink:
     uri: #@ buildBrokerURI()
