@@ -1,3 +1,4 @@
+---
 accelerator:
   displayName: Steeltoe Weather Forecast
   description: A Steeltoe sample accelerator
@@ -18,22 +19,21 @@ accelerator:
     required: true
 
   imports:
-    - name: tap-workload
+  - name: tap-workload
 
 engine:
   merge:
-  - include: [ "**" ]
-    exclude: [ "README.md", "Sample.csproj", "config/**", "catalog/**", "Tiltfile" ]
+  - include: ["**"]
+    exclude: ["README.md", "config/**", "catalog/**", "Tiltfile"]
     chain:
     - type: ReplaceText
       substitutions:
       - text: Sample
         with: "#applicationName"
-  - include: [ "Sample.csproj" ]
-    chain:
     - type: RewritePath
-      rewriteTo: "#applicationName + '.csproj'"
-  - include: [ "README.md", "config/*.yaml", "catalog/*.yaml", "Tiltfile" ]
+      regex: "Sample(.*)"
+      rewriteTo: "#applicationName + #g1"
+  - include: ["README.md", "config/**", "catalog/**", "Tiltfile"]
     chain:
     - type: ReplaceText
       substitutions:
@@ -44,5 +44,5 @@ engine:
     - merge:
       - type: InvokeFragment
         reference: tap-workload
-      - include: [ "**" ]
+      - include: ["**"]
       onConflict: UseFirst
