@@ -33,22 +33,13 @@ accelerator:
     inputType: text
     dataType: string
     required: true
-  - label: Create RabbitMQ Cluster Definition
-    description: "If set to true, a RabbitMQ cluster definition yaml file will be created."
-    defaultValue: true
-    name: createRabbitMQCluster
-    inputType: checkbox
-    dataType: boolean
-    required: true
   - label: Number of RabbitMQ Cluster Nodes
-    description: The number of nodes that will make up the RabbitMQ number.  SHOULD be an odd number.
+    description: The number of nodes that will make up the RabbitMQ cluster.  SHOULD be an odd number.
     defaultValue: 1
     name: numRabbitMQClusterNodes
     inputType: text
     dataType: number
     required: true
-    dependsOn: 
-      name: createRabbitMQCluster
   - label: Database Type
     description: The type of database that services will connenct to.
     inputType: select
@@ -70,25 +61,46 @@ accelerator:
     dependsOn: 
       name: dbType
       value: mysql
-  - label: Create Database Definition
-    description: "If set to true, a Database instance definition yaml file will be created for the selected database type."
-    defaultValue: true
-    name: createDBInstance
-    inputType: checkbox
-    dataType: boolean
+  - label: Cache Type
+    description: The type of cache that services will connenct to.
+    inputType: select
+    defaultValue: inmemCache
+    name: cacheType
+    choices:
+    - value: inmemCache
+      text: In Memory
+    - value: redisCache
+      text: Redis
+    required: true
+  - label: Cache Instance Name
+    description: The name of the cache instance that the application services will connect to.
+    defaultValue: cache-where-for-dinner
+    name: cacheName
+    inputType: text
+    dataType: string
     required: true
     dependsOn: 
-      name: dbType
-      value: mysql
-  - label: Create Resource Claim Defintion for Services
-    description: "If set to true, a resource claim definition yaml file for the data services will be created."
-    defaultValue: true
-    name: createResourceClaim
+      name: cacheType
+      value: redisCache
+  - label: Enable Cloud Events
+    description: "If set to true, the application will use CloudEvents and Knative as the internal eventing/messagiung model instead of spring cloud streams."
+    defaultValue: false
+    name: enableCloudEvents
     inputType: checkbox
     dataType: boolean
     required: true
-  - label: Enable Security (Experimental)
-    description: "If set to true, security will enabled on the application and APIs.  You will need to provide additional security configuation in the subsequent sections below."
+  - label: Use RabbitMQ Knative Eventing Broker
+    description: "If set to true, the application will use a RabbitMQ backed eventing broker."
+    defaultValue: false
+    name: enableRabbitMQBroker
+    inputType: checkbox
+    dataType: boolean
+    required: true 
+    dependsOn: 
+      name: enableCloudEvents
+      value: true
+  - label: Enable Security
+    description: "If set to true, security will enabled on the application and APIs."
     defaultValue: false
     name: enableSecurity
     inputType: checkbox
@@ -102,25 +114,16 @@ accelerator:
     dataType: string
     required: true
     dependsOn: 
-      name: enableSecurity
-  - label: Issuer URI
-    description: "The full issuer URI of the AppSSO Instance.  Generally in the form of 'http://<authserver-host>.<domain name>"
-    defaultValue: http://authserver.<domainname>
-    name: appSSOIssuerURI
+      name: enableSecurity                  
+  - label: Workload URL
+    description: "The URL where the application will be published; used for AppSSO redirects.  Generally 'https://where-for-dinner.<domain name>"
+    defaultValue: https://where-for-dinner.<UPDATE ME>
+    name: appWorkloadURL
     inputType: text
     dataType: string
     required: true
     dependsOn: 
-      name: enableSecurity
-  - label: Redirect URI
-    description: "The redirect UI of the Where for Dinner application after successful authentication.  Generally 'http://where-for-dinner.<domain name>/login/oauth2/code/sso"
-    defaultValue: http://where-for-dinner.<domain name>/login/oauth2/code/sso
-    name: appSSORedirectURI
-    inputType: text
-    dataType: string
-    required: true
-    dependsOn: 
-      name: enableSecurity
+      name: enableSecurity         
   - label: Create Default Dev Account
     description: "If set to true, you can create a default dev account below.  This should not be used for production use."
     defaultValue: true
@@ -139,7 +142,7 @@ accelerator:
     required: false
     dependsOn: 
       name: enableDefaultDevAccount
-  - label: Dev Account BCrypt Password
+  - label: Dev Account Password
     description: "Plain text version of the dev password."
     defaultValue: "letseat"
     name: devDefaultAccountPassword
@@ -148,6 +151,7 @@ accelerator:
     required: false
     dependsOn: 
       name: enableDefaultDevAccount
+     
 engine:
   merge:
   - exclude: 
@@ -158,36 +162,41 @@ engine:
     - type: RewritePath
       regex: 'templates/workloads.yaml'
       rewriteTo: "'config/developer/workloads.yaml'"                  
-  - condition: "#createRabbitMQCluster"
-    include: ["**/rmqCluster.yaml"]
+  - include: ["**/rmqCluster.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/rmqCluster.yaml'
       rewriteTo: "'config/service-operator/rmqCluster.yaml'"   
-  - condition: "#createDBInstance && #dbType == 'mysql'"
+  - condition: "#dbType == 'mysql'"
     include: ["**/mysqlInstance.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/mysqlInstance.yaml'
       rewriteTo: "'config/service-operator/mysqlInstance.yaml'"   
-  - condition:
-      "#createResourceClaim"
-    include: ["**/rmqResourceClaim.yaml"]
+  - include: ["**/rmqResourceClaim.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/rmqResourceClaim.yaml'
       rewriteTo: "'config/app-operator/rmqResourceClaim.yaml'"   
   - condition:
-      "#createResourceClaim && #dbType == 'mysql'"
+      "#dbType == 'mysql'"
     include: ["**/mysqlResourceClaim.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/mysqlResourceClaim.yaml'
       rewriteTo: "'config/app-operator/mysqlResourceClaim.yaml'"     
+  - condition:
+      "#enableCloudEvents"
+    include: ["**/knEventing.yaml"]
+    chain:
+    - type: YTT  
+    - type: RewritePath
+      regex: 'templates/knEventing.yaml'
+      rewriteTo: "'config/app-operator/knEventing.yaml'"  
   - condition:
       "#enableSecurity"
     include: ["**/appSSOInstance.yaml", "**/clientRegistrationResourceClaim.yaml"]
@@ -199,3 +208,14 @@ engine:
     - type: RewritePath
       regex: 'templates/clientRegistrationResourceClaim.yaml'
       rewriteTo: "'config/app-operator/clientRegistrationResourceClaim.yaml'"    
+  - condition:
+      "#cacheType == 'redisCache'"
+    include: ["**/redisInstance.yaml", "**/redisResourceClaim.yaml"]
+    chain:
+    - type: YTT  
+    - type: RewritePath
+      regex: 'templates/redisInstance.yaml'
+      rewriteTo: "'config/service-operator/redisInstance.yaml'"  
+    - type: RewritePath
+      regex: 'templates/redisResourceClaim.yaml'
+      rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"  

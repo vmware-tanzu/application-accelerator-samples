@@ -5,7 +5,7 @@ The Where for Dinner TAP deployment options are enabled through a Tanzu applicat
 
 ## Prerequisites
 
-These instructions assume that you have a TAP 1.2.x or greater iterate cluster (or some variant similar to an iterate cluster) up and running with the following packages installed and [kubectl](https://kubernetes.io/docs/tasks/tools/) and the Tanzu CLI installed and configured to access your TAP cluster:
+These instructions assume that you have a TAP 1.3.x or greater iterate cluster (or some variant similar to an iterate cluster) up and running with the following packages installed and [kubectl](https://kubernetes.io/docs/tasks/tools/) and the Tanzu CLI installed and configured to access your TAP cluster:
 
 * Tanzu TAP GUI
 * Tanzu Build Services
@@ -24,7 +24,7 @@ This section provides a fast track installation of the "simplest" configuration 
 * Install Rabbit MQ operator:
 
 ```
-kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.13.1/cluster-operator.yml"
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.14.0/cluster-operator.yml"
 ```
 
 * Navigate to your TAP GUI web page and Application Accelerator tab on the left of the screen.  Select the `Choose` button on the `Where for Dinner` Application
@@ -107,6 +107,7 @@ You should see a result similar to the following:
 where-for-dinner                https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
 where-for-dinner-availability   https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
 where-for-dinner-notify         https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
+where-for-dinner-notify         https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
 where-for-dinner-search         https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
 where-for-dinner-search-proc    https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
 where-for-dinner-ui             https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
@@ -121,15 +122,18 @@ Tanzu Application Platform supports various eventing options for deployments.  T
 
 In addition, the Where for Dinner application has additional deployment options which consume additional services and/or provide additional functionality.  These include
 * H2 (In Memory) vs MySQL vs Postgres database options
+* In Memory Cache vs Redis cache option
 * Security enablement with AppSSO
 
 The simplest configuration is to use Spring Cloud Streams; however, using Knative eventing provides for extended capabilities such as scale to zero and auto scaling.  In both options, a Spring Cloud Streams binding implementation is required for moving messages from the `where-for-dinner-search` application; RabbitMQ is the default binding provided.  Neither option requires a change in source code, however different runtime dependencies are configured at build time depending on which eventing implementation is desired.  
 
 For database configuration, the default H2 in memory database is the simplest option and requires no additional database services to be installed, however you will lose all database information with an application restart and can not scale past one instance.  The MySQL and Postgres options give you persistence and scalability, but require you to install a database operator and provision database instances.  
 
-By default, the application has no security.  When choosing the security configuration, you are required to create an AppSSO instance resource as well as a `ClientRegistration` resource for the Where for Dinner application; the accelerator will generate the resource yaml for you.  You can either use a built in development account, or have the option (in a future release of this accelerator) to connect to external OIDC identity providers.
+For caching configuration, the default in memory cache is also the simplest option, however you lose all cached content with an application restart.  Unlike the MySQL and Postres options, the Redis option does not require an additional operator.  Instead, it uses a Bitnami image configuration.
 
-**NOTE** For the fastest and easiest path to deploying this application, use the default options of the H2 database and no security.  You will still be required to deploy the RabbitMQ operator out of band, however this step is trivial as explained in the `RabbitMQ Operator` section of this guide.
+By default, the application has no security.  When choosing the security configuration, you are required to create an AppSSO instance resource as well as a `ClientRegistration` resource for the Where For Dinner application; the accelerator will generate the resource yaml for you.  You can either use a built in development account, or have the option (in a future release of this accelerator) to connect to external OIDC identity providers.
+
+**NOTE** For the fastest and easiest path to deploying this application, use the default options of the H2 database, in memory cache, and no security.  You will still be required to deploy the RabbitMQ operator out of band, however this step is trivial as explained in the `RabbitMQ Operator` section of this guide.
 
 ## RabbitMQ Installation
 
@@ -137,29 +141,38 @@ A Spring Cloud Streams binding is a required dependency for Where for Dinner, an
 
 ### RabbitMQ Operator
 
-The RabbitMQ Kubernetes operator provides a resource based option for deploying RabbitMQ clusters to a Kubernetes cluster.  It also has the nicety of supporting the Kubernetes [Service Binding Spec](https://github.com/servicebinding/spec).  To install the RabbitMQ operator, run the following command against your cluster.  Later deployment instructions will assume that your RabbitMQ cluster and the Where for Dinner application are installed on the same cluster for the purpose of service binding, but this is not technically a requirement.
+The RabbitMQ Kubernetes operator provides a resource based option for deploying RabbitMQ clusters to a Kubernetes cluster.  It also has the nicety of supporting the Kubernetes [Service Binding Spec](https://github.com/servicebinding/spec).  
+
+There are two options for installing RabbitMQ: 
+
+* The open source RabbitMQ and RabbitMQ Toplogy operators
+* The VMware Tanzu� RabbitMQ� for Kubernetes offering.
+
+#### Open Source RabbitMQ Operator
+
+To install the open source RabbitMQ operator, run the following command against your cluster.  Later deployment instructions will assume that your RabbitMQ cluster and the Where For Dinner application are installed on the same cluster for the purpose of service binding, but this is not technically a requirement.
 
 ```
-kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.13.1/cluster-operator.yml"
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.14.0/cluster-operator.yml"
 ```
 
 If successfully installed, there will be an RabbitMQ cluster operator pod running in the `rabbitmq-system` namespace.
 
-### RabbitMQ Topology Operator (Experimental)
+##### RabbitMQ Topology Operator
 
-If you choose to use the Knative eventing deployment option, you will also need to deploy the RabbitMQ Topology Operator.  This operator allows for the declarative creation of resources like RabbitMQ exchanges, queues, and bindings.  The topology operator is a dependency of the Knative RabbitMQ Source resource which will be covered in the next section. 
+If you choose to use the Knative eventing deployment option, you will also need to deploy the RabbitMQ Topology Operator.  This operator allows for the declarative creation of resources like RabbitMQ exchanges, queues, and bindings.  The topology operator is a dependency of the Knative RabbitMQ source resource.  The RabbitMQ source acts as a bridge between messages emitted by the `where-for-dinner-search` application and the rest of the downstream services. 
 
 To install the RabbitMQ Topology operator, run the following command against your cluster. 
 
 ```
 kubectl apply -f "https://github.com/rabbitmq/messaging-topology-operator/releases/latest/download/messaging-topology-operator-with-certmanager.yaml"
 ```
+#### VMware Tanzu� RabbitMQ� for Kubernetes
 
-### RabbitMQ Eventing Source (Experimental)
+To install VMware Tanzu� RabbitMQ� for Kubernetes, refer to the installation instructions [here](https://docs.vmware.com/en/VMware-Tanzu-RabbitMQ-for-Kubernetes/1.3/tanzu-rmq/GUID-installation.html).
 
-If you choose to use the Knative eventing deployment option, you also need to deploy the KNatvie RabbitMQ Eventing Source resources.  The eventing source acts as a bridge between messages emitted by the `where-for-dinner-search` application and the rest of the downstream services.
 
-*NOTE:* The RabbitMQ Eventing source is pre-installed into your TAP deployment if you have chosen to deploy the Cloud Native Runtimes package.  However; TAP versions 1.2.x and below do not have an up to date version that will work with some of the declared resources in these instructions.  These instruction require RabbitMQ Eventing 1.4.0 or later.
+**NOTE:** The default configuration generated by the accelerator for a RabbitMQ cluster applies CPU and memory limitations.  There are known issues with Where For Dinner and resource limitations using VMware Tanzu� RabbitMQ� for Kubernetes.  It is recommended to edit the generate config/service-operator/rmqCluster.yaml file to remove these limitations.
 
 
 ## MySQL Installation
@@ -185,19 +198,17 @@ The accelerator contains the following configuration options:
 * **Workload Namespace:** The namespace where the application micro-services will be deployed.  It is assumed that this namespace has already been created and has been configured to run TAP workloads.
 * **Service Namespace:** The namespace where data service instances like RabbitMQ and databases reside (or will reside once created).  It is assumed that this namespace has already been created.
 * **RabbitMQ Cluster Name:**  The name of the RabbitMQ cluster resource that the micro-services will connect to.  If a new RabbitMQ cluster resource is to be created, this will be the name of the resource.  This name will also be propagated to the `workload.yaml` files in the resource claim section to indicate the names of the cluster that micro-services should connect to.
-* **Create RabbitMQ Cluster Definition:** If this box is checked, the accelerator will generate a file named `rmqCluster.yaml` in the `config/service-operator` directory that contains the configuration to create the RabbitMQ cluster.
-* **Number of RabbitMQ Nodes:** If a RabbitMQ cluster needs to be created, this is the number of replica nodes that will be created.
+* **Number of RabbitMQ Nodes:** The number of replica nodes that will be created in the RabbitMQ cluster.  This should be an odd number.
 * **Database Type:** The type of database that will be used for the services to store data.  Current options are H2, MySQL, and Postgres (not yet supported).  If anything other than H2 is selected, you will be asked to configure additional database properties.
-* **Database Name:**  The name of the database resource that the micro-services will connect to.  If a new database resource is to be created, this will be the name of the resource.  This name will also be propagated to the `workload.yaml` files in the resource claim section to indicate the names of the database that micro-services should connect to.
-* **Create Database Definition:** If this box is checked, the accelerator will generate a file named `mysqlInstance.yaml` in the `config/service-operator` directory that contains the configuration to create the database instance.
-* **Create Resource Claim Definition for Service:** If this box is checked, the accelerator will generate configuration yaml file in the `config/app-operator` directory that contain the resource definition for the resource claims that the micro-services can use to create service bindings to external service like RabbitMQ and database.  It also creates resource definitions used by the Tanzu CLI to manage service instances and resource claims. 
-* **Enable Security:** If this box is checked, the accelerator configure the applications to use a `secure` profile that will require the UI application authenticate users and for micro-services to require valid oAuth tokens with each request.  The accelerator will also generate a file named `appSSOInstance.yaml` in the `config/service-operator` directory that contains the configuration to create an AppSSO authorization server.  It will also generate a file named `clientRegistrationResourceClaim.yaml` in the `config/app-operator` directory that contains configuration for creating a ClientRegistration resource as well as the resource claims that the micro-services can use to create service bindings to AppSSO instance (via the ClientRegistration).  **NOTE:**  Security is not completely functional at this time.
-* **AppSSO Instance Name:**  If security is enabled, the name of the AppSSO resource that the micro-services will connect to.  This name will also be propagated to the `workload.yaml` files in the resource claim section to indicate the names of the AppSOO resource that micro-services should connect to.
-* **Issuer URI:**  If security is enabled, this is the full issuer URI used by the AppSSO instance.  This URI will also be used to create `Service` and `HTTPProxy` resources for Ingress to the AppSSO instance.  Make sure the URI is routed to your cluster.  You will likely need to register the host name of the issuer URI with your DNS provider to route to your cluster's Ingress load balancer.
-* **Redirect URI:**  If security is enabled, this is the redirect URI back the API gateway service after a successful user authentication.
+* **Database Name:**  The name of the database resource that the micro-services will connect to.  This name will be propagated to the `workload.yaml` files in the resource claim section to indicate the names of the database that micro-services should connect to.
+* **Enable Cloud Events:** If this box is checked, the accelerator will generate a configuration yaml file in the `config/app-operator` directory that contains the resource definitions for the Knative eventing resources.  These include the RabbitMQ source as well as the broker and trigger configurations for routing events to downstream services.  This will also configure applicable services to remove the Spring Cloud Stream binding libraries from the build process.
+* **Use RabbitMQ Knative Eventing Broker:** If this box is checked, the Knative broker will use a RabbitMQ broker implementation.
+* **Enable Security:** If this box is checked, the accelerator will configure the applications to use a `secure` profile that will require the UI application to authenticate users and for micro-services to require valid oAuth tokens with each request.  The accelerator will also generate a file named `appSSOInstance.yaml` in the `config/service-operator` directory that contains the configuration to create an AppSSO authorization server.  It will also generate a file named `clientRegistrationResourceClaim.yaml` in the `config/app-operator` directory that contains configuration for creating a ClientRegistration resource as well as the resource claims that the micro-services can use to create service bindings to AppSSO instance (via the ClientRegistration).
+* **AppSSO Instance Name:**  If security is enabled, the name of the AppSSO resource that the micro-services will connect to.  This name will also be propagated to the `workload.yaml` files in the resource claim section to indicate the names of the AppSOO resource that micro-services should connect to.  Lastly, this name will be used as the hostname part of the AppSSO URL.
+* **Workload URL :**  If security is enabled, this is the expected URL of the Hungman application's UI web page.  It will be used to generate the redirect URI back the API gateway service after a successful user authentication.
 * **Create Default Dev Account:**  If this box is checked, a default development account will be created that can be used to authenticate with the AppSSO service.
 * **Dev Account Username:** The username of the default dev account in the AppSSO instance.
-* **Dev Account BCrypt Password:** The BCrypt encoded password of the default dev account in the AppSSO instance.
+* **Dev Account Password:** The plain text password of the default dev account in the AppSSO instance.
 
 
 **NOTE** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.

@@ -9,6 +9,8 @@ function App() {
 
   const [submittedSearches, setSubmittedSearches] = useState();
 
+  const secEnabled = (process.env.REACT_APP_PROFILE === 'secure');
+
   const loadSearches = () => {
     axios.get('/api/search/search')
     .then(resp => setSubmittedSearches(resp.data))
@@ -31,62 +33,46 @@ function App() {
 
 
   return (
-//    Future Security Work	
-//    <Router>
-//      <div align="left"  className="App">
-//            <div className="bannerHeader"> 
-//              <div className="bannerCenter">
-//              <label className="bannerLabel">Where for Dinner Dining Availability Search</label>
-//              </div>      	
-//            </div>
-//            <div className="container welcomeContent">
-//                      The Where for Dinner Dining Availability application continously searches for dining availability based on desired search
-//                      parameters.  Once a search is submitted, the Hugryman system will continously scour different sources for dining
-//                      availability that match your preferences and display dining availability in near real time.  Searches will continue even 
-//                      after you leave the application, so you may return a later time to check to see if any new availability has been found.
-//            </div>          
-//            <Switch>
-//              <Route path="/home">
-//                <div align="center" id="login">
-//                  <button onClick={login}>Login</button>
-//                </div>
-//              </Route>
-//              <Route path="/diningsearch">
-//              <form action="/scg-logout" method="POST" id="form">
-//                 <input type="hidden" id="var1" name="var1" value=""/>
-//
-//
-//                 <div align="center" id="logout">
-//                   <button>Logout</button>
-//                 </div>
-//                 </form>
-//                <p/>
-//                <SearchDefForm submittedSearches={submittedSearches} setSubmittedSearches={setSubmittedSearches}/>
-//                <p/>
-//                <DiningSearches submittedSearches={submittedSearches} setSubmittedSearches={setSubmittedSearches}/>
-//              </Route>
-//              <Route>
-//                <Redirect to="/home"/>
-//              </Route>
-//            </Switch>       
-//      </div>
-//    </Router>
-    <div align="left"  className="App">
-      	<div className="bannerHeader"> 
-		      <div className="bannerCenter">
-		    	 <label className="bannerLabel">Where for Dinner Dining Availability Search</label>
-		   	  </div>      	
-		    </div>
-        <div className="container welcomeContent">
-              The Where for Dinner Dining Availability application continuously searches for dining availability based on desired search
-              parameters.  Once a search is submitted, the system will continuously scour different sources for dining
-              availability that match your preferences and display dining availability in near real time.  Searches will continue even 
-              after you leave the application, so you may return a later time to check to see if any new availability has been found.
-		    </div>        
-       <SearchDefForm submittedSearches={submittedSearches} setSubmittedSearches={setSubmittedSearches}/>
-       <p/>
-       <DiningSearches submittedSearches={submittedSearches} setSubmittedSearches={setSubmittedSearches}/>
-    </div>
+    <Router>
+      <div align="left"  className="App">
+            <div className="bannerHeader"> 
+              <div className="bannerCenter">
+              <label className="bannerLabel">Where For Dinner Dining Availability Search</label>
+              </div>      	
+            </div>
+            <div className="container welcomeContent">
+                      The Where For Dinner Dining Availability application continously searches for dining availability based on desired search
+                      parameters.  Once a search is submitted, the Where For Dinner system will continously scour different sources for dining
+                      availability that match your preferences and display dining availability in near real time.  Searches will continue even 
+                      after you leave the application, so you may return a later time to check to see if any new availability has been found.
+            </div>          
+            <Switch>
+              <Route path="/home">
+                <div align="center" id="login">
+                  <button onClick={login}>Login</button>
+                </div>
+              </Route>
+              <Route path="/diningsearch">
+                <form action="/scg-logout" method="POST" id="form">
+                  <input type="hidden" id="var1" name="var1" value=""/>
+                  {secEnabled ?                  
+                    <div align="center" id="logout">
+                      <button>Logout</button>
+                    </div> 
+                    : null 
+                  }
+                </form>
+                <p/>
+                <SearchDefForm submittedSearches={submittedSearches} setSubmittedSearches={setSubmittedSearches}/>
+                <p/>
+                <DiningSearches submittedSearches={submittedSearches} setSubmittedSearches={setSubmittedSearches}/>
+              </Route>
+              <Route>
+                {secEnabled ? <Redirect to="/home"/> : <Redirect to="/diningsearch"/> }
+              </Route>
+            </Switch>       
+      </div>
+    </Router>
   );
 }
 

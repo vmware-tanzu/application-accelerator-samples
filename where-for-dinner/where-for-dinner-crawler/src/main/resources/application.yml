@@ -1,0 +1,89 @@
+server.port: 8082
+
+where-for-dinner:
+  randomsearcher:
+    establishments:
+    - diningName: Bristol
+      phoneNumber: (816) 448-6007
+      address: 51 E 14th St
+      locality: Kasnas City
+      region: MO
+      postalCode: 64106
+      reservationURL: 'https://bristolseafoodgrill.com/KansasCity/Reservations'
+    - diningName: Chophouse
+      phoneNumber: (816) 994-8800  
+      address: 71 E 14th St
+      locality: Kasnas City
+      region: MO
+      postalCode: 64106
+      reservationURL: 'https://801chophouse.com/reservations/'  
+    - diningName: Savoy Grill
+      phoneNumber: (816) 443-4260    
+      address: 219 W 9th St
+      locality: Kasnas City
+      region: MO
+      postalCode: 64105
+      reservationURL: 'https://www.opentable.com/r/the-savoy-at-21c-kansas-city'
+    - diningName: Hereford House
+      phoneNumber: (816) 584-9000   
+      address: 8661 N Stoddard Ave
+      locality: Kasnas City
+      region: MO
+      postalCode: 64153
+      reservationURL: 'https://www.herefordhouse.com/reservations'
+    - diningName: 'Jack Stack Barbecue | Freight House'
+      phoneNumber: (816) 472-7427   
+      address: 101 W 22nd St #300
+      locality: Kasnas City
+      region: MO
+      postalCode: 64108
+      reservationURL: 'https://www.jackstackbbq.com/reserve-a-table'   
+    - diningName: The Capital Grille
+      phoneNumber: (816) 531-8345   
+      address: 4760 Broadway Blvd
+      locality: Kasnas City
+      region: MO
+      postalCode: 64112
+      reservationURL: 'https://www.thecapitalgrille.com/reservations?setRestaurant=8064'
+    - diningName: Gram & Dun
+      phoneNumber: (816) 389-2900    
+      address: 600 Ward Pkwy
+      locality: Kasnas City
+      region: MO
+      postalCode: 64112
+      reservationURL: 'https://gramanddun.com/reservations'
+    - diningName: Season 52
+      phoneNumber: (816) 531-0052  
+      address: 340 Ward Pkwy
+      locality: Kasnas City
+      region: MO
+      postalCode: 64112
+      reservationURL: 'https://www.seasons52.com/reservations?setRestaurant=4523'
+    - diningName: Nick & Jakes Parkville
+      phoneNumber: (816) 584-8535  
+      address: 6325 Lewis St #110
+      locality: Parkville
+      region: MO
+      postalCode: 64152
+      reservationURL:  
+    - diningName: The Melting Pot
+      phoneNumber: (816) 931-6358 
+      address: 450 Ward Pkwy
+      locality: Kasnas City
+      region: MO
+      postalCode: 64112
+      reservationURL: 'https://www.meltingpot.com/reservations.aspx?location=kansas-city-mo'    
+    - diningName: Fogo de Chao
+      phoneNumber: (816) 931-7700   
+      address: 222 W 47th St
+      locality: Kasnas City
+      region: MO
+      postalCode: 64112
+      reservationURL: 'https://www.opentable.com/r/fogo-de-chao-brazilian-steakhouse-kansas-city?ref=1068'
+    - diningName: Kona Grill
+      phoneNumber: (816) 931-5888   
+      address: 444 Ward Pkwy
+      locality: Kasnas City
+      region: MO
+      postalCode: 64112
+      reservationURL: 'https://www.konagrill.com/reservations'

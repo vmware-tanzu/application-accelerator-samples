@@ -1,6 +1,7 @@
 #@ load("@ytt:data", "data")
 
-#@ def buildServiceClaimsBinding(usesDB,usesRMQ,usesSec):
+
+#@ def buildServiceClaimsBinding(usesDB,usesRMQ,usesSec,usesCache):
 #@ if usesSec == True and data.values.enableSecurity == True:
   - name: sso
     ref:
@@ -21,34 +22,77 @@
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
       kind: ResourceClaim
       name: #@ data.values.dbName   
+#@ end 
+#@ if usesCache == True and data.values.cacheType == "redisCache":
+  - name: cache
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ResourceClaim
+      name: #@ data.values.cacheName 
 #@ end     
 #@ end
 
-#@ def buildAppEnv(addSecProf,addDBProf):
-#@ profiles = ""
 
+#@ def buildAppEnv(addSecProf,addDBProf,addCacheProf,addCrawlerProf):
+#@ profiles = ""
 #@ if addSecProf == True and data.values.enableSecurity == True:
 #@ profiles = "secure"
 #@ end
-
 #@ if addDBProf == True and data.values.dbType == "mysql":
 #@ if profiles != "":
 #@    profiles = profiles + ","
 #@ end
 #@ profiles = profiles + "mysql"
 #@ end
-
+#@ if addCacheProf == True and data.values.cacheType == "redisCache":
+#@ if profiles != "":
+#@    profiles = profiles + ","
+#@ end
+#@ profiles = profiles + "redis"
+#@ end
+#@ if addCrawlerProf:
+#@ if profiles != "":
+#@    profiles = profiles + ","
+#@ end
+#@ profiles = profiles + "crawler"
+#@ end
 #@ if profiles != "":
   - name: spring_profiles_active
     value: #@ profiles
 #@ end
 #@ end
 
-#@ def buildUIGitBranch():
+
+#@ def buildGuiAppEnv():
+#@ profile = "nonsecure"
 #@ if data.values.enableSecurity == True:
-#@ return "main"
+#@ profile = "secure"
 #@ end
-#@ return "main"
+  - name: REACT_APP_PROFILE
+    value: #@ profile
+#@ end
+
+
+#@ def buildBuildParams():
+#@ if data.values.enableCloudEvents == True:
+  - name: BP_MAVEN_BUILD_ARGUMENTS
+    value: '-P native -Dmaven.test.skip=true --no-transfer-progress package'
+#@ end
+#@ end
+
+#@ def buildParams():
+#@ if data.values.enableCloudEvents != True:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/minScale: "1"
+      autoscaling.knative.dev/target: "200"
+      autoscaling.knative.dev/maxScale: "4"
+#@ else:
+  - name: annotations
+    value: 
+      autoscaling.knative.dev/target: "200"
+      autoscaling.knative.dev/maxScale: "4"
+#@ end
 #@ end
 
 ---
@@ -61,12 +105,14 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: where-for-dinner-api-gateway
 spec:
-  env: #@ buildAppEnv(True,False)
+  env: #@ buildAppEnv(True,False,False,False)
   params:
   - name: annotations
     value: 
       autoscaling.knative.dev/minScale: "1"  
-  serviceClaims: #@ buildServiceClaimsBinding(False, False, True)
+      autoscaling.knative.dev/target: "200"
+      autoscaling.knative.dev/maxScale: "4"
+  serviceClaims: #@ buildServiceClaimsBinding(False, False, True, False)
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -85,12 +131,14 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-search
     networking.knative.dev/visibility: cluster-local
 spec:
-  env: #@ buildAppEnv(True,True)
+  env: #@ buildAppEnv(True,True,False,False)
   params:
   - name: annotations
     value: 
       autoscaling.knative.dev/minScale: "1"
-  serviceClaims: #@ buildServiceClaimsBinding(True, True, True)
+      autoscaling.knative.dev/target: "200"
+      autoscaling.knative.dev/maxScale: "4"
+  serviceClaims: #@ buildServiceClaimsBinding(True, True, True, False)
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -109,11 +157,11 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-search-proc
     networking.knative.dev/visibility: cluster-local
 spec:
-  params:
-  - name: annotations
-    value: 
-      autoscaling.knative.dev/minScale: "1"
-  serviceClaims: #@ buildServiceClaimsBinding(False, True, False)
+  env: #@ buildAppEnv(False,False,True,True)
+  build:
+     env: #@ buildBuildParams()
+  params: #@ buildParams()
+  serviceClaims: #@ buildServiceClaimsBinding(False, True, False, True)
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -133,11 +181,10 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-notify
     networking.knative.dev/visibility: cluster-local
 spec:
-  params:
-  - name: annotations
-    value: 
-      autoscaling.knative.dev/minScale: "1"
-  serviceClaims: #@ buildServiceClaimsBinding(False, True, False)
+  build:
+     env: #@ buildBuildParams()
+  params: #@ buildParams()
+  serviceClaims: #@ buildServiceClaimsBinding(False, True, False, False)
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -156,12 +203,16 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-availability
     networking.knative.dev/visibility: cluster-local
 spec:
-  env: #@ buildAppEnv(True,True)
+  build:
+     env: #@ buildBuildParams()
+  env: #@ buildAppEnv(True,True,False,False)
   params:
   - name: annotations
     value: 
       autoscaling.knative.dev/minScale: "1"
-  serviceClaims: #@ buildServiceClaimsBinding(True, True, True)
+      autoscaling.knative.dev/target: "200"
+      autoscaling.knative.dev/maxScale: "4"
+  serviceClaims: #@ buildServiceClaimsBinding(True, True, True, False)
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -180,14 +231,37 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-ui
     networking.knative.dev/visibility: cluster-local
 spec:
+  env: #@ buildGuiAppEnv()
   params:
   - name: annotations
     value: 
       autoscaling.knative.dev/minScale: "1"   
-      app.kubernetes.io/part-of: where-for-dinner
   source:
     git:
       url: <https URL for your generated project's Git repository>
       ref:
-        branch: #@ buildUIGitBranch()
+        branch: main
     subPath: where-for-dinner-ui
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner-crawler
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: where-for-dinner-crawler
+    networking.knative.dev/visibility: cluster-local 
+spec:
+  params:
+  - name: ports
+    value:
+    - port: 80
+      containerPort: 8080
+      name: http
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-crawler

@@ -1,0 +1,179 @@
+#@ load("@ytt:data", "data")
+
+---
+#@ def buildBrokerAnnotations():
+#@ if data.values.enableRabbitMQBroker == True:
+  eventing.knative.dev/broker.class: RabbitMQBroker
+#@ end
+#@ end
+
+#@ def buildBrokerConfig():
+#@ if data.values.enableRabbitMQBroker == True:
+  apiVersion: eventing.knative.dev/v1alpha1
+  kind: RabbitmqBrokerConfig
+  name: where-for-dinner-rmq-broker-config
+#@ end
+#@ end
+
+#@ def buildTriggerAnnotations():
+#@ if data.values.enableRabbitMQBroker == True:
+  rabbitmq.eventing.knative.dev/parallelism: "5"
+#@ end
+#@ end
+
+
+#@ def buildBrokerURI():
+#@ if data.values.enableRabbitMQBroker == False:
+#@  return 'http://broker-ingress.knative-eventing.svc.cluster.local/' + data.values.workloadNamespace + '/where-for-dinner'
+#@ end
+#@  return 'http://where-for-dinner-broker-ingress.' + data.values.workloadNamespace + '.svc.cluster.local'
+#@ end
+
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: RabbitmqBrokerConfig
+metadata:
+  name: where-for-dinner-rmq-broker-config
+  namespace: #@ data.values.workloadNamespace
+spec:
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+---
+apiVersion: eventing.knative.dev/v1
+kind: Broker
+metadata:
+  name: where-for-dinner
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildBrokerAnnotations()
+spec:
+  config: #@ buildBrokerConfig()
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  labels:
+    eventing.knative.dev/broker: where-for-dinner
+  name: where-for-dinner-search-proc
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildTriggerAnnotations()
+spec:
+  broker: where-for-dinner
+  filter:
+    attributes:
+      source: #@ '/apis/v1/namespaces/' + data.values.workloadNamespace + '/rabbitmqsources/where-for-dinner-search-criteria-rabbit-source#where-for-dinner-search-criteria'
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: where-for-dinner-search-proc
+    uri: /processSearch
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  labels:
+    eventing.knative.dev/broker: where-for-dinner
+  name: where-for-dinner-notify
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildTriggerAnnotations()
+spec:
+  broker: where-for-dinner
+  filter:
+    attributes:
+      source: 'http://spring.io/'
+      type: 'com.java.example.tanzu.wherefordinner.model.Availability'
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: where-for-dinner-notify
+    uri: /notifyAvailability
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  labels:
+    eventing.knative.dev/broker: where-for-dinner
+  name: where-for-dinner-availability
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildTriggerAnnotations()
+spec:
+  broker: where-for-dinner
+  filter:
+    attributes:
+      source: 'http://spring.io/'
+      type: 'com.java.example.tanzu.wherefordinner.model.Availability'
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: where-for-dinner-availability
+    uri: /processAvailability
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
+  name: where-for-dinner-search-criteria-exchnage
+  namespace: #@ data.values.workloadNamespace
+spec:
+  durable: true
+  name: where-for-dinner-search-criteria
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  type: topic
+  vhost: /
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
+  name: where-for-dinner-search-criteria-queue
+  namespace: #@ data.values.workloadNamespace
+spec:
+  durable: true
+  autoDelete: false
+  name: where-for-dinner-search-criteria
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  type: quorum
+  vhost: /
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
+  name: where-for-dinner-search-criteria-binding
+  namespace: #@ data.values.workloadNamespace
+spec:
+  source: where-for-dinner-search-criteria
+  destination: where-for-dinner-search-criteria
+  destinationType: queue
+  routingKey: "#"
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  vhost: /
+---
+apiVersion: sources.knative.dev/v1alpha1
+kind: RabbitmqSource
+metadata:
+  name: where-for-dinner-search-criteria-rabbit-source
+  namespace: #@ data.values.workloadNamespace
+spec:
+
+  rabbitmqClusterReference:
+    name: #@ data.values.rabbitMQName
+    namespace: #@ data.values.serviceNamespace
+  rabbitmqResourcesConfig:
+    predeclared: true 
+    parallelism: 5
+    queueName: where-for-dinner-search-criteria
+  sink:
+    uri: #@ buildBrokerURI()
