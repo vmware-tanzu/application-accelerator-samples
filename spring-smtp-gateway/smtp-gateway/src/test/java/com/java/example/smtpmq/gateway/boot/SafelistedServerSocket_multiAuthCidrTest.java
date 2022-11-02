@@ -22,9 +22,9 @@ import org.subethamail.smtp.server.SMTPServer;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {SmtpGatewayApplication.class}) 
 @Configuration
-@TestPropertySource("classpath:properties/testLocalAuthorizedCIDRConfig.properties")
+@TestPropertySource("classpath:properties/testLocalMultiAuthorizedCIDRConfig.properties")
 @DirtiesContext
-public class WhitelistedServerSocket_authCidrTest
+public class SafelistedServerSocket_multiAuthCidrTest
 {
 	@Autowired 
 	protected SMTPServer smtpServer;

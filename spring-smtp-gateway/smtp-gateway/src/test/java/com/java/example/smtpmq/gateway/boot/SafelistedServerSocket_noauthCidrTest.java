@@ -26,7 +26,7 @@ import org.subethamail.smtp.server.SMTPServer;
 @Configuration
 @TestPropertySource("classpath:properties/testLocalNoAuthorizedCIDRConfig.properties")
 @DirtiesContext
-public class WhitelistedServerSocket_noauthCidrTest
+public class SafelistedServerSocket_noauthCidrTest
 {
 	@Autowired 
 	protected SMTPServer smtpServer;

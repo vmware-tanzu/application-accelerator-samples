@@ -20,7 +20,7 @@ import com.java.example.smtpmq.gateway.server.GetMessageHeaderStream;
 import com.java.example.smtpmq.gateway.server.SMTPMessageHandler;
 import com.java.example.smtpmq.gateway.server.SizeLimitedInputStreamFactory;
 import com.java.example.smtpmq.gateway.server.SizeLimitedStreamCreator;
-import com.java.example.smtpmq.gateway.server.WhitelistedServerSocket;
+import com.java.example.smtpmq.gateway.server.SafelistedServerSocket;
 import com.java.example.smtpmq.gateway.streams.SmtpGatewayMessageSource;
 
 @Configuration
@@ -40,8 +40,8 @@ public class SMTPServerBeanConfig
 	private int maxMessageSize;			
 	
 	
-	@Value("${smtpmqgateway.clientwhitelist.cidr:}")
-	private List<String> clientWhitelistCidrs;	
+	@Value("${smtpmqgateway.clientsafelist.cidr:}")
+	private List<String> clientSafelistCidrs;	
 	
 	@Autowired
 	protected SmtpGatewayMessageSource messageSourceQueue;
@@ -62,8 +62,8 @@ public class SMTPServerBeanConfig
 			@Override
 			protected ServerSocket createServerSocket() throws IOException
 			{
-				if (clientWhitelistCidrs.isEmpty() || 
-						(clientWhitelistCidrs.size() == 1 && !StringUtils.hasText(clientWhitelistCidrs.get(0))))
+				if (clientSafelistCidrs.isEmpty() || 
+						(clientSafelistCidrs.size() == 1 && !StringUtils.hasText(clientSafelistCidrs.get(0))))
 					return super.createServerSocket();
 				
 				InetSocketAddress isa;
@@ -77,7 +77,7 @@ public class SMTPServerBeanConfig
 					isa = new InetSocketAddress(this.getBindAddress(), this.getPort());
 				}
 	
-				final ServerSocket serverSocket = new WhitelistedServerSocket(clientWhitelistCidrs);
+				final ServerSocket serverSocket = new SafelistedServerSocket(clientSafelistCidrs);
 				serverSocket.bind(isa, this.getBacklog());
 	
 				if (this.getPort() == 0)

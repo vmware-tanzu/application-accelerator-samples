@@ -10,11 +10,11 @@ import java.util.List;
 
 import org.apache.commons.net.util.SubnetUtils;
 
-public class WhitelistedServerSocket extends ServerSocket
+public class SafelistedServerSocket extends ServerSocket
 {
 	protected List<SubnetUtils> cidrChecks;
 	
-	public WhitelistedServerSocket(List<String> cidrs) throws IOException
+	public SafelistedServerSocket(List<String> cidrs) throws IOException
 	{
 		super();
 		
