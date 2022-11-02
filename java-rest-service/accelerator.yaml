@@ -52,8 +52,6 @@ accelerator:
       choices:
         - value: flyway
           text: Flyway (https://flywaydb.org/)
-        - value: liquibase
-          text: Liquibase (https://docs.liquibase.com/)
     - name: exposeOpenAPIEndpoint
       label: Expose OpenAPI endpoint?
       dataType: boolean
@@ -187,32 +185,6 @@ engine:
               propertyKey: "'spring.flyway.enabled'"
               newValue: "'true'"
     # end of the Flyway specific part
-
-    # Liquibase is selected
-    - condition: "#databaseMigrationTool == 'liquibase'"
-      exclude: [ "src/main/resources/db/migration/**" ]
-      merge:
-        - include: [ "**" ]
-          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
-        - include: [ "pom.xml" ]
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "<dependency>\\s+<groupId>org\\.flywaydb</groupId>\\s+<artifactId>flyway-core</artifactId>\\s+</dependency>\\s+"
-                with: "''"
-        - include: [ "build.gradle.kts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "    implementation(\"org.flywaydb:flyway-core\")"
-                  with: "''"
-        - include: [ "**/application.properties" ]
-          chain:
-            - type: OpenRewriteRecipe
-              recipe: org.openrewrite.properties.DeleteProperty
-              options:
-                propertyKey: "'spring.flyway.*'"
-    # end of the Liquibase specific part
 
     # OpenAPI Endpoint Auto-registration
     - merge:

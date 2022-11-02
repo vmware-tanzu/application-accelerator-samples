@@ -11,22 +11,6 @@ accelerator:
     - sql
     - redis
 
-  options:
-    - name: includeTerraform
-      label: "Include Terraform deployment resources?"
-      inputType: checkbox
-      dataType: boolean
-      defaultValue: false
-    - name: includeTrafficGenerator
-      label: "Include Traffic Generator resources?"
-      inputType: checkbox
-      dataType: boolean
-      defaultValue: false
-
 engine:
   merge:
     - include: [ "apps/**", "media/**", "*.md", "acmeshop.png", "LICENSE", ".gitignore", "azure/**"]
-    - include: [ "terraform/**" ]
-      condition: "#includeTerraform"
-    - include: [ "traffic-generator/**" ]
-      condition: "#includeTrafficGenerator"
