@@ -42,7 +42,3 @@ kubectl apply -f ./config/developer/
 ```
 
 Depending on previously installed/cached components, network speed/latency, and available cluster compute, the amount of time for the RabbitMQ cluster to spin up and the workloads to build and deploy may vary greatly.  It is possible for the process to take more than 10 minutes in some instances.
-
-Once the applications have been successfully built and deployed, you can get the URL of the Hungryman application by running the following command.  **Note** If need be, change the namespace `workloads` to the namespace where you deployed the applications.
-
-Once the applications have deployed, you can test the application using the instructions in the `Testing the Deployment` section of this repositories main [ReadME](../README.md) page.
