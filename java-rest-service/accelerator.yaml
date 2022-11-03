@@ -147,10 +147,10 @@ engine:
 
     # Flyway is selected
     - condition: "#databaseMigrationTool == 'flyway'"
-      exclude: [ "src/main/resources/db/changelog/**" ]
+      exclude: [ "src/main/resources/db/**" ]
       merge:
         - include: [ "**" ]
-          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
+          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties", "catalog/**", "config/**" ]
         - include: [ "pom.xml" ]
           chain:
             - type: ReplaceText
@@ -371,31 +371,6 @@ engine:
                 
                 ```bash
                 \$ docker-compose -f ./docker-compose-postgresql.yml up -d
-                ```
-                
-                > If you start the application locally please be sure that `local` profile is active.
-                
-                ### Deployment
-                #### Tanzu Application Platform (TAP)
-                Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
-                Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
-                
-                As with the local deployment a PostgreSQL instance needs to be available at the cluster.
-                When using VMware Tanzu SQL with Postgres for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html),
-                one could apply for an instance, and it will be automatically provisioned.
-                
-                > Note: please define the storage class to be used for the PostgreSQL storage.
-                
-                ```bash
-                \$ kubectl apply -f config/postgres.yaml
-                ```
-                
-                The `workload.yaml` contains a reference to the PostgreSQL instance.
-                
-                > Note: if your postgres instance is in another namespace than your developer namespace, add the following to the workload.yaml:
-                ```metadata:
-                     annotations:
-                       serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: ''{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}''
                 ```
                 '
     # End Postgres Database

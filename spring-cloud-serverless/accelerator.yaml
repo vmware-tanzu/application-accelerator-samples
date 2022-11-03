@@ -38,12 +38,6 @@ engine:
         substitutions:
         - text: hello-fun
           with: "#artifactId"
-    - include: [ "catalog/*.yaml" ]
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: hello-fun
-          with: "#artifactId"
     - name: README
       type: Combo
       onConflict: Append
