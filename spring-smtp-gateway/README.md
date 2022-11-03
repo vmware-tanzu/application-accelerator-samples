@@ -43,7 +43,7 @@ smtpmqgateway.message.maxMessageSize
 If you wish to limit the IPs that can connect to the server, a configuration option is available for an `allow list` of CIDR ranges that can connect to the server.  CIDR ranges are comma delimited.  The following is an example of a configured list of CIDR ranges:
 
 ```
-smtpmqgateway.clientwhitelist.cidr=127.0.0.1/16,192.168.0.1/16
+smtpmqgateway.clientsafelist.cidr=127.0.0.1/16,192.168.0.1/16
 ```
 
 ## Kubernetes Personas
