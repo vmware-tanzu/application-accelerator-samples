@@ -3,7 +3,8 @@ kind: MySQL
 metadata:
   name: mysql-database
 spec:
-
+  #### Set the storage class name to change storage class of the PVC associated with this resource
+  storageClassName: storage-class-standard
 #### Specify the MySQL Version
 #  mysqlVersion:
 #    name: mysql-8.0.26
@@ -13,8 +14,7 @@ spec:
 
 #  imagePullSecretName: tanzu-image-registry
 
-#### Set the storage class name to change storage class of the PVC associated with this resource
-#  storageClassName: standard
+
 
 #### Set the type of Service used to provide access to the MySQL database.
 #  serviceType: LoadBalancer

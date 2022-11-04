@@ -27,7 +27,7 @@ spec:
               wget -qO- $(params.source-url) | tar xvz -m
               FILE="./mvnw"
               if test -f "$FILE"; then
-                  ./mvnw verify
+                  ./mvnw verify -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=info
               fi
               FILE="./gradlew"
               if test -f "$FILE"; then

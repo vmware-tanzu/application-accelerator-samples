@@ -17,6 +17,14 @@ accelerator:
           text: "Java In-Memory Database (H2)"
       defaultValue: "testcontainers"
       required: true
+    - name: databasePostgesStorageClass
+      inputType: text
+      defaultValue: "standard"
+      description: The storage class to be used for storing PostgreSQL data
+    - name: databasePostgesMonitoringClass
+      inputType: text
+      defaultValue: "standard"
+      description: The storage class to be used for monitoring PostgreSQL
 
   imports:
     - name: spring-boot-h2
@@ -25,10 +33,14 @@ engine:
   let:
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
+    - name: databasePostgesStorageClassResourceName
+      expression: '#databasePostgesStorageClass.toLowerCase()'
+    - name: databasePostgesMonitoringClassResourceName
+      expression: '#databasePostgesMonitoringClass.toLowerCase()'
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "docker-compose-postgresql.yaml", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "**/workload.yaml", "config/postgres.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
+        exclude: [ "docker-compose-postgresql.yaml", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "**/workload.yaml", "config/postgres.yaml", "config/postgres-resource-claim.yaml", "config/postgres-resource-claim-policy.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
 
       - include: [ "docker-compose-postgresql.yaml" ]
         condition: "#databaseIntegrationTestType == 'testcontainers'"
@@ -126,16 +138,18 @@ engine:
             recipe: org.openrewrite.yaml.MergeYaml
             options:
               key: "'$.spec'"
-              yaml: "'serviceClaims:\n  - name: postgres-db\n    ref:\n      apiVersion: sql.tanzu.vmware.com/v1\n      kind: Postgres\n      name: ' + #databaseResourceName"
+              yaml: "'serviceClaims:\n  - name: postgres-db\n    ref:\n      apiVersion: services.apps.tanzu.vmware.com/v1alpha1\n      kind: ResourceClaim\n      name: ' + #databaseResourceName + '-claim'"
 
-      - include: [ "config/postgres.yaml" ]
+      - include: [ "config/postgres.yaml", "config/postgres-resource-claim.yaml", "config/postgres-resource-claim-policy.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
+              - text: "monitoring-storage-class-standard"
+                with: '#databasePostgesMonitoringClassResourceName'
+              - text: "storage-class-standard"
+                with: '#databasePostgesStorageClassResourceName'
               - text: "postgres-database"
                 with: "#databaseResourceName"
-          - type: ReplaceText
-            substitutions:
               - text: "postgresdatabase"
                 with: "#databaseName"
 
@@ -204,18 +218,31 @@ engine:
                 one could apply for an instance, and it will be automatically provisioned.
   
                 > Note: please define the storage class to be used for the PostgreSQL storage.
-  
+                
                 ```bash
-                \$ kubectl apply -f config/postgres.yaml
+                \$ kubectl apply -n \<your-services-namespace> -f config/postgres.yaml
                 ```
-  
-                The `workload.yaml` contains a reference to the PostgreSQL instance.
-  
-                > Note: if your postgres instance is in another namespace than your developer namespace, add the following to the workload.yaml:
-                ```metadata:
-                     annotations:
-                       serviceclaims.supplychain.apps.x-tanzu.vmware.com/extensions: ''{"kind":"ServiceClaimsExtension","apiVersion":"supplychain.apps.x-tanzu.vmware.com/v1alpha1", "spec":   {"serviceClaims":{"db":{"namespace":"<database namespace>"}}}}''
-                ```
+                
+                When the PostgreSQL instance is created, resource binding needs to be configured in order that your workload can access
+                the PostgreSQL instance, which maybe be in another namespace than your application workload.
+                
+                1. Configure the `ResourceClaimPolicy` to define which namespaces could have access to your PostgreSQL instance namespaces.
+                   (optional: only needed when PostgreSQL instance is in different namespace than workload namespace).
+                
+                   Edit `consumingNamespaces` in `config/postgres-resource-claim-policy.yaml` to contain your workload namespace and apply:
+                   
+                   ```bash
+                   \$ kubectl apply -n \<your-services-namespace> -f config/postgres-resource-claim-policy.yaml
+                   ```
+                
+                2. Create the `ResourceClaim` to be consumed by your workload that references your PostgreSQL instance:
+                   > Note: change the `spec.ref.namespace` of `config/postgres-resource-claim.yaml` to where the PostgreSQL instance is deployed.
+                   
+                   ```bash
+                   \$ kubectl apply -n \<your-workload-namespace> -f config/postgres-resource-claim.yaml
+                   ```
+                
+                Now that the resource binding is configured the `Workload` can be applied.
                 '
           - type: ReplaceText
             condition: "#databaseIntegrationTestType == 'in-memory'"

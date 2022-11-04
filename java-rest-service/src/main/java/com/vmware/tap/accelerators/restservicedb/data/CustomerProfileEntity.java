@@ -3,7 +3,6 @@ package com.vmware.tap.accelerators.restservicedb.data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.UUID;
 
 @Entity(name = "CustomerProfile")
 @Table(name = "customer_profile")
