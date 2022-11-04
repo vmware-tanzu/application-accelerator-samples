@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: angular-frontend
+  description: Angular Single Page Application with client side rendered web UI. Application provides Service to interact with backend API's.
+  tags:
+    - angular
+    - web
+    - tanzu
+    - typescript
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=angular-frontend"
+spec:
+  type: website
+  lifecycle: experimental
+  owner: default-team
