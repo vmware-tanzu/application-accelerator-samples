@@ -151,17 +151,21 @@ accelerator:
     required: false
     dependsOn: 
       name: enableDefaultDevAccount
-     
+  imports:
+    - name: tap-workload
+
 engine:
   merge:
   - exclude: 
       ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**"]
   - include: ["**/templates/workloads.yaml"]
     chain:
-    - type: YTT  
+    - type: YTT
     - type: RewritePath
       regex: 'templates/workloads.yaml'
       rewriteTo: "'config/developer/workloads.yaml'"                  
+    - type: InvokeFragment
+      reference: tap-workload
   - include: ["**/rmqCluster.yaml"]
     chain:
     - type: YTT  
