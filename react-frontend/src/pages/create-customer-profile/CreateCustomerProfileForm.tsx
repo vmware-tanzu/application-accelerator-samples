@@ -39,19 +39,19 @@ function CreateCustomerProfileForm(props: CreateCustomerProfileFormProps) {
       <ErrorMessage error={props.error} />
       <div className="row">
         <div className="label">
-          <label>First Name</label>
+          <label htmlFor="firstName">First Name</label>
         </div>
-        <input className="input" name="firstName" type="text" onChange={handleFirstNameChange} placeholder="John" data-testid="first-name"/>
+        <input className="input" name="firstName" id="firstName" type="text" onChange={handleFirstNameChange} placeholder="John" data-testid="first-name"/>
       </div>
 
       <div className="row">
-        <label className="label">Last Name</label>
-        <input className="input" name="lastName" type="text" onChange={handleLastNameChange} placeholder="Smith" data-testid="last-name"/>
+        <label className="label" htmlFor="lastName">Last Name</label>
+        <input className="input" name="lastName" id="lastName" type="text" onChange={handleLastNameChange} placeholder="Smith" data-testid="last-name"/>
       </div>
 
       <div className="row">
-        <label className="label">E-mail</label>
-        <input className="input" name="email" type="text" onChange={handleEmailChange} placeholder="john.smith@example.com" data-testid="email"/>
+        <label className="label" htmlFor="email">E-mail</label>
+        <input className="input" name="email" id="email" type="text" onChange={handleEmailChange} placeholder="john.smith@example.com" data-testid="email"/>
 
         {profileInvalid &&
           <span className="error">Email must be provided!</span>

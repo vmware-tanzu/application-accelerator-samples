@@ -38,6 +38,7 @@
   },
   "proxy": "http://backend",
   "devDependencies": {
+    "@pact-foundation/pact": "^10.1.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -45,6 +46,7 @@
     "@types/node": "^16.18.0",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "jest-pact": "^0.10.1"
   }
 }

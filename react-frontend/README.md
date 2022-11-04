@@ -66,8 +66,20 @@ You can access the public page at `http://localhost:3000/` by a web browser.
 Using the `config/workload.yaml` it is possible to test, build and deploy this application onto a
 Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
 
-Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
-namespace. Please execute following command.
+Before deploying your application a Tekton Pipeline responsible for the testing step should be created in your application
+namespace. To support PACT-based consumer-driven contract testing Python and GCC should be available on an environment where
+tests are executed. You need to create a Docker image which provides this kind of environment. You can use a Docker file
+available in the `config/Dockerfile` to create one. Please go the `config` directory and execute use following commands.
+
+> Be aware that you have to login to the image registry of your choice beforehand and you must have a write access to this registry.
+
+```bash
+ docker build -t react-test-with-pact:node-19 - < Dockerfile
+ docker push react-test-with-pact:node-19
+```
+
+Please ensure that an image which referenced in the pipeline definition (`config/react-test-pipeline.yaml` line 24) is the same
+as the one you created on the previous step. To create a pipeline you can use following command.
 
 ```bash
 kubectl apply -f config/react-test-pipeline.yaml
