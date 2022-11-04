@@ -1,9 +1,9 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: rest-service-db-test-pipeline
+  name: java-test-pipeline
   labels:
-    apps.tanzu.vmware.com/pipeline: test
+    apps.tanzu.vmware.com/pipeline: test-java
 spec:
   params:
     - name: source-url
