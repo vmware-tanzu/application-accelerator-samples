@@ -5,8 +5,8 @@ metadata:
 spec:
   memory: 800Mi
   cpu: "0.8"
-  # storageClassName: standard
-  # monitorStorageClassName: standard
+  storageClassName: storage-class-standard
+  monitorStorageClassName: monitoring-storage-class-standard
   storageSize: 2G
   pgConfig:
     dbname: postgresdatabase
