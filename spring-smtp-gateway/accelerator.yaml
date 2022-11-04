@@ -66,6 +66,9 @@ accelerator:
     inputType: checkbox
     dataType: boolean
     required: true
+  imports:
+    - name: tap-workload
+
 engine:
   merge:
   - exclude: 
@@ -91,6 +94,8 @@ engine:
     - type: RewritePath
       regex: 'templates/workloads.template'
       rewriteTo: "'config/developer/workloads.yaml'"
+    - type: InvokeFragment
+      reference: tap-workload
   - include: [ "**/catalog/catalog.yaml" ]
     chain:
       - type: ReplaceText

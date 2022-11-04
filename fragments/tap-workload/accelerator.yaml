@@ -1,26 +1,16 @@
 engine:
+  let:
+    - name: repoUrl
+      expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString('https://' + #bsGitRepository).build(true)"
+  condition: "#bsGitRepository != null"
+  applyTo: [ "**/workload.yaml", "**/workloads.yaml" ]
   chain:
-    - condition: "#bsGitRepository != null"
-      chain:
-      - includes: [ "**/workload.yaml" ]
-        let:
-          - name: repoUrl
-            expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString('https://' + #bsGitRepository).build(true)"
-        chain:
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.yaml.ChangeValue
-            options:
-              oldKeyPath: '"$.spec.source.git.url"'
-              value: "#repoUrl.scheme + '://' + #repoUrl.host + '/' + #repoUrl.queryParams['owner'][0] + '/' + #repoUrl.queryParams['repo'][0]"
-          - type: ReplaceText
-            regex:
-              pattern: "(?<beforeBranch>[\\s\\S]+)(?<branch>branch: [\\S]+)(?<rest>[\\S\\s]*)"
-              with: "'${beforeBranch}branch: ' + #bsGitBranch + '${rest}'"
-          - type: ReplaceText
-            regex:
-              pattern: "(?<beforeSubPath>[\\s\\S]+)(?<subPath>subPath: [\\S]+)(?<rest>[\\S\\s]*)"
-              with: "'${beforeSubPath}${rest}'"
-
-    - condition: "#bsGitRepository == null"
-      type: Exclude
-      patterns: [ "**" ]
+    - type: OpenRewriteRecipe
+      recipe: org.openrewrite.yaml.ChangeValue
+      options:
+        oldKeyPath: '"$.spec.source.git.url"'
+        value: "#repoUrl.scheme + '://' + #repoUrl.host + '/' + #repoUrl.queryParams['owner'][0] + '/' + #repoUrl.queryParams['repo'][0]"
+    - type: ReplaceText
+      regex:
+        pattern: "(?<beforeBranch>[\\s\\S]+)(?<branch>branch: [\\S]+)(?<rest>[\\S\\s]*)"
+        with: "'${beforeBranch}branch: ' + #bsGitBranch + '${rest}'"
