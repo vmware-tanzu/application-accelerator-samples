@@ -10,7 +10,7 @@ accelerator:
   options:
     - name: artifactId
       inputType: text
-      defaultValue: "client-side-ui-starter"
+      defaultValue: "react-frontend"
       label: Application artifact name
       required: true
     - name: backendService
@@ -26,25 +26,19 @@ engine:
     - name: backendServiceResourceName
       expression: '#backendService.toLowerCase()'
   chain:
-    - merge:
-        - include: [ "**" ]
-          exclude: [ "nginx.conf", "package.json" ]
-        - include: [ "nginx.conf", "package.json" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "http://backend"
-                  with: "'http://' + #backendServiceResourceName"
+    - applyTo: [ "nginx.conf", "package.json" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "http://backend"
+              with: "'http://' + #backendServiceResourceName"
 
-    - merge:
-        - include: [ "**" ]
-          exclude: [ "README.md", "public/*.html", "public/*.json" ]
-        - include: [ "README.md", "public/*.html", "public/*.json" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "react-frontend"
-                  with: "#artifactId"
+    - applyTo: [ "README.md", "public/*.html", "public/*.json", "catalog/catalog-info.yaml", "config/workload.yaml" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "react-frontend"
+              with: "#artifactId"
 
     - merge:
       - type: InvokeFragment
