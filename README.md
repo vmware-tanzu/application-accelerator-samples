@@ -10,7 +10,7 @@ Published accelerator projects are maintained in Git repositories. You can then 
 
 The Application Accelerators user interface(UI) enables you to discover available accelerators, configure them, and generate new projects to download.
 
-## How does Application Accelerators work?
+## How Do Application Accelerators Work?
 
 Application Accelerators allow you to generate new projects from files in Git repositories. An accelerator.yaml file in the repository declares input options for the accelerator. This file also contains instructions for processing the files when you generate a new project.
 
@@ -18,7 +18,7 @@ Accelerator custom resources (CRs) control which repositories appear in the Appl
 
 The Application Accelerators UI and IDE extension gives you a searchable list of accelerators to choose from. After you select an accelerator, the UI and IDE extension present input fields for any input options.
 
-Application Accelerators UI and IDE extension send the input values to the Accelerator Engine for processing. The Engine then returns the project in a ZIP file. You can open the project in your favorite integrated development environment (IDE) to develop further.
+Application Accelerators UI and IDE extensions send the input values to the Accelerator Engine for processing. The Engine then returns the project in a ZIP file. You can open the project in your favorite integrated development environment (IDE) to develop further.
 
 ### Prerequisites
 
@@ -26,7 +26,7 @@ To use these Application Accelerators samples you need to have access to an inst
 
 ### Build & Run
 
-Each Accelerator is provided in a separate directory and is its own self contained project with a README file descibing how to build it.
+Each Accelerator is provided in a separate directory and is its own self contained project with a README file describing how to build it.
 
 ## Documentation
 
