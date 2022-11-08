@@ -15,7 +15,7 @@ accelerator:
   - name: functionName
     inputType: text
     label: Default function name
-    defaultValue: hello
+    defaultValue: main
     required: true
     
   - name: interfaceType
@@ -79,6 +79,8 @@ engine:
           substitutions:
             - text: python-function
               with: "#artifactId"
+            - text: main
+              with: "#functionName"
         - type: RewritePath
           rewriteTo: "'config/' + #filename"
         - merge:
