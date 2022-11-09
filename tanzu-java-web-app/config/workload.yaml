@@ -4,6 +4,7 @@ metadata:
   name: tanzu-java-web-app
   labels:
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: tanzu-java-web-app
 spec:
   params:

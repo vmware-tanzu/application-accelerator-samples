@@ -4,6 +4,7 @@ metadata:
   name: smtp-sink
   labels:
     apps.tanzu.vmware.com/workload-type: worker
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: spring-smtp-gateway
 spec:
   serviceClaims:

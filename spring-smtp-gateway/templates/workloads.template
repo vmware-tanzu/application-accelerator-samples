@@ -6,6 +6,7 @@ metadata:
   namespace: workloads
   labels:
     apps.tanzu.vmware.com/workload-type: server
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: spring-smtp-gateway
 spec:
   serviceClaims:
@@ -34,6 +35,7 @@ metadata:
   namespace: workloads  
   labels:
     apps.tanzu.vmware.com/workload-type: worker
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: spring-smtp-gateway
 spec:
   serviceClaims:

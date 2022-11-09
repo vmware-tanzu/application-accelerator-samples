@@ -4,6 +4,7 @@ metadata:
   name: where-for-dinner-notify
   labels:
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: where-for-dinner-notify
     networking.knative.dev/visibility: cluster-local
 spec:

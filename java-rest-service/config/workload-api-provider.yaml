@@ -7,6 +7,7 @@ metadata:
     app.kubernetes.io/part-of: rest-service-db
     apps.tanzu.vmware.com/has-tests: "true"
     apis.apps.tanzu.vmware.com/register-api: "true"
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
 spec:
   build:
     env:
