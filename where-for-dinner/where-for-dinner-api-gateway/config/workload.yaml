@@ -4,7 +4,7 @@ metadata:
   name: where-for-dinner
   labels:
     apps.tanzu.vmware.com/workload-type: web
-    app.kubernetes.io/part-of: where-for-dinner
+    app.kubernetes.io/part-of: where-for-dinner-api-gateway
 spec:
   params:
   - name: annotations
