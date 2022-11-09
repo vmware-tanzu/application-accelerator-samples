@@ -106,6 +106,10 @@ curl -X DELETE http://localhost:8080/api/customer-profiles/{id}
 Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
 Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
 
+> The workload is set up by default to autoconfigure the actuators. This results in that the Spring Actuators are available at TCP port 8081 and will be used by Application Live View.
+> Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
+> annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
+
 Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
 namespace. Please execute following command.
 

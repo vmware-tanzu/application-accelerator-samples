@@ -4,6 +4,7 @@ metadata:
   name: where-for-dinner-crawler
   labels:
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: where-for-dinner
 spec:
   params:
