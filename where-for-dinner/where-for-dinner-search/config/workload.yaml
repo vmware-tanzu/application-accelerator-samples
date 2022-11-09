@@ -4,7 +4,7 @@ metadata:
   name: where-for-dinner-search
   labels:
     apps.tanzu.vmware.com/workload-type: web
-    app.kubernetes.io/part-of: where-for-dinner
+    app.kubernetes.io/part-of: where-for-dinner-search
     networking.knative.dev/visibility: cluster-local
 spec:
   params:
