@@ -1,0 +1,27 @@
+.label {
+  float: left;
+  margin: 5px;
+  min-width: 100px;
+}
+
+.button {
+  margin: 10px;
+}
+
+.input {
+  margin: 5px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.error {
+  color: orangered;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+  margin-top: 0;
+}
