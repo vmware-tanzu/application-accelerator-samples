@@ -42,6 +42,13 @@ In order to further develop this application the following tools needs to be set
     > ```{"firstName":"<first name>", "lastName":"<last name>", "email":"<email>" }```
 
 # Local
+
+## Run NPM install
+
+```bash
+$ npm install
+```
+
 ## Test
 It is a good habit to test and execute those tests to see if your application is still behaving as you would expect:
 
@@ -72,6 +79,8 @@ tests are executed. You need to create a Docker image which provides this kind o
 available in the `config/Dockerfile` to create one. Please go the `config` directory and execute use following commands.
 
 > Be aware that you have to login to the image registry of your choice beforehand and you must have a write access to this registry.
+
+> **Note:** The image that is created must be an `amd64` image so you can not build this on a system with an ARM processor like the newer Apple systems with M1 or M2 processors.
 
 ```bash
  docker build -t <your-image-registry.io>/<your-developer-namespace-project>/react-test-with-pact:node-19 - < Dockerfile
