@@ -15,6 +15,7 @@ It provides ways to test the service and component logic.
 ## Prerequisites
 In order to further develop this application the following tools needs to be setup:
 - NodeJS LTS (https://nodejs.org/) with NPM
+- Angular CLI (https://angular.io/cli)
 - Visual Studio Code or JetBrains IntelliJ/WebStorm as Integrated Development Environment (IDE)
 - Tanzu Developer Tools plugin for the mentioned IDE
 
@@ -26,6 +27,13 @@ In order to further develop this application the following tools needs to be set
 > ```{"firstName":"<first name>", "lastName":"<last name>", "email":"<email>" }```
 
 # Local
+
+## Run NPM install
+
+```bash
+$ npm install
+```
+
 ## Test
 It is a good habit to test and execute those tests to see if your application is still behaving as you would expect:
 

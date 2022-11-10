@@ -11,7 +11,7 @@ accelerator:
   options:
     - name: artifactId
       inputType: text
-      defaultValue: "client-side-ui-starter"
+      defaultValue: "angular-frontend"
       label: Application artifact name
       required: true
     - name: backendService
@@ -36,7 +36,7 @@ engine:
             - text: "http://backend/api/"
               with: "'http://' + #backendServiceResourceName + '/api/'"
 
-    - applyTo: [ "config/workload.yaml", "config/catalog-info.yaml" ]
+    - applyTo: [ "config/workload.yaml", "catalog/catalog-info.yaml" ]
       chain:
         - type: ReplaceText
           substitutions:
