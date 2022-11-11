@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://backend02.acc-dev-01.apps.tap-dev.fastdev.nl",
+    "target": "http://local-development",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

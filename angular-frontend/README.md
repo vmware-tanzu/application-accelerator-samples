@@ -13,9 +13,9 @@ The application contains example code to have a first page that lists customer p
 It provides ways to test the service and component logic.
 
 ## Prerequisites
-In order to further develop this application the following tools needs to be setup:
+In order to further develop this application the following tools needs to be set up:
 - NodeJS LTS (https://nodejs.org/) with NPM
-- Angular CLI (https://angular.io/cli)
+- Angular CLI (https://angular.io/cli) (will be part of the development dependencies of the application)
 - Visual Studio Code or JetBrains IntelliJ/WebStorm as Integrated Development Environment (IDE)
 - Tanzu Developer Tools plugin for the mentioned IDE
 
@@ -27,9 +27,7 @@ In order to further develop this application the following tools needs to be set
 > ```{"firstName":"<first name>", "lastName":"<last name>", "email":"<email>" }```
 
 # Local
-
-## Run NPM install
-
+Make sure to install dependencies first by executing:
 ```bash
 $ npm install
 ```
@@ -43,7 +41,7 @@ $ ng test
 
 ## Start and interact
 Before being able to launch the application one shall configure where the backend services can be found. To do it please update the *target*
-property in the *src/proxy.conf.json* file.  
+property in the `src/proxy.conf.json` file.  
 Angular has its own integrated Development Web Server. Launch the application by:
 ```bash
 $ ng serve
