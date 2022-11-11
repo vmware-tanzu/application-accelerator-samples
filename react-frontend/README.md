@@ -58,7 +58,7 @@ $ npm test
 
 ## Start and interact
 Before being able to launch the application one shall configure where the backend services can be found. To do it please update the *proxy*
-property in the *package.json* file.
+property in the `package.json` file.
 
 React has its own integrated Development Web Server. Launch the application by:
 ```bash
