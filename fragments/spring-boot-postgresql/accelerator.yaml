@@ -17,14 +17,20 @@ accelerator:
           text: "Java In-Memory Database (H2)"
       defaultValue: "testcontainers"
       required: true
-    - name: databasePostgesStorageClass
+    - name: databasePostgresStorageClass
       inputType: text
       defaultValue: "standard"
       description: The storage class to be used for storing PostgreSQL data
-    - name: databasePostgesMonitoringClass
+      dependsOn:
+        name: databaseType
+        value: postgres
+    - name: databasePostgresMonitoringClass
       inputType: text
       defaultValue: "standard"
       description: The storage class to be used for monitoring PostgreSQL
+      dependsOn:
+        name: databaseType
+        value: postgres
 
   imports:
     - name: spring-boot-h2
@@ -33,10 +39,10 @@ engine:
   let:
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
-    - name: databasePostgesStorageClassResourceName
-      expression: '#databasePostgesStorageClass.toLowerCase()'
-    - name: databasePostgesMonitoringClassResourceName
-      expression: '#databasePostgesMonitoringClass.toLowerCase()'
+    - name: databasePostgresStorageClassResourceName
+      expression: '#databasePostgresStorageClass.toLowerCase()'
+    - name: databasePostgresMonitoringClassResourceName
+      expression: '#databasePostgresMonitoringClass.toLowerCase()'
   chain:
     - merge:
       - include: [ "**" ]
@@ -145,9 +151,9 @@ engine:
           - type: ReplaceText
             substitutions:
               - text: "monitoring-storage-class-standard"
-                with: '#databasePostgesMonitoringClassResourceName'
+                with: '#databasePostgresMonitoringClassResourceName'
               - text: "storage-class-standard"
-                with: '#databasePostgesStorageClassResourceName'
+                with: '#databasePostgresStorageClassResourceName'
               - text: "postgres-database"
                 with: "#databaseResourceName"
               - text: "postgresdatabase"
