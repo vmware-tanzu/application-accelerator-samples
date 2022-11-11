@@ -1,7 +1,7 @@
 # angular-frontend
 
-angular-frontend provides you an out-of-the-box application setup to fast start development of a Web Application based
-on a Single Page Architecture: the UI is rendered in the browser, the data is retrieved and changed by (RESTful) API calls.
+angular-frontend provides you an out-of-the-box application setup to fast-start development of a Web Application based
+on a Single Page Architecture: the UI is rendered in the browser, the data is retrieved and changed by (RESTful) API calls. Additionally, this aims to model an architecture where the frontend is deeply decoupled from the backend and have individual teams managing their respective components.
 
 It is leveraging Angular as a technology stack, which provides:
 - a way to implement UI elements using Components and Binding
