@@ -3,6 +3,7 @@
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,9 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class AvailabilityResource 
 {
+	@Value("${app.version:unknown}") 
+	protected String appVersion;
+	
 	protected static final String UNKNOWN_REQUEST_SUBJECT_ID = "ffffffff-ffff-ffff-ffff-ffffffffffff";
 	
 	protected AvailabilityRepository availRepo;
@@ -137,5 +141,19 @@ public class AvailabilityResource
 	 	    	log.error("Error getting availability.", e);
 	 	    	return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 	 	   });
+	}
+	
+	@Operation(summary = "Get app version", 
+			description = "Returns the version of the application")
+    @ApiResponses({
+        @ApiResponse(
+                responseCode = "200",
+                description = "Returns the version of the application"
+        )
+    })
+	@GetMapping("app/version")
+	public Mono<String> getAvailabilityAppVersion()
+	{
+		return Mono.just(appVersion);
 	}
 }

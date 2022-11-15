@@ -1,3 +1,6 @@
+app:
+  version: '@project.version@'
+
 server:
   port: 8082
   # When running behind a reverse proxy, this stradedgy needs to be set to ensure
