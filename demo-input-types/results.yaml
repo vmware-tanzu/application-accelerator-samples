@@ -24,3 +24,11 @@ options:
 
   - name: Required
     value: #@ data.values.required
+
+  - name: Single Task
+    value: #@ data.values.aSingleTask
+
+  - name: Several Tasks
+    tasks:
+    #@ for/end t in data.values.severalTasks:
+    - #@ t
