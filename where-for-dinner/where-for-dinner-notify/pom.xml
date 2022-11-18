@@ -15,7 +15,7 @@
 	<description>Where for Dinner notification application</description>
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>
 	<dependencies>

@@ -15,7 +15,7 @@
 	<description>Where For Dinner service for storing and retriving establishment reservation openings.</description>
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<spring-cloud-bindings.version>1.10.0</spring-cloud-bindings.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>

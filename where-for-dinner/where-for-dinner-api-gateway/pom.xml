@@ -18,7 +18,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
 	<properties>
         <java.version>11</java.version>
-		<spring-cloud.version>2021.0.4</spring-cloud.version>
+		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<feign-reactor.version>3.1.1</feign-reactor.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>
