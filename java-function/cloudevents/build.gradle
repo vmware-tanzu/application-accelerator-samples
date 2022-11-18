@@ -1,5 +1,5 @@
 plugins {
-	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
 }
 
@@ -21,7 +21,7 @@ jar {
 }
 
 dependencies {
-    implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.4')
+    implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.5')
 
 	implementation 'org.springframework.cloud:spring-cloud-function-context:3.2.1'
 }
