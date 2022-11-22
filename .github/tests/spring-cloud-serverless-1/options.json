@@ -1,0 +1,5 @@
+{
+  "deploymentType": "workload",
+  "sourceRepositoryPrefix": "dev.local",
+  "javaVersion": "11"
+}

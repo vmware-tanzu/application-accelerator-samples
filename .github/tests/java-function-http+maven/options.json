@@ -1,0 +1,6 @@
+{
+  "buildType": "maven",
+  "interfaceType": "http",
+
+  "includeTap": true
+}

@@ -1,0 +1,11 @@
+{
+  "buildTool": "gradle",
+  "includeAppSsoIntegration": true,
+  "workloadURL": "https://my-app.cluster.local",
+  "appSsoServerLabel": "name: authserver",
+
+  "artifactId": "server-side-ui-starter",
+  "groupId": "com.example",
+  "packageName": "com.example.serversideuistarter",
+  "javaVersion": "11"
+}
