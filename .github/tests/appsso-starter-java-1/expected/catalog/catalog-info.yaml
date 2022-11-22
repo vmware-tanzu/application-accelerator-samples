@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-app
+  description: Spring Boot application that supports single sign-on (SSO) via Spring Security OAuth 2 Client library.
+  tags:
+    - sso
+    - authentication
+    - openid
+    - spring
+    - java
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=my-app'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team

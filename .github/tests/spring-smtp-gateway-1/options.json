@@ -1,0 +1,10 @@
+{
+    "containerPort": "1026",
+    "servicePort": "25",
+    "rabbitMQName": "rmq-1",
+    "serviceNamespace": "service-instances",
+    "workloadNamespace": "workloads",
+    "createRabbitMQCluster": true,
+    "numRabbitMQClusterNodes": "1",
+    "createResourceClaim": true
+}

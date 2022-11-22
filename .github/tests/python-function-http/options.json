@@ -1,0 +1,6 @@
+{
+  "interfaceType": "http",
+
+  "functionName": "main",
+  "includeTap": true
+}
