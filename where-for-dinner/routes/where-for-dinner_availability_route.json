@@ -1,0 +1,13 @@
+[
+  {
+    "predicates": [
+      "Path=/api/availability/**",
+      "Host=where-for-dinner**.**"
+    ],
+    "filters": [
+      "RewritePath=/api/availability(?<segment>/?.*), $\\{segment}",
+      "RemoveRequestHeader=Forwarded"
+    ],
+    "tokenRelay": true
+  }
+]
