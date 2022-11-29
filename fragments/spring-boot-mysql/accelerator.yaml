@@ -37,9 +37,9 @@ engine:
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "docker-compose-mysql.yaml", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "**/workload.yaml", "config/mysql.yaml", "config/mysql-resource-claim.yaml", "config/mysql-resource-claim-policy.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
+        exclude: [ "docker-compose.yaml", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "**/workload.yaml", "config/mysql.yaml", "config/mysql-resource-claim.yaml", "config/mysql-resource-claim-policy.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
 
-      - include: [ "docker-compose-mysql.yaml" ]
+      - include: [ "docker-compose.yaml" ]
         condition: "#databaseIntegrationTestType == 'testcontainers'"
 
       - include: [ "**/src/main/resources/application-local.properties" ]
@@ -165,22 +165,17 @@ engine:
                 '${startOfDependencies}
                     testImplementation("org.testcontainers:mysql:1.17.3")${existingDependencies}'
 
-      - include: [ "README.md" ]
+      - include: [ "DATABASE.md" ]
         chain:
           - merge:
               - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
             onConflict: FavorForeign
           - type: ReplaceText
             regex:
-              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              pattern: "\\[tap\\]"
               with: |
-                '${existingContent}
-  
-                > **_NOTE:_** Below you can find additional information concerning MySQL integration. 
-                
-                ## MySQL
-                ### Deployment
-                #### Tanzu Application Platform (TAP)
+                '### MySQL
+
                 Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
                 Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
   
@@ -216,11 +211,10 @@ engine:
           - type: ReplaceText
             condition: "#databaseIntegrationTestType == 'in-memory'"
             regex:
-              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              pattern: "\\[local\\]"
               with: |
-                '${existingContent}
-                    
-                ### Local
+                '### MySQL
+                
                 For local development an in-memory database is provided and configured with the local profile. 
                   
                 > If you start the application locally please be sure that `local` profile is active.
@@ -228,15 +222,14 @@ engine:
           - type: ReplaceText
             condition: "#databaseIntegrationTestType == 'testcontainers'"
             regex:
-              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              pattern: "\\[local\\]"
               with: |
-                '${existingContent}
+                '### MySQL
                 
-                ### Local
                 Running a MySQL instance can easily be done by using `docker-compose`:
                 
                 ```bash
-                \$ docker-compose -f ./docker-compose-mysql.yaml up -d
+                \$ docker-compose up -d
                 ```
                 
                 > If you start the application locally please be sure that `local` profile is active.
