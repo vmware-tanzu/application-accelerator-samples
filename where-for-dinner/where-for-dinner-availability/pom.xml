@@ -17,6 +17,7 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<spring-cloud-bindings.version>1.10.0</spring-cloud-bindings.version>
+		<spring.cloud.azure.version>4.4.1</spring.cloud.azure.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>
 	<dependencies>
@@ -31,27 +32,35 @@
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-		</dependency>			
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-function-webflux</artifactId>
-		</dependency>	
+		</dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-bindings</artifactId>
             <version>${spring-cloud-bindings.version}</version>
-        </dependency>			
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>	
+		</dependency>
 	    <dependency>
 	        <groupId>org.springdoc</groupId>
 	        <artifactId>springdoc-openapi-webflux-ui</artifactId>
 	        <version>1.6.9</version>
-	    </dependency>	
+	    </dependency>
 		<dependency>
 		    <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
@@ -59,11 +68,11 @@
         <dependency>
             <groupId>org.mariadb</groupId>
             <artifactId>r2dbc-mariadb</artifactId>
-        </dependency>	
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>r2dbc-postgresql</artifactId>
-        </dependency>			
+        </dependency>
 	    <dependency>
 	       <groupId>io.r2dbc</groupId>
 	       <artifactId>r2dbc-h2</artifactId>
@@ -83,6 +92,13 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+			<scope>test</scope>
+			<classifier>test-binder</classifier>
+			<type>test-jar</type>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -90,6 +106,13 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.azure.spring</groupId>
+				<artifactId>spring-cloud-azure-dependencies</artifactId>
+				<version>${spring.cloud.azure.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -128,29 +151,6 @@
 		</plugins>
 	</build>
     <profiles>
-       <profile>
-           <id>streams</id>
-           <activation>
-              <activeByDefault>true</activeByDefault>
-           </activation> 
-           <dependencies>
-			   <dependency>
-		            <groupId>org.springframework.cloud</groupId>
-		            <artifactId>spring-cloud-stream</artifactId>
-		       </dependency>	
-			   <dependency>
-					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-			   </dependency>
-			   <dependency>
-					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-stream</artifactId>
-					<scope>test</scope>
-					<classifier>test-binder</classifier>
-					<type>test-jar</type>
-			   </dependency>	   		   		
-		   </dependencies>
-       </profile>
        <profile>
            <!-- Stubbed for native image build -->
            <id>native</id>

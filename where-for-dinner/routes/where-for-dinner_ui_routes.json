@@ -1,14 +1,17 @@
 [
   {
     "predicates": [
-      "Host=where-for-dinner**.**",
       "Path=/diningsearch"
-    ]
+    ],
+    "order": "100"
   },
   {
     "predicates": [
-      "Host=where-for-dinner**.**",
       "Path=/**"
-    ]
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "order": "1000"
   }
 ]
