@@ -1,4 +1,5 @@
 # Introduction rest-service-db
+
 rest-service-db provides you an out-of-the-box application setup to implement your business logic. It is based on the
 commonly known 3-layered application architecture in where the package `api` provides the presentation layer, `domain` provides 
 the services and business domain and finally the `data` package provides you the capability to persist your domain.
@@ -14,6 +15,7 @@ database. This example is intended to showcase best practices around using Sprin
 different types of tests which can be utilized to verify different parts of an application.
 
 ## Prerequisites
+
 In order to further develop this application the following tools needs to be setup:
 - Java Development Kit (https://bell-sw.com/)
 - Visual Studio Code or IntelliJ IDEA as Integrated Development Environment (IDE)
@@ -21,7 +23,9 @@ In order to further develop this application the following tools needs to be set
 - Docker Desktop to execute integration tests or run the application locally
 
 # Local
+
 ## Build
+
 In order to compile the production code:
 --- StartMaven
 ```bash
@@ -46,9 +50,14 @@ After that it is a good habit to compile the test classes and execute those test
 ```
 --- EndGradle
 
+## Database
+
+You will need a local database running, see [DATABASE.md](DATABASE.md#local).
+
 ## Start and interact
+
 Spring Boot has its own integrated Web Server (Apache Tomcat (https://tomcat.apache.org/)). In order 
-to start the application a PostgreSQL instance should be running.
+to start the application a database instance should be running.
 
 Launch application using profile `local`:
 --- StartMaven
@@ -63,6 +72,7 @@ Launch application using profile `local`:
 --- EndGradle
 
 ### OpenApi Definition
+
 You can access the API docs using `curl`:
 
 ```bash
@@ -78,31 +88,40 @@ curl -X POST -H 'Content-Type: application/json' http://localhost:8080/api/custo
 ```
 
 ### Get customer profile
+
 Use the `id` received by previous POST call.
 ```bash
 curl -X GET http://localhost:8080/api/customer-profiles/{id}
 ```
 
 ### Get all customer profiles
+
 ```bash
 curl -X GET http://localhost:8080/api/customer-profiles/
 ```
 
 ### Update customer profile
+
 Use the `id` received by previous creation call.
 ```bash
 curl -X PATCH -H 'Content-Type: application/json' http://localhost:8080/api/customer-profiles/{id} -d '{"firstName": "Jane", "lastName": "Little"}'
 ```
 
 ### Delete customer profile
+
 Use the `id` received by previous creation call.
 ```bash
 curl -X DELETE http://localhost:8080/api/customer-profiles/{id}
 ```
 
+# Cluster Deployment
 
-# Deployment
+## Database
+
+You will need a local database running, see [DATABASE.md](DATABASE.md#kubernetes).
+
 ## Tanzu Application Platform (TAP)
+
 Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
 Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
 
@@ -117,8 +136,8 @@ namespace. Please execute following command.
 kubectl apply -f config/test-pipeline.yaml
 ```
 
-
 ### Tanzu CLI
+
 Using the Tanzu CLI one could apply the workload using the local sources:
 ```bash
 tanzu apps workload apply \
@@ -127,7 +146,7 @@ tanzu apps workload apply \
   --local-path . \
   --yes \
   --tail
-````
+```
 
 Note: change the namespace to where you would like to deploy this workload. Also define the (private) image registry you
 are allowed to push the source-image, like: `docker.io/username/repository`.
