@@ -239,7 +239,7 @@ engine:
                    \$ kubectl apply -f config/service-operator/postgres-cluster-instance-class.yaml
                    ```
                 
-                1. Configure the `ResourceClaimPolicy` to define which namespaces could have access to your PostgreSQL instance namespaces.
+                2. Configure the `ResourceClaimPolicy` to define which namespaces could have access to your PostgreSQL instance namespaces.
                    (optional: only needed when PostgreSQL instance is in different namespace than workload namespace).
                 
                    Edit `consumingNamespaces` in `config/app-operator/postgres-resource-claim-policy.yaml` to contain your workload namespace and apply:
@@ -248,7 +248,7 @@ engine:
                    \$ kubectl apply -n \<your-services-namespace> -f config/app-operator/postgres-resource-claim-policy.yaml
                    ```
                 
-                2. Create the `ResourceClaim` to be consumed by your workload that references your PostgreSQL instance:
+                3. Create the `ResourceClaim` to be consumed by your workload that references your PostgreSQL instance:
                    > Note: change the `spec.ref.namespace` of `config/app-operator/postgres-resource-claim.yaml` to where the PostgreSQL instance is deployed.
                    
                    ```bash
