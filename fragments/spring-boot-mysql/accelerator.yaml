@@ -21,9 +21,6 @@ accelerator:
       inputType: text
       defaultValue: "standard"
       description: The storage class to be used for storing MySQL data
-      dependsOn:
-        name: databaseType
-        value: mysql
 
   imports:
     - name: spring-boot-h2

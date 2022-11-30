@@ -21,16 +21,10 @@ accelerator:
       inputType: text
       defaultValue: "standard"
       description: The storage class to be used for storing PostgreSQL data
-      dependsOn:
-        name: databaseType
-        value: postgres
     - name: databasePostgresMonitoringClass
       inputType: text
       defaultValue: "standard"
       description: The storage class to be used for monitoring PostgreSQL
-      dependsOn:
-        name: databaseType
-        value: postgres
 
   imports:
     - name: spring-boot-h2
