@@ -116,7 +116,7 @@ kind: Exchange
 metadata:
   labels:
     eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
-  name: where-for-dinner-search-criteria-exchnage
+  name: where-for-dinner-search-criteria
   namespace: #@ data.values.workloadNamespace
 spec:
   durable: true
@@ -132,7 +132,7 @@ kind: Queue
 metadata:
   labels:
     eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
-  name: where-for-dinner-search-criteria-queue
+  name: where-for-dinner-search-criteria
   namespace: #@ data.values.workloadNamespace
 spec:
   durable: true
@@ -149,7 +149,7 @@ kind: Binding
 metadata:
   labels:
     eventing.knative.dev/SourceName: where-for-dinner-search-criteria-rabbit-source
-  name: where-for-dinner-search-criteria-binding
+  name: where-for-dinner-search-criteria
   namespace: #@ data.values.workloadNamespace
 spec:
   source: where-for-dinner-search-criteria
