@@ -83,7 +83,37 @@ accelerator:
   imports:
   - name: java-version
   - name: spring-boot-postgresql
+    expose:
+      - name: databaseName
+        dependsOn:
+          name: databaseType
+          value: postgres
+      - name: databaseIntegrationTestType
+        dependsOn:
+          name: databaseType
+          value: postgres
+      - name: databasePostgresStorageClass
+        dependsOn:
+          name: databaseType
+          value: postgres
+      - name: databasePostgresMonitoringClass
+        dependsOn:
+          name: databaseType
+          value: postgres
   - name: spring-boot-mysql
+    expose:
+    - name: databaseName
+      dependsOn:
+        name: databaseType
+        value: mysql
+    - name: databaseIntegrationTestType
+      dependsOn:
+        name: databaseType
+        value: mysql
+    - name: databaseMySQLStorageClass
+      dependsOn:
+        name: databaseType
+        value: mysql
   - name: live-update
     expose:
       - name: liveUpdateIDESupport
