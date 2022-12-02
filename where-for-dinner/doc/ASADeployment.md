@@ -16,7 +16,7 @@ installation scenarios are describes in subsequent sections of this page
 * Configure Azure CLI defaults to shorten commands
 
 ```shell
-az configure --defaults group=$RESOURCE_GROUP location=$LOCATION spring=$ASA_INSTANCE_NAME
+az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION spring=$ASA_INSTANCE_NAME
 ```
 
 * Provision Azure Service Bus:
@@ -69,7 +69,7 @@ az configure --defaults group=$RESOURCE_GROUP location=$LOCATION spring=$ASA_INS
     az spring gateway route-config create --name app-ui-routes --app-name app-ui --routes-file routes/where-for-dinner_ui_routes.json
 ```
 
-* Access Application Using Spring Cloud Gateway
+* Configure Spring Cloud Gateway
 
 ```shell
 az spring gateway update --assign-endpoint true
@@ -80,6 +80,17 @@ az spring gateway update \
     --allowed-origins "*" \
     --allowed-methods "*" \
     --allowed-headers "*" 
-    
-open $GATEWAY_URL
 ```
+
+## Testing the Deployment
+
+* Access Application Using Spring Cloud Gateway
+
+Assuming the application has successfully deployed, you can test the application navigating to the application's URL with a web browser.  To can get the URL with the following command:
+
+```shell
+    az spring gateway show | jq -r '.properties.url'
+```
+The application's home screen should look similar to the following (assuming you did not enable security).  If you selected to enable security, the home screen will contain a *Login* button.
+
+![](images/AppHomeScreen.png)
