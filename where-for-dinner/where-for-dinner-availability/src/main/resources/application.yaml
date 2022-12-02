@@ -23,8 +23,13 @@ spring:
           consumer: 
             maxAttempts: 4
             backOffInitialInterval: 15000
-            backOffMaxInterval: 60000 
-            
+            backOffMaxInterval: 60000
+      servicebus:
+        bindings:
+          processAvailability-in-0:
+            consumer:
+              auto-complete: false
+
 springdoc:
   packages-to-scan: com.java.example.tanzu.wherefordinner.resources
   show-spring-cloud-functions: false

@@ -17,4 +17,9 @@ spring:
           consumer: 
             maxAttempts: 4
             backOffInitialInterval: 15000
-            backOffMaxInterval: 60000 
+            backOffMaxInterval: 60000
+      servicebus:
+        bindings:
+          notifyAvailability-in-0:
+            consumer:
+              auto-complete: false

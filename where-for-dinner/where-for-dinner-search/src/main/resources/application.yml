@@ -9,7 +9,7 @@ where-for-dinner:
   searchEvent:
     period: 120000
     
-spring: 
+spring:
   sql.init.mode: ALWAYS 
   sql.init.platform: h2
 
@@ -22,11 +22,16 @@ spring:
       bindings: 
         submittedSearches-out-0: 
           destination: where-for-dinner-search-criteria
+      servicebus:
+        bindings:
+          submittedSearches-out-0:
+            producer:
+              entity-type: topic
 
 springdoc:
   packages-to-scan: com.java.example.tanzu.wherefordinner.resources
   show-spring-cloud-functions: false
-          
+
 ---
 
 spring:

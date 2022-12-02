@@ -18,6 +18,14 @@ spring:
             backOffMaxInterval: 60000 
         processSearch-out-0: 
           destination: where-for-dinner-search-result
+      servicebus:
+        bindings:
+          processSearch-in-0:
+            consumer:
+              auto-complete: false
+          processSearch-out-0:
+            producer:
+              entity-type: topic
 
 server.port: 8083
       
