@@ -9,6 +9,7 @@ k8s_custom_deploy(
   apply_cmd="tanzu apps workload apply -f config/workload.yaml --debug --live-update" +
             " --local-path " + LOCAL_PATH +
             " --source-image " + SOURCE_IMAGE +
+            " --build-env BP_DEBUG_ENABLED=true" +
             " --namespace " + NAMESPACE +
             " --yes " +
             OUTPUT_TO_NULL_COMMAND +
