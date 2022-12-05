@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "start-local": "ng serve --host test-app",
+    "serve": "ng serve",
+    "serve-local": "ng serve --host test-app",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

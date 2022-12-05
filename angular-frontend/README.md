@@ -17,10 +17,11 @@ In order to further develop this application the following tools needs to be set
 - NodeJS LTS (https://nodejs.org/) with NPM
 - Angular CLI (https://angular.io/cli) (will be part of the development dependencies of the application)
 - Visual Studio Code or JetBrains IntelliJ/WebStorm as Integrated Development Environment (IDE)
-- Tanzu Developer Tools plugin for the mentioned IDE
+* [Azure CLI version 2.42.0 or higher](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)
+* [Azure CLI spring extension](https://learn.microsoft.com/en-us/cli/azure/spring)
 
 > This application contains only UI and expect several backend services to be available. You can either generate a backend based
-> on the *Tanzu Java Restful Web App* Accelerator. Or build your own which shall provide 2 endpoints:
+> on the *Java Spring Restful Web App* Accelerator. Or build your own which shall provide 2 endpoints:
 > - GET /api/customer-profiles/ returning an array of customer profiles in the form of  
 > ```{"id":"<unique-id>", "firstName":"<first name>", "lastName":"<last name>", "email":"<email>" }```
 > - POST /api/customer-profiles/ accepting a customer profile in the form of  
@@ -51,58 +52,59 @@ $ ng serve
 You can access the public page at `http://localhost:4200/` by a web browser.
 
 # Deployment
-## Tanzu Application Platform (TAP)
-Using the `config/workload.yaml` it is possible to test, build and deploy this application onto a
-Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
+## Azure Spring Apps
+Using the Azure CLI it is possible to build and deploy this application onto an Azure Spring Apps instance.
 
-Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
-namespace. Please execute following command.
+To build and deploy this application to Azure Spring Apps, follow these steps.
 
-```bash
-kubectl apply -f config/test-pipeline.yaml
+* Configure Azure CLI defaults to shorten commands
+
+```shell
+az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION spring=$ASA_INSTANCE_NAME
 ```
 
-> One can have several pipelines available simultaneously. Matching of a pipeline with a workload is done based on a label assign to a pipeline.  
-> Pipeline:
-> ```
-> apiVersion: tekton.dev/v1beta1
-> kind: Pipeline
-> metadata:
->   name: angular-test-pipeline
->   labels:
->     apps.tanzu.vmware.com/pipeline: test-angular
-> ...
-> ```  
-> Workload:
-> ```
-> apiVersion: carto.run/v1alpha1
-> kind: Workload
-> ...
-> spec:
->   params:
->     - name: testing_pipeline_matching_labels
->       value:
->         apps.tanzu.vmware.com/pipeline: test-angular
-> ``` 
+* Create an Application
+ 
+```shell
+    az spring app create -n angular-app
+```
 
-### Tanzu CLI
-Using the Tanzu CLI one could apply the workload using the local sources:
-```bash
-tanzu apps workload apply \
-  --file config/workload.yaml \
-  --namespace <namespace> --source-image <image-registry> \
-  --local-path . \
-  --yes \
-  --tail
-````
+* Build and Deploy the Application
 
-Note: change the namespace to where you would like to deploy this workload. Also define the (private) image registry you
-are allowed to push the source-image, like: `docker.io/username/repository`.
+```shell
+    az spring app deploy -n angular-app \
+        --source-path . \
+        --build-env BP_WEB_SERVER=nginx BP_NODE_RUN_SCRIPTS=build BP_WEB_SERVER_ROOT=dist BP_WEB_SERVER_ENABLE_PUSH_STATE=true
+```
 
-### Visual Studio Code Tanzu Plugin
-When developing local but would like to deploy the local code to the cluster the Tanzu Plugin could help.
-By using `Tanzu: Apply` on the `workload.yaml` it will create the Workload resource with the local source (pushed to an image registry) as
-starting point.
+* Define Gateway Routes
+
+```shell
+    az spring gateway route-config create --name frontend --app-name angular-app --routes-file routes.json
+```
+
+* Configure Spring Cloud Gateway
+
+```shell
+az spring gateway update --assign-endpoint true
+export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+    
+az spring gateway update \
+    --server-url "https://${GATEWAY_URL}" \
+    --allowed-origins "*" \
+    --allowed-methods "*" \
+    --allowed-headers "*" 
+```
+
+## Testing the Deployment
+
+* Access Application Using Spring Cloud Gateway
+
+Assuming the application has successfully deployed, you can test the application navigating to the application's URL with a web browser.  To can get the URL with the following command:
+
+```shell
+    az spring gateway show | jq -r '.properties.url'
+```
 
 ## Deployment topology
 A running pod of this workload will include a built Angular application, NGINX server and NGINX configuration. A build Angular application 
