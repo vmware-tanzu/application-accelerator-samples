@@ -44,10 +44,10 @@ az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION s
 * Create Service Connections
 
 ```shell
-    az spring connection create servicebus --app availability --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection availability_servicebus
-    az spring connection create servicebus --app notify --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection notify_servicebus
-    az spring connection create servicebus --app search --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection search_servicebus
-    az spring connection create servicebus --app search-proc --tg $RESOURCE_GROUP --namespace where-for-dinner --secret -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --connection search-proc_servicebus
+    az spring connection create servicebus --app availability --tg $RESOURCE_GROUP --namespace where-for-dinner -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --secret 
+    az spring connection create servicebus --app notify --tg $RESOURCE_GROUP --namespace where-for-dinner -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --secret 
+    az spring connection create servicebus --app search --tg $RESOURCE_GROUP --namespace where-for-dinner -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --secret 
+    az spring connection create servicebus --app search-proc --tg $RESOURCE_GROUP --namespace where-for-dinner -g $RESOURCE_GROUP --client-type springBoot --service $ASA_INSTANCE --secret 
 ```
 
 * Deploy Apps
