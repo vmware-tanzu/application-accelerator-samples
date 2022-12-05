@@ -8,7 +8,7 @@ allow_k8s_contexts(K8S_TEST_CONTEXT)
 
 k8s_custom_deploy(
     'node-function',
-    apply_cmd="tanzu apps workload apply -f config/workload.yaml --live-update" +
+    apply_cmd="tanzu apps workload apply -f config/workload.yaml --update-strategy replace --debug --live-update" +
         " --local-path " + LOCAL_PATH +
         " --source-image " + SOURCE_IMAGE +
         " --namespace " + NAMESPACE +

@@ -5,7 +5,7 @@ OUTPUT_TO_NULL_COMMAND = os.getenv("OUTPUT_TO_NULL_COMMAND", default=' > /dev/nu
 
 k8s_custom_deploy(
     'tanzu-java-web-app',
-    apply_cmd="tanzu apps workload apply -f config/workload.yaml --debug --live-update" +
+    apply_cmd="tanzu apps workload apply -f config/workload.yaml --update-strategy replace --debug --live-update" +
                " --local-path " + LOCAL_PATH +
                " --source-image " + SOURCE_IMAGE +
                " --namespace " + NAMESPACE +
