@@ -50,7 +50,7 @@ engine:
         recipe: org.openrewrite.yaml.ChangeValue
         options:
           oldKeyPath: '"$.spec.build.env[?(@.name == ''BP_JVM_VERSION'')].value"'
-          value: "#workloadJavaVersion"
+          value: "'\"' + #workloadJavaVersion + '\"'"
 
     # *.yaml
     # Targeting Pipeline definitions. Update versions of OpenJdk image.
