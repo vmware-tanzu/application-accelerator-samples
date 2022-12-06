@@ -1,0 +1,19 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: where-for-dinner-api-gateway
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+spec:
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-api-gateway
