@@ -23,6 +23,9 @@ accelerator:
     - name: tap-workload
 
 engine:
+  merge:
+    - exclude:
+        [ '**/catalog/**' ]
   let:
     - name: backendServiceResourceName
       expression: '#backendService.toLowerCase()'
@@ -42,9 +45,3 @@ engine:
           substitutions:
             - text: "angular-frontend"
               with: "#workloadResourceName"
-
-    - merge:
-      - type: InvokeFragment
-        reference: tap-workload
-      - include: [ "**" ]
-      onConflict: UseFirst
