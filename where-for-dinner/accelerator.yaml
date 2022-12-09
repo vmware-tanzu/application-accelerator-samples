@@ -12,34 +12,6 @@ accelerator:
   - educational
 
   options:
-  - label: Workload Namespace
-    description:  The namespace where the application services will be deployed.
-    defaultValue: workloads
-    name: workloadNamespace
-    inputType: text
-    dataType: string
-    required: true
-  - label: Service Namespace
-    description:  The namespace where data service instances like RabbitMQ and databases reside (or will reside once created).
-    defaultValue: service-instances
-    name: serviceNamespace
-    inputType: text
-    dataType: string
-    required: true  
-  - label: RabbitMQ Cluster Name
-    description: The name of the RabbitMQ cluster that the application services will connect to.
-    defaultValue: rmq-where-for-dinner
-    name: rabbitMQName
-    inputType: text
-    dataType: string
-    required: true
-  - label: Number of RabbitMQ Cluster Nodes
-    description: The number of nodes that will make up the RabbitMQ cluster.  SHOULD be an odd number.
-    defaultValue: 1
-    name: numRabbitMQClusterNodes
-    inputType: text
-    dataType: number
-    required: true
   - label: Database Type
     description: The type of database that services will connenct to.
     inputType: select
@@ -82,23 +54,6 @@ accelerator:
     dependsOn: 
       name: cacheType
       value: redisCache
-  - label: Enable Cloud Events
-    description: "If set to true, the application will use CloudEvents and Knative as the internal eventing/messagiung model instead of spring cloud streams."
-    defaultValue: false
-    name: enableCloudEvents
-    inputType: checkbox
-    dataType: boolean
-    required: true
-  - label: Use RabbitMQ Knative Eventing Broker
-    description: "If set to true, the application will use a RabbitMQ backed eventing broker."
-    defaultValue: false
-    name: enableRabbitMQBroker
-    inputType: checkbox
-    dataType: boolean
-    required: true 
-    dependsOn: 
-      name: enableCloudEvents
-      value: true
   - label: Enable Security
     description: "If set to true, security will enabled on the application and APIs."
     defaultValue: false
@@ -151,75 +106,46 @@ accelerator:
     required: false
     dependsOn: 
       name: enableDefaultDevAccount
-  imports:
-    - name: tap-workload
 
 engine:
   merge:
-  - exclude: 
-      ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**"]
-  - include: ["**/templates/workloads.yaml"]
-    chain:
-    - type: YTT
-    - type: RewritePath
-      regex: 'templates/workloads.yaml'
-      rewriteTo: "'config/developer/workloads.yaml'"                  
-    - type: InvokeFragment
-      reference: tap-workload
-  - include: ["**/rmqCluster.yaml"]
-    chain:
-    - type: YTT  
-    - type: RewritePath
-      regex: 'templates/rmqCluster.yaml'
-      rewriteTo: "'config/service-operator/rmqCluster.yaml'"   
+  - exclude:
+      ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**",
+       "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md"]
   - condition: "#dbType == 'mysql'"
     include: ["**/mysqlInstance.yaml"]
     chain:
-    - type: YTT  
+    - type: YTT
     - type: RewritePath
       regex: 'templates/mysqlInstance.yaml'
-      rewriteTo: "'config/service-operator/mysqlInstance.yaml'"   
-  - include: ["**/rmqResourceClaim.yaml"]
-    chain:
-    - type: YTT  
-    - type: RewritePath
-      regex: 'templates/rmqResourceClaim.yaml'
-      rewriteTo: "'config/app-operator/rmqResourceClaim.yaml'"   
+      rewriteTo: "'config/service-operator/mysqlInstance.yaml'"
   - condition:
       "#dbType == 'mysql'"
     include: ["**/mysqlResourceClaim.yaml"]
     chain:
-    - type: YTT  
+    - type: YTT
     - type: RewritePath
       regex: 'templates/mysqlResourceClaim.yaml'
-      rewriteTo: "'config/app-operator/mysqlResourceClaim.yaml'"     
-  - condition:
-      "#enableCloudEvents"
-    include: ["**/knEventing.yaml"]
-    chain:
-    - type: YTT  
-    - type: RewritePath
-      regex: 'templates/knEventing.yaml'
-      rewriteTo: "'config/app-operator/knEventing.yaml'"  
+      rewriteTo: "'config/app-operator/mysqlResourceClaim.yaml'"
   - condition:
       "#enableSecurity"
     include: ["**/appSSOInstance.yaml", "**/clientRegistrationResourceClaim.yaml"]
     chain:
-    - type: YTT  
+    - type: YTT
     - type: RewritePath
       regex: 'templates/appSSOInstance.yaml'
-      rewriteTo: "'config/service-operator/appSSOInstance.yaml'"  
+      rewriteTo: "'config/service-operator/appSSOInstance.yaml'"
     - type: RewritePath
       regex: 'templates/clientRegistrationResourceClaim.yaml'
-      rewriteTo: "'config/app-operator/clientRegistrationResourceClaim.yaml'"    
+      rewriteTo: "'config/app-operator/clientRegistrationResourceClaim.yaml'"
   - condition:
       "#cacheType == 'redisCache'"
     include: ["**/redisInstance.yaml", "**/redisResourceClaim.yaml"]
     chain:
-    - type: YTT  
+    - type: YTT
     - type: RewritePath
       regex: 'templates/redisInstance.yaml'
-      rewriteTo: "'config/service-operator/redisInstance.yaml'"  
+      rewriteTo: "'config/service-operator/redisInstance.yaml'"
     - type: RewritePath
       regex: 'templates/redisResourceClaim.yaml'
-      rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"  
+      rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"
