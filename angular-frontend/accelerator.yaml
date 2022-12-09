@@ -22,12 +22,11 @@ accelerator:
 
 engine:
   merge:
-  - exclude:
-      ['**/catalog/**', '**/config/**']
-    chain:
-      - include: [ "nginx.conf" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "http://backend/api/"
-                with: "#backendServiceUrl"
+    - include: [ "**" ]
+      exclude: [ "config/**", "catalog/**", "nginx.conf" ]
+    - include: [ "nginx.conf" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "http://backend/api/"
+              with: "#backendServiceUrl"
