@@ -1,0 +1,11 @@
+[
+  {
+    "predicates": [
+      "Path=/**"
+    ],
+    "filters": [
+      "StripPrefix=0"
+    ],
+    "order": "1000"
+  }
+]

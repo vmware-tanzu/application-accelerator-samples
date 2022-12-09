@@ -68,7 +68,6 @@ To build and deploy this application to Azure Spring Apps, follow these steps.
 ```shell
     az spring app create -n angular-app
 ```
-
 * Build and Deploy the Application
 
 ```shell
