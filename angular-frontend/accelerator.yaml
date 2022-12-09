@@ -24,11 +24,11 @@ engine:
   merge:
     - exclude:
         [ '**/catalog/**' ]
+    - include:
+        ['**/**']
   let:
     - name: backendServiceResourceName
       expression: '#backendService.toLowerCase()'
-    - name: workloadResourceName
-      expression: '#artifactId.toLowerCase()'
   chain:
     - include: [ "nginx.conf" ]
       chain:
