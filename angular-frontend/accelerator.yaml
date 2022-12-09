@@ -21,8 +21,9 @@ accelerator:
       required: true
 
 engine:
-  exclude:
-      [ '**/catalog/**' ]
+  merge:
+    - exclude:
+        [ '**/catalog/**' ]
   let:
     - name: backendServiceResourceName
       expression: '#backendService.toLowerCase()'
@@ -35,10 +36,3 @@ engine:
           substitutions:
             - text: "http://backend/api/"
               with: "'http://' + #backendServiceResourceName + '/api/'"
-
-    - include: [ "config/workload.yaml", "catalog/catalog-info.yaml" ]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "angular-frontend"
-              with: "#workloadResourceName"
