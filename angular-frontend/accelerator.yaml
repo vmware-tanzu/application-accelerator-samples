@@ -21,14 +21,13 @@ accelerator:
       required: true
 
 engine:
-  include:
-    ['**/src/**']
-  exclude:
-    ['**/catalog/**', '**/config/**']
-  chain:
-    - include: [ "nginx.conf" ]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "http://backend/api/"
-              with: "#backendServiceUrl"
+  merge:
+  - exclude:
+      ['**/catalog/**', '**/config/**']
+    chain:
+      - include: [ "nginx.conf" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "http://backend/api/"
+                with: "#backendServiceUrl"
