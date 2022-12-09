@@ -21,23 +21,22 @@ accelerator:
       required: true
 
 engine:
-  merge:
-    - exclude:
-        [ '**/catalog/**' ]
+  exclude:
+      [ '**/catalog/**' ]
   let:
     - name: backendServiceResourceName
       expression: '#backendService.toLowerCase()'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
   chain:
-    - applyTo: [ "nginx.conf" ]
+    - include: [ "nginx.conf" ]
       chain:
         - type: ReplaceText
           substitutions:
             - text: "http://backend/api/"
               with: "'http://' + #backendServiceResourceName + '/api/'"
 
-    - applyTo: [ "config/workload.yaml", "catalog/catalog-info.yaml" ]
+    - include: [ "config/workload.yaml", "catalog/catalog-info.yaml" ]
       chain:
         - type: ReplaceText
           substitutions:
