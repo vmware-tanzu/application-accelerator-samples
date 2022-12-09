@@ -21,11 +21,10 @@ accelerator:
       required: true
 
 engine:
-  merge:
-    - exclude:
-        [ '**/catalog/**' ]
-    - include:
-        ['**/**']
+  include:
+    ['**/src/**']
+  exclude:
+    ['**/catalog/**', '**/config/**']
   let:
     - name: backendServiceResourceName
       expression: '#backendService.toLowerCase()'
