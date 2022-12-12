@@ -83,7 +83,7 @@ To build and deploy this application to Azure Spring Apps, follow these steps.
 * Create an Application
 
 ```shell
-    az spring app create -n react-app
+    az spring app create -n react-frontend
 ```
 
 * Define a builder for Tanzu Build Service
@@ -95,7 +95,7 @@ To build and deploy this application to Azure Spring Apps, follow these steps.
 * Build and Deploy the Application
 
 ```shell
-    az spring app deploy -n react-app \
+    az spring app deploy -n react-frontend \
         --source-path . --builder=full-builder \
         --build-env BP_WEB_SERVER=nginx BP_NODE_RUN_SCRIPTS=build BP_WEB_SERVER_ROOT=build BP_WEB_SERVER_ENABLE_PUSH_STATE=true
 ```
@@ -103,7 +103,7 @@ To build and deploy this application to Azure Spring Apps, follow these steps.
 * Define Gateway Routes
 
 ```shell
-    az spring gateway route-config create --name frontend --app-name react-app --routes-file azure/routes.json
+    az spring gateway route-config create --name react-frontend-routes --app-name react-frontend --routes-file azure/routes.json
 ```
 
 * Configure Spring Cloud Gateway
