@@ -103,7 +103,7 @@ To build and deploy this application to Azure Spring Apps, follow these steps.
 * Define Gateway Routes
 
 ```shell
-    az spring gateway route-config create --name frontend --app-name react-app --routes-file routes.json
+    az spring gateway route-config create --name frontend --app-name react-app --routes-file azure/routes.json
 ```
 
 * Configure Spring Cloud Gateway
@@ -119,6 +119,15 @@ To build and deploy this application to Azure Spring Apps, follow these steps.
         --allowed-headers "*" 
 ```
 
+## Testing the Deployment
+
+* Access Application Using Spring Cloud Gateway
+
+Assuming the application has successfully deployed, you can test the application navigating to the application's URL with a web browser.  To can get the URL with the following command:
+
+```shell
+    az spring gateway show | jq -r '.properties.url'
+```
 
 ## Deployment topology
 A running pod of this workload will include a built React application, NGINX server and NGINX configuration. A built React application
