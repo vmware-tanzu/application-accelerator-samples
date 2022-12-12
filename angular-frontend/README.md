@@ -60,7 +60,7 @@ To build and deploy this application to Azure Spring Apps, follow these steps.
 * Configure Azure CLI defaults to shorten commands
 
 ```shell
-az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION spring=$ASA_INSTANCE_NAME
+    az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION spring=$ASA_INSTANCE_NAME
 ```
 
 * Create an Application
@@ -68,7 +68,6 @@ az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION s
 ```shell
     az spring app create -n angular-app
 ```
-
 * Build and Deploy the Application
 
 ```shell
@@ -86,14 +85,14 @@ az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION s
 * Configure Spring Cloud Gateway
 
 ```shell
-az spring gateway update --assign-endpoint true
-export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
-    
-az spring gateway update \
-    --server-url "https://${GATEWAY_URL}" \
-    --allowed-origins "*" \
-    --allowed-methods "*" \
-    --allowed-headers "*" 
+    az spring gateway update --assign-endpoint true
+    export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+        
+    az spring gateway update \
+        --server-url "https://${GATEWAY_URL}" \
+        --allowed-origins "*" \
+        --allowed-methods "*" \
+        --allowed-headers "*" 
 ```
 
 ## Testing the Deployment

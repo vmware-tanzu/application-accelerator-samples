@@ -14,37 +14,19 @@ accelerator:
       defaultValue: "angular-frontend"
       label: Application artifact name
       required: true
-    - name: backendService
+    - name: backendServiceUrl
       inputType: text
-      defaultValue: "customer-profile-backend.namespace"
-      label: Hostname of the backend services app. If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
+      defaultValue: "http://localhost/api"
+      label: Url of the backend services app
       required: true
-  imports:
-    - name: tap-workload
 
 engine:
-  let:
-    - name: backendServiceResourceName
-      expression: '#backendService.toLowerCase()'
-    - name: workloadResourceName
-      expression: '#artifactId.toLowerCase()'
-  chain:
-    - applyTo: [ "nginx.conf" ]
+  merge:
+    - include: [ "**" ]
+      exclude: [ "config/**", "catalog/**", "nginx.conf" ]
+    - include: [ "nginx.conf" ]
       chain:
         - type: ReplaceText
           substitutions:
             - text: "http://backend/api/"
-              with: "'http://' + #backendServiceResourceName + '/api/'"
-
-    - applyTo: [ "config/workload.yaml", "catalog/catalog-info.yaml" ]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "angular-frontend"
-              with: "#workloadResourceName"
-
-    - merge:
-      - type: InvokeFragment
-        reference: tap-workload
-      - include: [ "**" ]
-      onConflict: UseFirst
+              with: "#backendServiceUrl"
