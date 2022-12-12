@@ -21,18 +21,18 @@ accelerator:
       required: true
 
 engine:
-  - merge:
-      - include: [ "**" ]
-        exclude: [ "config/**", "catalog/**", "nginx.conf" ]
-      - include: [ "nginx.conf" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "http://backend/api/"
-                with: "#backendServiceUrl"
-      - include: [ "README.md", "public/*.html", "public/*.json"]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "react-frontend"
-                with: "#artifactId"
+  merge:
+    - include: [ "**" ]
+      exclude: [ "config/**", "catalog/**", "nginx.conf" ]
+    - include: [ "nginx.conf" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "http://backend/api/"
+              with: "#backendServiceUrl"
+    - include: [ "README.md", "public/*.html", "public/*.json"]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "react-frontend"
+              with: "#artifactId"
