@@ -23,7 +23,7 @@ accelerator:
 engine:
   merge:
     - include: [ "**" ]
-      exclude: [ "config/**", "catalog/**", "nginx.conf" ]
+      exclude: [ "config/**", "catalog/**", "nginx.conf", "README.md", "public/*.html", "public/*.json"]
     - include: [ "nginx.conf" ]
       chain:
         - type: ReplaceText
