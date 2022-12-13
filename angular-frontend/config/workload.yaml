@@ -18,8 +18,8 @@ spec:
         apps.tanzu.vmware.com/pipeline: test-angular
   build:
     env:
-      - name: BP_NODE_RUN_SCRIPTS
-        value: "build"
+      - name: BP_WEB_SERVER
+        value: "nginx"
       - name: BP_WEB_SERVER_ROOT
         value: "dist"
   source:
