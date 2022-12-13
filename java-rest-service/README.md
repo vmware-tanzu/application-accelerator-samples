@@ -165,6 +165,31 @@ az spring app create --name ${SERVICE_APP} \
 ```
 > Note: The app will take around 2-3 minutes to create.
 
+--- StartACS
+### Enable External Configuration
+
+Define Git Repository in Application Configuration Service:
+
+```shell
+    az spring application-configuration-service git repo add \
+      --name app-config-name \
+      --label acs-repo-label \
+      --patterns acs-repo-pattern \
+      --uri acs-repo-uri 
+```
+
+Bind the application to Application Configuration Service to enable external configuration loading:
+
+```shell
+    az spring application-configuration-service bind --app ${SERVICE_APP}
+```
+
+Configure the config file patterns for the application:
+
+```shell
+    az spring app update --config-file-patterns acs-repo-pattern
+```
+--- EndACS
 ### Build and Deploy the Application
 
 Deploy and build the application, specifying its required parameters

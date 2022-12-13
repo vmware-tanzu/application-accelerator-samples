@@ -95,6 +95,37 @@ accelerator:
       label: Database Instance Name
       description: The name of the database instance this application will use (can be existing one in the cluster)
       required: true
+    - name: enableAppConfigService
+      description: "If set to true, application will be configured to use Application Configuration Service for external configuration"
+      label: Enable Application Configuration Service?
+      dataType: boolean
+      defaultValue: false
+      inputType: checkbox
+      required: true
+    - name: acsRepoUri
+      description: "Git Repository URI containing external configuration"
+      inputType: text
+      label: Git Repository URI
+      required: true
+      defaultValue: "https://git-server/app-config-repo"
+      dependsOn:
+        name: enableAppConfigService
+    - name: acsRepoLabel
+      description: "Git Repository Branch name containing external configuration"
+      label: Git Repository Label
+      datatype: text
+      defaultValue: main
+      required: true
+      dependsOn:
+        name: enableAppConfigService
+    - name: acsRepoPattern
+      description: "Pattern used to search in Git repositories. For each pattern, use format like {application} or {application}/{profile} instead of {application}-{profile}.yml, and separate them by a comma."
+      label: Application Configuration Pattern
+      datatype: text
+      defaultValue: "application/default"
+      required: true
+      dependsOn:
+        name: enableAppConfigService
 
 engine:
   let:
@@ -154,7 +185,39 @@ engine:
                 pattern: "--- StartGradle\\s|--- EndGradle\\s"
                 with: "''"
     # end of the Gradle specific part
-
+    # ACS is enabled
+    - condition: "#enableAppConfigService == true"
+      merge:
+        - include: ['**']
+          exclude: ['README.md']
+        - include: ['README.md']
+          condition: "#enableAppConfigService"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "acs-repo-uri"
+                  with: "#acsRepoUri"
+                - text: "acs-repo-label"
+                  with: "#acsRepoLabel"
+                - text: "acs-repo-pattern"
+                  with: "#acsRepoPattern"
+                - text: "app-config-name"
+                  with: "#artifactId.toLowerCase() + '-config'"
+            - type: ReplaceText
+              regex:
+                  pattern: "--- StartACS\\s|--- EndACS\\s"
+                  with: "''"
+    - condition: "!#enableAppConfigService"
+      merge:
+        - include: ['**']
+          exclude: ['README.md']
+        - include: ['README.md']
+          chain:
+            - type: ReplaceText
+              regex:
+                  pattern: "--- StartACS[\\s\\S]+?--- EndACS"
+                  with: "''"
+    # end of ACS specific part
     # Flyway is selected
     - condition: "#databaseMigrationTool == 'flyway'"
       exclude: [ "src/main/resources/db/**" ]
