@@ -120,23 +120,23 @@ Prerequisites:
 
 * Completion of [Create Azure Spring Apps service instance](https://github.com/Azure-Samples/acme-fitness-store/blob/Azure/README.md#create-azure-spring-apps-service-instance)
 
-### Create an Azure Database for Postgres
+### Create an Azure Database for PostgreSQL
 
 Using the Azure CLI, create an Azure Database for PostgreSQL
 
 ```shell
-az postgres server create --name ${POSTGRES_SERVER} \
+az postgres flexible-server create --name ${DB_SERVER} \
     --resource-group ${RESOURCE_GROUP} \
     --location ${REGION} \
-    --admin-user ${POSTGRES_SERVER_USER} \
-    --admin-password ${POSTGRES_SERVER_PASSWORD} \
+    --admin-user ${DB_SERVER_USER} \
+    --admin-password ${DB_SERVER_PASSWORD} \
+    --public-access 0.0.0.0 \
+    --tier Burstable \
+    --sku-name Standard_B1ms \
+    --version 14 \
+    --storage-size 32 \
     --yes
 
-# Allow connections from other Azure Services
-az postgres server firewall-rule create --name all-azure-ips \
-     --server ${POSTGRES_SERVER} \
-     --resource-group ${RESOURCE_GROUP} \
-     --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
 ```
 > Note: The PostgreSQL Flexible Server will take 5-10 minutes to deploy
 
@@ -145,7 +145,7 @@ Create a database for the application:
 ```shell
 export DB_NAME="development"
 
-az postgres db create \
+az postgres flexible-server db create \
   --name ${DB_NAME} \
   --server-name ${POSTGRES_SERVER}
 ```
@@ -158,12 +158,23 @@ Create an application:
 az spring app create --name ${SERVICE_APP} \
   --assign-endpoint true \
   --instance-count 1 \
-  --memory 1Gi \
-  --env "SPRING_DATASOURCE_URL=jdbc:postgresql://${POSTGRES_SERVER}.postgres.database.azure.com:5432/${DB_NAME}" \
-     "SPRING_DATASOURCE_USERNAME=${POSTGRES_SERVER_USER}@${POSTGRES_SERVER}" \
-     "SPRING_DATASOURCE_PASSWORD=${POSTGRES_SERVER_PASSWORD}"
+  --memory 1Gi 
 ```
 > Note: The app will take around 2-3 minutes to create.
+
+Create a Service Connector for the Application in order to access the Postgres Database:
+
+```shell
+az spring connection create postgres-flexible \
+  --resource-group ${RESOURCE_GROUP} \
+  --service ${ASA_INSTANCE} \
+  --app ${SERVICE_APP} \
+  --tg ${RESOURCE_GROUP} \
+  --server ${POSTGRES_SERVER} \
+  --database ${DB_NAME} \
+  --client-type springboot \
+  --secret name=${POSTGRES_SERVER_USER} secret=${POSTGRES_SERVER_PASSWORD}
+```
 
 --- StartACS
 ### Enable External Configuration
