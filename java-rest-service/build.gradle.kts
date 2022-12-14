@@ -1,6 +1,6 @@
 
 plugins {
-    id("org.springframework.boot") version "2.7.5"
+    id("org.springframework.boot")
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("java")
 }
@@ -10,6 +10,7 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 val springdocVersion = "1.6.9"
+val springBootVersion: String by project
 extra["snakeyaml.version"] = "1.32"
 
 repositories {
@@ -42,5 +43,11 @@ tasks.named<Jar>("jar") {
 }
 
 springBoot {
-    buildInfo()
+    buildInfo {
+        properties {
+            additional = mapOf(
+                "spring.boot.version" to springBootVersion
+            )
+        }
+    }
 }
