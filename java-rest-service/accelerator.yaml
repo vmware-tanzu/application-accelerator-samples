@@ -202,7 +202,6 @@ engine:
                   with: "''"
     # end of ACS specific part
     # Flyway is selected
-#    - condition: "#databaseMigrationTool == 'flyway'"
     - exclude: [ "src/main/resources/db/**" ]
       merge:
         - include: [ "**" ]
