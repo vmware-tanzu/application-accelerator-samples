@@ -14,6 +14,14 @@ k8s_custom_deploy(
             " --yes " +
             OUTPUT_TO_NULL_COMMAND +
             " && kubectl get workload " + NAME + " --namespace " + NAMESPACE + " -o yaml",
+  apply_cmd_bat="tanzu apps workload apply -f config/workload.yaml --update-strategy replace --debug --live-update" +
+            " --local-path " + LOCAL_PATH +
+            " --source-image " + SOURCE_IMAGE +
+            " --build-env BP_DEBUG_ENABLED=true" +
+            " --namespace " + NAMESPACE +          
+            " --yes " +
+            " > NUL " + # windows-compatible "output to null"
+            " && kubectl get workload " + NAME + " --namespace " + NAMESPACE + " -o yaml",
   delete_cmd="tanzu apps workload delete " + NAME + " --namespace " + NAMESPACE + " --yes",
   deps=['./bin'],
   container_selector='workload',
