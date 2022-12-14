@@ -35,23 +35,6 @@ accelerator:
           text: Maven (https://maven.apache.org/)
         - value: gradle
           text: Gradle (https://gradle.org/)
-    - name: databaseType
-      inputType: select
-      label: Database to use
-      choices:
-        - value: "postgres"
-          text: PostgreSQL
-        - value: "mysql"
-          text: MySQL
-      defaultValue: "postgres"
-      required: true
-    - name: databaseMigrationTool
-      inputType: select
-      required: true
-      defaultValue: flyway
-      choices:
-        - value: flyway
-          text: Flyway (https://flywaydb.org/)
     - name: exposeOpenAPIEndpoint
       label: Expose OpenAPI endpoint?
       dataType: boolean
@@ -219,8 +202,8 @@ engine:
                   with: "''"
     # end of ACS specific part
     # Flyway is selected
-    - condition: "#databaseMigrationTool == 'flyway'"
-      exclude: [ "src/main/resources/db/**" ]
+#    - condition: "#databaseMigrationTool == 'flyway'"
+    - exclude: [ "src/main/resources/db/**" ]
       merge:
         - include: [ "**" ]
           exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties", "catalog/**", "config/**" ]
