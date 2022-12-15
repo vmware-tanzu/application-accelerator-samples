@@ -1,0 +1,18 @@
+accelerator:
+  displayName: Include build tool wrapper
+
+  options:
+    - name: includeBuildToolWrapper
+      inputType: checkbox
+      label: Include Build Tool wrapper support
+      dataType: boolean
+      defaultValue: true
+
+engine:
+  merge:
+    - condition: "#includeBuildToolWrapper AND #buildTool == 'maven'"
+      include: [ "mvnw", "mvnw.cmd", ".mvn/**" ]
+      exclude: [ "gradlew*", "gradle/**" ]
+    - condition: "#includeBuildToolWrapper AND #buildTool == 'gradle'"
+      include: [ "gradlew*", "gradle/**" ]
+      exclude: [ "mvnw", "mvnw.cmd", ".mvn/**" ]

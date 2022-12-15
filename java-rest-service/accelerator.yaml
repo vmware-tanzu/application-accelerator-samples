@@ -122,6 +122,7 @@ accelerator:
           value: 'maven'
       - name: sourceRepositoryPrefix
   - name: tap-workload
+  - name: build-wrapper
 
 engine:
   let:
@@ -132,7 +133,7 @@ engine:
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
-      exclude: [ "settings.gradle.kts", "build.gradle.kts", "gradlew*", "gradle/**"]
+      exclude: [ "settings.gradle.kts", "build.gradle.kts"]
       merge:
         - include: [ "**" ]
           exclude: [ "pom.xml", "README.md" ]
@@ -156,7 +157,7 @@ engine:
 
     # Gradle is selected
     - condition: "#buildTool == 'gradle'"
-      exclude: [ "pom.xml", "mvnw*", ".mvn/**"]
+      exclude: [ "pom.xml"]
       merge:
         - include: [ "**" ]
           exclude: [ "build.gradle.kts", "README.md" ]
@@ -327,3 +328,8 @@ engine:
           substitutions:
           - text: "rest-service-db"
             with: "#artifactId"
+
+    - merge:
+      - include: [ "**" ]
+      - type: InvokeFragment
+        reference: build-wrapper

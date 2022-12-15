@@ -43,6 +43,7 @@ accelerator:
 
   imports:
     - name: tap-workload
+    - name: build-wrapper
 
 engine:
   merge:
@@ -58,8 +59,6 @@ engine:
           with: "#artifactId"
 
     # Maven files
-    - include: [ ".mvn/**", "mvnw", "mvnw.bat" ]
-      condition: "#buildType == 'maven'"
     - include: [ "pom.xml", "jar-assembly.xml" ]
       condition: "#buildType == 'maven' && #interfaceType == 'http'"
       chain:
@@ -78,8 +77,6 @@ engine:
         rewriteTo: "#filename"
 
     # Gradle files
-    - include: [ "gradle/**", "gradlew", "gradlew.bat" ]
-      condition: "#buildType == 'gradle'"
     - include: [ "settings.gradle" ]
       condition: "#buildType == 'gradle'"
       chain:
@@ -101,6 +98,13 @@ engine:
       chain:
       - type: RewritePath
         rewriteTo: "'src/main/java/functions/Handler.java'"
+
+    # Build wrapper
+    - type: InvokeFragment
+      let:
+      - name: buildTool
+        expression: "#buildType"
+      reference: build-wrapper
 
     # TAP files
     - include: [ "config/workload.yaml" ]

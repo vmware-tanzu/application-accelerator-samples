@@ -10,6 +10,7 @@ accelerator:
     - java
   imports:
     - name: tap-workload
+    - name: build-wrapper
 
 engine:
   chain:
@@ -31,6 +32,11 @@ engine:
               - text: "app.kubernetes.io/part-of: appsso-starter-java"
                 with: "'app.kubernetes.io/part-of: ' + #artifactId.toLowerCase()"
     - merge:
+      - type: InvokeFragment
+        let:
+        - name: buildTool
+          expression: "'gradle'"
+        reference: build-wrapper
       - type: InvokeFragment
         reference: tap-workload
       - include: [ "**" ]

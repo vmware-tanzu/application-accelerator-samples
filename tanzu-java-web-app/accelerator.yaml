@@ -17,6 +17,7 @@ accelerator:
 
   imports:
   - name: tap-workload
+  - name: build-wrapper
 
 engine:
   merge:
@@ -57,3 +58,9 @@ engine:
       substitutions:
       - text: tanzu-java-web-app
         with: "#artifactId"
+
+  - type: InvokeFragment
+    let:
+    - name: buildTool
+      expression: "'maven'"
+    reference: build-wrapper
