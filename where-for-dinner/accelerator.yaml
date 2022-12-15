@@ -153,6 +153,7 @@ accelerator:
       name: enableDefaultDevAccount
   imports:
     - name: tap-workload
+    - name: build-wrapper-maven
 
 engine:
   let:
@@ -235,4 +236,6 @@ engine:
     - type: RewritePath
       regex: 'templates/redisResourceClaim.yaml'
       rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"  
+  - type: InvokeFragment
+    reference: build-wrapper-maven
   - include: ["README.md"]      
