@@ -129,10 +129,10 @@ engine:
           chain:
             - type: ReplaceText
               substitutions:
-                - text: "sso-scope"
-                  with: "#ssoScope"
+                - text: "sso-scopes"
+                  with: "#ssoScopes"
                 - text: "issuer-uri"
-                  with: "ssoIssuerUri"
+                  with: "#ssoIssuerUri"
             - type: ReplaceText
               regex:
                 pattern: "--- StartSecurity\\s|--- EndSecurity\\s"

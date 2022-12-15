@@ -90,7 +90,7 @@ Enable SSO on Spring Cloud Gateway:
 az spring gateway update \
     --client-id ${CLIENT_ID} \
     --client-secret ${CLIENT_SECRET} \
-    --scope sso-scope \
+    --scope sso-scopes \
     --issuer-uri issuer-uri 
 ```
 
