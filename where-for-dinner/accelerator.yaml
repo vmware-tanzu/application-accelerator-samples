@@ -131,7 +131,7 @@ engine:
               substitutions:
                 - text: "sso-scopes"
                   with: "#ssoScopes"
-                - text: "issuer-uri"
+                - text: "sso-issuer-uri"
                   with: "#ssoIssuerUri"
             - type: ReplaceText
               regex:

@@ -91,7 +91,7 @@ az spring gateway update \
     --client-id ${CLIENT_ID} \
     --client-secret ${CLIENT_SECRET} \
     --scope sso-scopes \
-    --issuer-uri issuer-uri 
+    --issuer-uri sso-issuer-uri 
 ```
 
 --- EndSecurity
