@@ -149,5 +149,5 @@ engine:
                 with: "''"
             - type: ReplaceText
               substitutions:
-                - text: "\"ssoEnabled\": true,"
+                - text: "\"ssoEnabled\": true,\n"
                   with: "''"
