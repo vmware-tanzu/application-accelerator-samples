@@ -35,16 +35,6 @@ accelerator:
           text: Maven (https://maven.apache.org/)
         - value: gradle
           text: Gradle (https://gradle.org/)
-    - name: databaseType
-      inputType: select
-      label: Database to use
-      choices:
-        - value: "postgres"
-          text: PostgreSQL
-        - value: "mysql"
-          text: MySQL
-      defaultValue: "postgres"
-      required: true
     - name: databaseMigrationTool
       inputType: select
       required: true
@@ -93,7 +83,7 @@ accelerator:
       inputType: text
       defaultValue: "postgres-database"
       label: Database Instance Name
-      description: The name of the database instance this application will use (can be existing one in the cluster)
+      description: The name of the database instance this application will use
       required: true
     - name: enableAppConfigService
       description: "If set to true, application will be configured to use Application Configuration Service for external configuration"
@@ -140,7 +130,7 @@ engine:
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
-      exclude: [ "settings.gradle.kts", "build.gradle.kts", "gradlew*", "gradle/**"]
+      exclude: [ "settings.gradle.kts", "build.gradle.kts", "gradlew*", "gradle/**", "gradle.properties"]
       merge:
         - include: [ "**" ]
           exclude: [ "pom.xml", "README.md" ]
@@ -219,8 +209,7 @@ engine:
                   with: "''"
     # end of ACS specific part
     # Flyway is selected
-    - condition: "#databaseMigrationTool == 'flyway'"
-      exclude: [ "src/main/resources/db/**" ]
+    - exclude: [ "src/main/resources/db/**" ]
       merge:
         - include: [ "**" ]
           exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties", "catalog/**", "config/**" ]
@@ -248,7 +237,19 @@ engine:
               propertyKey: "'spring.flyway.enabled'"
               newValue: "'true'"
     # end of the Flyway specific part
-
+    - merge:
+        - include: ['**']
+          exclude: ['README.md']
+        - include: ['README.md']
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "db-server"
+                  with: "#databaseName"
+                - text: "app-name"
+                  with: "#workloadResourceName"
+                - text: "java-version"
+                  with: "#workloadJavaVersion"
     # OpenAPI Endpoint Auto-registration
     - merge:
       - include: [ "**" ]
