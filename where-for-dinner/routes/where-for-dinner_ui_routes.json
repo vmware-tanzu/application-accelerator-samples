@@ -3,7 +3,9 @@
     "predicates": [
       "Path=/diningsearch"
     ],
-    "order": "100"
+    "order": "100",
+    "ssoEnabled": true,
+    "tokenRelay": true
   },
   {
     "predicates": [
@@ -12,6 +14,8 @@
     "filters": [
       "StripPrefix=0"
     ],
-    "order": "1000"
+    "order": "1000",
+    "ssoEnabled": true,
+    "tokenRelay": true
   }
 ]

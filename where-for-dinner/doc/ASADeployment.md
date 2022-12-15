@@ -81,7 +81,20 @@ az spring gateway update \
     --allowed-methods "*" \
     --allowed-headers "*" 
 ```
+--- StartSecurity
+## Configure SSO for Spring Cloud Gateway
 
+Enable SSO on Spring Cloud Gateway:
+
+```shell
+az spring gateway update \
+    --client-id ${CLIENT_ID} \
+    --client-secret ${CLIENT_SECRET} \
+    --scope sso-scope \
+    --issuer-uri issuer-uri 
+```
+
+--- EndSecurity
 ## Testing the Deployment
 
 * Access Application Using Spring Cloud Gateway

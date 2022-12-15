@@ -7,6 +7,7 @@
       "StripPrefix=2",
       "RemoveRequestHeader=Forwarded"
     ],
+    "ssoEnabled": true,
     "tokenRelay": true
   }
 ]

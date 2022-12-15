@@ -61,51 +61,24 @@ accelerator:
       inputType: checkbox
       dataType: boolean
       required: true
-    - label: AppSSO Instance Name
-      description: "The name of the AppSSO instance that the application services will connect to."
-      defaultValue: appsso-where-for-dinner
-      name: appSSOName
+    - label: Scopes
+      description: "The OIDC scopes uses by the application"
+      defaultValue: "openid,profile,email"
+      name: ssoScopes
       inputType: text
       dataType: string
       required: true
       dependsOn:
         name: enableSecurity
-    - label: Workload URL
-      description: "The URL where the application will be published; used for AppSSO redirects.  Generally 'https://where-for-dinner.<domain name>"
-      defaultValue: https://where-for-dinner.<UPDATE ME>
-      name: appWorkloadURL
+    - label: Issuer Uri
+      description: "The OIDC provider's issuer-uri"
+      defaultValue: https://login.microsoftonline.com/<UPDATE-ME>/v2.0
+      name: ssoIssuerUri
       inputType: text
       dataType: string
       required: true
       dependsOn:
         name: enableSecurity
-    - label: Create Default Dev Account
-      description: "If set to true, you can create a default dev account below.  This should not be used for production use."
-      defaultValue: true
-      name: enableDefaultDevAccount
-      inputType: checkbox
-      dataType: boolean
-      required: true
-      dependsOn:
-        name: enableSecurity
-    - label: Dev Account Username
-      description: "The username of the dev account"
-      defaultValue: where-for-dinner
-      name: devDefaultAccountUsername
-      inputType: text
-      dataType: string
-      required: false
-      dependsOn:
-        name: enableDefaultDevAccount
-    - label: Dev Account Password
-      description: "Plain text version of the dev password."
-      defaultValue: "letseat"
-      name: devDefaultAccountPassword
-      inputType: text
-      dataType: string
-      required: false
-      dependsOn:
-        name: enableDefaultDevAccount
 
 engine:
   merge:
@@ -147,3 +120,34 @@ engine:
       chain:
         - type: RewritePath
           rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"
+    - condition: "#enableSecurity"
+      merge:
+        - include: ['**']
+          exclude: ['docs/ASADeployment.md']
+        - include: ['docs/ASADeployment.md']
+          condition: "#enableSecurity"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "sso-scope"
+                  with: "#ssoScope"
+                - text: "issuer-uri"
+                  with: "ssoIssuerUri"
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartSecurity\\s|--- EndSecurity\\s"
+                with: "''"
+    - condition: "!#enableSecurity"
+      merge:
+        - include: ['**']
+          exclude: ['docs/ASADeployment.md', '**/routes/**']
+        - include: ['docs/ASADeployment.md', '**/routes/**']
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartSecurity[\\s\\S]+?--- EndSecurity"
+                with: "''"
+            - type: ReplaceText
+              substitutions:
+                - text: "\n\"ssoEnabled\": true,\n"
+                  with: "''"
