@@ -73,7 +73,7 @@ az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION s
 
 ```shell
 az spring gateway update --assign-endpoint true
-export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
     
 az spring gateway update \
     --server-url "https://${GATEWAY_URL}" \
@@ -92,6 +92,14 @@ az spring gateway update \
     --client-secret ${CLIENT_SECRET} \
     --scope sso-scopes \
     --issuer-uri sso-issuer-uri 
+```
+
+Configure your OIDC provider to support the following redirect uri:
+
+```shell
+GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+
+echo "https://${GATEWAY_URL}/login/oauth2/code/sso" 
 ```
 
 --- EndSecurity
