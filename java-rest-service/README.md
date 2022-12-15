@@ -125,7 +125,7 @@ Prerequisites:
 Using the Azure CLI, create an Azure Database for PostgreSQL
 
 ```shell
-az postgres flexible-server create --name ${DB_SERVER} \
+az postgres flexible-server create --name db-server \
     --resource-group ${RESOURCE_GROUP} \
     --location ${REGION} \
     --admin-user ${DB_SERVER_USER} \
@@ -146,8 +146,8 @@ Create a database for the application:
 export DB_NAME="development"
 
 az postgres flexible-server db create \
-  --name ${DB_NAME} \
-  --server-name ${POSTGRES_SERVER}
+  --name customer_profile \
+  --server-name db-server
 ```
 
 ### Create the application in Azure Spring Apps
@@ -155,7 +155,7 @@ az postgres flexible-server db create \
 Create an application:
 
 ```shell
-az spring app create --name ${SERVICE_APP} \
+az spring app create --name app-name \
   --assign-endpoint true \
   --instance-count 1 \
   --memory 1Gi 
@@ -168,10 +168,10 @@ Create a Service Connector for the Application in order to access the Postgres D
 az spring connection create postgres-flexible \
   --resource-group ${RESOURCE_GROUP} \
   --service ${ASA_INSTANCE} \
-  --app ${SERVICE_APP} \
+  --app app-name \
   --tg ${RESOURCE_GROUP} \
-  --server ${POSTGRES_SERVER} \
-  --database ${DB_NAME} \
+  --server db-server \
+  --database customer_profile \
   --client-type springboot \
   --secret name=${POSTGRES_SERVER_USER} secret=${POSTGRES_SERVER_PASSWORD}
 ```
@@ -192,7 +192,7 @@ Define Git Repository in Application Configuration Service:
 Bind the application to Application Configuration Service to enable external configuration loading:
 
 ```shell
-    az spring application-configuration-service bind --app ${SERVICE_APP}
+    az spring application-configuration-service bind --app app-name
 ```
 
 Configure the config file patterns for the application:
@@ -206,7 +206,8 @@ Configure the config file patterns for the application:
 Deploy and build the application, specifying its required parameters
 
 ```shell
-az spring app deploy --name ${SERVICE_APP} \
+az spring app deploy --name app-name \
+   --build-env BP_JVM_VERSION=java-version \
    --source-path java-rest-service 
 ```
 > Note: Deploying the application will take 5-10 minutes
@@ -216,7 +217,7 @@ az spring app deploy --name ${SERVICE_APP} \
 Run the following commands
 
 ```shell
-export APP_URL=$(az spring app show --name ${SERVICE_APP} --query properties.url | tr -d '"')
+export APP_URL=$(az spring app show --name app-name --query properties.url | tr -d '"')
 
 curl "${APP_URL}/api-docs"
 ```
