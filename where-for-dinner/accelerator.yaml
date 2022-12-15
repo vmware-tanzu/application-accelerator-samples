@@ -123,8 +123,8 @@ engine:
     - condition: "#enableSecurity"
       merge:
         - include: ['**']
-          exclude: ['docs/ASADeployment.md']
-        - include: ['docs/ASADeployment.md']
+          exclude: ['doc/ASADeployment.md']
+        - include: ['doc/ASADeployment.md']
           condition: "#enableSecurity"
           chain:
             - type: ReplaceText
@@ -140,8 +140,8 @@ engine:
     - condition: "!#enableSecurity"
       merge:
         - include: ['**']
-          exclude: ['docs/ASADeployment.md', '**/routes/**']
-        - include: ['docs/ASADeployment.md', '**/routes/**']
+          exclude: ['doc/ASADeployment.md', '**/routes/**']
+        - include: ['doc/ASADeployment.md', '**/routes/**']
           chain:
             - type: ReplaceText
               regex:
@@ -149,5 +149,5 @@ engine:
                 with: "''"
             - type: ReplaceText
               substitutions:
-                - text: "\n\"ssoEnabled\": true,\n"
+                - text: "\"ssoEnabled\": true,"
                   with: "''"
