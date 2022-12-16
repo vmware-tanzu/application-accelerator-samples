@@ -1,0 +1,31 @@
+#@ load("@ytt:data", "data")
+#@ if/end hasattr(data.values, "language") and data.values.language == "golang":
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: developer-defined-tekton-pipeline-golang
+  namespace: #@ data.values.name
+  labels:
+    apps.tanzu.vmware.com/pipeline: test
+    apps.tanzu.vmware.com/language: golang
+spec:
+  params:
+  - name: source-url
+  - name: source-revision
+  tasks:
+  - name: test
+    params:
+    - name: source-url
+      value: $(params.source-url)
+    - name: source-revision
+      value: $(params.source-revision)
+    taskSpec:
+      params:
+      - name: source-url
+      - name: source-revision
+      steps:
+        - name: test
+          image: golang:latest
+          script: |-
+            go test ./... -coverprofile cover.out
