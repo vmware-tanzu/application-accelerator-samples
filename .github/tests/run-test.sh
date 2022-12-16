@@ -21,6 +21,7 @@ pushd ${GITHUB_WORKSPACE}
   --fragment-paths               spring-boot-postgresql=fragments/spring-boot-postgresql \
   --fragment-paths                       tap-initialize=fragments/tap-initialize \
   --fragment-paths                         tap-workload=fragments/tap-workload \
+  --fragment-paths                         build-wrapper=fragments/build-wrapper \
   --accelerator-path ${accname}=${accname} \
   $([ -f .github/tests/$1/options.json ] && echo --options-file .github/tests/$1/options.json)
 
