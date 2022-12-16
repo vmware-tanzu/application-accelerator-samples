@@ -81,11 +81,11 @@ accelerator:
         name: enableSecurity
 
 engine:
-  include: [ '**' ]
-  exclude:
-      [ "**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**",
-        "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md" ]
   chain:
+    - include: ['**']
+    - exclude:
+        ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**",
+         "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md"]
     - merge:
         - include: ['doc/ASADeployment.md']
           chain:
