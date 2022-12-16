@@ -118,7 +118,7 @@ engine:
         - include: ['**/pom.xml']
           chain:
             - type: ReplaceText
-              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.h2database</groupId>\\s*<artifactId>h2</artifactId>[\\s\\S]+</dependencies>))"
+              regex: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.h2database</groupId>\\s*<artifactId>h2</artifactId>[\\s\\S]+</dependencies>))"
               with: |
                 '${startOfDependencies}
                         <dependency>
@@ -131,7 +131,7 @@ engine:
         - include: ['**/pom.xml']
           chain:
             - type: ReplaceText
-              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
+              regex: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
               with: |
                 '${startOfDependencies}
                         <dependency>
