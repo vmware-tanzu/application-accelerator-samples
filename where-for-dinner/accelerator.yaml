@@ -113,3 +113,35 @@ engine:
               substitutions:
                 - text: "\"ssoEnabled\": true,\n"
                   with: "''"
+    - condition: "#dbType == 'h2'"
+      merge:
+        - include: ['doc/ASADeployment.md']
+          chain:
+            - type: ReplaceText
+              regex:
+                - text: "db-env"
+                  with: "''"
+    - condition: "#dbType == 'postgres'"
+      merge:
+        - include: ['doc/ASADeployment.md']
+          chain:
+            - type: ReplaceText
+              regex:
+                - text: "db-env"
+                  with: "--env SPRING_PROFILES_ACTIVE=postgres"
+    - condition: "#cacheType == 'inmemCache'"
+      merge:
+        - include: ['doc/ASADeployment.md']
+          chain:
+            - type: ReplaceText
+              regex:
+                - text: "cache-env"
+                  with: "''"
+    - condition: "#cacheType == 'redisCache'"
+      merge:
+        - include: ['doc/ASADeployment.md']
+          chain:
+            - type: ReplaceText
+              regex:
+                - text: "cache-env"
+                  with: "--env SPRING_PROFILES_ACTIVE=redis"

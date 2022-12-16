@@ -33,11 +33,11 @@ az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION s
 * Create Apps
 
 ```shell
-    az spring app create -n availability
+    az spring app create -n availability db-env
     az spring app create -n crawler
     az spring app create -n notify
-    az spring app create -n search
-    az spring app create -n search-proc
+    az spring app create -n search db-env
+    az spring app create -n search-proc cache-env
     az spring app create -n app-ui
 ```
 

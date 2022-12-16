@@ -33,18 +33,7 @@ spring:
 springdoc:
   packages-to-scan: com.java.example.tanzu.wherefordinner.resources
   show-spring-cloud-functions: false
-  
----
-spring:
-  config.activate.on-profile: mysql
 
-  sql.init.platform: mysql
-
-  r2dbc: 
-    #Default properties to work with MariaDB driver
-    properties.sslMode: TRUST  
-    properties.tlsVersion: TLSv1.2  
-    
 ---
 
 spring:
