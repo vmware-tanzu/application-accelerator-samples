@@ -85,7 +85,7 @@ engine:
     - include: ['**']
     - exclude:
         ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**",
-         "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md", "**/pom.xml"]
+         "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md"]
     - condition: "#enableSecurity"
       merge:
         - include: ['doc/ASADeployment.md']
@@ -113,31 +113,3 @@ engine:
               substitutions:
                 - text: "\"ssoEnabled\": true,\n"
                   with: "''"
-    - condition: "#dbType == 'h2'"
-      merge:
-        - include: ['**/pom.xml']
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.h2database</groupId>\\s*<artifactId>h2</artifactId>[\\s\\S]+</dependencies>))"
-                with: |
-                  '${startOfDependencies}
-                          <dependency>
-                              <groupId>com.h2database</groupId>
-                              <artifactId>h2</artifactId>
-                              <scope>runtime</scope>
-                          </dependency>${existingDependencies}'
-    - condition: "#dbType == 'postgres'"
-      merge:
-        - include: ['**/pom.xml']
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
-                with: |
-                  '${startOfDependencies}
-                          <dependency>
-                              <groupId>org.postgresql</groupId>
-                              <artifactId>postgresql</artifactId>
-                              <scope>runtime</scope>
-                          </dependency>${existingDependencies}'
