@@ -1,6 +1,6 @@
 server:
   port: 8081
-  # When running behind a reverse proxy, this stradedgy needs to be set to ensure
+  # When running behind a reverse proxy, this strategy needs to be set to ensure
   # that OpenAPI endpoint returns the correct server URLs
   # https://springdoc.org/faq.html#_how_can_i_deploy_springdoc_openapi_ui_behind_a_reverse_proxy
   forward-headers-strategy: framework
