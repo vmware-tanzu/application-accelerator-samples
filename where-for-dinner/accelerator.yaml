@@ -87,8 +87,6 @@ engine:
          "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md"]
     - condition: "#enableSecurity"
       merge:
-        - include: ['**']
-          exclude: ['doc/ASADeployment.md']
         - include: ['doc/ASADeployment.md']
           condition: "#enableSecurity"
           chain:
