@@ -82,7 +82,6 @@ accelerator:
 
 engine:
   merge:
-    - include: ['**']
     - exclude:
         ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**",
          "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md"]
