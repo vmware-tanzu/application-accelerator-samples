@@ -128,7 +128,7 @@ engine:
             - type: ReplaceText
               substitutions:
                 - text: "db-env"
-                  with: "--env SPRING_PROFILES_ACTIVE=postgres"
+                  with: "'--env SPRING_PROFILES_ACTIVE=postgres'"
     - condition: "#cacheType == 'inmemCache'"
       merge:
         - include: ['doc/ASADeployment.md']
@@ -144,4 +144,4 @@ engine:
             - type: ReplaceText
               substitutions:
                 - text: "cache-env"
-                  with: "--env SPRING_PROFILES_ACTIVE=redis"
+                  with: "'--env SPRING_PROFILES_ACTIVE=redis'"
