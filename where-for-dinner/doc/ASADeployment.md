@@ -77,9 +77,7 @@ GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
     
 az spring gateway update \
     --server-url "https://${GATEWAY_URL}" \
-    --allowed-origins "*" \
-    --allowed-methods "*" \
-    --allowed-headers "*" 
+    --allowed-origins "*" 
 ```
 --- StartSecurity
 ## Configure SSO for Spring Cloud Gateway
