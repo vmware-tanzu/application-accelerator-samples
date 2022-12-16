@@ -113,7 +113,7 @@ engine:
               substitutions:
                 - text: "\"ssoEnabled\": true,\n"
                   with: "''"
-    - condition: "#dbType == h2"
+    - condition: "#dbType == 'h2'"
       merge:
         - include: ['**/pom.xml']
           chain:
@@ -127,7 +127,7 @@ engine:
                               <artifactId>h2</artifactId>
                               <scope>runtime</scope>
                           </dependency>${existingDependencies}'
-    - condition: "#dbType == postgres"
+    - condition: "#dbType == 'postgres'"
       merge:
         - include: ['**/pom.xml']
           chain:
