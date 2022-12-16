@@ -109,12 +109,12 @@ engine:
             - type: ReplaceText
               condition: "#dbType == 'h2'"
               substitutions:
-                - text: "'--env SPRING_PROFILES_ACTIVE=postgres'"
+                - text: "--env SPRING_PROFILES_ACTIVE=postgres"
                   with: "''"
             - type: ReplaceText
               condition: "#cacheType == 'inmemCache'"
               substitutions:
-                - text: "'--env SPRING_PROFILES_ACTIVE=redis'"
+                - text: "--env SPRING_PROFILES_ACTIVE=redis"
                   with: "''"
     - merge:
         - include: ['**/routes/**']
