@@ -73,15 +73,34 @@ az configure --scope local --defaults group=$RESOURCE_GROUP location=$LOCATION s
 
 ```shell
 az spring gateway update --assign-endpoint true
-export GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
     
 az spring gateway update \
     --server-url "https://${GATEWAY_URL}" \
-    --allowed-origins "*" \
-    --allowed-methods "*" \
-    --allowed-headers "*" 
+    --allowed-origins "*" 
+```
+--- StartSecurity
+## Configure SSO for Spring Cloud Gateway
+
+Enable SSO on Spring Cloud Gateway:
+
+```shell
+az spring gateway update \
+    --client-id ${CLIENT_ID} \
+    --client-secret ${CLIENT_SECRET} \
+    --scope sso-scopes \
+    --issuer-uri sso-issuer-uri 
 ```
 
+Configure your OIDC provider to support the following redirect uri:
+
+```shell
+GATEWAY_URL=$(az spring gateway show | jq -r '.properties.url')
+
+echo "https://${GATEWAY_URL}/login/oauth2/code/sso" 
+```
+
+--- EndSecurity
 ## Testing the Deployment
 
 * Access Application Using Spring Cloud Gateway
