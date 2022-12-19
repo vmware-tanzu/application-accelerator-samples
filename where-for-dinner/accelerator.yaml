@@ -85,45 +85,8 @@ engine:
     - exclude:
         ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**",
          "**/catalog/**", "**/rmqCluster.yaml", "**/rmqResourceClaim.yaml", "doc/TAPDeployment.md"]
-    - condition: "#dbType == 'mysql'"
-      include: ["templates/mysqlInstance.yaml"]
-      chain:
-        - type: RewritePath
-          rewriteTo: "'config/service-operator/mysqlInstance.yaml'"
-    - condition:
-        "#dbType == 'mysql'"
-      include: ["templates/mysqlResourceClaim.yaml"]
-      chain:
-        - type: RewritePath
-          rewriteTo: "'config/app-operator/mysqlResourceClaim.yaml'"
-    - condition:
-        "#enableSecurity"
-      include: ["templates/clientRegistrationResourceClaim.yaml"]
-      chain:
-        - type: RewritePath
-          rewriteTo: "'config/app-operator/clientRegistrationResourceClaim.yaml'"
-    - condition:
-        "#enableSecurity"
-      include: [ "templates/appSSOInstance.yaml"]
-      chain:
-        - type: RewritePath
-          rewriteTo: "'config/service-operator/appSSOInstance.yaml'"
-    - condition:
-        "#cacheType == 'redisCache'"
-      include: ["templates/redisInstance.yaml"]
-      chain:
-        - type: RewritePath
-          rewriteTo: "'config/service-operator/redisInstance.yaml'"
-    - condition:
-        "#cacheType == 'redisCache'"
-      include: ["templates/redisResourceClaim.yaml"]
-      chain:
-        - type: RewritePath
-          rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"
     - condition: "#enableSecurity"
       merge:
-        - include: ['**']
-          exclude: ['doc/ASADeployment.md']
         - include: ['doc/ASADeployment.md']
           condition: "#enableSecurity"
           chain:
@@ -139,8 +102,6 @@ engine:
                 with: "''"
     - condition: "!#enableSecurity"
       merge:
-        - include: ['**']
-          exclude: ['doc/ASADeployment.md', '**/routes/**']
         - include: ['doc/ASADeployment.md', '**/routes/**']
           chain:
             - type: ReplaceText
