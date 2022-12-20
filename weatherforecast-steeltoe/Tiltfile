@@ -2,6 +2,7 @@ SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='your-registry.io/project/steel
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
 OUTPUT_TO_NULL_COMMAND = os.getenv("OUTPUT_TO_NULL_COMMAND", default=' > /dev/null ')
+OUTPUT_TO_NULL_COMMAND_WINDOWS = os.getenv("OUTPUT_TO_NULL_COMMAND_WINDOWS", default=' > NUL ')
 NAME = "sample-app"
 
 k8s_custom_deploy(
@@ -20,7 +21,7 @@ k8s_custom_deploy(
             " --build-env BP_DEBUG_ENABLED=true" +
             " --namespace " + NAMESPACE +          
             " --yes " +
-            " > NUL " + # windows-compatible "output to null"
+            OUTPUT_TO_NULL_COMMAND_WINDOWS +
             " && kubectl get workload " + NAME + " --namespace " + NAMESPACE + " -o yaml",
   delete_cmd="tanzu apps workload delete " + NAME + " --namespace " + NAMESPACE + " --yes",
   deps=['./bin'],
