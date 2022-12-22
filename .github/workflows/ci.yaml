@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v3
       - id: list-tests-step
         name: List Tests
-        run: echo "testnames=$( (cd .github/tests && find * -type d -maxdepth 0) | jq --compact-output --slurp --raw-input 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "testnames=$( (cd .github/tests && find * -maxdepth 0 -type d) | jq --compact-output --slurp --raw-input 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
     outputs:
       testnames: ${{steps.list-tests-step.outputs.testnames}}
 
