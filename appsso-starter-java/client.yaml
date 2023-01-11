@@ -1,5 +1,4 @@
 #@ load("@ytt:data", "data")
-
 ---
 apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
 kind: ClientRegistration
@@ -8,14 +7,12 @@ metadata:
   namespace: #@ data.values.namespace
 spec:
   authServerSelector:
-    matchLabels:
-      name: #@ data.values.auth_server_name
+    matchLabels: #@ data.values.authserver_label
   clientAuthenticationMethod: basic
   authorizationGrantTypes:
     - authorization_code
   redirectURIs:
-    - #@ "https://{}.{}.{}/login/oauth2/code/{}".format(data.values.workload_name, data.values.namespace, data.values.domain, data.values.claim_name)
-    - #@ "http://{}.{}.{}/login/oauth2/code/{}".format(data.values.workload_name, data.values.namespace, data.values.domain, data.values.claim_name)
-    - #@ "http://127.0.0.1:8080/login/oauth2/code/{}".format(data.values.claim_name)
+    - #@ "https://{}.{}.{}/login/oauth2/code/{}".format(data.values.workload_name, data.values.namespace, data.values.domain, data.values.workload_name)
+    - #@ "http://{}.{}.{}/login/oauth2/code/{}".format(data.values.workload_name, data.values.namespace, data.values.domain, data.values.workload_name)
   scopes:
     - name: openid
