@@ -51,6 +51,7 @@
     "@svgr/webpack": "^6.5.1"
   },
   "overrides": {
-    "@svgr/webpack": "$@svgr/webpack"
+    "@svgr/webpack": "$@svgr/webpack",
+    "json5": "2.2.2"
   }
 }
