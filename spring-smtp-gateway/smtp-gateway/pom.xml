@@ -13,7 +13,7 @@
     <parent>
 	   <groupId>org.springframework.boot</groupId>
 	   <artifactId>spring-boot-starter-parent</artifactId>
-	   <version>2.7.5</version>
+	   <version>2.7.7</version>
 	   <relativePath />
     </parent>	
     <developers>
@@ -30,7 +30,7 @@
 		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<subethasmtp.version>3.1.7</subethasmtp.version>
-		<commons-net.version>3.8.0</commons-net.version>
+		<commons-net.version>3.9.0</commons-net.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>   
 	<dependencyManagement>
