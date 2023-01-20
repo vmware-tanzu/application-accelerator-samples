@@ -11,6 +11,7 @@ spec:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
+  serviceClaims:
   - name: rmq
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
