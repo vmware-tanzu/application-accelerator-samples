@@ -44,6 +44,17 @@ tanzu apps workload create hello-fun -f config/workload.yaml \
   --type web
 ```
 
+### Deploying to Kubernetes as a TAP workload using GraalVM native compile
+
+If you would like to build the serverless app using the GraalVM native compile feature, then all you need to do is set the build env `BP_NATIVE_IMAGE` to true in the `workload.yaml` before applying it.
+
+This can also be accomplished using the Tanzu CLI with the following command:
+
+```
+tanzu apps workload create hello-fun -f config/workload.yaml \
+  --build-env "BP_NATIVE_IMAGE=true"
+```
+
 ### Accessing the app deployed to your cluster
 
 If you don't have `curl` installed it can be installed using downloads here: https://curl.se/download.html
