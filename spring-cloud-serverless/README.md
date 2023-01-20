@@ -6,7 +6,7 @@ It can be deployed as a standalone web app, as a Tanzu Application Platform work
 
 ## The code
 
-> **NOTE**: The project is configured for Java 11, if you prefer a different version, then modify the `java.version` property in `pom.xml`.
+> **NOTE**: The project uses Spring Boot 3.0 and is configured for Java 17.
 
 The project contains the following Function bean definition:
 

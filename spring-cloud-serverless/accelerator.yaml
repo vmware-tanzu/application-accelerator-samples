@@ -32,102 +32,96 @@ accelerator:
       name: deploymentType
       value: workload
   imports:
-  - name: java-version
   - name: tap-workload
 
 engine:
-  chain:
-  - merge:
-    - include: [ "**" ]
-      exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
-    - include: [ "pom.xml" ]
+  merge:
+  - include: [ "**" ]
+    exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
+  - include: [ "pom.xml" ]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+  - include: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
+    condition: "#deploymentType == 'k8s-simple'"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+    - type: RewritePath
+      rewriteTo: "'kubernetes/' + #filename"
+  - include: [ "kubernetes/k8s/Tiltfile" ]
+    condition: "#deploymentType == 'k8s-simple'"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+    - type: RewritePath
+      rewriteTo: "#filename"
+  - include: [ "kubernetes/tap/workload.yaml" ]
+    condition: "#deploymentType == 'workload'"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: ": hello-fun"
+        with: "': ' + #artifactId"
+    - type: RewritePath
+      rewriteTo: "'config/' + #filename"
+    - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
+      onConflict: UseFirst
+  - include: [ "kubernetes/tap/Tiltfile" ]
+    condition: "#deploymentType == 'workload'"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+    - type: ReplaceText
+      substitutions:
+        - text: dev.local
+          with: "#sourceRepositoryPrefix"
+    - type: RewritePath
+      rewriteTo: "#filename"
+  - include: [ "kubernetes/tap/.tanzuignore" ]
+    condition: "#deploymentType == 'workload'"
+    chain:
+    - type: RewritePath
+      rewriteTo: "#filename"
+  - include: [ "catalog/*.yaml" ]
+    condition: "#deploymentType != 'none'"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: hello-fun
+        with: "#artifactId"
+  - name: README
+    type: Combo
+    onConflict: Append
+    sources:
+    - include: [ "README.md"]
       chain:
       - type: ReplaceText
         substitutions:
-        - text: hello-fun
+        - text: hello-fun template repo
           with: "#artifactId"
-    - include: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
+    - include: [ "kubernetes/k8s/DEPLOYING.md" ]
       condition: "#deploymentType == 'k8s-simple'"
       chain:
-      - type: ReplaceText
-        substitutions:
-        - text: hello-fun
-          with: "#artifactId"
       - type: RewritePath
-        rewriteTo: "'kubernetes/' + #filename"
-    - include: [ "kubernetes/k8s/Tiltfile" ]
-      condition: "#deploymentType == 'k8s-simple'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: hello-fun
-          with: "#artifactId"
-      - type: RewritePath
-        rewriteTo: "#filename"
-    - include: [ "kubernetes/tap/workload.yaml" ]
-      condition: "#deploymentType == 'workload'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: ": hello-fun"
-          with: "': ' + #artifactId"
-      - type: RewritePath
-        rewriteTo: "'config/' + #filename"
-      - merge:
-          - type: InvokeFragment
-            reference: tap-workload
-          - include: [ "**" ]
-        onConflict: UseFirst
-    - include: [ "kubernetes/tap/Tiltfile" ]
+        rewriteTo: "'README.md'"
+    - include: [ "kubernetes/tap/DEPLOYING.md" ]
       condition: "#deploymentType == 'workload'"
       chain:
       - type: ReplaceText
         substitutions:
         - text: hello-fun
           with: "#artifactId"
-      - type: ReplaceText
-        substitutions:
-          - text: dev.local
-            with: "#sourceRepositoryPrefix"
       - type: RewritePath
-        rewriteTo: "#filename"
-    - include: [ "kubernetes/tap/.tanzuignore" ]
-      condition: "#deploymentType == 'workload'"
-      chain:
-      - type: RewritePath
-        rewriteTo: "#filename"
-    - include: [ "catalog/*.yaml" ]
-      condition: "#deploymentType != 'none'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: hello-fun
-          with: "#artifactId"
-    - name: README
-      type: Combo
-      onConflict: Append
-      sources:
-      - include: [ "README.md"]
-        chain:
-        - type: ReplaceText
-          substitutions:
-          - text: hello-fun template repo
-            with: "#artifactId"
-      - include: [ "kubernetes/k8s/DEPLOYING.md" ]
-        condition: "#deploymentType == 'k8s-simple'"
-        chain:
-        - type: RewritePath
-          rewriteTo: "'README.md'"
-      - include: [ "kubernetes/tap/DEPLOYING.md" ]
-        condition: "#deploymentType == 'workload'"
-        chain:
-        - type: ReplaceText
-          substitutions:
-          - text: hello-fun
-            with: "#artifactId"
-        - type: RewritePath
-          rewriteTo: "'README.md'"
-  - merge:
-    - include: [ "**" ]
-    - type: InvokeFragment
-      reference: java-version
+        rewriteTo: "'README.md'"
