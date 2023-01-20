@@ -17,7 +17,7 @@
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<revision>0.0.1-SNAPSHOT</revision>		
-		<spring-cloud-bindings.version>1.10.0</spring-cloud-bindings.version>
+		<spring-cloud-bindings.version>1.11.0</spring-cloud-bindings.version>
 		<snakeyaml.version>1.32</snakeyaml.version>
 	</properties>
 	<dependencyManagement>
@@ -105,18 +105,6 @@
 		    <classifier>test-binder</classifier>
 		</dependency>	
 	</dependencies>
-    <repositories>
-        <repository>
-            <id>spring-releases</id>
-            <url>https://repo.spring.io/release/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 	<build>
 		<plugins>
 			<plugin>
