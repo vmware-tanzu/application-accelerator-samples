@@ -1,11 +1,11 @@
 apiVersion: projectcontour.io/v1
 kind: HTTPProxy
 metadata:
-  name: hungryman
+  name: where-for-dinner
 spec:
   virtualhost:
-    fqdn: hungryman.perfect300rock.com
+    fqdn: where-for-dinner.perfect300rock.com
   routes:
     - services:
-      - name: hungryman-api-gateway
+      - name: where-for-dinner-api-gateway
         port: 80
