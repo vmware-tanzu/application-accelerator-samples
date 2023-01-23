@@ -271,6 +271,12 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-ui
     networking.knative.dev/visibility: cluster-local
 spec:
+  build:
+    env:
+    - name: BP_NODE_RUN_SCRIPTS
+      value: build
+    - name: BP_WEB_SERVER_ROOT
+      value: dist
   env: #@ buildGuiAppEnv()
   params:
   - name: annotations
