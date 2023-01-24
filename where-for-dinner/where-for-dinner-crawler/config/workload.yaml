@@ -5,12 +5,26 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: web
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
-    app.kubernetes.io/part-of: where-for-dinner
+    app.kubernetes.io/part-of: hungryman-crawler
+    networking.knative.dev/visibility: cluster-local    
 spec:
   params:
-  - name: annotations
-    value: 
-      autoscaling.knative.dev/minScale: "1"
+  - name: ports
+    value:
+    - port: 80
+      containerPort: 8080
+      name: http      
+  resources:     
+    requests:         
+      memory: "500M"
+      cpu: "100m"
+    limits:         
+      memory: "750M"
+      cpu: "1500m"         
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"         
   source:
     git:
       url: <https URL for your generated project's Git repository>

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.5</version>
+		<version>2.7.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -14,11 +14,11 @@
 	<name>where-for-dinner-search</name>
 	<description>Demo</description>		
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<revision>0.0.1-SNAPSHOT</revision>		
 		<spring-cloud-bindings.version>1.11.0</spring-cloud-bindings.version>
-		<snakeyaml.version>1.32</snakeyaml.version>
+		<snakeyaml.version>1.33</snakeyaml.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -64,7 +64,7 @@
 	   <dependency>
 	      <groupId>org.springdoc</groupId>
 	      <artifactId>springdoc-openapi-webflux-ui</artifactId>
-	      <version>1.6.9</version>
+	      <version>1.6.14</version>
 	   </dependency>		
 		<dependency>
 			<groupId>org.projectlombok</groupId>

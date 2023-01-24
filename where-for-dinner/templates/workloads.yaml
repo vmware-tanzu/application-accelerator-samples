@@ -74,6 +74,8 @@
 
 
 #@ def buildBuildParams():
+  - name: BP_JVM_VERSION
+    value: "17" 
 #@ if data.values.enableCloudEvents == True:
   - name: BP_MAVEN_BUILD_ARGUMENTS
     value: '-P native -Dmaven.test.skip=true --no-transfer-progress package'
@@ -116,11 +118,15 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(False, False, True, False)
   resources:     
     requests:         
-      memory: "250M"
+      memory: "500M"
       cpu: "100m"
     limits:         
-      memory: "3.0G"
-      cpu: "2000m" 
+      memory: "750M"
+      cpu: "1500m"         
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"   
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -150,11 +156,15 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(True, True, True, False)
   resources:     
     requests:         
-      memory: "250M"
+      memory: "500M"
       cpu: "100m"
     limits:         
-      memory: "3.0G"
-      cpu: "2000m" 
+      memory: "750M"
+      cpu: "1500m"         
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"    
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -181,11 +191,11 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(False, True, False, True)
   resources:     
     requests:         
-      memory: "250M"
+      memory: "500M"
       cpu: "100m"
     limits:         
-      memory: "3.0G"
-      cpu: "2000m" 
+      memory: "750M"
+      cpu: "1500m"         
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -212,11 +222,11 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(False, True, False, False)
   resources:     
     requests:         
-      memory: "250M"
+      memory: "500M"
       cpu: "100m"
     limits:         
-      memory: "3.0G"
-      cpu: "2000m" 
+      memory: "750M"
+      cpu: "1500m"            
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -248,11 +258,11 @@ spec:
   serviceClaims: #@ buildServiceClaimsBinding(True, True, True, False)
   resources:     
     requests:         
-      memory: "250M"
+      memory: "500M"
       cpu: "100m"
     limits:         
-      memory: "3.0G"
-      cpu: "2000m" 
+      memory: "750M"
+      cpu: "1.5"          
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -271,6 +281,12 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-ui
     networking.knative.dev/visibility: cluster-local
 spec:
+  build:
+    env:
+    - name: BP_NODE_RUN_SCRIPTS
+      value: build
+    - name: BP_WEB_SERVER_ROOT
+      value: dist
   env: #@ buildGuiAppEnv()
   params:
   - name: annotations
@@ -278,11 +294,11 @@ spec:
       autoscaling.knative.dev/minScale: "1"  
   resources:     
     requests:         
-      memory: "250M"
+      memory: "500M"
       cpu: "100m"
     limits:         
-      memory: "3.0G"
-      cpu: "2000m"  
+      memory: "750M"
+      cpu: "1500m"           
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -309,11 +325,15 @@ spec:
       name: http
   resources:     
     requests:         
-      memory: "250M"
+      memory: "500M"
       cpu: "100m"
     limits:         
-      memory: "3.0G"
-      cpu: "2000m" 
+      memory: "750M"
+      cpu: "1500m"         
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"        
   source:
     git:
       url: <https URL for your generated project's Git repository>

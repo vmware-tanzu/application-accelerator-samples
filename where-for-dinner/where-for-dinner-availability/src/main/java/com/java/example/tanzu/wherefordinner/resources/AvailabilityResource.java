@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 @OpenAPIDefinition(
         info = @Info(
                 title = "Where for Dinner Availability Service",
+                version = "0.0.1",
         		description = "Core Where For Dinner service for retrieving dining availability"),
         tags = @Tag(
                 name = "Availability REST API",

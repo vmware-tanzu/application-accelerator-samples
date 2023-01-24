@@ -12,6 +12,17 @@ spec:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
+  resources:     
+    requests:         
+      memory: "500M"
+      cpu: "100m"
+    limits:         
+      memory: "750M"
+      cpu: "1500m"         
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"      
   serviceClaims:
   - name: rmq
     ref:
