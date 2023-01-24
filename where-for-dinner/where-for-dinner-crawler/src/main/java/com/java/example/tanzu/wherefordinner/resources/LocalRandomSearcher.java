@@ -14,9 +14,11 @@ import com.java.example.tanzu.wherefordinner.config.StaticDiningAvailability;
 import com.java.example.tanzu.wherefordinner.model.Availability;
 import com.java.example.tanzu.wherefordinner.model.SearchCriteria;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 
 @Component
+@Slf4j
 public class LocalRandomSearcher
 {
 
@@ -40,6 +42,8 @@ public class LocalRandomSearcher
 		List<StaticDiningAvailability.Establishment> bucket = null;
 		var rn = new Random();
 		var numDinings = 0;
+		
+		log.info("Generating random dining options.");
 		
 		if (crit.getDiningNames() != null && !crit.getDiningNames().isEmpty())
 		{
@@ -77,6 +81,8 @@ public class LocalRandomSearcher
 			dinings.add(bucket.remove(bucketEntryIdx));
 		}
 
+		log.info("Generated {} random dining options.", dinings.size());
+		
 		return Flux.fromIterable(dinings);
 	}
 	

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.5</version>
+		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -14,10 +14,8 @@
 	<name>where-for-dinner-search-proc</name>
 	<description>Where for Dinner search processor</description>
 	<properties>
-		<java.version>11</java.version>
-		<spring-cloud.version>2021.0.5</spring-cloud.version>
-		<feign-reactor.version>3.2.1</feign-reactor.version>
-		<snakeyaml.version>1.32</snakeyaml.version>
+		<java.version>17</java.version>
+		<spring-cloud.version>2022.0.0</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -35,17 +33,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-function-webflux</artifactId>
-		</dependency>	
-        <dependency>
-            <groupId>com.playtika.reactivefeign</groupId>
-            <artifactId>feign-reactor-webclient</artifactId>
-            <version>${feign-reactor.version}</version>
-        </dependency>	
-        <dependency>
-            <groupId>com.playtika.reactivefeign</groupId>
-            <artifactId>feign-reactor-spring-configuration</artifactId>
-            <version>${feign-reactor.version}</version>
-        </dependency>			
+		</dependency>			
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -87,14 +75,8 @@
 			   <dependency>
 					<groupId>org.springframework.cloud</groupId>
 					<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-			   </dependency>
-			   <dependency>
-				    <groupId>org.springframework.cloud</groupId>
-				    <artifactId>spring-cloud-stream</artifactId>
-				    <type>test-jar</type>
-				    <scope>test</scope>
-				    <classifier>test-binder</classifier>
 			   </dependency>	
+	
 		   </dependencies>
        </profile>
        <profile>

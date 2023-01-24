@@ -1,3 +1,5 @@
+spring.cloud.kubernetes.enabled: false
+
 where-for-dinner:
   namespace: ${spring.cloud.kubernetes.client.namespace}
   ui:
@@ -51,7 +53,7 @@ spring:
 
 ---
 spring:
-  profiles: local
+  config.activate.on-profile: local
 
 
 #Local profile forwards to local instances  

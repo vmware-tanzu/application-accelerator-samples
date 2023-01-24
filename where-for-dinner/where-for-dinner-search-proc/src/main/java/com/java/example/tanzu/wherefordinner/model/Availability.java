@@ -5,6 +5,7 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 public class Availability 
@@ -31,6 +32,7 @@ public class Availability
 	
 	@Data
 	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class AvailabilityWindow
 	{
 		private long startTime;
