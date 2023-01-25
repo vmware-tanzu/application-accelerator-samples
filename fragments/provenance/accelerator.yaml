@@ -1,0 +1,6 @@
+engine:
+  include: ["accelerator-info.yaml"]
+  chain:
+    - type: YTT
+      allowList:
+        - _provenance
