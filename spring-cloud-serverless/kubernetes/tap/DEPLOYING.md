@@ -9,18 +9,18 @@ Follow [instructions in the documentation](https://docs.vmware.com/en/Tanzu-Appl
 These are the basic steps to use live update:
 
 1. In Visual Studio Code, navigate to `Preferences > Settings > Extensions > Tanzu`.
-    - In the `Source Image` field, provide the destination image repository to publish an image containing your workload source code. This should match what is specified for `SOURCE_IMAGE` default in the Tiltfile.
+   - In the `Source Image` field, provide the destination image repository to publish an image containing your workload source code. This should match what is specified for `SOURCE_IMAGE` default in the Tiltfile.
 1. From the Command Palette (⇧⌘P), type "Tanzu", and select `Tanzu: Live Update Start`. You can view output from Tanzu Application Platform and from Tilt indicating that the container is being built and deployed.
-    - You see "Live Update starting..." in the status bar at the bottom right.
-    - Live update can take 1-3 minutes while the workload deploys and the Knative service becomes available.
-        > Note: Depending on the type of cluster you use, you might see an error similar to the following:
-        ```
-        ERROR: Stop! cluster-name might be production.
-        If you're sure you want to deploy there, add:
-                allow_k8s_contexts('cluster-name')
-        to your Tiltfile. Otherwise, switch k8s contexts and restart Tilt.
-        ```
-        Follow the instructions and add the line "allow_k8s_contexts('cluster-name')" to your Tiltfile.
+   - You see "Live Update starting..." in the status bar at the bottom right.
+   - Live update can take 1-3 minutes while the workload deploys and the Knative service becomes available.
+     > Note: Depending on the type of cluster you use, you might see an error similar to the following:
+       ```
+       ERROR: Stop! cluster-name might be production.
+       If you're sure you want to deploy there, add:
+               allow_k8s_contexts('cluster-name')
+       to your Tiltfile. Otherwise, switch k8s contexts and restart Tilt.
+       ```
+     Follow the instructions and add the line "allow_k8s_contexts('cluster-name')" to your Tiltfile.
 1. When the Live Update status in the status bar is visible, resolve to "Live Update Started", navigate to http://localhost:8080 in your browser, and view your running application.
 1. Make changes to the source code. When the codes is saved the running application will get updated.
 1. Either continue making changes, or stop the live update when finished. Open the command palette (⇧⌘P), type "Tanzu", and select `Tanzu: Live Update Stop`.
@@ -42,6 +42,17 @@ tanzu apps workload create hello-fun -f config/workload.yaml \
   --local-path . \
   --source-image <REPOSITORY-PREFIX>/hello-fun-source \
   --type web
+```
+
+### Deploying to Kubernetes as a TAP workload using GraalVM native compile
+
+If you would like to build the serverless app using the GraalVM native compile feature, then all you need to do is set the build env `BP_NATIVE_IMAGE` to true in the `workload.yaml` before applying it.
+
+This can also be accomplished using the Tanzu CLI with the following command:
+
+```
+tanzu apps workload create hello-fun -f config/workload.yaml \
+  --build-env "BP_NATIVE_IMAGE=true"
 ```
 
 ### Accessing the app deployed to your cluster

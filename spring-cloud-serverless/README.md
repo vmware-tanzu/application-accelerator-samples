@@ -2,11 +2,11 @@
 
 This repo provides a simple serverless Hello web app based on Spring Boot and Spring Cloud Function.
 
-It can be deployed as a standalone web app or as a Kubernetes Deployment and Service or on Azure Spring Apps.
+It can be deployed as a standalone web app, as a Tanzu Application Platform workload resource or, as a Kubernetes Deployment and Service.
 
 ## The code
 
-> **NOTE**: The project is configured for Java 11, if you prefer a different version, then modify the `java.version` property in `pom.xml`.
+> **NOTE**: The project uses Spring Boot 3.0 and is configured for Java 17.
 
 The project contains the following Function bean definition:
 
@@ -19,8 +19,12 @@ The project contains the following Function bean definition:
 	}
 ```
 
-This simple serverless app returns the input value, prefixed with "Hello ". This is just a simple example what a Spring Cloud Function app can do. 
+This simple serverless app returns the input value, prefixed with "Hello ". This is just a simple example what a Spring Cloud Function app can do.
 It is defined in `src/main/java/com/example/helloapp/HelloAppApplication.java`
+
+## Deployment
+
+This app can be deployed as a stand-alone web app, as a Tanzu Application Platform (TAP) workload resource or, as a Kubernetes Deployment and Service.
 
 ### Standalone app with embedded Tomcat server
 
@@ -41,44 +45,3 @@ You can access the app using `curl`:
 ```bash
 curl -w'\n' -H 'Content-Type: text/plain' localhost:8080 -d "Fun"
 ```
-
-## Deploying to Azure Spring Apps with Azure CLI
-
-Here, we will deploy the application on Azure Spring Apps, ensure that all prerequisites are met
-
-Prerequisites:
-
-* Completion of [Create Azure Spring Apps service instance](https://github.com/Azure-Samples/acme-fitness-store/blob/Azure/README.md#create-azure-spring-apps-service-instance)
-
-### Create the application in Azure Spring Apps
-
-Create an application:
-
-```shell
-az spring app create --name ${SERVICE_APP} \
-  --assign-endpoint true \
-  --instance-count 1 \
-  --memory 1Gi
-```
-> Note: The app will take around 2-3 minutes to create.
-
-### Build and Deploy the Application
-
-Deploy and build the application, specifying its required parameters
-
-```shell
-az spring app deploy --name ${SERVICE_APP} \
-    --source-path spring-cloud-serverless
-```
-> Note: Deploying the application will take 5-10 minutes
-
-### Test the Application
-
-Run the following commands
-
-```shell
-export APP_URL=$(az spring app show --name ${SERVICE_APP} --query properties.url | tr -d '"')
-
-curl "${APP_URL}"
-```
-
