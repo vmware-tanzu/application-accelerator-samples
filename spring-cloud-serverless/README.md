@@ -19,7 +19,7 @@ The project contains the following Function bean definition:
 	}
 ```
 
-This simple serverless app returns the input value, prefixed with "Hello ". This is just a simple example what a Spring Cloud Function app can do. 
+This simple serverless app returns the input value, prefixed with "Hello ". This is just a simple example what a Spring Cloud Function app can do.
 It is defined in `src/main/java/com/example/helloapp/HelloAppApplication.java`
 
 ### Standalone app with embedded Tomcat server
@@ -62,15 +62,40 @@ az spring app create --name ${SERVICE_APP} \
 ```
 > Note: The app will take around 2-3 minutes to create.
 
+
 ### Build and Deploy the Application
 
 Deploy and build the application, specifying its required parameters
 
 ```shell
 az spring app deploy --name ${SERVICE_APP} \
-    --source-path spring-cloud-serverless
+    --source-path spring-cloud-serverless \
+	--build-env BP_JVM_VERSION=17
 ```
 > Note: Deploying the application will take 5-10 minutes
+
+## Deploying to Azure Spring Apps using GraalVM native compile
+
+
+### Configure Tanzu Build Service
+
+Create a custom builder in Tanzu Build Service using the Azure CLI:
+
+```shell
+az spring build-service builder create -n native-builder \
+    --builder-file builder.json \
+    --no-wait
+```
+
+### Build and Deploy the Application
+
+Deploy and build the application, specifying its required parameters
+
+```shell
+az spring app deploy --name ${SERVICE_APP} \
+    --source-path spring-cloud-serverless \
+	--build-env BP_NATIVE_IMAGE=true
+```
 
 ### Test the Application
 

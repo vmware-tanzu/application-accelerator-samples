@@ -1,0 +1,17 @@
+{
+  "stack": {
+    "id": "io.buildpacks.stacks.jammy",
+    "version": "base"
+  },
+  "buildpackGroups": [
+    {
+      "name": "default",
+      "buildpacks": [
+        {
+          "id": "tanzu-buildpacks/java-native-image-lite",
+          "version": "6.39.0"
+        }
+      ]
+    }
+  ]
+}
