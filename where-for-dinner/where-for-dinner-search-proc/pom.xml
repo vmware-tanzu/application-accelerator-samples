@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.5</version>
+		<version>3.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -14,11 +14,11 @@
 	<name>where-for-dinner-search-proc</name>
 	<description>Where for Dinner search processor</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
 		<spring.cloud.azure.version>4.4.1</spring.cloud.azure.version>
 		<feign-reactor.version>3.2.1</feign-reactor.version>
-		<snakeyaml.version>1.32</snakeyaml.version>
+		<snakeyaml.version>1.33</snakeyaml.version>
 	</properties>
 	<dependencies>
 		<dependency>
