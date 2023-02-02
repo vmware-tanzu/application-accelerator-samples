@@ -1,0 +1,7 @@
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: customer-database
+spec:
+  classRef:
+    name: mysql

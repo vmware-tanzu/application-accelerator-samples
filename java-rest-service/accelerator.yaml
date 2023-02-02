@@ -28,6 +28,7 @@ accelerator:
       label: Module root package
       required: true
     - name: buildTool
+      label: Build Tool
       inputType: select
       required: true
       defaultValue: maven
@@ -47,6 +48,7 @@ accelerator:
       defaultValue: "postgres"
       required: true
     - name: databaseMigrationTool
+      label: Database Migration Tool
       inputType: select
       required: true
       defaultValue: flyway
@@ -101,34 +103,15 @@ accelerator:
   imports:
   - name: java-version
     expose: []
+  - name: spring-boot-h2
   - name: spring-boot-postgresql
     expose:
-      - name: databaseName
-        dependsOn:
-          name: databaseType
-          value: postgres
-      - name: databaseIntegrationTestType
-        dependsOn:
-          name: databaseType
-          value: postgres
-      - name: databasePostgresStorageClass
-        dependsOn:
-          name: databaseType
-          value: postgres
-      - name: databasePostgresMonitoringClass
-        dependsOn:
-          name: databaseType
-          value: postgres
+    - name: databasePostgresStorageClass
+      dependsOn:
+        name: databaseType
+        value: postgres
   - name: spring-boot-mysql
     expose:
-    - name: databaseName
-      dependsOn:
-        name: databaseType
-        value: mysql
-    - name: databaseIntegrationTestType
-      dependsOn:
-        name: databaseType
-        value: mysql
     - name: databaseMySQLStorageClass
       dependsOn:
         name: databaseType
@@ -327,6 +310,13 @@ engine:
         - include: [ "**" ]
       onConflict: UseFirst
 
+    - condition: "#databaseIntegrationTestType == 'in-memory'"
+      merge:
+        - type: InvokeFragment
+          reference: spring-boot-h2
+        - include: [ "**" ]
+      onConflict: UseFirst
+
     - merge:
       - exclude: [ "**/*.java" ]
       - include: [ "**/*.java" ]
@@ -413,3 +403,62 @@ engine:
       - type: InvokeFragment
         condition: "#buildTool == 'gradle'"
         reference: build-wrapper-gradle
+
+    # DATABASE.md
+    - merge:
+      - exclude: [ "DATABASE.md" ]
+      - condition: "#databaseType == 'mysql'"
+        include: [ "DATABASE.md" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "Postgres"
+              with: "'MySQL'"
+          - type: ReplaceText
+            regex:
+              pattern: "PostgreSQL"
+              with: "'MySQL'"
+          - type: ReplaceText
+            regex:
+              pattern: "postgres"
+              with: "'mysql'"
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'in-memory'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'For local development an in-memory database is provided and configured with the local profile. 
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'Running a MySQL instance can easily be done by using `docker compose`:
+                
+                ```bash
+                \$ docker compose up -d
+                ```
+                '
+      - condition: "#databaseType == 'postgres'"
+        include: [ "DATABASE.md" ]
+        chain:
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'in-memory'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'For local development an in-memory database is provided and configured with the local profile. 
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'Running a PostgreSQL instance can easily be done by using `docker compose`:
+                
+                ```bash
+                \$ docker compose up -d
+                ```
+                '
+    # end of DATABASE.md

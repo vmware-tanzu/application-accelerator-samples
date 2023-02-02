@@ -1,11 +1,5 @@
 accelerator:
   options:
-    - name: databaseName
-      inputType: text
-      defaultValue: "customer-database"
-      label: Database Instance Name
-      description: The name of the database instance this application will use (can be existing one in the cluster)
-      required: true
     - name: databaseIntegrationTestType
       inputType: select
       label: Use testcontainers or in-memory database for integration testing
@@ -18,17 +12,13 @@ accelerator:
       defaultValue: "testcontainers"
       required: true
     - name: databaseMySQLStorageClass
+      label: Database Storage Class
       inputType: text
-      defaultValue: "standard"
+      defaultValue: "default"
       description: The storage class to be used for storing MySQL data
-
-  imports:
-    - name: spring-boot-h2
 
 engine:
   let:
-    - name: databaseResourceName
-      expression: '#databaseName.toLowerCase()'
     - name: databaseMySQLStorageClassResourceName
       expression: '#databaseMySQLStorageClass.toLowerCase()'
   chain:
@@ -83,39 +73,23 @@ engine:
               property: "'spring.test.database.replace'"
               value: "'NONE'"
 
-      - include: [ "**/workload.yaml" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "mysql-database"
-                with: "#databaseResourceName"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.yaml.MergeYaml
-            options:
-              key: "'$.spec'"
-              yaml: "'serviceClaims:\n  - name: mysql-db\n    ref:\n      apiVersion: with.sql.tanzu.vmware.com/v1\n      kind: MySQL\n      name: ' + #databaseResourceName"
-
-      - include: [ "config/service-operator/mysql.yaml", "config/service-operator/mysql-cluster-role.yaml", "config/service-operator/mysql-cluster-instance-class.yaml", "config/app-operator/mysql-resource-claim.yaml", "config/app-operator/mysql-resource-claim-policy.yaml" ]
+      - include: [ "config/service-operator/*.yaml", "config/app-operator/*.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
               - text: "storage-class-standard"
                 with: '#databaseMySQLStorageClassResourceName'
-              - text: "mysql-database"
-                with: "#databaseResourceName"
-              - text: "mysqldatabase"
-                with: "#databaseName"
 
       - include: [ "pom.xml" ]
         chain:
           - type: ReplaceText
             regex:
-              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>mysql</groupId>\\s*<artifactId>mysql-connector-java</artifactId>[\\s\\S]+</dependencies>))"
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.mysql</groupId>\\s*<artifactId>mysql-connector-j</artifactId>[\\s\\S]+</dependencies>))"
               with: |
                 '${startOfDependencies}
                         <dependency>
-                            <groupId>mysql</groupId>
-                            <artifactId>mysql-connector-java</artifactId>
+                            <groupId>com.mysql</groupId>
+                            <artifactId>mysql-connector-j</artifactId>
                             <scope>runtime</scope>
                         </dependency>${existingDependencies}'
           - type: ReplaceText
@@ -136,7 +110,7 @@ engine:
                         <dependency>
                             <groupId>org.testcontainers</groupId>
                             <artifactId>mysql</artifactId>
-                            <version>1.17.3</version>
+                            <version>1.17.6</version>
                             <scope>test</scope>
                         </dependency>${existingDependencies}'
 
@@ -144,10 +118,10 @@ engine:
         chain:
           - type: ReplaceText
             regex:
-              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"mysql:mysql-connector-java[\\s\\S]+))"
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"com.mysql:mysql-connector-j[\\s\\S]+))"
               with: |
                 '${startOfDependencies}
-                    runtimeOnly("mysql:mysql-connector-java")${existingDependencies}'
+                    runtimeOnly("com.mysql:mysql-connector-j")${existingDependencies}'
           - type: ReplaceText
             regex:
               pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
@@ -160,90 +134,5 @@ engine:
               pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
               with: |
                 '${startOfDependencies}
-                    testImplementation("org.testcontainers:mysql:1.17.3")${existingDependencies}'
-
-      - include: [ "DATABASE.md" ]
-        chain:
-          - merge:
-              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-            onConflict: FavorForeign
-          - type: ReplaceText
-            regex:
-              pattern: "\\[tap\\]"
-              with: |
-                '### MySQL
-
-                Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
-                Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
-  
-                As with the local deployment a MySQL instance needs to be available at the cluster.
-                When using VMware Tanzu SQL with MySQL for Kubernetes (https://tanzu.vmware.com/sql and https://docs.vmware.com/en/VMware-Tanzu-SQL-with-MySQL-for-Kubernetes/index.html),
-                one could apply for an instance, and it will be automatically provisioned.
-
-                > Note: The Tanzu MySQL Operator must be installed in the cluster.
-  
-                ```bash
-                \$ kubectl apply -n \<your-services-namespace> -f config/service-operator/mysql.yaml
-                ```
-                
-                When the MySQL instance is created, resource binding needs to be configured in order that your workload can access
-                the MySQL instance, which maybe be in another namespace than your application workload.
-
-                1. If the `ClusterRole` and `ClusterInstanceClass` for service binding has not been defined, then as a service operator, you can run the following command.
-
-                   ```bash
-                   \$ kubectl apply -f config/service-operator/mysql-cluster-role.yaml
-                   \$ kubectl apply -f config/service-operator/mysql-cluster-instance-class.yaml
-                   ```
-                
-                2. Configure the `ResourceClaimPolicy` to define which namespaces could have access to your MySQL instance namespaces.
-                   (optional: only needed when MySQL instance is in different namespace than workload namespace).
-                
-                   Edit `consumingNamespaces` in `config/app-operator/mysql-resource-claim-policy.yaml` to contain your workload namespace and apply:
-                   
-                   ```bash
-                   \$ kubectl apply -n \<your-services-namespace> -f config/app-operator/mysql-resource-claim-policy.yaml
-                   ```
-                
-                3. Create the `ResourceClaim` to be consumed by your workload that references your MySQL instance:
-                   > Note: change the `spec.ref.namespace` of `config/app-operator/mysql-resource-claim.yaml` to where the MySQL instance is deployed.
-                   
-                   ```bash
-                   \$ kubectl apply -n \<your-workload-namespace> -f config/app-operator/mysql-resource-claim.yaml
-                   ```
-                
-                Now that the resource binding is configured the `Workload` can be applied.
-                '
-          - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'in-memory'"
-            regex:
-              pattern: "\\[local\\]"
-              with: |
-                '### MySQL
-                
-                For local development an in-memory database is provided and configured with the local profile. 
-                  
-                > Note: If you start the application locally please be sure that `local` profile is active.
-                '
-          - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'testcontainers'"
-            regex:
-              pattern: "\\[local\\]"
-              with: |
-                '### MySQL
-                
-                Running a MySQL instance can easily be done by using `docker compose`:
-                
-                ```bash
-                \$ docker compose up -d
-                ```
-                
-                > Note: If you start the application locally please be sure that `local` profile is active.
-                '
+                    testImplementation("org.testcontainers:mysql:1.17.6")${existingDependencies}'
     
-    - condition: "#databaseIntegrationTestType == 'in-memory'"
-      merge:
-        - type: InvokeFragment
-          reference: spring-boot-h2
-        - include: [ "**" ]
-      onConflict: UseFirst

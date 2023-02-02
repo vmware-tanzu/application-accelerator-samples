@@ -27,6 +27,7 @@ In order to further develop this application the following tools needs to be set
 ## Build
 
 In order to compile the production code:
+
 --- StartMaven
 ```bash
 ./mvnw clean compile
@@ -38,7 +39,15 @@ In order to compile the production code:
 ```
 --- EndGradle
 
+## Database
+
+If you are using Testcontainers for testing then you will need a local database running, see [DATABASE.md](DATABASE.md#local).
+If you selected to use H2 as an in-memory database for testing then you don't need to worry, it is included already.
+
+## Run tests
+
 After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
+
 --- StartMaven
 ```bash
 ./mvnw verify
@@ -49,10 +58,6 @@ After that it is a good habit to compile the test classes and execute those test
 ./gradlew compileTestJava build
 ```
 --- EndGradle
-
-## Database
-
-You will need a local database running, see [DATABASE.md](DATABASE.md#local).
 
 ## Start and interact
 
@@ -73,10 +78,16 @@ Launch application using profile `local`:
 
 ### OpenApi Definition
 
+Set the env var `APP_URL` to the current URL you are using, e.g. `http://localhost:8080` when running a local server or the URL for the service when runing as a cloud workload.
+
+```bash
+export APP_URL=http://localhost:8080
+```
+
 You can access the API docs using `curl`:
 
 ```bash
-curl http://localhost:8080/api-docs  
+curl $APP_URL/api-docs  
 ```
 
 ### Create customer profile
@@ -84,41 +95,41 @@ curl http://localhost:8080/api-docs
 You can access the `customer-profiles` API endpoint using `curl`:
 
 ```bash
-curl -X POST -H 'Content-Type: application/json' http://localhost:8080/api/customer-profiles/ -d '{"firstName": "Joe", "lastName": "Doe", "email": "joe.doe@test.org"}'
+curl -X POST -H 'Content-Type: application/json' $APP_URL/api/customer-profiles -d '{"firstName": "Joe", "lastName": "Doe", "email": "joe.doe@test.org"}'
 ```
 
 ### Get customer profile
 
 Use the `id` received by previous POST call.
 ```bash
-curl -X GET http://localhost:8080/api/customer-profiles/{id}
+curl -X GET $APP_URL/api/customer-profiles/{id}
 ```
 
 ### Get all customer profiles
 
 ```bash
-curl -X GET http://localhost:8080/api/customer-profiles/
+curl -X GET $APP_URL/api/customer-profiles/
 ```
 
 ### Update customer profile
 
 Use the `id` received by previous creation call.
 ```bash
-curl -X PATCH -H 'Content-Type: application/json' http://localhost:8080/api/customer-profiles/{id} -d '{"firstName": "Jane", "lastName": "Little"}'
+curl -X PATCH -H 'Content-Type: application/json' $APP_URL/api/customer-profiles/{id} -d '{"firstName": "Jane", "lastName": "Little"}'
 ```
 
 ### Delete customer profile
 
 Use the `id` received by previous creation call.
 ```bash
-curl -X DELETE http://localhost:8080/api/customer-profiles/{id}
+curl -X DELETE $APP_URL/api/customer-profiles/{id}
 ```
 
 # Cluster Deployment
 
 ## Database
 
-You will need a local database running, see [DATABASE.md](DATABASE.md#kubernetes).
+You will need a database running in yur cluster, see [DATABASE.md](DATABASE.md#kubernetes).
 
 ## Tanzu Application Platform (TAP)
 
@@ -129,8 +140,8 @@ Kubernetes cluster that is provisioned with Tanzu Application Platform (https://
 > Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
 > annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
 
-Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
-namespace. Please execute following command.
+Before deploying your application a Tekton Pipeline responsible for the testing step needs to be created in your application
+namespace. Please run following command.
 
 ```bash
 kubectl apply -f config/test-pipeline.yaml
@@ -142,7 +153,8 @@ Using the Tanzu CLI one could apply the workload using the local sources:
 ```bash
 tanzu apps workload apply \
   --file config/workload.yaml \
-  --namespace <namespace> --source-image <image-registry> \
+  --namespace <namespace> \
+  --source-image <image-registry> \
   --local-path . \
   --yes \
   --tail
@@ -152,9 +164,11 @@ Note: change the namespace to where you would like to deploy this workload. Also
 are allowed to push the source-image, like: `docker.io/username/repository`.
 
 ### Visual Studio Code Tanzu Plugin
+
 When developing local but would like to deploy the local code to the cluster the Tanzu Plugin could help.
 By using `Tanzu: Apply` on the `workload.yaml` it will create the Workload resource with the local source (pushed to an image registry) as
 starting point.
 
 # How to proceed from here?
+
 Having the application locally running and deployed to a cluster you could add your domain logic, related persistence and new RESTful controller.
