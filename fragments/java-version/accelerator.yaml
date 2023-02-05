@@ -11,7 +11,6 @@ accelerator:
     - value: "17"
       text: Java 17
     defaultValue: "11"
-    required: true
 
 engine:
   let:

@@ -80,8 +80,27 @@ accelerator:
       defaultValue: "Manage customer profiles"
       dependsOn:
         name: exposeOpenAPIEndpoint
+    - name: updateBoot3
+      inputType: checkbox
+      dataType: boolean
+      label: Use Spring Boot 3.0 (Requires Java 17)
+      defaultValue: false
+    # override java version choices, Java 8 is not available for this sample
+    - name: javaVersion
+      inputType: select
+      label: Java version to use
+      dependsOn:
+        name: updateBoot3
+        value: false
+      choices:
+      - value: "11"
+        text: Java 11
+      - value: "17"
+        text: Java 17
+      defaultValue: "11"
   imports:
   - name: java-version
+    expose: []
   - name: spring-boot-postgresql
     expose:
       - name: databaseName
@@ -131,6 +150,8 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
+    - name: javaVersion
+      expression: "#updateBoot3 == true ? '17' : #javaVersion"
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -288,9 +309,9 @@ engine:
 
     - condition: "#databaseType == 'mysql'"
       merge:
-      - type: InvokeFragment
-        reference: spring-boot-mysql
-      - include: [ "**" ]
+        - type: InvokeFragment
+          reference: spring-boot-mysql
+        - include: [ "**" ]
       onConflict: UseFirst
 
     - condition: "#buildTool == 'maven'"
@@ -329,6 +350,60 @@ engine:
           substitutions:
           - text: "rest-service-db"
             with: "#artifactId"
+
+    - condition: "#updateBoot3"
+      merge:
+      - include: [ "**" ]
+      # Maven
+      - include: [ "pom.xml" ]
+        chain:
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.maven.ChangeParentPom
+          options:
+            oldGroupId: "'org.springframework.boot'"
+            newGroupId: "'org.springframework.boot'"
+            oldArtifactId: "'spring-boot-starter-parent'"
+            newArtifactId: "'spring-boot-starter-parent'"
+            newVersion: "'3.0.2'"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.maven.ChangePropertyValue
+          options:
+            key: "'springdoc.version'"
+            newValue: "'2.0.2'"
+        - type: ReplaceText
+          regex:
+            pattern: "springdoc-openapi-webmvc-core"
+            with: "'springdoc-openapi-starter-webmvc-api'"
+      # Gradle Kotlin DSL
+      - include: [ "build.gradle.kts" ]
+        chain:
+        - type: ReplaceText
+          regex:
+            pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
+            with: "'id(\"org.springframework.boot\") version \"3.0.2\"'"
+        - type: ReplaceText
+          regex:
+            pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
+            with: "'id(\"io.spring.dependency-management\") version \"1.1.0\"'"
+        - type: ReplaceText
+          regex:
+            pattern: "springdocVersion = .*"
+            with: "'springdocVersion = \"2.0.2\"'"
+        - type: ReplaceText
+          regex:
+            pattern: "springdoc-openapi-webmvc-core"
+            with: "'springdoc-openapi-starter-webmvc-api'"
+      # javax to jakarta imports
+      - include: [ "**/*.java" ]
+        chain:
+        - type: ReplaceText
+          regex:
+            pattern: "import javax\\.persistence"
+            with: "'import jakarta.persistence'"
+        - type: ReplaceText
+          regex:
+            pattern: "import javax\\.validation"
+            with: "'import jakarta.validation'"
 
     - merge:
       - include: [ "**" ]

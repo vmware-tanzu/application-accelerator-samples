@@ -4,9 +4,14 @@ metadata:
   name: tanzu-java-web-app
   labels:
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-tests: "true"
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: tanzu-java-web-app
 spec:
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "11"
   params:
   - name: annotations
     value:
