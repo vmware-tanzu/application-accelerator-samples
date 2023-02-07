@@ -314,7 +314,7 @@ engine:
       regex: 'templates/redisInstance.yaml'
       rewriteTo: "'config/service-operator/redisInstance.yaml'"  
   - condition:
-      "#cacheType == 'redisCache' && #dynamicCache"s
+      "#cacheType == 'redisCache' && #dynamicCache"
     include: ["**/dynamicRedisInstance.yaml"]
     chain:
     - type: YTT  

@@ -152,7 +152,7 @@ metadata:
     networking.knative.dev/visibility: cluster-local
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
 spec:
-  env: #@ buildAppEnv(True,True,False,False)
+  env: #@ buildAppEnv(True,True,False,False,True)
   params:
   - name: annotations
     value: 

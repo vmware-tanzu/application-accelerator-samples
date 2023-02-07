@@ -15,7 +15,6 @@
 	<description>Where for Dinner search processor</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud-kinesis.version>3.0.0</spring-cloud-kinesis.version>	
 		<spring-cloud.version>2022.0.1</spring-cloud.version>
 	</properties>
 	<dependencies>
@@ -81,11 +80,6 @@
 					<groupId>org.springframework.cloud</groupId>
 					<artifactId>spring-cloud-stream-binder-kafka</artifactId>
 			   </dependency>		
-			   <dependency>
-					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-stream-binder-kinesis</artifactId>
-					<version>${spring-cloud-kinesis.version}</version>
-			   </dependency>	
 		   </dependencies>
        </profile>
        <profile>
