@@ -14,7 +14,7 @@ import com.java.example.tanzu.wherefordinner.exchange.CrawlerClient;
 @Configuration
 public class DeclarativeClientConfig 
 {
-	@Value("${where-for-dinner.crawler.service.identifier:hungryman-crawler}")
+	@Value("${where-for-dinner.crawler.service.identifier:where-for-dinner-crawler}")
 	protected String crawlerServiceIdentifier;
 	
 	@Bean

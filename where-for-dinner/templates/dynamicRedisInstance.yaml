@@ -1,0 +1,264 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xredisinstances.caching.example.org
+spec:
+  connectionSecretKeys:
+  - host
+  - password
+  - port
+  - provider
+  - type
+  group: caching.example.org
+  names:
+    kind: XRedisInstance
+    plural: xredisinstances
+  claimNames:
+    kind: RedisInstance
+    plural: redisinstances       
+  versions:
+  - name: v1alpha1
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            description: The OpenAPIV3Schema of this Composite Resource Definition.
+            properties:
+              replicas:
+                description: The desired number of replicas
+                type: integer
+              serviceNamespace:
+                description: The namespace that the service will be deployed to.
+                type: string                   
+            type: object
+        type: object    
+    served: true
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xredisinstances.tanzu.caching.example.org
+spec:
+  compositeTypeRef:
+    apiVersion: caching.example.org/v1alpha1
+    kind: XRedisInstance
+  publishConnectionDetailsWithStoreConfigRef:
+    name: default
+  resources:
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:  
+            apiVersion: secretgen.k14s.io/v1alpha1
+            kind: Password  
+            metadata:
+              namespace: service-instances
+            spec:
+              length: 64
+              secretTemplate:
+                type: Opaque
+                stringData:
+                  password: $(value)      
+    patches: 
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace      
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        transforms:
+        - string:
+            fmt: '%s-redis-password'
+            type: Format
+          type: string 
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:   
+            apiVersion: v1
+            kind: Service  
+            metadata:
+              namespace: service-instances
+            spec:     
+              ports:
+                - port: 6379
+                  name: redis    
+    patches: 
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace      
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.metadata.name      
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.labels.app     
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.labels.service  
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.selector.app     
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.selector.service 
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              namespace: service-instances
+            spec:
+              replicas: 1
+              template:
+                spec:
+                  containers:
+                    - name: redis
+                      image: bitnami/redis
+                      imagePullPolicy: Always
+                      resources:
+                        requests:
+                          cpu: "100m"
+                          memory: "100Mi"
+                      ports:
+                        - name: redis
+                          containerPort: 6379
+                          protocol: "TCP"
+                      env:
+                      - name: REDIS_HOST
+                      - name: REDIS_PASSWORD
+                        valueFrom:
+                          secretKeyRef:
+                            key: password
+                      volumeMounts:
+                        - mountPath: /var/lib/redis
+                          name: redis-data
+            
+                  volumes:
+                    - name: redis-data
+                      emptyDir: {}       
+    patches: 
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace      
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.metadata.name      
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.metadata.labels.app     
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.metadata.labels.service   
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.selector.matchLabels.app     
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.selector.matchLabels.service        
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.template.metadata.labels.app  
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.template.metadata.labels.service             
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.template.spec.containers[0].env[0].value
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.template.spec.containers[0].env[1].valueFrom.secretKeyRef.name 
+        transforms:
+        - string:
+            fmt: '%s-redis-password'
+            type: Format
+          type: string  
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: secretgen.carvel.dev/v1alpha1
+            kind: SecretTemplate
+            metadata:
+             namespace: service-instances
+            spec:
+             inputResources:
+             - name: creds
+               ref:
+                 apiVersion: v1
+                 kind: Secret
+             template:
+              metadata:
+               labels:
+                 app.kubernetes.io/component: redis
+                 services.apps.tanzu.vmware.com/class: bitnami-redis
+              type: connection.crossplane.io/v1alpha1                 
+              stringData:
+                port: "6379"
+                provider: bitnami
+                type: redis
+              data:
+                password: $(.creds.data.password)  
+    patches: 
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace      
+      - fromFieldPath: spec.writeConnectionSecretToRef.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        type: FromCompositeFieldPath 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.inputResources[0].ref.name   
+        transforms:
+        - string:
+            fmt: '%s-redis-password'
+            type: Format
+          type: string   
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.template.stringData.host  
+        transforms:
+        - string:
+            fmt: '%s.service-instances'
+            type: Format
+          type: string                                                                                                                                                                                              
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: secretgen.carvel.dev/v1alpha1
+            kind: SecretExport
+            metadata:
+              namespace: service-instances
+    patches:
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace      
+      - fromFieldPath: spec.writeConnectionSecretToRef.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+        toFieldPath: spec.forProvider.manifest.spec.toNamespace
+        type: FromCompositeFieldPath
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: secretgen.carvel.dev/v1alpha1
+            kind: SecretImport
+            spec:
+              fromNamespace: service-instances
+    patches:
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace      
+      - fromFieldPath: spec.writeConnectionSecretToRef.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace
+        type: FromCompositeFieldPath
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: cache-crossplane-where-for-dinner
+spec:
+  description:
+    short: Bitnami Redis
+  provisioner:
+    xrd:
+      name: xredisinstances.caching.example.org

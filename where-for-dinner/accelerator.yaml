@@ -25,11 +25,35 @@ accelerator:
     name: serviceNamespace
     inputType: text
     dataType: string
-    required: true  
-  - label: RabbitMQ Cluster Name
-    description: The name of the RabbitMQ cluster that the application services will connect to.
-    defaultValue: rmq-where-for-dinner
-    name: rabbitMQName
+    required: true
+  - label: Message Broker Type
+    description: The message broker implementation that services will connect to.
+    defaultValue: rabbitmq
+    name: msgBrokerType
+    inputType: select
+    choices:
+    - value: rabbitmq
+      text: RabbitMQ
+  - label: Dyamically Provision Message Broker
+    description: "If set to true, the message broker will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
+    defaultValue: false
+    name: dynamicMsgBroker
+    inputType: checkbox
+    dataType: boolean
+    required: true   
+  - label: Message Broker Cluster Instance Class
+    description: "The services toolkit ClusterInstanceClass used for dynamic provisioning of the message broker.  You can override this to use other out-of-the-box/custom classes."
+    defaultValue: msgbroker-crossplane-where-for-dinner
+    name: dynamicMsgBrokerClass
+    inputType: text
+    dataType: string
+    required: true   
+    dependsOn: 
+      name: dynamicMsgBroker      
+  - label: Message Broker Name
+    description: The name of the message broker ClassClaim that the application services will connect to.
+    defaultValue: msgbroker-where-for-dinner
+    name: msgbrokerName
     inputType: text
     dataType: string
     required: true
@@ -40,6 +64,9 @@ accelerator:
     inputType: text
     dataType: number
     required: true
+    dependsOn: 
+      name: msgBrokerType
+      value: rabbitmq    
   - label: Database Type
     description: The type of database that services will connect to.
     inputType: select
@@ -51,8 +78,27 @@ accelerator:
     - value: h2
       text: H2 (In Memory DB)
     required: true
+  - label: Dyamically Provision Database
+    description: "If set to true, the database will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
+    defaultValue: false
+    name: dynamicDatabase
+    inputType: checkbox
+    dataType: boolean
+    required: true
+    dependsOn: 
+      name: dbType
+      value: mysql   
+  - label: Database Cluster Instance Class
+    description: "The services toolkit ClusterInstanceClass used for dynamic provisioning of the database.  You can override this to use other out-of-the-box/custom classes."
+    defaultValue: db-crossplane-where-for-dinner
+    name: dynamicDBClass
+    inputType: text
+    dataType: string
+    required: true   
+    dependsOn: 
+      name: dynamicDatabase        
   - label: Database Name
-    description: The name of the database instance that the application services will connect to.
+    description: The name of the database ClassClaim that the application services will connect to.
     defaultValue: db-where-for-dinner
     name: dbName
     inputType: text
@@ -72,8 +118,27 @@ accelerator:
     - value: redisCache
       text: Redis
     required: true
+  - label: Dyamically Provision Cache
+    description: "If set to true, the cache will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
+    defaultValue: false
+    name: dynamicCache
+    inputType: checkbox
+    dataType: boolean
+    required: true   
+    dependsOn: 
+      name: cacheType
+      value: redisCache   
+  - label: Cache Cluster Instance Class
+    description: "The services toolkit ClusterInstanceClass used for dynamic provisioning of the cache.  You can override this to use other out-of-the-box/custom classes."
+    defaultValue: cache-crossplane-where-for-dinner
+    name: dynamicCacheClass
+    inputType: text
+    dataType: string
+    required: true   
+    dependsOn: 
+      name: dynamicCache       
   - label: Cache Instance Name
-    description: The name of the cache instance that the application services will connect to.
+    description: The name of the cache ClassClaim that the application services will connect to.
     defaultValue: cache-where-for-dinner
     name: cacheName
     inputType: text
@@ -83,12 +148,15 @@ accelerator:
       name: cacheType
       value: redisCache
   - label: Enable Cloud Events
-    description: "If set to true, the application will use CloudEvents and Knative as the internal eventing/messagiung model instead of spring cloud streams."
+    description: "If set to true, the application will use CloudEvents and Knative as the internal eventing/messagiung model instead of spring cloud streams.  Currently not available with dynamic message broker provisioning"
     defaultValue: false
     name: enableCloudEvents
     inputType: checkbox
     dataType: boolean
     required: true
+    dependsOn: 
+      name: dynamicMsgBroker
+      value: false    
   - label: Use RabbitMQ Knative Eventing Broker
     description: "If set to true, the application will use a RabbitMQ backed eventing broker."
     defaultValue: false
@@ -170,27 +238,40 @@ engine:
       rewriteTo: "'config/developer/workloads.yaml'"                  
     - type: InvokeFragment
       reference: tap-workload
-  - include: ["**/rmqCluster.yaml"]
+  - condition: "#msgBrokerType == 'rabbitmq' && !#dynamicMsgBroker"
+    include: ["**/rmqCluster.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/rmqCluster.yaml'
       rewriteTo: "'config/service-operator/rmqCluster.yaml'"   
-  - condition: "#dbType == 'mysql'"
+  - condition: "#msgBrokerType == 'rabbitmq' && #dynamicMsgBroker"
+    include: ["**/dyanmicRabbitMQCluster.yaml"]
+    chain:
+    - type: RewritePath
+      regex: 'templates/dyanmicRabbitMQCluster.yaml'
+      rewriteTo: "'config/service-operator/dyanmicRabbitMQCluster.yaml'"         
+  - condition: "#dbType == 'mysql' && !#dynamicDatabase"
     include: ["**/mysqlInstance.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/mysqlInstance.yaml'
       rewriteTo: "'config/service-operator/mysqlInstance.yaml'"   
-  - include: ["**/rmqResourceClaim.yaml"]
+  - condition: "#dbType == 'mysql' && #dynamicDatabase"
+    include: ["**/dynamicMySqlInstance.yaml"]
+    chain:
+    - type: RewritePath
+      regex: 'templates/dynamicMySqlInstance.yaml'
+      rewriteTo: "'config/service-operator/dynamicMySqlInstance.yaml'"         
+  - condition: "#msgBrokerType == 'rabbitmq'"
+    include: ["**/rmqResourceClaim.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/rmqResourceClaim.yaml'
       rewriteTo: "'config/app-operator/rmqResourceClaim.yaml'"   
-  - condition:
-      "#dbType == 'mysql'"
+  - condition: "#dbType == 'mysql'"
     include: ["**/mysqlResourceClaim.yaml"]
     chain:
     - type: YTT  
@@ -225,13 +306,26 @@ engine:
         - text: "nonsecure"
           with: "#secureProfile"           
   - condition:
-      "#cacheType == 'redisCache'"
-    include: ["**/redisInstance.yaml", "**/redisResourceClaim.yaml"]
+      "#cacheType == 'redisCache' && !#dynamicCache"
+    include: ["**/redisInstance.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/redisInstance.yaml'
       rewriteTo: "'config/service-operator/redisInstance.yaml'"  
+  - condition:
+      "#cacheType == 'redisCache' && #dynamicCache"s
+    include: ["**/dynamicRedisInstance.yaml"]
+    chain:
+    - type: YTT  
+    - type: RewritePath
+      regex: 'templates/dynamicRedisInstance.yaml'
+      rewriteTo: "'config/service-operator/dynamicRedisInstance.yaml'"        
+  - condition:
+      "#cacheType == 'redisCache'"
+    include: ["**/redisResourceClaim.yaml"]
+    chain:
+    - type: YTT  
     - type: RewritePath
       regex: 'templates/redisResourceClaim.yaml'
       rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"  

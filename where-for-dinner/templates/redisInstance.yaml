@@ -79,13 +79,13 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: bitnami-redis-secret-template-reader
+  name: where-for-dinner-bitnami-redis-secret-template-reader
   namespace: #@ data.values.serviceNamespace
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: bitnami-redis-secret-template-reader
+  name: where-for-dinner-bitnami-redis-secret-template-reader
   namespace: #@ data.values.serviceNamespace
 rules:
 - apiGroups:
@@ -102,15 +102,15 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: bitnami-redis-secret-template-reader
+  name: where-for-dinner-bitnami-redis-secret-template-reader
   namespace: #@ data.values.serviceNamespace
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: bitnami-redis-secret-template-reader
+  name: where-for-dinner-bitnami-redis-secret-template-reader
 subjects:
 - kind: ServiceAccount
-  name: bitnami-redis-secret-template-reader
+  name: where-for-dinner-bitnami-redis-secret-template-reader
 ---
 apiVersion: secretgen.carvel.dev/v1alpha1
 kind: SecretTemplate
@@ -118,7 +118,7 @@ metadata:
  name: #@ data.values.cacheName + "-redis-secret"
  namespace: #@ data.values.serviceNamespace
 spec:
- serviceAccountName: bitnami-redis-secret-template-reader
+ serviceAccountName: where-for-dinner-bitnami-redis-secret-template-reader
  inputResources:
  - name: redis-service
    ref:
@@ -135,7 +135,7 @@ spec:
    labels:
      app.kubernetes.io/component: redis
      app.kubernetes.io/instance: #@ data.values.cacheName
-     services.apps.tanzu.vmware.com/class: bitnami-redis
+     services.apps.tanzu.vmware.com/class: where-for-dinner-bitnami-redis
   stringData:
     port: $(.redis-service.spec.ports[?(@.name=="redis")].port)
     host: #@ data.values.cacheName + "." + data.values.serviceNamespace
@@ -143,3 +143,32 @@ spec:
     type: redis
   data:
     password: $(.creds.data.password)
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: bitnami-redis-where-for-dinner
+spec:
+  description:
+    short: Where For Dinner Bitnami Redis
+  pool:
+    kind: Secret
+    labelSelector:
+      matchLabels:
+        services.apps.tanzu.vmware.com/class: where-for-dinner-bitnami-redis
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: where-for-dinner-bitnami-redis-secret-reader
+  labels:
+    servicebinding.io/controller: "true"
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch

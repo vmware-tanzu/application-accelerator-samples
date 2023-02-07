@@ -14,6 +14,7 @@ spring:
   
   cloud: 
     stream:
+      defaultBinder: rabbit
       function:
         definition: processAvailability
       bindings: 
@@ -46,3 +47,22 @@ spring:
   config.activate.on-profile: postgres
   
   sql.init.platform: postgresql
+  
+---
+
+spring:
+  config.activate.on-profile: kafka
+  
+  cloud: 
+    stream:
+      defaultBinder: kafka
+
+---
+
+spring:
+  config.activate.on-profile: kinesis
+  
+  cloud: 
+    stream:
+      defaultBinder: kinesis      
+          
