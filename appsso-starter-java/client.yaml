@@ -8,7 +8,7 @@ metadata:
 spec:
   authServerSelector:
     matchLabels: #@ data.values.authserver_label
-  clientAuthenticationMethod: basic
+  clientAuthenticationMethod: client_secret_basic
   authorizationGrantTypes:
     - authorization_code
   redirectURIs:
