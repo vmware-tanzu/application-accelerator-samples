@@ -37,7 +37,7 @@ accelerator:
     - name: testcontainers-mysql
 
 engine:
-  merge:
+  chain:
   - merge:
 
     # Flyway is selected
@@ -96,6 +96,7 @@ engine:
     # end of the Liquibase specific part
 
   - merge:
+    - include: [ "**" ]
     - condition: "#databaseIntegrationTestType == 'in-memory'"
       type: InvokeFragment
       reference: spring-boot-h2
