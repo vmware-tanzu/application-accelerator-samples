@@ -4,7 +4,6 @@ engine:
     - include: [ "pom.xml" ]
       chain:
         - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'testcontainers'"
           regex:
             pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>mysql</artifactId>[\\s\\S]+</dependencies>))"
             with: |
@@ -19,7 +18,6 @@ engine:
     - include: [ "build.gradle.kts" ]
       chain:
         - type: ReplaceText
-          condition: "#databaseIntegrationTestType == 'testcontainers'"
           regex:
             pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
             with: |
