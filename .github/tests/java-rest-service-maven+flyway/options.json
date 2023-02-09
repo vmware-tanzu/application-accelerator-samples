@@ -8,10 +8,8 @@
   "databaseType": "postgres",
   "exposeOpenAPIEndpoint": false,
   "javaVersion": "11",
-  "databaseName": "customer-database",
   "databaseIntegrationTestType":  "testcontainers",
   "databasePostgresStorageClass": "standard",
-  "databasePostgresMonitoringClass": "standard",
   "liveUpdateIDESupport": true,
   "sourceRepositoryPrefix": "dev.local"
 }
