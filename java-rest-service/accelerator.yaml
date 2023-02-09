@@ -89,9 +89,6 @@ accelerator:
     - name: javaVersion
       inputType: select
       label: Java version to use
-      dependsOn:
-        name: updateBoot3
-        value: false
       choices:
       - value: "11"
         text: Java 11

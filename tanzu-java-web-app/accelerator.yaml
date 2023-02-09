@@ -23,11 +23,6 @@ accelerator:
 
   imports:
   - name: java-version
-    expose:
-    - name: "javaVersion"
-      dependsOn:
-        name: updateBoot3
-        value: false
   - name: tap-workload
   - name: build-wrapper-maven
 
