@@ -1,16 +1,5 @@
 accelerator:
   options:
-    - name: databaseIntegrationTestType
-      inputType: select
-      label: Use testcontainers or in-memory database for integration testing
-      description: "In order to test database interaction you can choose between testcontainers (https://www.testcontainers.org/) or in-memory database (H2). Preferable use testcontainers as that is providing the target database technology."
-      choices:
-        - value: "testcontainers"
-          text: "Testcontainers"
-        - value: "in-memory"
-          text: "Java In-Memory Database (H2)"
-      defaultValue: "testcontainers"
-      required: true
     - name: databaseMySQLStorageClass
       label: Database Storage Class
       inputType: text
@@ -24,54 +13,7 @@ engine:
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "docker-compose.yaml", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "**/workload.yaml", "config/service-operator/mysql.yaml", "config/service-operator/mysql-cluster-role.yaml", "config/service-operator/mysql-cluster-instance-class.yaml", "config/app-operator/mysql-resource-claim.yaml", "config/app-operator/mysql-resource-claim-policy.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
-
-      - include: [ "docker-compose.yaml" ]
-        condition: "#databaseIntegrationTestType == 'testcontainers'"
-
-      - include: [ "**/src/main/resources/application-local.properties" ]
-        condition: "#databaseIntegrationTestType == 'testcontainers'"
-        chain:
-          - merge:
-              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-            onConflict: FavorForeign
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.AddProperty
-            options:
-              property: "'spring.datasource.url'"
-              value: "'jdbc:mysql://localhost:3306/development?currentSchema=local_test'"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.AddProperty
-            options:
-              property: "'spring.datasource.username'"
-              value: "'local_test'"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.AddProperty
-            options:
-              property: "'spring.datasource.password'"
-              value: "'password'"
-
-      - include: [ "**/src/test/resources/application-test.properties" ]
-        condition: "#databaseIntegrationTestType == 'testcontainers'"
-        chain:
-          - merge:
-              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-            onConflict: FavorForeign
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.AddProperty
-            options:
-              property: "'spring.datasource.url'"
-              value: "'jdbc:tc:mysql:8.0.30:///test'"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.AddProperty
-            options:
-              property: "'spring.datasource.driverClassName'"
-              value: "'org.testcontainers.jdbc.ContainerDatabaseDriver'"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.AddProperty
-            options:
-              property: "'spring.test.database.replace'"
-              value: "'NONE'"
+        exclude: [ "docker-compose.yaml", "**/workload.yaml", "config/service-operator/mysql.yaml", "config/service-operator/mysql-cluster-role.yaml", "config/service-operator/mysql-cluster-instance-class.yaml", "config/app-operator/mysql-resource-claim.yaml", "config/app-operator/mysql-resource-claim-policy.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
 
       - include: [ "config/service-operator/*.yaml", "config/app-operator/*.yaml" ]
         chain:
@@ -92,27 +34,6 @@ engine:
                             <artifactId>mysql-connector-j</artifactId>
                             <scope>runtime</scope>
                         </dependency>${existingDependencies}'
-          - type: ReplaceText
-            regex:
-              pattern: "(?<startOfFlywayDependency><dependency>[\\s]*<groupId>org.flywaydb</groupId>\\s*<artifactId>flyway-core</artifactId>[\\s]*</dependency>)(?<theRestOfPom>[\\s\\S]*)"
-              with: |
-                '${startOfFlywayDependency}
-                        <dependency>
-                            <groupId>org.flywaydb</groupId>
-                            <artifactId>flyway-mysql</artifactId>
-                        </dependency>${theRestOfPom}'
-          - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'testcontainers'"
-            regex:
-              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>mysql</artifactId>[\\s\\S]+</dependencies>))"
-              with: |
-                '${startOfDependencies}
-                        <dependency>
-                            <groupId>org.testcontainers</groupId>
-                            <artifactId>mysql</artifactId>
-                            <version>1.17.6</version>
-                            <scope>test</scope>
-                        </dependency>${existingDependencies}'
 
       - include: [ "build.gradle.kts" ]
         chain:
@@ -122,17 +43,4 @@ engine:
               with: |
                 '${startOfDependencies}
                     runtimeOnly("com.mysql:mysql-connector-j")${existingDependencies}'
-          - type: ReplaceText
-            regex:
-              pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
-              with: |
-                '${startOfFlywayDependency}
-                    implementation("org.flywaydb:flyway-mysql")${theRestOfBuild}'
-          - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'testcontainers'"
-            regex:
-              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
-              with: |
-                '${startOfDependencies}
-                    testImplementation("org.testcontainers:mysql:1.17.6")${existingDependencies}'
     

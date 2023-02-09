@@ -1,4 +1,4 @@
-# Spring Boot MySQL Fragment
+# Testcontainers MySQL Fragment
 
 ## Using the fragment
 
@@ -8,7 +8,7 @@ To include this fragment you should add an import to the `accelerator` section:
 accelerator:
   # ...
   imports:
-  - name: spring-boot-mysql
+  - name: testcontainers-mysql
     
 ```
 
@@ -18,7 +18,7 @@ Then in your `engine` section add an `InvokeFragment` directive at an appropriat
 engine:
   # ...
     - type: InvokeFragment
-      reference: spring-boot-postgresql
+      reference: testcontainers-postgresql
       let:
         - name: databaseIntegrationTestType
           expression: "'testcontainers'"
@@ -39,5 +39,5 @@ spec:
     ref:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: fragments/spring-boot-mysql
+    subPath: fragments/testcontainers-mysql
 ```

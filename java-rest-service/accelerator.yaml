@@ -37,26 +37,6 @@ accelerator:
           text: Maven (https://maven.apache.org/)
         - value: gradle
           text: Gradle (https://gradle.org/)
-    - name: databaseType
-      inputType: select
-      label: Database to use
-      choices:
-        - value: "postgres"
-          text: PostgreSQL
-        - value: "mysql"
-          text: MySQL
-      defaultValue: "postgres"
-      required: true
-    - name: databaseMigrationTool
-      label: Database Migration Tool
-      inputType: select
-      required: true
-      defaultValue: flyway
-      choices:
-        - value: flyway
-          text: Flyway (https://flywaydb.org/)
-        - value: liquibase
-          text: Liquibase (https://docs.liquibase.com/)
     - name: exposeOpenAPIEndpoint
       label: Expose OpenAPI endpoint?
       dataType: boolean
@@ -103,7 +83,11 @@ accelerator:
   imports:
   - name: java-version
     expose: []
-  - name: spring-boot-h2
+  - name: spring-boot-database
+    expose:
+    - name: databaseType
+    - name: databaseMigrationTool
+    - name: databaseIntegrationTestType
   - name: spring-boot-postgresql
     expose:
     - name: databasePostgresStorageClass
@@ -184,63 +168,6 @@ engine:
                 with: "''"
     # end of the Gradle specific part
 
-    # Flyway is selected
-    - condition: "#databaseMigrationTool == 'flyway'"
-      exclude: [ "src/main/resources/db/changelog/**" ]
-      merge:
-        - include: [ "**" ]
-          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
-        - include: [ "pom.xml" ]
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "<dependency>\\s+<groupId>org\\.liquibase</groupId>\\s+<artifactId>liquibase-core</artifactId>\\s+</dependency>\\s+"
-                with: "''"
-        - include: [ "build.gradle.kts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "    implementation(\"org.liquibase:liquibase-core\")"
-                  with: "''"
-        - include: [ "**/application.properties" ]
-          chain:
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.DeleteProperty
-            options:
-              propertyKey: "'spring.liquibase.*'"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.ChangePropertyValue
-            options:
-              propertyKey: "'spring.flyway.enabled'"
-              newValue: "'true'"
-    # end of the Flyway specific part
-
-    # Liquibase is selected
-    - condition: "#databaseMigrationTool == 'liquibase'"
-      exclude: [ "src/main/resources/db/migration/**" ]
-      merge:
-        - include: [ "**" ]
-          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
-        - include: [ "pom.xml" ]
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "<dependency>\\s+<groupId>org\\.flywaydb</groupId>\\s+<artifactId>flyway-core</artifactId>\\s+</dependency>\\s+"
-                with: "''"
-        - include: [ "build.gradle.kts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "    implementation(\"org.flywaydb:flyway-core\")"
-                  with: "''"
-        - include: [ "**/application.properties" ]
-          chain:
-            - type: OpenRewriteRecipe
-              recipe: org.openrewrite.properties.DeleteProperty
-              options:
-                propertyKey: "'spring.flyway.*'"
-    # end of the Liquibase specific part
-
     # OpenAPI Endpoint Auto-registration
     - merge:
       - include: [ "**" ]
@@ -283,6 +210,12 @@ engine:
       - include: [ "**" ]
       onConflict: UseFirst
 
+    - merge:
+        - type: InvokeFragment
+          reference: spring-boot-database
+        - include: [ "**" ]
+      onConflict: UseFirst
+
     - condition: "#databaseType == 'postgres'"
       merge:
         - type: InvokeFragment
@@ -307,13 +240,6 @@ engine:
     - merge:
         - type: InvokeFragment
           reference: tap-workload
-        - include: [ "**" ]
-      onConflict: UseFirst
-
-    - condition: "#databaseIntegrationTestType == 'in-memory'"
-      merge:
-        - type: InvokeFragment
-          reference: spring-boot-h2
         - include: [ "**" ]
       onConflict: UseFirst
 

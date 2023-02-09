@@ -1,21 +1,5 @@
-accelerator:
-  options:
-    - name: databaseIntegrationTestType
-      inputType: select
-      label: Use testcontainers or in-memory database for integration testing
-      description: "In order to test database interaction you can choose between testcontainers (https://www.testcontainers.org/) or in-memory database (H2). Preferable use testcontainers as that is providing the target database technology."
-      choices:
-        - value: "testcontainers"
-          text: "Testcontainers"
-        - value: "in-memory"
-          text: "Java In-Memory Database (H2)"
-      defaultValue: "testcontainers"
-      required: true
-
 engine:
   merge:
-    - include: [ "**" ]
-      exclude: [ "pom.xml", "build.gradle.kts", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "README.md" ]
     # Provide dependencies for integration testing and running locally
     - include: [ "pom.xml" ]
       chain:

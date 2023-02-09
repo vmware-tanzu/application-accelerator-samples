@@ -37,7 +37,6 @@ metadata:
   name: spring-boot-h2
   namespace: accelerator-system
 spec:
-  displayName: "Spring Boot H2"
   git:
     ref:
       branch: main
