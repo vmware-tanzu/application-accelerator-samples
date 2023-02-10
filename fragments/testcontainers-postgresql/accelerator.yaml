@@ -57,7 +57,7 @@ engine:
           recipe: org.openrewrite.properties.AddProperty
           options:
             property: "'spring.datasource.url'"
-            value: "'jdbc:tc:postgresql:14:////postgres'"
+            value: "'jdbc:tc:postgresql:15:////postgres'"
         - type: OpenRewriteRecipe
           recipe: org.openrewrite.properties.AddProperty
           options:
