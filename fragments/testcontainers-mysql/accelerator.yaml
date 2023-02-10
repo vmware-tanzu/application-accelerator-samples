@@ -5,6 +5,15 @@ engine:
       chain:
         - type: ReplaceText
           regex:
+            pattern: "(?<startOfFlywayDependency><dependency>[\\s]*<groupId>org.flywaydb</groupId>\\s*<artifactId>flyway-core</artifactId>[\\s]*</dependency>)(?<theRestOfPom>[\\s\\S]*)"
+            with: |
+              '${startOfFlywayDependency}
+                      <dependency>
+                          <groupId>org.flywaydb</groupId>
+                          <artifactId>flyway-mysql</artifactId>
+                      </dependency>${theRestOfPom}'
+        - type: ReplaceText
+          regex:
             pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>mysql</artifactId>[\\s\\S]+</dependencies>))"
             with: |
               '${startOfDependencies}
@@ -17,6 +26,12 @@ engine:
 
     - include: [ "build.gradle.kts" ]
       chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
+            with: |
+              '${startOfFlywayDependency}
+                  implementation("org.flywaydb:flyway-mysql")${theRestOfBuild}'
         - type: ReplaceText
           regex:
             pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
