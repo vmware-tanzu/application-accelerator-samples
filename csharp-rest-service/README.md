@@ -1,6 +1,7 @@
 # Introduction
 
-csharp-rest-service provides you an out-of-the-box example of a .NET WebAPI application with PostgreSQL backend.
+csharp-rest-service provides you an out-of-the-box example of a .NET WebAPI application with a PostgreSQL backend.
+
 
 The application also includes several Steeltoe management endpoints (including a database health check) and dynamic log level management.
 
@@ -22,13 +23,13 @@ You will need a local database running, see [DATABASE.md](DATABASE.md#local).
 
 If you make modifications to the source, push these changes to your own Git repository.
 
-When you are done developing your app, you can simply deploy it using:
+Deploy your app from your Git repository by running:
 
 ```script
 tanzu apps workload apply -f config/workload.yaml
 ```
 
-If you would like deploy the code from your local working directory you can use the following command:
+Deploy your app from your local working directory by running:
 
 ```script
 tanzu apps workload create csharp-rest-service -f config/workload.yaml --local-path . --source-image <REPOSITORY-PREFIX>/csharp-rest-service-source --type web
@@ -42,7 +43,7 @@ Determine the URL to use for the accessing the app by running:
 tanzu apps workload get csharp-rest-service
 ```
 
-To access the deployed app use the URL shown under "Workload Knative Services" and append the endpoint `/api/customer-profiles` to that URL.
+To access the deployed app, use the URL shown under "Workload Knative Services", appending the endpoint `/api/customer-profiles`.
 
 This depends on the TAP installation having DNS configured for the Knative ingress.
 
