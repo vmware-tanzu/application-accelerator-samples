@@ -33,6 +33,9 @@ kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download
 
 * Open a command shell and navigate to the root directory of the unzipped file from above.  Run the following commands to create a RabbitMQ instance, resource claims, and workloads:
 
+**NOTE:**  If you did not configure the accelerator to automatically create a Git repo for your project, you will need to manually commit the project to a Git repo 
+and update the `workload.yaml` file in the`./config/developer` directory with the appropriate Git repo URL and subPath locations for each workload.
+
 ```
 kubectl create ns service-instances
 
@@ -112,6 +115,13 @@ where-for-dinner-search         https://github.com/acme-samples/where-for-dinner
 where-for-dinner-search-proc    https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
 where-for-dinner-ui             https://github.com/acme-samples/where-for-dinner   source-to-url   True    Ready    58m
 ```
+
+### Register System in TAP GUI
+
+If you want to be able to view your applications within the TAP GUI and use tools like App Live View, you will need to register the applications with the TAP software catalog.
+See the instructions [here](#software-catalog).
+
+
 
 ## Configuration Option Overview  
 
@@ -273,7 +283,7 @@ The application's home screen should look similar to the following (assuming you
 
 ![](images/AppHomeScreen.png)
 
-## Application Catalog
+## Software Catalog
 
 The Where for Dinner source repo contains a full TAP catalog configuration that is located in the repository's `catalog` directory including API docs links.  You can register this catalog within TAP by pointing the Repository URL to the URL of catalog-info.yaml file in the `catalog` directory of the repository.  
 
