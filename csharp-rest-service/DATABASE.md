@@ -30,7 +30,7 @@ one could apply for an instance, and it will be automatically provisioned.
 > Note: please define the storage class to be used for the PostgreSQL storage.
 
 ```bash
-kubectl apply -n <your-services-namespace> -f config/service-operator/postgres.yaml
+kubectl apply -f config/service-operator/postgres.yaml -n <your-services-namespace>
 ```
 
 When the PostgreSQL instance is created, resource binding needs to be configured in order for your workload to access
@@ -49,14 +49,14 @@ the PostgreSQL instance, which maybe be in another namespace than your applicati
    Edit `consumingNamespaces` in `config/app-operator/postgres-resource-claim-policy.yaml` to contain your workload namespace and apply:
 
    ```bash
-   kubectl apply -n <your-services-namespace> -f config/app-operator/postgres-resource-claim-policy.yaml
+   kubectl apply -f config/app-operator/postgres-resource-claim-policy.yaml -n <your-SERVICES-namespace>
    ```
 
 3. Create the `ResourceClaim` to be consumed by your workload that references your PostgreSQL instance:
    > Note: change the `spec.ref.namespace` of `config/app-operator/postgres-resource-claim.yaml` to where the PostgreSQL instance is deployed.
 
    ```bash
-   kubectl apply -n <your-workload-namespace> -f config/app-operator/postgres-resource-claim.yaml
+   kubectl apply -f config/app-operator/postgres-resource-claim.yaml -n <your-WORKLOAD-namespace>
    ```
 
 Now that the resource binding is configured the `Workload` can be applied.

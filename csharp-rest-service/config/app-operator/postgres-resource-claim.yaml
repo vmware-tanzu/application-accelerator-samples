@@ -1,10 +1,10 @@
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ResourceClaim
 metadata:
-  name: postgres-database-claim
+  name: customer-database-claim
 spec:
   ref:
     apiVersion: sql.tanzu.vmware.com/v1
     kind: Postgres
-    name: postgres-database
-    namespace: service-instances
+    name: customer-database
+    namespace: postgres-service-instances # update for your environment if necessary

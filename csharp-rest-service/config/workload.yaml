@@ -32,7 +32,8 @@ spec:
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
       kind: ResourceClaim
-      name: postgres-database-claim
+      name: customer-database-claim
+      namespace: postgres-service-instances # update for your environment if necessary
   source:
     git:
       url: <https URL for your generated project's Git repository>
