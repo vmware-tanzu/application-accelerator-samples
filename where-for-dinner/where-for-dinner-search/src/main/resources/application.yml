@@ -12,6 +12,9 @@ where-for-dinner:
 # default profile uses H2 as the database and RabbitMQ and the stream binder
     
 spring: 
+  application:
+    name: where-for-dinner-search
+
   sql.init.mode: ALWAYS 
   sql.init.platform: h2
 

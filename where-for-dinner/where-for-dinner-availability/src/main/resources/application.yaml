@@ -9,6 +9,9 @@ server:
   forward-headers-strategy: framework
   
 spring: 
+  application:
+    name: where-for-dinner-availability
+
   sql.init.mode: ALWAYS
   sql.init.platform: h2
   

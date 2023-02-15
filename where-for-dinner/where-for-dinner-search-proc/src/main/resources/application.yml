@@ -4,6 +4,9 @@ management:
       enabled: false
 
 spring: 
+  application:
+    name: where-for-dinner-search-proc
+
   cloud: 
     stream:
       defaultBinder: rabbit
