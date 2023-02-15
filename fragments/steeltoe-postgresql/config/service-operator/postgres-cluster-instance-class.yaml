@@ -1,10 +1,10 @@
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ClusterInstanceClass
 metadata:
-  name: customer-database
+  name: postgres-database
 spec:
   description:
-    short: PostgreSQL Customer Database
+    short: PostgreSQL Database
   pool:
     group: sql.tanzu.vmware.com
     kind: Postgres

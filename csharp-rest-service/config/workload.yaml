@@ -27,13 +27,6 @@ spec:
     - name: DOTNET_NOLOGO
       value: true
 
-  serviceClaims:
-  - name: customer-database
-    ref:
-      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ResourceClaim
-      name: customer-database-claim
-      namespace: postgres-service-instances # update for your environment if necessary
   source:
     git:
       url: <https URL for your generated project's Git repository>

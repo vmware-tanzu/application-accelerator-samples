@@ -7,6 +7,7 @@ accelerator:
   - dotnet
   - c#
   - steeltoe
+  - web
   - tanzu
   - postgresql
 
@@ -15,34 +16,70 @@ accelerator:
     label: Application Name
     description: Application Name
     inputType: text
-    defaultValue: CSharpRestService
+    defaultValue: CustomerProfile
+    required: true
+  - name: databaseType
+    inputType: select
+    label: Database to use
+    choices:
+      - value: "postgres"
+        text: PostgreSQL
+    defaultValue: "postgres"
     required: true
 
   imports:
   - name: tap-workload
+  - name: steeltoe-postgresql
+    expose:
+      - name: databaseName
+        dependsOn:
+          name: databaseType
+          value: postgres
+      - name: databasePostgresStorageClass
+        dependsOn:
+          name: databaseType
+          value: postgres
+      - name: databasePostgresMonitoringClass
+        dependsOn:
+          name: databaseType
+          value: postgres
 
 engine:
-  merge:
-  - include: ["**"]
-    exclude: ["README.md", "config/**", "catalog/**", "Tiltfile"]
-    chain:
-    - type: ReplaceText
-      substitutions:
-      - text: RestService
-        with: "#applicationName"
-    - type: RewritePath
-      regex: "RestService(.*)"
-      rewriteTo: "#applicationName + #g1"
-  - include: ["README.md", "config/**", "catalog/**", "Tiltfile"]
-    chain:
-    - type: ReplaceText
-      substitutions:
-      - text: csharp-rest-service
-        with: "#artifactId.toLowerCase()"
-      - text: RestService
-        with: "#applicationName"
-    - merge:
+  let:
+  - name: compilerSafeAppName
+    expression: '#applicationName.replace("-", "_")'
+  chain:
+  - condition: "#databaseType == 'postgres'"
+    merge:
       - type: InvokeFragment
-        reference: tap-workload
-      - include: ["**"]
-      onConflict: UseFirst
+        reference: steeltoe-postgresql
+      - include: [ "**" ]
+    onConflict: UseFirst
+    
+  - merge:
+    - include: [ "*.csproj", "*.sln" ]
+      chain:
+      - type: RewritePath
+        regex: "RestService(.*)"
+        rewriteTo: "#applicationName + #g1"
+    - include: [ "README.md", "config/**", "catalog/**", "Tiltfile" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: csharp-rest-service
+          with: "#artifactId.toLowerCase()"
+        - text: RestService
+          with: "#applicationName"
+      - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
+        onConflict: UseFirst
+    - include: [ "**/*.cs" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+          - text: RestService
+            with: "#compilerSafeAppName"
+
+

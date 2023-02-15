@@ -1,0 +1,123 @@
+accelerator:
+  options:
+    - name: databaseName
+      inputType: text
+      defaultValue: "customer-database"
+      label: Database Instance Name
+      description: The name of the database instance this application will use (can be existing one in the cluster)
+      required: true
+    - name: databasePostgresStorageClass
+      inputType: text
+      defaultValue: "standard"
+      description: The storage class to be used for storing PostgreSQL data
+    - name: databasePostgresMonitoringClass
+      inputType: text
+      defaultValue: "standard"
+      description: The storage class to be used for monitoring PostgreSQL
+
+engine:
+  let:
+    - name: databaseResourceName
+      expression: '#databaseName.toLowerCase()'
+    - name: databasePostgresStorageClassResourceName
+      expression: '#databasePostgresStorageClass.toLowerCase()'
+    - name: databasePostgresMonitoringClassResourceName
+      expression: '#databasePostgresMonitoringClass.toLowerCase()'
+  chain:
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "docker-compose.yaml", "**/workload.yaml", "config/service-operator/postgres.yaml", "config/service-operator/postgres-cluster-role.yaml", "config/service-operator/postgres-cluster-instance-class.yaml", "config/app-operator/postgres-resource-claim.yaml", "config/app-operator/postgres-resource-claim-policy.yaml", "README.md" ]
+
+      - include: [ "**/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "postgres-database"
+                with: "#databaseResourceName"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.yaml.MergeYaml
+            options:
+              key: "'$.spec'"
+              yaml: "'serviceClaims:\n  - name: postgres-db\n    ref:\n      apiVersion: services.apps.tanzu.vmware.com/v1alpha1\n      kind: ResourceClaim\n      name: ' + #databaseResourceName + '-claim'"
+
+      - include: [ "config/service-operator/postgres.yaml", "config/service-operator/postgres-cluster-role.yaml", "config/service-operator/postgres-cluster-instance-class.yaml", "config/app-operator/postgres-resource-claim.yaml", "config/app-operator/postgres-resource-claim-policy.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "monitoring-storage-class-standard"
+                with: '#databasePostgresMonitoringClassResourceName'
+              - text: "storage-class-standard"
+                with: '#databasePostgresStorageClassResourceName'
+              - text: "postgres-database"
+                with: "#databaseResourceName"
+              - text: "postgresdatabase"
+                with: "#databaseName"
+
+      - include: [ "DATABASE.md" ]
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: ReplaceText
+            regex:
+              pattern: "\\[tap\\]"
+              with: |
+                '### PostgreSQL
+
+                ### Deployment
+
+                #### Tanzu Application Platform (TAP)
+
+                Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
+                Kubernetes cluster that is provisioned with Tanzu Application Platform (<https://tanzu.vmware.com/application-platform>).
+  
+                As with the local deployment a PostgreSQL instance needs to be available at the cluster.
+                When using VMware Tanzu SQL with Postgres for Kubernetes (<https://tanzu.vmware.com/sql> and <https://docs.vmware.com/en/VMware-Tanzu-SQL-with-Postgres-for-Kubernetes/index.html>),
+                one could apply for an instance, and it will be automatically provisioned.
+  
+                > Note: The Tanzu Postgres Operator must be installed in the cluster.
+
+                > Note: please define the storage class to be used for the PostgreSQL storage.
+
+                ```bash
+                kubectl apply -f config/service-operator/postgres.yaml -n \<your-services-namespace>
+                ```
+                
+                When the PostgreSQL instance is created, resource binding needs to be configured in order for your workload to access
+                the PostgreSQL instance, which maybe be in another namespace than your application workload.
+                
+                1. If the `ClusterRole` and `ClusterInstanceClass` for service binding has not been defined, then as a service operator, you can run the following command.
+
+                   ```bash
+                   kubectl apply -f config/service-operator/postgres-cluster-role.yaml
+                   kubectl apply -f config/service-operator/postgres-cluster-instance-class.yaml
+                   ```
+                
+                2. Configure the `ResourceClaimPolicy` to define which namespaces could have access to your PostgreSQL instance namespaces.
+                   (optional: only needed when PostgreSQL instance is in different namespace than workload namespace).
+                
+                   Edit `consumingNamespaces` in `config/app-operator/postgres-resource-claim-policy.yaml` to contain your workload namespace and apply:
+
+                   ```bash
+                   kubectl apply -f config/app-operator/postgres-resource-claim-policy.yaml -n <your-SERVICES-namespace>
+                   ```
+                
+                3. Create the `ResourceClaim` to be consumed by your workload that references your PostgreSQL instance:
+                   > Note: change the `spec.ref.namespace` of `config/app-operator/postgres-resource-claim.yaml` to where the PostgreSQL instance is deployed.
+
+                   ```bash
+                   kubectl apply -f config/app-operator/postgres-resource-claim.yaml -n \<your-workload-namespace>
+                   ```
+                
+                Now that the resource binding is configured the `Workload` can be applied.'
+          - type: ReplaceText
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                '### Local PostgreSQL
+
+                Running a PostgreSQL instance can easily be done by using `docker compose`:
+                
+                ```bash
+                docker compose up -d
+                ```'
