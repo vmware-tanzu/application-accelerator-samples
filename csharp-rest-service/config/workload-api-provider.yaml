@@ -1,0 +1,43 @@
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: csharp-rest-service
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: csharp-rest-service
+    tanzu.app.live.view: "true"
+    tanzu.app.live.view.application.flavours: steeltoe
+    tanzu.app.live.view.application.name: csharp-rest-service
+    tanzu.app.live.view.application.actuator.port: 9090
+    apis.apps.tanzu.vmware.com/register-api: "true"
+spec:
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  - name: api_descriptor
+    value:
+      type: openapi   # We currently support any of openapi, aysncapi, graphql, grpc
+      location:
+        path: "/swagger/v1/swagger.json"  # The path to the api documentation
+        owner: OWNER_VAL
+        system: SYSTEM_VAL
+        description: DESCRIPTION_VAL
+  env:
+  - name: DOTNET_CLI_TELEMETRY_OPTOUT
+    value: true
+  - name: DOTNET_NOLOGO
+    value: true
+  build:
+    env:
+    - name: DOTNET_CLI_TELEMETRY_OPTOUT
+      value: true
+    - name: DOTNET_NOLOGO
+      value: true
+
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main

@@ -26,6 +26,31 @@ accelerator:
         text: PostgreSQL
     defaultValue: "postgres"
     required: true
+  - name: exposeOpenAPIEndpoint
+    label: Expose OpenAPI endpoint?
+    dataType: boolean
+    defaultValue: false
+  - name: apiSystem
+    label: System API Belongs To
+    inputType: text
+    required: true
+    defaultValue: "profile-management"
+    dependsOn:
+      name: exposeOpenAPIEndpoint
+  - name: apiOwner
+    label: Owner of API
+    inputType: text
+    required: true
+    defaultValue: "customer-relations-department"
+    dependsOn:
+      name: exposeOpenAPIEndpoint
+  - name: apiDescription
+    label: API Description
+    inputType: text
+    required: true
+    defaultValue: "Manage customer profiles"
+    dependsOn:
+      name: exposeOpenAPIEndpoint
 
   imports:
   - name: tap-workload
@@ -62,6 +87,28 @@ engine:
       - type: RewritePath
         regex: "RestService(.*)"
         rewriteTo: "#applicationName + #g1"
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "config/workload-basic.yaml", "config/workload-api-provider.yaml" ]
+      - include: [ "config/workload-api-provider.yaml" ]
+        condition: "#exposeOpenAPIEndpoint"
+        chain:
+          - type: ReplaceText
+            condition: "#exposeOpenAPIEndpoint"
+            substitutions:
+              - text: "SYSTEM_VAL"
+                with: "#apiSystem"
+              - text: "OWNER_VAL"
+                with: "#apiOwner"
+              - text: "DESCRIPTION_VAL"
+                with: "#apiDescription"
+          - type: RewritePath
+            rewriteTo: "'config/workload.yaml'"
+      - include: [ "config/workload-basic.yaml" ]
+        condition: "!#exposeOpenAPIEndpoint"
+        chain:
+          - type: RewritePath
+            rewriteTo: "'config/workload.yaml'"
     - include: [ "README.md", "config/**", "catalog/**", "Tiltfile" ]
       chain:
       - type: ReplaceText
