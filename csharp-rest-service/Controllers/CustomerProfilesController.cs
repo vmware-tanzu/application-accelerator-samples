@@ -18,14 +18,12 @@ public class CustomerProfilesController : ControllerBase
         _logger = logger;
     }
 
-    // GET: api/customer-profiles
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CustomerProfile>>> GetCustomerProfiles()
     {
         return await _context.CustomerProfiles.ToListAsync();
     }
 
-    // GET: api/customer-profiles/
     [HttpGet("{id}")]
     public async Task<ActionResult<CustomerProfile>> GetCustomerProfile(string id)
     {
@@ -39,8 +37,6 @@ public class CustomerProfilesController : ControllerBase
         return customerProfile;
     }
 
-    // PUT: api/customer-profiles/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCustomerProfile(string id, CustomerProfile customerProfile)
     {
@@ -71,8 +67,6 @@ public class CustomerProfilesController : ControllerBase
     }
 
 
-    // POST: api/customer-profiles
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<CustomerProfile>> PostCustomerProfile(CustomerProfile customerProfile)
     {
@@ -82,7 +76,6 @@ public class CustomerProfilesController : ControllerBase
         return CreatedAtAction("GetCustomerProfile", new { id = customerProfile.Id }, customerProfile);
     }
 
-    // DELETE: api/customer-profiles/0bc6ab17-7ce2-4e26-ac78-c9f3b08dd8b2
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCustomerProfile(string id)
     {

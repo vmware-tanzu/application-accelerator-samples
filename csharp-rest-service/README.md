@@ -2,7 +2,6 @@
 
 csharp-rest-service provides you an out-of-the-box example of a .NET WebAPI application with a PostgreSQL backend.
 
-
 The application also includes several Steeltoe management endpoints (including a database health check) and dynamic log level management.
 
 For more details on Steeltoe, visit <https://docs.steeltoe.io/>.
