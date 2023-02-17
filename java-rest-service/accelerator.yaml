@@ -204,6 +204,18 @@ engine:
                 with: "#workloadResourceName"
     # End Workload Resource name
 
+    # Test pipeline
+    - merge:
+      - exclude: [ "config/testcontainers-test-pipeline.yaml", "config/test-pipeline.yaml" ]
+      - include: [ "config/test-pipeline.yaml" ]
+        condition: "#databaseIntegrationTestType != 'testcontainers'"
+      - include: [ "config/testcontainers-test-pipeline.yaml" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
+        chain:
+          - type: RewritePath
+            rewriteTo: "'config/test-pipeline.yaml'"
+    # End Test pipleine
+
     - merge:
       - type: InvokeFragment
         reference: java-version

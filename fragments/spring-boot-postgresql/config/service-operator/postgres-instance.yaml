@@ -2,7 +2,6 @@ apiVersion: sql.tanzu.vmware.com/v1
 kind: Postgres
 metadata:
   name: postgres-1
-  namespace: service-instances
 spec:
   memory: 800Mi
   cpu: "0.8"

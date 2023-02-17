@@ -28,44 +28,25 @@ the PostgreSQL instance. All provided configuration files for this sample assume
 
     > Note: This sample uses `postgres-1` as the instance name. If that is not available to use, then the any reference to this name must be updated to something that is available for use.
 
-   - If the `service-instances` namespace doesn't exist, then as a service operator, you can run the following command to create it.
-
-      ```bash
-      $ kubectl apply -f config/service-operator/service-instances-namespace.yaml
-      ```
-
    - If the `ClusterRole` for service binding with postgres resources has not been defined, then as a service operator, you can run the following command.
 
       ```bash
       $ kubectl apply -f config/service-operator/postgres-cluster-role.yaml
       ```
 
-   - If the `ClusterInstanceClass` for postgres has not been defined, then as a service operator, you can run the following command.
-
-      ```bash
-      $ kubectl apply -f config/service-operator/postgres-cluster-instance-class.yaml
-      ```
-
-   - If the `ResourceClaimPolicy` to define which namespaces could have access to your instance namespace, then as a service operator, you can run the following command.
-
-      > Note: You can edit `consumingNamespaces` in `config/service-operator/postgres-resource-claim-policy.yaml` to only contain your workload namespace if necessary, it defaults to '*' for all namspaces.
-      
-      ```bash
-      $ kubectl apply -f config/service-operator/postgres-resource-claim-policy.yaml
-      ```
-
    - Create an instance of the PostgreSQL database by running the following command.
 
       ```bash
-      $ kubectl apply -f config/service-operator/postgres-service-instance.yaml
+      $ kubectl apply -n <workload-namespace> -f config/service-operator/postgres-instance.yaml
       ```
+   > Note: If you would like to create the database in a different namespace from where the workload is running, then you would need to also create a `ResourceClaimPolicy` that defined any `consumingNamespaces` that would be allowed to use the database.
 
 2. App Operator Tasks
 
-   - Create the `ClassClaim` to be consumed by your workload that references your postgres instance:
+   - Create the `ResourceClaim` to be consumed by your workload that references your postgres instance:
 
       ```bash
-      $ kubectl apply -n <your-workload-namespace> -f config/app-operator/postgres-class-claim.yaml
+      $ kubectl apply -n <workload-namespace> -f config/app-operator/postgres-resource-claim.yaml
       ```
 
 3. App Developer Tasks
@@ -73,15 +54,15 @@ the PostgreSQL instance. All provided configuration files for this sample assume
    Now we have the database instance and class claim configured we can check the database state by running:
    
    ```bash
-   kubectl get postgres -n service-instances
+   kubectl get postgres -n <workload-namespace>
    ```
 
    Make sure the database status is "Running".
    
-   You can also check the state of the class claim by running:
+   You can also check the state of the resource claim by running:
    
    ```bash
-   kubectl get classclaim -n <your-workload-namespace>
+   kubectl get resourceclaim -n <workload-namespace>
    ```
    
    The class claim should be "Ready".

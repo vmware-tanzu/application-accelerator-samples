@@ -144,7 +144,7 @@ Before deploying your application a Tekton Pipeline responsible for the testing 
 namespace. Please run following command.
 
 ```bash
-kubectl apply -f config/test-pipeline.yaml
+kubectl apply -n <workload-namespace> -f config/test-pipeline.yaml
 ```
 
 ### Tanzu CLI
@@ -153,7 +153,7 @@ Using the Tanzu CLI one could apply the workload using the local sources:
 ```bash
 tanzu apps workload apply \
   --file config/workload.yaml \
-  --namespace <namespace> \
+  --namespace <workload-namespace> \
   --source-image <image-registry> \
   --local-path . \
   --yes \
