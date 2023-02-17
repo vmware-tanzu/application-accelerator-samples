@@ -6,4 +6,4 @@ spec:
   ref:
     apiVersion: with.sql.tanzu.vmware.com/v1
     kind: MySQL
-    name: mysql-1
+    name: customer-database

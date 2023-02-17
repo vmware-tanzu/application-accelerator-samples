@@ -1,7 +1,7 @@
 apiVersion: with.sql.tanzu.vmware.com/v1
 kind: MySQL
 metadata:
-  name: mysql-1
+  name: customer-database
 spec:
   #### Set the storage class name to change storage class of the PVC associated with this resource
   storageClassName: storage-class-standard

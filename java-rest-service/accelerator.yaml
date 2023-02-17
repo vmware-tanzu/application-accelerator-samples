@@ -71,23 +71,30 @@ accelerator:
     - name: javaVersion
       inputType: select
       label: Java version to use
-      dependsOn:
-        name: updateBoot3
-        value: false
       choices:
       - value: "11"
         text: Java 11
       - value: "17"
         text: Java 17
       defaultValue: "11"
+    - name: databaseType
+      inputType: select
+      label: Database type to use
+      choices:
+        - value: "postgres"
+          text: PostgreSQL
+        - value: "mysql"
+          text: MySQL
+      defaultValue: "postgres"
+      required: true
+    - name: databaseName
+      inputType: text
+      defaultValue: "customer-database"
+      label: Database Instance Name
+      description: The name of the database instance this application will use
   imports:
   - name: java-version
     expose: []
-  - name: spring-boot-database
-    expose:
-    - name: databaseType
-    - name: databaseMigrationTool
-    - name: databaseIntegrationTestType
   - name: spring-boot-postgresql
     expose:
     - name: databasePostgresStorageClass
@@ -100,6 +107,10 @@ accelerator:
       dependsOn:
         name: databaseType
         value: mysql
+  - name: spring-boot-database
+    expose:
+    - name: databaseMigrationTool
+    - name: databaseIntegrationTestType
   - name: live-update
     expose:
       - name: liveUpdateIDESupport
@@ -119,6 +130,8 @@ engine:
       expression: '#artifactId.toLowerCase()'
     - name: javaVersion
       expression: "#updateBoot3 == true ? '17' : #javaVersion"
+    - name: databaseResourceName
+      expression: '#databaseName.toLowerCase()'
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -193,7 +206,7 @@ engine:
             rewriteTo: "'config/workload.yaml'"
     # End OpenAPI Endpoint Auto-registration
 
-    # Workload Resource name
+    # Workload Resource name and database resource name
     - merge:
       - exclude: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
       - include: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
@@ -202,6 +215,8 @@ engine:
             substitutions:
               - text: "rest-service-db"
                 with: "#workloadResourceName"
+              - text: "customer-database"
+                with: "#databaseResourceName"
     # End Workload Resource name
 
     # Test pipeline

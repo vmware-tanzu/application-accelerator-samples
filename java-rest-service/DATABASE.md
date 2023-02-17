@@ -26,8 +26,6 @@ the PostgreSQL instance. All provided configuration files for this sample assume
 
 1. Service Operator Tasks
 
-    > Note: This sample uses `postgres-1` as the instance name. If that is not available to use, then the any reference to this name must be updated to something that is available for use.
-
    - If the `ClusterRole` for service binding with postgres resources has not been defined, then as a service operator, you can run the following command.
 
       ```bash
@@ -37,7 +35,7 @@ the PostgreSQL instance. All provided configuration files for this sample assume
    - Create an instance of the PostgreSQL database by running the following command.
 
       ```bash
-      $ kubectl apply -n <workload-namespace> -f config/service-operator/postgres-instance.yaml
+      $ kubectl apply -f config/service-operator/postgres-instance.yaml -n <workload-namespace>
       ```
    > Note: If you would like to create the database in a different namespace from where the workload is running, then you would need to also create a `ResourceClaimPolicy` that defined any `consumingNamespaces` that would be allowed to use the database.
 
@@ -46,7 +44,7 @@ the PostgreSQL instance. All provided configuration files for this sample assume
    - Create the `ResourceClaim` to be consumed by your workload that references your postgres instance:
 
       ```bash
-      $ kubectl apply -n <workload-namespace> -f config/app-operator/postgres-resource-claim.yaml
+      $ kubectl apply -f config/app-operator/postgres-resource-claim.yaml -n <workload-namespace>
       ```
 
 3. App Developer Tasks

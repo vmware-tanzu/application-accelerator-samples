@@ -1,5 +1,10 @@
 accelerator:
   options:
+    - name: databaseName
+      inputType: text
+      defaultValue: "customer-database"
+      label: Database Instance Name
+      description: The name of the database instance this application will use
     - name: databaseMySQLStorageClass
       label: Database Storage Class
       inputType: text
@@ -8,6 +13,8 @@ accelerator:
 
 engine:
   let:
+    - name: databaseResourceName
+      expression: '#databaseName.toLowerCase()'
     - name: databaseMySQLStorageClassResourceName
       expression: '#databaseMySQLStorageClass.toLowerCase()'
   chain:
@@ -19,6 +26,8 @@ engine:
         chain:
           - type: ReplaceText
             substitutions:
+              - text: "customer-database"
+                with: "#databaseResourceName"
               - text: "storage-class-standard"
                 with: '#databaseMySQLStorageClassResourceName'
 

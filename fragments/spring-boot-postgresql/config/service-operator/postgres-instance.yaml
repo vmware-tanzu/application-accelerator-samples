@@ -1,7 +1,7 @@
 apiVersion: sql.tanzu.vmware.com/v1
 kind: Postgres
 metadata:
-  name: postgres-1
+  name: customer-database
 spec:
   memory: 800Mi
   cpu: "0.8"
@@ -9,6 +9,6 @@ spec:
   monitorStorageClassName: storage-class-standard
   storageSize: 2G
   pgConfig:
-    dbname: development
+    dbname: databasename
     username: pgadmin
     appUser: pgappuser

@@ -2,14 +2,13 @@ accelerator:
   options:
     - name: databaseType
       inputType: select
-      label: Database to use
+      label: Database type to use
       choices:
         - value: "postgres"
           text: PostgreSQL
         - value: "mysql"
           text: MySQL
       defaultValue: "postgres"
-      required: true
     - name: databaseMigrationTool
       label: Database Migration Tool
       inputType: select
@@ -30,7 +29,6 @@ accelerator:
         - value: "in-memory"
           text: "Java In-Memory Database (H2)"
       defaultValue: "testcontainers"
-      required: true
   imports:
     - name: spring-boot-h2
     - name: testcontainers-postgresql
