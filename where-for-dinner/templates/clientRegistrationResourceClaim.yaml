@@ -14,7 +14,7 @@ spec:
    redirectURIs: 
      - #@ data.values.appWorkloadURL + '/login/oauth2/code/sso'
    requireUserConsent: false
-   clientAuthenticationMethod: basic
+   clientAuthenticationMethod: client_secret_basic
    authorizationGrantTypes:
       - "client_credentials"
       - "authorization_code"
