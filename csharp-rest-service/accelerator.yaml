@@ -110,6 +110,7 @@ engine:
           - type: RewritePath
             rewriteTo: "'config/workload.yaml'"
     - include: [ "README.md", "config/**", "catalog/**", "Tiltfile" ]
+      exclude: [ "config/workload-basic.yaml", "config/workload-api-provider.yaml" ]
       chain:
       - type: ReplaceText
         substitutions:

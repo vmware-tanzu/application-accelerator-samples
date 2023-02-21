@@ -9,7 +9,7 @@ metadata:
     tanzu.app.live.view: "true"
     tanzu.app.live.view.application.flavours: steeltoe
     tanzu.app.live.view.application.name: csharp-rest-service
-    tanzu.app.live.view.application.actuator.port: 9090
+    tanzu.app.live.view.application.actuator.port: "9090"
     apis.apps.tanzu.vmware.com/register-api: "true"
 spec:
   params:
@@ -26,15 +26,15 @@ spec:
         description: DESCRIPTION_VAL
   env:
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
-    value: true
+    value: "true"
   - name: DOTNET_NOLOGO
-    value: true
+    value: "true"
   build:
     env:
     - name: DOTNET_CLI_TELEMETRY_OPTOUT
-      value: true
+      value: "true"
     - name: DOTNET_NOLOGO
-      value: true
+      value: "true"
 
   source:
     git:
