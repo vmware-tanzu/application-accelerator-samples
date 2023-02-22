@@ -8,3 +8,5 @@ spec:
   type: service
   lifecycle: experimental
   owner: default-team
+  providesApis:
+    - csharp-rest-service

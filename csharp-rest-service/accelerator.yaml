@@ -88,8 +88,6 @@ engine:
         regex: "RestService(.*)"
         rewriteTo: "#applicationName + #g1"
     - merge:
-      - include: [ "**" ]
-        exclude: [ "config/workload-basic.yaml", "config/workload-api-provider.yaml" ]
       - include: [ "config/workload-api-provider.yaml" ]
         condition: "#exposeOpenAPIEndpoint"
         chain:

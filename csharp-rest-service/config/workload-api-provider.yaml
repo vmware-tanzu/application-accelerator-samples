@@ -12,13 +12,17 @@ metadata:
     tanzu.app.live.view.application.actuator.port: "9090"
     apis.apps.tanzu.vmware.com/register-api: "true"
 spec:
+  build:
+    env:
+    - name: DOTNET_CLI_TELEMETRY_OPTOUT
+      value: "true"
   params:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
   - name: api_descriptor
     value:
-      type: openapi   # We currently support any of openapi, aysncapi, graphql, grpc
+      type: openapi
       location:
         path: "/swagger/v1/swagger.json"  # The path to the api documentation
         owner: OWNER_VAL
@@ -27,14 +31,6 @@ spec:
   env:
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
     value: "true"
-  - name: DOTNET_NOLOGO
-    value: "true"
-  build:
-    env:
-    - name: DOTNET_CLI_TELEMETRY_OPTOUT
-      value: "true"
-    - name: DOTNET_NOLOGO
-      value: "true"
 
   source:
     git:
