@@ -16,7 +16,7 @@ accelerator:
     label: Application Name
     description: Application Name
     inputType: text
-    defaultValue: CustomerProfile
+    defaultValue: CustomerProfileAPI
     required: true
   - name: databaseType
     inputType: select
@@ -82,6 +82,8 @@ engine:
     onConflict: UseFirst
     
   - merge:
+    - include: [ "**" ]
+      exclude: [ "*.csproj", "config/workload-basic.yaml", "config/workload-api-provider.yaml" ]
     - include: [ "*.csproj", "*.sln" ]
       chain:
       - type: RewritePath
