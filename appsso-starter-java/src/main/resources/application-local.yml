@@ -1,0 +1,21 @@
+# Use this profile for development purposes only.
+#
+# **WARNING**: The application will only load with local profile if issuer-uri destination is resolvable
+#              as an OAuth authorization server.
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          my-auth-provider:
+            issuer-uri: https://auth.example.com
+        registration:
+          messaging-client:
+            provider: my-auth-provider
+            client-id: messaging-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://test.example.com/login/oauth2/code/{registrationId}"
+            scope: openid
+            client-name: messaging-client

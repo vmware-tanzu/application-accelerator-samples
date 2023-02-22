@@ -4,8 +4,12 @@ management:
       enabled: false
 
 spring: 
+  application:
+    name: where-for-dinner-search-proc
+
   cloud: 
     stream:
+      defaultBinder: rabbit
       function:
         definition: processSearch
       bindings: 
@@ -126,3 +130,21 @@ management:
   health:
     redis:
       enabled: true
+    
+---
+
+spring:
+  config.activate.on-profile: kafka
+  
+  cloud: 
+    stream:
+      defaultBinder: kafka
+
+---
+
+spring:
+  config.activate.on-profile: kinesis
+  
+  cloud: 
+    stream:
+      defaultBinder: kinesis

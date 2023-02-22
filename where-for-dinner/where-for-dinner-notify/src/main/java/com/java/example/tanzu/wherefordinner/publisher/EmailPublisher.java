@@ -72,7 +72,7 @@ public class EmailPublisher implements Publisher
 			
 			message.setFrom(from);
 			message.setSubject(subject);
-			message.setText(message.toString());
+			message.setText(msgBuilder.toString());
 			
 			for (String toRecip : to)
 				message.addRecipient(RecipientType.TO, new InternetAddress(toRecip));

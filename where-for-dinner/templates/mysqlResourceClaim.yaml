@@ -1,32 +1,11 @@
 #@ load("@ytt:data", "data")
 
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: mysql-app-operator-reader
-  labels:
-    servicebinding.io/controller: "true"
-rules:
-- apiGroups: ["with.sql.tanzu.vmware.com"]
-  resources: ["mysqls"]
-  verbs: ["get", "list", "watch"]
----
-apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ClusterInstanceClass
-metadata:
-  name: mysql
-spec:
-  description:
-    short: MySQL DB Instances
-  pool:
-    group: with.sql.tanzu.vmware.com
-    kind: MySQL  
+#@ if data.values.dynamicDatabase == False:
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ResourceClaimPolicy
 metadata:
-  name: mysql-cross-namespace
+  name: where-for-dinner-mysql-cross-namespace
   namespace: #@ data.values.serviceNamespace
 spec:
   consumingNamespaces:
@@ -36,13 +15,24 @@ spec:
     kind: MySQL
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ResourceClaim
+kind: ClassClaim
 metadata:
   name: #@ data.values.dbName
   namespace: #@ data.values.workloadNamespace
 spec:
-  ref:
-    apiVersion: with.sql.tanzu.vmware.com/v1
-    kind: MySQL
-    name: #@ data.values.dbName
-    namespace: #@ data.values.serviceNamespace
+  classRef:
+    name: mysql-where-for-dinner
+#@ else: 
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: #@ data.values.dbName
+  namespace: #@ data.values.workloadNamespace
+spec:
+  classRef:
+    name: #@ data.values.dynamicDBClass
+  parameters:
+    storageGB: 1    
+    serviceNamespace: #@ data.values.serviceNamespace    
+#@ end

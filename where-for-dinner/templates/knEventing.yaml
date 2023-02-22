@@ -37,7 +37,7 @@ metadata:
   namespace: #@ data.values.workloadNamespace
 spec:
   rabbitmqClusterReference:
-    name: #@ data.values.rabbitMQName
+    name: #@ data.values.msgbrokerName
     namespace: #@ data.values.serviceNamespace
 ---
 apiVersion: eventing.knative.dev/v1
@@ -122,7 +122,7 @@ spec:
   durable: true
   name: where-for-dinner-search-criteria
   rabbitmqClusterReference:
-    name: #@ data.values.rabbitMQName
+    name: #@ data.values.msgbrokerName
     namespace: #@ data.values.serviceNamespace
   type: topic
   vhost: /
@@ -139,7 +139,7 @@ spec:
   autoDelete: false
   name: where-for-dinner-search-criteria
   rabbitmqClusterReference:
-    name: #@ data.values.rabbitMQName
+    name: #@ data.values.msgbrokerName
     namespace: #@ data.values.serviceNamespace
   type: quorum
   vhost: /
@@ -157,7 +157,7 @@ spec:
   destinationType: queue
   routingKey: "#"
   rabbitmqClusterReference:
-    name: #@ data.values.rabbitMQName
+    name: #@ data.values.msgbrokerName
     namespace: #@ data.values.serviceNamespace
   vhost: /
 ---
@@ -169,7 +169,7 @@ metadata:
 spec:
 
   rabbitmqClusterReference:
-    name: #@ data.values.rabbitMQName
+    name: #@ data.values.msgbrokerName
     namespace: #@ data.values.serviceNamespace
   rabbitmqResourcesConfig:
     predeclared: true 

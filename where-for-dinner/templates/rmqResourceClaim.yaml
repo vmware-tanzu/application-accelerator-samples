@@ -1,32 +1,11 @@
 #@ load("@ytt:data", "data")
 
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: rabbitmqcluster-app-operator-reader
-  labels:
-    servicebinding.io/controller: "true"
-rules:
-- apiGroups: ["rabbitmq.com"]
-  resources: ["rabbitmqclusters"]
-  verbs: ["get", "list", "watch"]
----
-apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ClusterInstanceClass
-metadata:
-  name: rabbitmq
-spec:
-  description:
-    short: RabbitMQ Clusters
-  pool:
-    group: rabbitmq.com
-    kind: RabbitmqCluster
+#@ if data.values.dynamicMsgBroker == False:
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ResourceClaimPolicy
 metadata:
-  name: rabbitmqcluster-cross-namespace
+  name: where-for-dinner-rabbitmqcluster-cross-namespace
   namespace: #@ data.values.serviceNamespace
 spec:
   consumingNamespaces:
@@ -36,13 +15,24 @@ spec:
     kind: RabbitmqCluster
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ResourceClaim
+kind: ClassClaim
 metadata:
-  name: #@ data.values.rabbitMQName
+  name: #@ data.values.msgbrokerName
   namespace: #@ data.values.workloadNamespace
 spec:
-  ref:
-    apiVersion: rabbitmq.com/v1beta1
-    kind: RabbitmqCluster
-    name: #@ data.values.rabbitMQName
-    namespace: #@ data.values.serviceNamespace
+  classRef:
+    name: rabbitmq-where-for-dinner
+#@ else:  
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: #@ data.values.msgbrokerName
+  namespace: #@ data.values.workloadNamespace
+spec:
+  classRef:
+    name: #@ data.values.dynamicMsgBrokerClass
+  parameters:
+    replicas: #@ data.values.numRabbitMQClusterNodes 
+    serviceNamespace: #@ data.values.serviceNamespace
+#@ end

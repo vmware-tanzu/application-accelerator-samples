@@ -13,27 +13,27 @@
   - name: rmq
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ResourceClaim
-      name: #@ data.values.rabbitMQName
+      kind: ClassClaim
+      name: #@ data.values.msgbrokerName
 #@ end
 #@ if usesDB == True and data.values.dbType != "h2":
   - name: db
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ResourceClaim
+      kind: ClassClaim
       name: #@ data.values.dbName   
 #@ end 
 #@ if usesCache == True and data.values.cacheType == "redisCache":
   - name: cache
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ResourceClaim
+      kind: ClassClaim
       name: #@ data.values.cacheName 
 #@ end     
 #@ end
 
 
-#@ def buildAppEnv(addSecProf,addDBProf,addCacheProf,addCrawlerProf):
+#@ def buildAppEnv(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf):
 #@ profiles = ""
 #@ if addSecProf == True and data.values.enableSecurity == True:
 #@ profiles = "secure"
@@ -55,6 +55,12 @@
 #@    profiles = profiles + ","
 #@ end
 #@ profiles = profiles + "crawler"
+#@ end
+#@ if addMsgBrokerProf:
+#@ if profiles != "":
+#@    profiles = profiles + ","
+#@ end
+#@ profiles = profiles + data.values.msgBrokerType
 #@ end
 #@ if profiles != "":
   - name: spring_profiles_active
@@ -108,7 +114,7 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-api-gateway
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
 spec:
-  env: #@ buildAppEnv(True,False,False,False)
+  env: #@ buildAppEnv(True,False,False,False,False)
   params:
   - name: annotations
     value: 
@@ -146,7 +152,7 @@ metadata:
     networking.knative.dev/visibility: cluster-local
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
 spec:
-  env: #@ buildAppEnv(True,True,False,False)
+  env: #@ buildAppEnv(True,True,False,False,True)
   params:
   - name: annotations
     value: 
@@ -184,7 +190,7 @@ metadata:
     networking.knative.dev/visibility: cluster-local
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
 spec:
-  env: #@ buildAppEnv(False,False,True,True)
+  env: #@ buildAppEnv(False,False,True,True,True)
   build:
      env: #@ buildBuildParams()
   params: #@ buildParams()
@@ -216,6 +222,7 @@ metadata:
     networking.knative.dev/visibility: cluster-local
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
 spec:
+  env: #@ buildAppEnv(False,False,False,False,True)
   build:
      env: #@ buildBuildParams()
   params: #@ buildParams()
@@ -248,7 +255,7 @@ metadata:
 spec:
   build:
      env: #@ buildBuildParams()
-  env: #@ buildAppEnv(True,True,False,False)
+  env: #@ buildAppEnv(True,True,False,False,True)
   params:
   - name: annotations
     value: 

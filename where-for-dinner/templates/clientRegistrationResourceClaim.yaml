@@ -5,6 +5,8 @@ kind: ClientRegistration
 metadata:
    name: where-for-dinner-client-registration
    namespace: #@ data.values.workloadNamespace
+   labels:
+     services.apps.tanzu.vmware.com/class: clientreg-where-for-dinner 
 spec:
    authServerSelector:
       matchLabels:
@@ -12,40 +14,17 @@ spec:
    redirectURIs: 
      - #@ data.values.appWorkloadURL + '/login/oauth2/code/sso'
    requireUserConsent: false
-   clientAuthenticationMethod: basic
+   clientAuthenticationMethod: client_secret_basic
    authorizationGrantTypes:
       - "client_credentials"
       - "authorization_code"
    scopes:
       - name: "openid"
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: client-registration-app-operator-reader
-  labels:
-    servicebinding.io/controller: "true"
-rules:
-- apiGroups: ["sso.apps.tanzu.vmware.com"]
-  resources: ["ClientRegistration"]
-  verbs: ["get", "list", "watch"]
-
----
-apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ClusterInstanceClass
-metadata:
-  name: clientreg
-spec:
-  description:
-    short: AppSSO Client Registrations
-  pool:
-    group: sso.apps.tanzu.vmware.com
-    kind: ClientRegistration
----
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ResourceClaimPolicy
 metadata:
-  name: client-registration-cross-namespace
+  name: where-for-dinner-client-registration-cross-namespace
   namespace: #@ data.values.workloadNamespace
 spec:
   consumingNamespaces:
