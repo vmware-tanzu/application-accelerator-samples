@@ -10,6 +10,9 @@ where-for-dinner:
     uri: http://where-for-dinner-availability.${where-for-dinner.namespace}/
 
 spring:
+  application:
+    name: where-for-dinner-api-gateway
+
   session:
     timeout: 60m
   cloud:

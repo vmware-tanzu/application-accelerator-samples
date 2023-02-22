@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
-		<spring-cloud-bindings.version>1.11.0</spring-cloud-bindings.version>
+		<spring-cloud-bindings.version>1.11.0</spring-cloud-bindings.version>	
 		<snakeyaml.version>1.33</snakeyaml.version>
 	</properties>
 	<dependencies>
@@ -132,11 +132,8 @@
 			   </dependency>
 			   <dependency>
 					<groupId>org.springframework.cloud</groupId>
-					<artifactId>spring-cloud-stream</artifactId>
-					<scope>test</scope>
-					<classifier>test-binder</classifier>
-					<type>test-jar</type>
-			   </dependency>	   		   		
+					<artifactId>spring-cloud-stream-binder-kafka</artifactId>
+			   </dependency>						      		   		
 		   </dependencies>
        </profile>
        <profile>

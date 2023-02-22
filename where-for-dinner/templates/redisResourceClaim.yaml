@@ -1,38 +1,11 @@
 #@ load("@ytt:data", "data")
----
-apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ClusterInstanceClass
-metadata:
-  name: bitnami-redis
-spec:
-  description:
-    short: Bitnami Redis
-  pool:
-    kind: Secret
-    labelSelector:
-      matchLabels:
-        services.apps.tanzu.vmware.com/class: bitnami-redis
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: bitnami-redis-secret-reader
-  labels:
-    servicebinding.io/controller: "true"
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - get
-  - list
-  - watch
+
+#@ if data.values.dynamicCache == False:
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ResourceClaimPolicy
 metadata:
-  name: bitnami-redis-cross-namespace
+  name: where-for-dinner-bitnami-redis-cross-namespace
   namespace: #@ data.values.serviceNamespace
 spec:
   consumingNamespaces:
@@ -42,15 +15,24 @@ spec:
     kind: Secret
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ResourceClaim
+kind: ClassClaim
 metadata:
   name: #@ data.values.cacheName
   namespace: #@ data.values.workloadNamespace
 spec:
-  ref:
-    apiVersion: v1
-    kind: Secret
-    name: #@ data.values.cacheName + "-redis-secret"
-    namespace: #@ data.values.serviceNamespace
-
-    
+  classRef:
+    name: bitnami-redis-where-for-dinner
+#@ else: 
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: #@ data.values.cacheName
+  namespace: #@ data.values.workloadNamespace
+spec:
+  classRef:
+    name: #@ data.values.dynamicCacheClass
+  parameters:
+    replicas: 1    
+    serviceNamespace: #@ data.values.serviceNamespace    
+#@ end

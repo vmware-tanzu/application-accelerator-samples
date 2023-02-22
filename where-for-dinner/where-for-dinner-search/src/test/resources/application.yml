@@ -4,10 +4,10 @@ where-for-dinner:
     
 spring: 
   sql.init.platform: h2
-  sql.init.mode: ALWAYS 
-  
+  sql.init.mode: ALWAYS   
   cloud: 
     stream:
+      defaultBinder: rabbit
       poller:
         fixed-delay: ${where-for-dinner.searchEvent.period} 
       function:

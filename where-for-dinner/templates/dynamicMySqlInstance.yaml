@@ -1,0 +1,175 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xmysqlinstances.database.example.org
+spec:
+  connectionSecretKeys:
+  - host
+  - password
+  - port
+  - provider
+  - type
+  - username
+  - database
+  group: database.example.org
+  names:
+    kind: XMySQLInstance
+    plural: xmysqlinstances
+  claimNames:
+    kind: MySQLInstance
+    plural: mysqlinstances    
+  versions:
+  - name: v1alpha1
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            description: The OpenAPIV3Schema of this Composite Resource Definition.
+            properties:
+              storageGB:
+                description: The desired storage capacity of a single replica, in GB.
+                type: integer
+              serviceNamespace:
+                description: The namespace that the service will be deployed to.
+                type: string                 
+            type: object
+        type: object
+    served: true
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xmysqlinstances.tanzu.database.example.org
+spec:
+  compositeTypeRef:
+    apiVersion: database.example.org/v1alpha1
+    kind: XMySQLInstance
+  publishConnectionDetailsWithStoreConfigRef:
+    name: default
+  resources:
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: with.sql.tanzu.vmware.com/v1
+            kind: MySQL
+            metadata:
+              namespace: service-instances
+            spec:
+              highAvailability:
+                enabled: false
+            storageSize: 1Gi
+    patches:
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace
+        type: FromCompositeFieldPath       
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.replicas
+        toFieldPath: spec.forProvider.manifest.spec.replicas
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.storageGB
+        toFieldPath: spec.forProvider.manifest.spec.storageSize
+        transforms:
+        - string:
+            fmt: '%dGi'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: secretgen.carvel.dev/v1alpha1
+            kind: SecretTemplate
+            metadata:
+              namespace: service-instances
+            spec:
+              inputResources:
+              - name: creds
+                ref:
+                  apiVersion: v1
+                  kind: Secret
+              template:
+                type: connection.crossplane.io/v1alpha1
+                data:
+                  provider: "$(.creds.data.provider)"
+                  type: "$(.creds.data.type)"
+                  host: "$(.creds.data.host)"
+                  port: "$(.creds.data.port)"
+                  username: "$(.creds.data.username)"
+                  password: "$(.creds.data.password)"
+                  database: "$(.creds.data.database)"
+    patches: 
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace
+        type: FromCompositeFieldPath       
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.forProvider.manifest.spec.inputResources[0].ref.name
+        transforms:
+        - string:
+            fmt: '%s-app-user-db-secret'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.writeConnectionSecretToRef.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        type: FromCompositeFieldPath
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: secretgen.carvel.dev/v1alpha1
+            kind: SecretExport
+            metadata:
+              namespace: service-instances
+    patches:
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace
+        type: FromCompositeFieldPath       
+      - fromFieldPath: spec.writeConnectionSecretToRef.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+        toFieldPath: spec.forProvider.manifest.spec.toNamespace
+        type: FromCompositeFieldPath
+  - base:
+      apiVersion: kubernetes.crossplane.io/v1alpha1
+      kind: Object
+      spec:
+        forProvider:
+          manifest:
+            apiVersion: secretgen.carvel.dev/v1alpha1
+            kind: SecretImport
+            spec:
+              fromNamespace: service-instances
+    patches:
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace
+        type: FromCompositeFieldPath       
+      - fromFieldPath: spec.writeConnectionSecretToRef.name
+        toFieldPath: spec.forProvider.manifest.metadata.name
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+        toFieldPath: spec.forProvider.manifest.metadata.namespace
+        type: FromCompositeFieldPath
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: db-crossplane-where-for-dinner
+spec:
+  description:
+    short: MySQL
+  provisioner:
+    xrd:
+      name: xmysqlinstances.database.example.org
