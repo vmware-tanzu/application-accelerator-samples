@@ -109,3 +109,5 @@ engine:
           pattern: "HttpTraceRepository"
           with: "'HttpExchangeRepository'"
     onConflict: UseLast
+
+  - type: Provenance

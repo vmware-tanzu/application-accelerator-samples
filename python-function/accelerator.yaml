@@ -95,3 +95,5 @@ engine:
           substitutions:
             - text: python-function
               with: "#artifactId"
+
+    - type: Provenance

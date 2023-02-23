@@ -192,3 +192,5 @@ engine:
       - type: InvokeFragment
         condition: "#buildTool == 'gradle'"
         reference: build-wrapper-gradle
+
+    - type: Provenance
