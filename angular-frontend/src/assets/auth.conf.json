@@ -1,0 +1,5 @@
+{
+  "authority": "<your-authserver-uri>",
+  "clientId": "<your-client-id>",
+  "scope": [ "openid", "profile", "email", "message.read", "message.write" ]
+}

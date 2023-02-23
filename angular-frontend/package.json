@@ -8,7 +8,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test-headless": "ng test --watch=false --browsers=ChromeHeadless"
+    "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
+    "serve": "ng serve --host 127.0.0.1"
   },
   "private": true,
   "dependencies": {
@@ -22,7 +23,15 @@
     "@angular/platform-browser": "^14.2.10",
     "@angular/platform-browser-dynamic": "^14.2.10",
     "@angular/router": "^14.2.10",
+    "@auth0/angular-jwt": "^5.1.2",
+    "base64-js": "^1.5.1",
+    "base64url": "^3.0.1",
+    "crypto-browserify": "^3.12.0",
+    "crypto-js": "^4.1.1",
+    "jwt-decode": "^3.1.2",
+    "os-browserify": "^0.3.0",
     "rxjs": "~7.5.0",
+    "stream-browserify": "^3.0.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
@@ -30,6 +39,7 @@
     "@angular-devkit/build-angular": "^14.2.10",
     "@angular/cli": "~14.2.10",
     "@angular/compiler-cli": "^14.2.10",
+    "@types/crypto-js": "^4.1.1",
     "@types/jasmine": "~4.0.0",
     "jasmine-core": "~4.2.0",
     "karma": "~6.4.0",

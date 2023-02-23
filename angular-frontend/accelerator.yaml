@@ -19,6 +19,18 @@ accelerator:
       defaultValue: "customer-profile-backend.namespace"
       label: Hostname of the backend services app. If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
       required: true
+    - name: useSingleSignOn
+      dataType: boolean
+      inputType: checkbox
+      defaultValue: false
+      label: Single Sign-on. If this is checked, 'authority', 'clientId', and 'scope' are required fields, and can easily be changed later.
+    - name: authority
+      label: Authority
+      description: The url of your single sign-on `AuthServer`. If you are unsure, you can see what the `AuthServers` available in your cluster are by running `kubectl get authserver -A` in your Kubernetes cluster and choose the url for the Authserver you want to connect to.
+      inputType: text
+      dependsOn:
+        name: useSingleSignOn
+        value: true
   imports:
     - name: tap-workload
 
@@ -43,10 +55,38 @@ engine:
             - text: "angular-frontend"
               with: "#workloadResourceName"
 
+    - condition: "#useSingleSignOn == true"
+      applyTo: [ "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app.module.ts", "config/clientregistration.yaml" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "<your-authserver-uri>"
+              with: "#authority"
+            - text: "<your-client-id>"
+              with: "#workloadResourceName"
+
     - merge:
       - type: InvokeFragment
         reference: tap-workload
       - include: [ "**" ]
+      onConflict: UseFirst
+
+    - condition: "!#useSingleSignOn"
+      merge:
+        - include: [ "**" ]
+          exclude: [ "README.md", "src/app/app.module.ts", "AUTHORIZATION.md", "src/app/authorization/**", "src/app/user-profile/**", "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
+        - include: [ "src/app/app.module.ts" ]
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "// StartSSOProviders[\\s\\S]+?// EndSSOProviders"
+                with: "''"
+        - include: [ "README.md" ]
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "--- StartAuthorization[\\s\\S]+?--- EndAuthorization"
+                with: "''"
       onConflict: UseFirst
 
     - type: Provenance
