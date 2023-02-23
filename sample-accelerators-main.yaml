@@ -134,6 +134,17 @@ spec:
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Fragment
 metadata:
+  name: steeltoe-postgresql
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: fragments/steeltoe-postgresql
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
   name: build-wrapper-gradle
 spec:
   git:
@@ -196,6 +207,17 @@ spec:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: java-rest-service
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: csharp-rest-service
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: csharp-rest-service
 ---
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
