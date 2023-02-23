@@ -1,0 +1,21 @@
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: ClientRegistration
+metadata:
+  name: <your-client-id>
+spec:
+  authServerSelector:
+    matchLabels:
+      name: <your-authserver-uri>
+  authorizationGrantTypes:
+    - authorization_code
+  clientAuthenticationMethod: none
+  redirectURIs:
+    - http://127.0.0.1:4200/
+    - http://127.0.0.1:4200/customer-profiles/list
+    - http://127.0.0.1:4200/user-profile
+  scopes:
+    - name: openid
+    - name: email
+    - name: profile
+    - name: message.read
+    - name: message.write

@@ -115,6 +115,11 @@ tanzu apps workload apply \
 Note: change the namespace to where you would like to deploy this workload. Also define the (private) image registry you
 are allowed to push the source-image, like: `docker.io/username/repository`.
 
+--- StartAuthorization
+### Authorization
+If you want to use Tanzu's AppSSO Authorization server, please see `AUTHORIZATION.md` for details.
+--- EndAuthorization
+
 ### Visual Studio Code Tanzu Plugin
 
 When developing local but would like to deploy the local code to the cluster the Tanzu Plugin could help.
