@@ -130,4 +130,6 @@ engine:
           - text: RestService
             with: "#compilerSafeAppName"
 
+  - type: Provenance
+
 

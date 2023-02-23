@@ -128,3 +128,5 @@ engine:
         rewriteTo: "'README.md'"
   - type: InvokeFragment
     reference: build-wrapper-maven
+
+  - type: Provenance

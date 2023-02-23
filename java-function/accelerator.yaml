@@ -137,3 +137,5 @@ engine:
         substitutions:
         - text: java-function
           with: "#artifactId"
+
+    - type: Provenance

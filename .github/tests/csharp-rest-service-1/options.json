@@ -1,0 +1,4 @@
+{
+  "artifactId": "customer-profile",
+  "databasePostgresStorageClass": "standard"
+}

@@ -45,3 +45,5 @@ engine:
         reference: tap-workload
       - include: [ "**" ]
       onConflict: UseFirst
+
+    - type: Provenance

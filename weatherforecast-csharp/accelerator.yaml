@@ -50,3 +50,5 @@ engine:
       substitutions:
         - text: Sample
           with: "#compilerSafeAppName"
+
+  - type: Provenance
