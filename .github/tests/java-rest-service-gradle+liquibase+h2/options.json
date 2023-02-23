@@ -8,8 +8,6 @@
   "databaseType": "postgres",
   "exposeOpenAPIEndpoint": false,
   "javaVersion": "11",
-  "databaseName": "customer-database",
-  "databaseIntegrationTestType":  "testcontainers",
-  "databasePostgresStorageClass": "standard",
-  "databasePostgresMonitoringClass": "standard"
+  "databaseIntegrationTestType":  "in-memory",
+  "databasePostgresStorageClass": "standard"
 }

@@ -1,0 +1,13 @@
+{
+  "buildTool": "gradle",
+  "databaseMigrationTool": "flyway",
+
+  "artifactId": "customer-profile",
+  "groupId": "com.example",
+  "packageName": "com.example.customerprofile",
+  "databaseType": "mysql",
+  "exposeOpenAPIEndpoint": false,
+  "javaVersion": "11",
+  "databaseIntegrationTestType":  "testcontainers",
+  "databasePostgresStorageClass": "standard"
+}

@@ -68,6 +68,17 @@ spec:
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Fragment
 metadata:
+  name: spring-boot-database
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: fragments/spring-boot-database
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
   name: spring-boot-h2
 spec:
   git:
@@ -97,6 +108,28 @@ spec:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/spring-boot-mysql
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: testcontainers-postgresql
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: fragments/testcontainers-postgresql
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: testcontainers-mysql
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: fragments/testcontainers-mysql
 ---
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Fragment

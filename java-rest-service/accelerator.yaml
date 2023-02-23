@@ -28,6 +28,7 @@ accelerator:
       label: Module root package
       required: true
     - name: buildTool
+      label: Build Tool
       inputType: select
       required: true
       defaultValue: maven
@@ -36,25 +37,6 @@ accelerator:
           text: Maven (https://maven.apache.org/)
         - value: gradle
           text: Gradle (https://gradle.org/)
-    - name: databaseType
-      inputType: select
-      label: Database to use
-      choices:
-        - value: "postgres"
-          text: PostgreSQL
-        - value: "mysql"
-          text: MySQL
-      defaultValue: "postgres"
-      required: true
-    - name: databaseMigrationTool
-      inputType: select
-      required: true
-      defaultValue: flyway
-      choices:
-        - value: flyway
-          text: Flyway (https://flywaydb.org/)
-        - value: liquibase
-          text: Liquibase (https://docs.liquibase.com/)
     - name: exposeOpenAPIEndpoint
       label: Expose OpenAPI endpoint?
       dataType: boolean
@@ -95,41 +77,40 @@ accelerator:
       - value: "17"
         text: Java 17
       defaultValue: "11"
+    - name: databaseType
+      inputType: select
+      label: Database type to use
+      choices:
+        - value: "postgres"
+          text: PostgreSQL
+        - value: "mysql"
+          text: MySQL
+      defaultValue: "postgres"
+      required: true
+    - name: databaseName
+      inputType: text
+      defaultValue: "customer-database"
+      label: Database Instance Name
+      description: The name of the database instance this application will use
   imports:
   - name: java-version
     expose: []
   - name: spring-boot-postgresql
     expose:
-      - name: databaseName
-        dependsOn:
-          name: databaseType
-          value: postgres
-      - name: databaseIntegrationTestType
-        dependsOn:
-          name: databaseType
-          value: postgres
-      - name: databasePostgresStorageClass
-        dependsOn:
-          name: databaseType
-          value: postgres
-      - name: databasePostgresMonitoringClass
-        dependsOn:
-          name: databaseType
-          value: postgres
+    - name: databasePostgresStorageClass
+      dependsOn:
+        name: databaseType
+        value: postgres
   - name: spring-boot-mysql
     expose:
-    - name: databaseName
-      dependsOn:
-        name: databaseType
-        value: mysql
-    - name: databaseIntegrationTestType
-      dependsOn:
-        name: databaseType
-        value: mysql
     - name: databaseMySQLStorageClass
       dependsOn:
         name: databaseType
         value: mysql
+  - name: spring-boot-database
+    expose:
+    - name: databaseMigrationTool
+    - name: databaseIntegrationTestType
   - name: live-update
     expose:
       - name: liveUpdateIDESupport
@@ -149,6 +130,8 @@ engine:
       expression: '#artifactId.toLowerCase()'
     - name: javaVersion
       expression: "#updateBoot3 == true ? '17' : #javaVersion"
+    - name: databaseResourceName
+      expression: '#databaseName.toLowerCase()'
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -198,63 +181,6 @@ engine:
                 with: "''"
     # end of the Gradle specific part
 
-    # Flyway is selected
-    - condition: "#databaseMigrationTool == 'flyway'"
-      exclude: [ "src/main/resources/db/changelog/**" ]
-      merge:
-        - include: [ "**" ]
-          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
-        - include: [ "pom.xml" ]
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "<dependency>\\s+<groupId>org\\.liquibase</groupId>\\s+<artifactId>liquibase-core</artifactId>\\s+</dependency>\\s+"
-                with: "''"
-        - include: [ "build.gradle.kts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "    implementation(\"org.liquibase:liquibase-core\")"
-                  with: "''"
-        - include: [ "**/application.properties" ]
-          chain:
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.DeleteProperty
-            options:
-              propertyKey: "'spring.liquibase.*'"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.properties.ChangePropertyValue
-            options:
-              propertyKey: "'spring.flyway.enabled'"
-              newValue: "'true'"
-    # end of the Flyway specific part
-
-    # Liquibase is selected
-    - condition: "#databaseMigrationTool == 'liquibase'"
-      exclude: [ "src/main/resources/db/migration/**" ]
-      merge:
-        - include: [ "**" ]
-          exclude: [ "pom.xml", "build.gradle.kts", "**/application.properties" ]
-        - include: [ "pom.xml" ]
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "<dependency>\\s+<groupId>org\\.flywaydb</groupId>\\s+<artifactId>flyway-core</artifactId>\\s+</dependency>\\s+"
-                with: "''"
-        - include: [ "build.gradle.kts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "    implementation(\"org.flywaydb:flyway-core\")"
-                  with: "''"
-        - include: [ "**/application.properties" ]
-          chain:
-            - type: OpenRewriteRecipe
-              recipe: org.openrewrite.properties.DeleteProperty
-              options:
-                propertyKey: "'spring.flyway.*'"
-    # end of the Liquibase specific part
-
     # OpenAPI Endpoint Auto-registration
     - merge:
       - include: [ "**" ]
@@ -280,7 +206,7 @@ engine:
             rewriteTo: "'config/workload.yaml'"
     # End OpenAPI Endpoint Auto-registration
 
-    # Workload Resource name
+    # Workload Resource name and database resource name
     - merge:
       - exclude: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
       - include: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
@@ -289,12 +215,32 @@ engine:
             substitutions:
               - text: "rest-service-db"
                 with: "#workloadResourceName"
+              - text: "customer-database"
+                with: "#databaseResourceName"
     # End Workload Resource name
+
+    # Test pipeline
+    - merge:
+      - exclude: [ "config/testcontainers-test-pipeline.yaml", "config/test-pipeline.yaml" ]
+      - include: [ "config/test-pipeline.yaml" ]
+        condition: "#databaseIntegrationTestType != 'testcontainers'"
+      - include: [ "config/testcontainers-test-pipeline.yaml" ]
+        condition: "#databaseIntegrationTestType == 'testcontainers'"
+        chain:
+          - type: RewritePath
+            rewriteTo: "'config/test-pipeline.yaml'"
+    # End Test pipleine
 
     - merge:
       - type: InvokeFragment
         reference: java-version
       - include: [ "**" ]
+      onConflict: UseFirst
+
+    - merge:
+        - type: InvokeFragment
+          reference: spring-boot-database
+        - include: [ "**" ]
       onConflict: UseFirst
 
     - condition: "#databaseType == 'postgres'"
@@ -410,3 +356,62 @@ engine:
       - type: InvokeFragment
         condition: "#buildTool == 'gradle'"
         reference: build-wrapper-gradle
+
+    # DATABASE.md
+    - merge:
+      - exclude: [ "DATABASE.md" ]
+      - condition: "#databaseType == 'mysql'"
+        include: [ "DATABASE.md" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "Postgres"
+              with: "'MySQL'"
+          - type: ReplaceText
+            regex:
+              pattern: "PostgreSQL"
+              with: "'MySQL'"
+          - type: ReplaceText
+            regex:
+              pattern: "postgres"
+              with: "'mysql'"
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'in-memory'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'For local development an in-memory database is provided and configured with the local profile. 
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'Running a MySQL instance can easily be done by using `docker compose`:
+                
+                ```bash
+                \$ docker compose up -d
+                ```
+                '
+      - condition: "#databaseType == 'postgres'"
+        include: [ "DATABASE.md" ]
+        chain:
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'in-memory'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'For local development an in-memory database is provided and configured with the local profile. 
+                '
+          - type: ReplaceText
+            condition: "#databaseIntegrationTestType == 'testcontainers'"
+            regex:
+              pattern: "\\[local\\]"
+              with: |
+                'Running a PostgreSQL instance can easily be done by using `docker compose`:
+                
+                ```bash
+                \$ docker compose up -d
+                ```
+                '
+    # end of DATABASE.md

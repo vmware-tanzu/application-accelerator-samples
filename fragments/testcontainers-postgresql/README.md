@@ -1,9 +1,4 @@
-# Spring Boot H2 Fragment
-
-A Fragment for adding an in-memory database capability to your Spring Boot application. It will:
-- Add dependency to either `pom.xml` or `build.gradle.kts`
-- Add (or change) local profile properties (`application-local.properties`) to reference H2 in-memory database
-- Add (or change) test profile properties (`application-test.properties`) to reference H2 in-memory database
+# Testcontainers Fragment
 
 ## Using the fragment
 
@@ -13,7 +8,7 @@ To include this fragment you should add an import to the `accelerator` section:
 accelerator:
   # ...
   imports:
-  - name: spring-boot-h2
+  - name: testcontainers-postgresql
     
 ```
 
@@ -23,7 +18,10 @@ Then in your `engine` section add an `InvokeFragment` directive at an appropriat
 engine:
   # ...
     - type: InvokeFragment
-      reference: spring-boot-h2
+      reference: testcontainers-postgresql
+      let:
+        - name: databaseIntegrationTestType
+          expression: "'testcontainers'"
 ```
 
 ## Creating the fragment resource
@@ -34,13 +32,12 @@ To create this fragment use:
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Fragment
 metadata:
-  name: spring-boot-h2
+  name: testcontainers-postgresql
   namespace: accelerator-system
 spec:
-  displayName: "Spring Boot H2"
   git:
     ref:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: fragments/spring-boot-h2
+    subPath: fragments/testcontainers-postgresql
 ```
