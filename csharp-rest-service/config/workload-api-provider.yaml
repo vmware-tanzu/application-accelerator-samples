@@ -25,9 +25,9 @@ spec:
       type: openapi
       location:
         path: "/swagger/v1/swagger.json"  # The path to the api documentation
-        owner: OWNER_VAL
-        system: SYSTEM_VAL
-        description: DESCRIPTION_VAL
+      owner: OWNER_VAL
+      system: SYSTEM_VAL
+      description: DESCRIPTION_VAL
   env:
   - name: DOTNET_CLI_TELEMETRY_OPTOUT
     value: "true"
