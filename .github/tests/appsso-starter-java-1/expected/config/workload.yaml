@@ -7,6 +7,10 @@ metadata:
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
   name: my-app
 spec:
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"
   params:
     - name: live-update
       value: "true"
