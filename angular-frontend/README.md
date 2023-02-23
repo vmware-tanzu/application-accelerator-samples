@@ -104,6 +104,48 @@ When developing local but would like to deploy the local code to the cluster the
 By using `Tanzu: Apply` on the `workload.yaml` it will create the Workload resource with the local source (pushed to an image registry) as
 starting point.
 
+## Authentication
+If you want to use the Tanzu AppSSO Authserver, there are a few things to consider
+
+### Inner loop (development mode)
+#### Configuring the `auth.conf.json`
+In your Angular app, there should be an `auth.conf.json`. The items in there refer to the following:
+```json
+{
+  "clientId": "your-client-id",
+  "authority": "https://your-authorization-server.com/",
+  "postLogoutRedirectUri": "http://localhost:4200/",
+  "redirectUri": "http://localhost:4200/",
+  "scope": [
+    "openid" // This list MUST contain openid
+  ]
+}
+```
+
+#### Configuring the Authserver
+AppSSO does not allow `localhost` redirect URIs. For local testing, you should start your app with `npm run serve`, as this command
+is defined to use the flag `--host 127.0.0.1`. The Authserver will need to recognize your client, so you want to configure your AppSSO Authserver to have a
+`client` with configurations something like this:
+
+```yaml
+- client-id: <Your client ID. This has to match what is defined in the auth.conf.json>
+  client-secret: frontend
+  client-authentication-method: none
+  authorization-grant-types:
+    - authorization_code
+  redirect-uris:
+    - http://127.0.0.1:4200/
+    - http://127.0.0.1:4200/customer-profiles/list
+  scopes:
+    - name: openid
+    - name: profile
+    - name: roles
+    - name: email
+```
+
+### Using the returned user data
+Check out the user-profile module to see how user data from an access_token can be used.
+
 ## Deployment topology
 A running pod of this workload will include a built Angular application, NGINX server and NGINX configuration. A build Angular application 
 contains set of JavaScript, HTML, CSS and other static files which will be served by the NGINX HTTP server. Additionally to it the NGINX server
