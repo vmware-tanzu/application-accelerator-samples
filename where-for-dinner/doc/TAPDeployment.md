@@ -9,6 +9,7 @@ These instructions assume that you have a TAP 1.3.x or greater iterate cluster (
 
 * Tanzu TAP GUI
 * Tanzu Build Services
+* Tanzu Build Services Full Dependencies Package (TAP 1.5 and above.  See NOTE below)
 * Tanzu Cloud Native Runtimes
 * Tanzu Service Bindings
 * Tanzu Services Toolkit
@@ -16,6 +17,10 @@ These instructions assume that you have a TAP 1.3.x or greater iterate cluster (
 * Tanzu Out of the Box Templates
 * Tanzu Source Controller
 * Tanzu AppSSO (required if using the `Enable Security` option).
+
+**NOTE:** Starting with TAP 1.5.0, the Tanzu Build Services Full Dependencies Package is required to properly build the UI service.  This package must be manauly installed
+outside of the standard TAP install procedure.  Instructions for installing this package can be found 
+[here](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.4/tap/tanzu-build-service-install-tbs.html#install-full-dependencies-6).
 
 ## Quick Start
 

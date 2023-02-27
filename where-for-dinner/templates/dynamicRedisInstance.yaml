@@ -260,5 +260,5 @@ spec:
   description:
     short: Bitnami Redis
   provisioner:
-    xrd:
-      name: xredisinstances.caching.example.org
+    crossplane:
+      compositeResourceDefinition: xredisinstances.caching.example.org

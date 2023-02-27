@@ -171,5 +171,5 @@ spec:
   description:
     short: MySQL
   provisioner:
-    xrd:
-      name: xmysqlinstances.database.example.org
+    crossplane:
+      compositeResourceDefinition: xmysqlinstances.database.example.org
