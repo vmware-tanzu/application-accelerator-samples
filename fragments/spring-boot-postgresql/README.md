@@ -20,8 +20,6 @@ engine:
     - type: InvokeFragment
       reference: spring-boot-postgresql
       let:
-        - name: databaseName
-          expression: "#databaseName"
         - name: databaseIntegrationTestType
           expression: "'testcontainers'"
 ```
@@ -37,7 +35,6 @@ metadata:
   name: spring-boot-postgresql
   namespace: accelerator-system
 spec:
-  displayName: "Spring Boot PostgreSQL"
   git:
     ref:
       branch: main

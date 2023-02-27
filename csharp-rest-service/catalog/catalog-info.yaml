@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: csharp-rest-service
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=csharp-rest-service"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team
+  providesApis:
+    - csharp-rest-service

@@ -33,17 +33,3 @@ spec:
               if test -f "$FILE"; then
                   ./gradlew test
               fi
-            volumeMounts:
-              - mountPath: /var/run/
-                name: dind-socket
-        sidecars:
-          - image: docker:20.10.17-dind
-            name: docker
-            securityContext:
-              privileged: true
-            volumeMounts:
-              - mountPath: /var/run/
-                name: dind-socket
-        volumes:
-          - name: dind-socket
-            emptyDir: { }

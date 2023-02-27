@@ -1,0 +1,37 @@
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: csharp-rest-service
+  labels:
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/part-of: csharp-rest-service
+    tanzu.app.live.view: "true"
+    tanzu.app.live.view.application.flavours: steeltoe
+    tanzu.app.live.view.application.name: csharp-rest-service
+    tanzu.app.live.view.application.actuator.port: "9090"
+spec:
+  build:
+    env:
+    - name: DOTNET_CLI_TELEMETRY_OPTOUT
+      value: "true"
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  env:
+  - name: DOTNET_CLI_TELEMETRY_OPTOUT
+    value: "true"
+
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+
+  serviceClaims:
+    - name: database
+      ref:
+        apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+        kind: ResourceClaim
+        name: customer-database-claim

@@ -1,7 +1,6 @@
 SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='your-registry.io/project/steeltoe-weatherforecast-source') # update registry
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
-OUTPUT_TO_NULL_COMMAND = os.getenv("OUTPUT_TO_NULL_COMMAND", default=' > /dev/null ')
 NAME = "sample-app"
 
 k8s_custom_deploy(
@@ -12,13 +11,12 @@ k8s_custom_deploy(
             " --build-env BP_DEBUG_ENABLED=true" +
             " --namespace " + NAMESPACE +
             " --yes " +
-            OUTPUT_TO_NULL_COMMAND +
-            " && kubectl get workload " + NAME + " --namespace " + NAMESPACE + " -o yaml",
+            " -oyaml",
   delete_cmd="tanzu apps workload delete " + NAME + " --namespace " + NAMESPACE + " --yes",
   deps=['./bin'],
   container_selector='workload',
   live_update=[
-    sync('./bin', '/workspace')
+    sync('./bin/Debug/net6.0', '/workspace')
   ]
 )
 

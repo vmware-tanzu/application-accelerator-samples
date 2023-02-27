@@ -16,11 +16,17 @@ pushd ${GITHUB_WORKSPACE}
   --fragment-paths                          live-update=fragments/live-update \
   --fragment-paths                         java-version=fragments/java-version \
   --fragment-paths   spring-boot-app-sso-auth-code-flow=fragments/spring-boot-app-sso-auth-code-flow \
+  --fragment-paths                 spring-boot-database=fragments/spring-boot-database \
   --fragment-paths                       spring-boot-h2=fragments/spring-boot-h2 \
   --fragment-paths                    spring-boot-mysql=fragments/spring-boot-mysql \
   --fragment-paths               spring-boot-postgresql=fragments/spring-boot-postgresql \
+  --fragment-paths                  steeltoe-postgresql=fragments/steeltoe-postgresql \
+  --fragment-paths                 testcontainers-mysql=fragments/testcontainers-mysql \
+  --fragment-paths            testcontainers-postgresql=fragments/testcontainers-postgresql \
   --fragment-paths                       tap-initialize=fragments/tap-initialize \
   --fragment-paths                         tap-workload=fragments/tap-workload \
+  --fragment-paths                  build-wrapper-maven=fragments/build-wrapper-maven \
+  --fragment-paths                 build-wrapper-gradle=fragments/build-wrapper-gradle \
   --accelerator-path ${accname}=${accname} \
   $([ -f .github/tests/$1/options.json ] && echo --options-file .github/tests/$1/options.json)
 

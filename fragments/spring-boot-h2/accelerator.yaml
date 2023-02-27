@@ -1,7 +1,5 @@
 engine:
   merge:
-    - include: [ "**" ]
-      exclude: [ "pom.xml", "build.gradle.kts", "**/src/main/resources/application-local.properties", "**/src/test/resources/application-test.properties", "FRAGMENT_README.md" ]
     # Provide dependencies for integration testing and running locally
     - include: [ "pom.xml" ]
       chain:
@@ -64,5 +62,3 @@ engine:
           options:
             property: "'spring.test.database.replace'"
             value: "'NONE'"
-
-    

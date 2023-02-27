@@ -14,46 +14,100 @@ accelerator:
     label: Prefix for the container image repository
     defaultValue: dev.local
     required: true
+  - name: updateBoot3
+    inputType: checkbox
+    dataType: boolean
+    label: Use Spring Boot 3.0 (Requires Java 17)
+    defaultValue: false
+    required: true
 
   imports:
+  - name: java-version
   - name: tap-workload
+  - name: build-wrapper-maven
 
 engine:
-  merge:
-  - include: [ "**/*" ]
-    exclude: [ "config/*.yaml", "Tiltfile", "README.md", "grype.yaml", "catalog/*.yaml", ".github/workflows/**" ]
-  - include: [ "Tiltfile" ]
-    chain:
-    - type: ReplaceText
-      substitutions:
-      - text: tanzu-java-web-app
-        with: "#artifactId.toLowerCase()"
-    - type: ReplaceText
-      substitutions:
-      - text: your-registry.io/project
-        with: "#repositoryPrefix"
+  let:
+    - name: javaVersion
+      expression: "#updateBoot3 == true ? '17' : #javaVersion"
+  chain:
+  - merge:
+    - include: [ "**/*" ]
+      exclude: [ "config/*.yaml", "Tiltfile", "README.md", "grype.yaml", "catalog/*.yaml", ".github/workflows/**" ]
+    - include: [ "Tiltfile" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: tanzu-java-web-app
+          with: "#artifactId.toLowerCase()"
+      - type: ReplaceText
+        substitutions:
+        - text: your-registry.io/project
+          with: "#repositoryPrefix"
 
-  - include: [ "config/*.yaml" ]
-    chain:
-    - type: ReplaceText
-      substitutions:
-      - text: ": tanzu-java-web-app"
-        with: "': ' + #artifactId.toLowerCase()"
-    - merge:
-      - type: InvokeFragment
-        reference: tap-workload
-      - include: [ "**" ]
-      onConflict: UseFirst
+    - include: [ "config/*.yaml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: ": tanzu-java-web-app"
+          with: "': ' + #artifactId.toLowerCase()"
+      - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
+        onConflict: UseFirst
 
-  - include: [ "README.md" ]
-    chain:
-    - type: ReplaceText
-      substitutions:
-      - text: tanzu-java-web-app
-        with: "#artifactId"
-  - include: [ "catalog/*.yaml" ]
-    chain:
-    - type: ReplaceText
-      substitutions:
-      - text: tanzu-java-web-app
-        with: "#artifactId"
+    - include: [ "README.md" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: tanzu-java-web-app
+          with: "#artifactId"
+
+    - include: [ "catalog/*.yaml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: tanzu-java-web-app
+          with: "#artifactId"
+
+  - merge:
+    - include: [ "**" ]
+    - type: InvokeFragment
+      reference: java-version
+    onConflict: UseLast
+
+  - merge:
+    - include: [ "**" ]
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    onConflict: UseLast
+
+  - condition: "#updateBoot3"
+    merge:
+    - include: [ "**" ]
+    # Maven
+    - include: [ "pom.xml" ]
+      chain:
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.maven.ChangeParentPom
+        options:
+          oldGroupId: "'org.springframework.boot'"
+          newGroupId: "'org.springframework.boot'"
+          oldArtifactId: "'spring-boot-starter-parent'"
+          newArtifactId: "'spring-boot-starter-parent'"
+          newVersion: "'3.0.2'"
+    # HttpTraceRepository to HttpExchangeRepository
+    - include: [ "**/*.java" ]
+      chain:
+      - type: ReplaceText
+        regex:
+          pattern: "import org\\.springframework\\.boot\\.actuate\\.trace\\.http"
+          with: "'import org.springframework.boot.actuate.web.exchanges'"
+      - type: ReplaceText
+        regex:
+          pattern: "HttpTraceRepository"
+          with: "'HttpExchangeRepository'"
+    onConflict: UseLast
+
+  - type: Provenance

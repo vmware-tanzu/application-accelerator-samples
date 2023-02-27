@@ -33,6 +33,7 @@ accelerator:
       value: workload
   imports:
   - name: tap-workload
+  - name: build-wrapper-maven
 
 engine:
   merge:
@@ -125,3 +126,7 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "'README.md'"
+  - type: InvokeFragment
+    reference: build-wrapper-maven
+
+  - type: Provenance

@@ -1,0 +1,69 @@
+engine:
+  merge:
+
+    - include: [ "pom.xml" ]
+      chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>mysql</artifactId>[\\s\\S]+</dependencies>))"
+            with: |
+              '${startOfDependencies}
+                      <dependency>
+                          <groupId>org.testcontainers</groupId>
+                          <artifactId>mysql</artifactId>
+                          <version>1.17.6</version>
+                          <scope>test</scope>
+                      </dependency>${existingDependencies}'
+
+    - include: [ "build.gradle.kts" ]
+      chain:
+        - type: ReplaceText
+          regex:
+            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
+            with: |
+              '${startOfDependencies}
+                  testImplementation("org.testcontainers:mysql:1.17.6")${existingDependencies}'
+
+    - include: [ "docker-compose.yaml" ]
+
+    - include: [ "**/src/main/resources/application-local.properties" ]
+      chain:
+        - merge:
+            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+          onConflict: FavorForeign
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.properties.AddProperty
+          options:
+            property: "'spring.datasource.url'"
+            value: "'jdbc:mysql://localhost:3306/development?currentSchema=local_test'"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.properties.AddProperty
+          options:
+            property: "'spring.datasource.username'"
+            value: "'local_test'"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.properties.AddProperty
+          options:
+            property: "'spring.datasource.password'"
+            value: "'password'"
+
+    - include: [ "**/src/test/resources/application-test.properties" ]
+      chain:
+        - merge:
+            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+          onConflict: FavorForeign
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.properties.AddProperty
+          options:
+            property: "'spring.datasource.url'"
+            value: "'jdbc:tc:mysql:8.0.30:///test'"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.properties.AddProperty
+          options:
+            property: "'spring.datasource.driverClassName'"
+            value: "'org.testcontainers.jdbc.ContainerDatabaseDriver'"
+        - type: OpenRewriteRecipe
+          recipe: org.openrewrite.properties.AddProperty
+          options:
+            property: "'spring.test.database.replace'"
+            value: "'NONE'"

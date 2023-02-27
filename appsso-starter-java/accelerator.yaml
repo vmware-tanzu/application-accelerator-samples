@@ -10,6 +10,7 @@ accelerator:
     - java
   imports:
     - name: tap-workload
+    - name: build-wrapper-gradle
 
 engine:
   chain:
@@ -32,6 +33,10 @@ engine:
                 with: "'app.kubernetes.io/part-of: ' + #artifactId.toLowerCase()"
     - merge:
       - type: InvokeFragment
+        reference: build-wrapper-gradle
+      - type: InvokeFragment
         reference: tap-workload
       - include: [ "**" ]
       onConflict: UseFirst
+
+    - type: Provenance
