@@ -15,7 +15,7 @@
 	<description>Demo</description>		
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2021.0.5</spring-cloud.version>
+		<spring-cloud.version>2021.0.6</spring-cloud.version>
 		<revision>0.0.1-SNAPSHOT</revision>		
 		<spring-cloud-bindings.version>1.11.0</spring-cloud-bindings.version>
 		<snakeyaml.version>1.33</snakeyaml.version>

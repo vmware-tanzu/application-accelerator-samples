@@ -2,7 +2,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xmysqlinstances.database.example.org
+  name: xmysqlinstances.wherefordinner.database.example.org
 spec:
   connectionSecretKeys:
   - host
@@ -12,7 +12,7 @@ spec:
   - type
   - username
   - database
-  group: database.example.org
+  group: wherefordinner.database.example.org
   names:
     kind: XMySQLInstance
     plural: xmysqlinstances
@@ -41,10 +41,10 @@ spec:
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: xmysqlinstances.tanzu.database.example.org
+  name: xmysqlinstances.wherefordinner.database.example.org
 spec:
   compositeTypeRef:
-    apiVersion: database.example.org/v1alpha1
+    apiVersion: wherefordinner.database.example.org/v1alpha1
     kind: XMySQLInstance
   publishConnectionDetailsWithStoreConfigRef:
     name: default
@@ -172,4 +172,4 @@ spec:
     short: MySQL
   provisioner:
     crossplane:
-      compositeResourceDefinition: xmysqlinstances.database.example.org
+      compositeResourceDefinition: xmysqlinstances.wherefordinner.database.example.org

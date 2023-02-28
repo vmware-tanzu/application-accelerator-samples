@@ -2,7 +2,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xredisinstances.caching.example.org
+  name: xredisinstances.wherefordinner.caching.example.org
 spec:
   connectionSecretKeys:
   - host
@@ -10,7 +10,7 @@ spec:
   - port
   - provider
   - type
-  group: caching.example.org
+  group: wherefordinner.caching.example.org
   names:
     kind: XRedisInstance
     plural: xredisinstances
@@ -39,10 +39,10 @@ spec:
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: xredisinstances.tanzu.caching.example.org
+  name: xredisinstances.wherefordinner.caching.example.org
 spec:
   compositeTypeRef:
-    apiVersion: caching.example.org/v1alpha1
+    apiVersion: wherefordinner.caching.example.org/v1alpha1
     kind: XRedisInstance
   publishConnectionDetailsWithStoreConfigRef:
     name: default
@@ -261,4 +261,4 @@ spec:
     short: Bitnami Redis
   provisioner:
     crossplane:
-      compositeResourceDefinition: xredisinstances.caching.example.org
+      compositeResourceDefinition: xredisinstances.wherefordinner.caching.example.org
