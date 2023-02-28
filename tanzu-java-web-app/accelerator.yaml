@@ -96,7 +96,7 @@ engine:
           newGroupId: "'org.springframework.boot'"
           oldArtifactId: "'spring-boot-starter-parent'"
           newArtifactId: "'spring-boot-starter-parent'"
-          newVersion: "'3.0.2'"
+          newVersion: "'3.0.3'"
     # HttpTraceRepository to HttpExchangeRepository
     - include: [ "**/*.java" ]
       chain:
