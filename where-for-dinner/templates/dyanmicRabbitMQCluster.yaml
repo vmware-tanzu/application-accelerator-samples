@@ -3,7 +3,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xrabbitmqclusters.messaging.example.org
+  name: xrabbitmqclusters.wherefordinner.messaging.example.org
 spec:
   connectionSecretKeys:
   - host
@@ -12,7 +12,7 @@ spec:
   - provider
   - type
   - username
-  group: messaging.example.org
+  group: wherefordinner.messaging.example.org
   names:
     kind: XRabbitmqCluster
     plural: xrabbitmqclusters
@@ -41,10 +41,10 @@ spec:
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: xrabbitmqclusters.tanzu.messaging.example.org
+  name: xrabbitmqclusters.wherefordinner.messaging.example.org
 spec:
   compositeTypeRef:
-    apiVersion: messaging.example.org/v1alpha1
+    apiVersion: wherefordinner.messaging.example.org/v1alpha1
     kind: XRabbitmqCluster
   publishConnectionDetailsWithStoreConfigRef:
     name: default
@@ -165,4 +165,4 @@ spec:
     short: RabbitMQ
   provisioner:
     crossplane:
-      compositeResourceDefinition: xrabbitmqclusters.messaging.example.org
+      compositeResourceDefinition: xrabbitmqclusters.wherefordinner.messaging.example.org
