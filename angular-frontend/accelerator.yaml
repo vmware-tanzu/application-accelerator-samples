@@ -19,6 +19,8 @@ accelerator:
       defaultValue: "customer-profile-backend.namespace"
       label: Hostname of the backend services app. If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
       required: true
+#!    - name: singleSignOnAuthority
+#!      inputType: text
   imports:
     - name: tap-workload
 

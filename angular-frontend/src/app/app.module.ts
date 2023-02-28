@@ -8,13 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule} from "@angular/material/table";
 import {CustomerProfileModule} from './customer-profile/customer-profile.module';
-import { UserProfileComponent } from './user-profile/user-profile.component';
 import {AuthorizationService} from './authorization/authorization.service';
 import {AuthInterceptor} from './authorization/authInterceptor';
 import {UserProfileService} from "./user-profile/user-profile.service";
 import {UserProfileModule} from "./user-profile/user-profile.module";
+import {AppConfigService} from "../app-config.service";
 
 
 @NgModule({
@@ -33,6 +32,17 @@ import {UserProfileModule} from "./user-profile/user-profile.module";
     MatButtonModule,
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: (appConfigService: AppConfigService) => {
+        return () => {
+          //Make sure to return a promise!
+          return appConfigService.loadAppConfig();
+        };
+      }
+    },
     AuthorizationService,
     UserProfileService,
     {

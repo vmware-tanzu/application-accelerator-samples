@@ -24,6 +24,6 @@ spec:
         value: "dist"
   source:
     git:
-      url: <https URL for your generated project's Git repository>
+      url: https://github.com/sarahwalther/application-accelerator-samples.git
       ref:
-        branch: main
+        branch: add-oauth

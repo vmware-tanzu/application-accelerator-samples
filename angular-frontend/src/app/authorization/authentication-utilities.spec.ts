@@ -2,6 +2,7 @@ import {TestBed} from '@angular/core/testing';
 import {ActivatedRoute} from '@angular/router';
 import {AuthorizationService} from './authorization.service';
 import {AuthenticationUtilities} from './authentication-utilities';
+import {HttpRequest} from "@angular/common/http";
 
 describe('AuthenticationUtilities', () => {
   let authenticationUtilities: AuthenticationUtilities;
@@ -43,14 +44,10 @@ describe('AuthenticationUtilities', () => {
 
   describe('exchangeAuthCodeForToken', () => {
     it('should call authService.getToken with correct arguments', async () => {
-      const expectedCodeVerifier = 'a-code-verifier';
-      const expectedRedirectUri = 'the-redirect-uri';
-      authServiceSpy.getCodeVerifier.and.returnValue(expectedCodeVerifier)
-      authServiceSpy.getRedirectUri.and.returnValue(expectedRedirectUri)
+      const mockHttpRequest = jasmine.createSpyObj('HttpRequest', ['clone'])
+      await authenticationUtilities.exchangeAuthCodeForToken(mockHttpRequest);
 
-      await authenticationUtilities.exchangeAuthCodeForToken();
-
-      expect(authServiceSpy.getToken).toHaveBeenCalledWith('abc123', expectedCodeVerifier, expectedRedirectUri);
+      expect(authServiceSpy.getToken).toHaveBeenCalledWith('abc123', mockHttpRequest);
     });
   });
 

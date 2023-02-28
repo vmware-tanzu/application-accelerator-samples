@@ -26,3 +26,8 @@ export interface HttpRequestParamConfig {
   codeChallenge?: string,
   authorizationEndpoint?: string,
 }
+
+export interface AccessTokenResponse {
+  access_token: string,
+  expires_in: number
+}

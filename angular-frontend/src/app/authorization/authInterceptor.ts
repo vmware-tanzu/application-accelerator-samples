@@ -1,14 +1,19 @@
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {catchError, Observable, throwError} from "rxjs";
-import {Injectable} from "@angular/core";
-import {AuthorizationService} from "./authorization.service";
-import {AuthenticationUtilities} from "./authentication-utilities";
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {catchError, retry} from 'rxjs/operators';
+import {AuthorizationService} from './authorization.service';
+import {AuthenticationUtilities} from './authentication-utilities';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthorizationService, private authenticationUtilities: AuthenticationUtilities) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (request.url.includes('/oauth2/token') || request.url.includes('/oauth2/authorize')) {
+      return next.handle(request);
+    }
+
     const token = this.authService.getAccessToken();
     if (token) {
       request = request.clone({
@@ -18,19 +23,19 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
+    if (!this.authenticationUtilities.thereIsAnAuthorizationCode()) {
+      this.authService.startAuthentication();
+    }
+
     return next.handle(request).pipe(
       catchError(async (error: HttpErrorResponse) => {
         if (error.status === 401) {
-          if (this.authenticationUtilities.thereIsAnAuthorizationCode()) {
-            await this.authenticationUtilities.exchangeAuthCodeForToken();
-          } else {
-            let authenticationPromise = await this.authService.startAuthentication();
-            await this.authenticationUtilities.exchangeAuthCodeForToken();
-            return authenticationPromise
-          }
+          this.authenticationUtilities.exchangeAuthCodeForToken(request);
+          throw error;
         }
-        return throwError(error);
-      })
+        throw error;
+      }),
+      retry(1),
     );
   }
 }

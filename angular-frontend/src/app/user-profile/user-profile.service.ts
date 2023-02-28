@@ -38,7 +38,7 @@ export class UserProfileService {
       if (!this.authenticationUtilities.thereIsAnAuthorizationCode()) {
         await this.authService.startAuthentication();
       }
-      await this.authenticationUtilities.exchangeAuthCodeForToken();
+      await this.authenticationUtilities.exchangeAuthCodeForToken(null);
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorizationService } from './authorization.service';
+import {HttpRequest} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +9,10 @@ import { AuthorizationService } from './authorization.service';
 export class AuthenticationUtilities {
   constructor(private route: ActivatedRoute, private authService: AuthorizationService) {}
 
-  async exchangeAuthCodeForToken(): Promise<void> {
+  async exchangeAuthCodeForToken(request: HttpRequest<any> | null): Promise<void> {
     const authCode = this.route.snapshot.queryParams['code'];
 
-    await this.authService.getToken(authCode, this.authService.getCodeVerifier(), this.authService.getRedirectUri());
+    await this.authService.getToken(authCode, request);
   }
 
   thereIsAnAuthorizationCode(): boolean {

@@ -1,7 +1,6 @@
 {
   "authority": "http://localhost:9000",
   "clientId": "angular-frontend",
-  "postLogoutRedirectUri": "http://localhost:4200/",
   "redirectUri": "http://127.0.0.1:4200/",
   "scope": [
     "openid",

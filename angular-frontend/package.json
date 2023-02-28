@@ -26,6 +26,7 @@
     "@auth0/angular-jwt": "^5.1.2",
     "assert": "^2.0.0",
     "base64-js": "^1.5.1",
+    "base64url": "^3.0.1",
     "crypto-browserify": "^3.12.0",
     "crypto-js": "^4.1.1",
     "https-browserify": "^1.0.0",
