@@ -19,8 +19,34 @@ accelerator:
       defaultValue: "customer-profile-backend.namespace"
       label: Hostname of the backend services app. If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
       required: true
-#!    - name: singleSignOnAuthority
-#!      inputType: text
+    - name: useSingleSignOn
+      dataType: boolean
+      inputType: checkbox
+      label: Single Sign-on. If this is checked, 'authority', 'clientId', and 'scope' are required fields, but can easily be changed later.
+    - name: authority
+      label: Authority
+      description: The url of your single sign-on Authserver. If you are unsure, you can see what the Authservers available in your cluster are by running `kubectl get authserver -A` in your Kubernetes cluster and choose the url for the Authserver you want to connect to.
+      inputType: text
+      dependsOn:
+        name: useSingleSignOn
+        value: true
+    - name: clientId
+      label: Client ID
+      description: Your application's id or name
+      defaultValue: angular-frontend
+      inputType: text
+      dependsOn:
+        name: useSingleSignOn
+        value: true
+    - name: scope
+      label: Scope
+      description: The list of scopes that your application will require. Note that this has to contain 'openid' for the AppSSO Authserver to work.
+      inputType: text
+      dataType: [string]
+      defaultValue: ['openid', 'profile', 'message.read', 'message.write', 'email']
+      dependsOn:
+        name: useSingleSignOn
+        value: true
   imports:
     - name: tap-workload
 
@@ -30,6 +56,9 @@ engine:
       expression: '#backendService.toLowerCase()'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
+    - name: authority
+      expression:
+        "#authority.replaceAll(\"/$\", \"\")"
   chain:
     - applyTo: [ "nginx.conf" ]
       chain:
@@ -49,4 +78,15 @@ engine:
       - type: InvokeFragment
         reference: tap-workload
       - include: [ "**" ]
+      - condition: "#useSingleSignOn"
+        include: [ "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "<your-authserver-uri>"
+                with: "#authority"
+              - text: "<your-client-id>"
+                with: "#clientId"
+              - text: "[ \"openid\" ]"
+                with: "#scope"
       onConflict: UseFirst

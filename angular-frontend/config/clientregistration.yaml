@@ -1,18 +1,17 @@
 apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
 kind: ClientRegistration
 metadata:
-  name: angular-frontend
+  name: <your-client-id>
 #  namespace: #@ data.values.samples.namespace
   annotations:
     kapp.k14s.io/change-rule: "upsert after upserting authservers"
 spec:
   authServerSelector:
     matchLabels:
-      name: <your-authserver-name>
+      name: <your-authserver-uri>
   authorizationGrantTypes:
     - authorization_code
   clientAuthenticationMethod: none
-  #  requireUserConsent: false
   redirectURIs:
     - http://127.0.0.1:4200/
     - http://127.0.0.1:4200/customer-profiles/list

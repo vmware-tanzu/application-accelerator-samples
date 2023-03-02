@@ -1,10 +1,5 @@
 {
-  "authority": "http://localhost:9000",
-  "clientId": "angular-frontend",
-  "redirectUri": "http://127.0.0.1:4200/",
-  "scope": [
-    "openid",
-    "profile",
-    "email"
-  ]
+  "authority": "<your-authserver-uri>",
+  "clientId": "<your-client-id>",
+  "scope": [ "openid" ]
 }
