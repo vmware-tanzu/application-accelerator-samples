@@ -57,8 +57,7 @@ engine:
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
     - name: authority
-      expression:
-        "#authority.replaceAll(\"/$\", \"\")"
+      expression: "#authority.replaceAll(\"/$\", \"\")"
   chain:
     - applyTo: [ "nginx.conf" ]
       chain:
@@ -78,15 +77,34 @@ engine:
       - type: InvokeFragment
         reference: tap-workload
       - include: [ "**" ]
-      - condition: "#useSingleSignOn"
-        include: [ "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "<your-authserver-uri>"
-                with: "#authority"
-              - text: "<your-client-id>"
-                with: "#clientId"
-              - text: "[ \"openid\" ]"
-                with: "#scope"
       onConflict: UseFirst
+
+    - condition: "!#useSingleSignOn"
+      merge:
+        - include: ['**']
+          exclude: [ "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
+        - include: [ 'src/app/app.module.ts' ]
+          chain:
+            - type: ReplaceText
+              regex:
+                pattern: "// start providers[\\s\\S]+?// end providers"
+                with: "''"
+      onConflict: UseFirst
+
+    - condition: "#useSingleSignOn"
+      merge:
+        - include: [ "**" ]
+        - include: [  "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "<your-authserver-uri>"
+                  with: "#authority"
+                - text: "<your-client-id>"
+                  with: "#clientId"
+                - text: "[ \"openid\" ]"
+                  with: "#scope"
+        #              - text: "[ \"name: openid\" ]"
+        #                with:
+      onConflict: UseFirst
+

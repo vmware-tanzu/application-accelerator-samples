@@ -31,6 +31,7 @@ import {AppConfigService} from "../app-config.service";
     MatToolbarModule,
     MatButtonModule,
   ],
+  // start providers
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -50,7 +51,7 @@ import {AppConfigService} from "../app-config.service";
       useClass: AuthInterceptor,
       multi: true,
     },
-  ],
+  ], // end providers
   bootstrap: [HomeComponent]
 })
 export class AppModule {

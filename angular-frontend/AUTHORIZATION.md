@@ -1,9 +1,10 @@
-## Authorization
-If you want to use the Tanzu AppSSO Authserver, there are a few things to consider
+# Authorization
+To leverage the benefits of Tanzu AppSSO Authserver, there are a few things you should take into consideration.
 
-### Inner loop (development mode)
-#### Configuring the `auth.conf.json`
-In your Angular app, there should be an `auth.conf.json`. The items in there refer to the following:
+## Inner Loop (Development Mode)
+### Configuration of auth.conf.json
+Your Angular app should have an auth.conf.json file that needs configuration. The items in the file correspond to the following:
+
 ```json
 {
   "clientId": "your-client-id",
@@ -15,9 +16,8 @@ In your Angular app, there should be an `auth.conf.json`. The items in there ref
 }
 ```
 
-#### Configuring the Authserver
-To enable a single page app with an AppSSO Authserver you will need `CORS`. For this, the `Authserver CR` has an `AuthServer.spec.cors` spec. Your
-`Authserver CR` `CORS` section should look like the following:
+## Authserver Configuration
+To enable a single page app with an AppSSO Authserver, you will need to implement CORS. You can specify CORS settings in the AuthServer CR spec.cors section. Here are some examples:
 
 ```yaml
 kind: AuthServer
@@ -27,7 +27,7 @@ spec:
       - http://127.0.0.1:4200/
 ```
 
-Alternatively, if you want to configure the AuthServer to allow all origins, the `Authserver CR` should look like this:
+Alternatively, to allow all origins, the AuthServer CR should look like this:
 
 ```yaml
 kind: AuthServer
@@ -39,15 +39,13 @@ spec:
     allowAllOrigins: true
 ```
 
-AppSSO does not allow `localhost` redirect URIs. For local testing, you should start your app with `npm run serve`, as this command
-is defined to use the flag `--host 127.0.0.1`. The `AuthServer` will need to recognize your client, so you want to define your `ClientRegistration` CR as follows:
+Note that localhost redirect URIs are not allowed with AppSSO. For local testing, it is recommended to use npm run serve, which includes the --host 127.0.0.1 flag. The AuthServer should recognize your client, so it is necessary to define your ClientRegistration CR as follows:
 
 ```yaml
 apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
 kind: ClientRegistration
 metadata:
   name: <your-app-name>
-#  namespace: #@ data.values.samples.namespace
 #  annotations:
 #    kapp.k14s.io/change-rule: "upsert after upserting authservers"
 spec:
@@ -68,7 +66,7 @@ spec:
     - name: profile
 ```
 
-__Note:__ The `clientAuthenticationMethod` has to be set to `none` in order for a single page application to work with an AppSSO AuthServer.
+__Note__ that the `clientAuthenticationMethod` must be set to none for a single page application to work with an AppSSO AuthServer.
 
-### Using the returned user data
-Check out the user-profile module to see how user data from an access_token can be used.
+## Using User Data Returned from AppSSO
+To learn how to use user data returned from an access token, you can check out the user-profile module.
