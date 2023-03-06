@@ -307,7 +307,7 @@ engine:
             newGroupId: "'org.springframework.boot'"
             oldArtifactId: "'spring-boot-starter-parent'"
             newArtifactId: "'spring-boot-starter-parent'"
-            newVersion: "'3.0.3'"
+            newVersion: "'3.0.4'"
         - type: OpenRewriteRecipe
           recipe: org.openrewrite.maven.ChangePropertyValue
           options:
@@ -323,7 +323,7 @@ engine:
         - type: ReplaceText
           regex:
             pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-            with: "'id(\"org.springframework.boot\") version \"3.0.3\"'"
+            with: "'id(\"org.springframework.boot\") version \"3.0.4\"'"
         - type: ReplaceText
           regex:
             pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
