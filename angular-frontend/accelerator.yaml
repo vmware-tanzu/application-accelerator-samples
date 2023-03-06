@@ -73,13 +73,22 @@ engine:
             - text: "angular-frontend"
               with: "#workloadResourceName"
 
+    - applyTo: [ "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "<your-authserver-uri>"
+              with: "#authority"
+            - text: "<your-client-id>"
+              with: "#clientId"
+            - text: "[ \"openid\" ]"
+              with: "#scope"
+
     - merge:
       - type: InvokeFragment
         reference: tap-workload
       - include: [ "**" ]
       onConflict: UseFirst
-<<<<<<< Updated upstream
-=======
 
     - condition: "!#useSingleSignOn"
       merge:
@@ -96,24 +105,10 @@ engine:
     - condition: "#useSingleSignOn"
       merge:
         - include: [ "**" ]
-        - include: [  "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "<your-authserver-uri>"
-                  with: "#authority"
-                - text: "<your-client-id>"
-                  with: "#clientId"
-                - text: "[ \"openid\" ]"
-                  with: "#scope"
-        #              - text: "[ \"name: openid\" ]"
-        #                with:
-      onConflict: UseFirst
 
     - type: Provenance
 
       onConflict: UseFirst
->>>>>>> Stashed changes
 
     - condition: "!#useSingleSignOn"
       merge:
@@ -127,20 +122,4 @@ engine:
                 with: "''"
       onConflict: UseFirst
 
-    - condition: "#useSingleSignOn"
-      merge:
-        - include: [ "**" ]
-        - include: [  "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "<your-authserver-uri>"
-                  with: "#authority"
-                - text: "<your-client-id>"
-                  with: "#clientId"
-                - text: "[ \"openid\" ]"
-                  with: "#scope"
-        #              - text: "[ \"name: openid\" ]"
-        #                with:
-      onConflict: UseFirst
 
