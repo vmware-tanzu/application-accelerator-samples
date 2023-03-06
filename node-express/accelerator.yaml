@@ -14,6 +14,11 @@ accelerator:
     inputType: checkbox
     dataType: boolean
     defaultValue: true
+  - name: includeTas
+    label: "Include TAS deployment resources?"
+    inputType: checkbox
+    dataType: boolean
+    defaultValue: true
 
   imports:
     - name: tap-workload
@@ -21,27 +26,37 @@ accelerator:
 engine:
   merge:
     - include: [ "**" ]
-      exclude: [ "package.json", "config/**", "catalog/**", "README.md", "DEPLOYING.md" ]
+      exclude: [ "package.json", "kubernetes/**", "vms/**", "catalog/**", "README.md" ]
     - include: [ "package.json" ]
       chain:
       - type: ReplaceText
         substitutions:
         - text: node-express
           with: "#artifactId"
-    - include: [ "config/workload.yaml" ]
+    - include: [ "kubernetes/tap/workload.yaml" ]
       condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
         - text: node-express
           with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'config/' + #filename"
       - merge:
           - type: InvokeFragment
             reference: tap-workload
           - include: [ "**" ]
         onConflict: UseFirst
+    - include: [ "vms/tas/tas-config.yaml" ]
+      condition: "#includeTas"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: node-express
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'manifest.yaml'"
     - include: [ "catalog/catalog-info.yaml" ]
-      condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
@@ -57,7 +72,7 @@ engine:
           substitutions:
           - text: node-express
             with: "#artifactId"
-      - include: [ "DEPLOYING.md" ]
+      - include: [ "kubernetes/tap/DEPLOYING.md" ]
         condition: "#includeTap"
         chain:
         - type: ReplaceText
@@ -66,5 +81,12 @@ engine:
             with: "#artifactId"
         - type: RewritePath
           rewriteTo: "'README.md'"
-
-    - type: Provenance
+      - include: [ "vms/tas/DEPLOYING.md" ]
+        condition: "#includeTas"
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: node-express
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"

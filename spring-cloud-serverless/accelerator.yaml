@@ -19,9 +19,11 @@ accelerator:
       text: TAP workload
     - value: k8s-simple
       text: Kubernetes deployment and service
+    - value: tas
+      text: TAS app
     - value: none
-      text: Skip Kubernetes deployment
-    defaultValue: workload
+      text: Skip deployment configuration
+    defaultValue: tas
     required: true
   imports:
   - name: tap-workload
@@ -30,7 +32,7 @@ accelerator:
 engine:
   merge:
   - include: [ "**" ]
-    exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "catalog/*.yaml", ".github/workflows/**" ]
+    exclude: [ "pom.xml", "README.md", "grype.yaml", "kubernetes/**", "vms/**", "catalog/*.yaml", ".github/workflows/**" ]
   - include: [ "pom.xml" ]
     chain:
     - type: ReplaceText
@@ -83,6 +85,15 @@ engine:
     chain:
     - type: RewritePath
       rewriteTo: "#filename"
+  - include: [ "vms/tas/tas-config.yaml" ]
+    condition: "#deploymentType == 'tas'"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: ": hello-fun"
+        with: "': ' + #artifactId"
+    - type: RewritePath
+      rewriteTo: "'manifest.yaml'"
   - include: [ "catalog/*.yaml" ]
     condition: "#deploymentType != 'none'"
     chain:
@@ -114,7 +125,14 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "'README.md'"
+    - include: [ "vms/tas/DEPLOYING.md" ]
+      condition: "#deploymentType == 'tas'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: hello-fun
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'README.md'"
   - type: InvokeFragment
     reference: build-wrapper-maven
-
-  - type: Provenance

@@ -10,11 +10,21 @@ accelerator:
 
   options:
   - name: applicationName
-    label: Application Name
-    description: Application Name
+    label: .NET Project Name
+    description: .NET project name and namespace
     inputType: text
     defaultValue: Sample
     required: true
+  - name: includeTap
+    label: "Include TAP deployment resources?"
+    inputType: checkbox
+    dataType: boolean
+    defaultValue: true
+  - name: includeTas
+    label: "Include TAS deployment resources?"
+    inputType: checkbox
+    dataType: boolean
+    defaultValue: true
 
   imports:
     - name: tap-workload
@@ -25,7 +35,7 @@ engine:
     expression: '#applicationName.replace("-", "_")'
   merge:
   - include: [ "**" ]
-    exclude: [ "README.md", "config/**", "catalog/**", "Tiltfile" ]
+    exclude: [ "README.md", "kubernetes/**", "vms/**", "catalog/**" ]
     chain:
     - type: ReplaceText
       substitutions:
@@ -34,7 +44,8 @@ engine:
     - type: RewritePath
       regex: "Sample(.*)"
       rewriteTo: "#applicationName + #g1"
-  - include: [ "README.md", "config/*.yaml", "catalog/*.yaml", "Tiltfile" ]
+  - include: [ "kubernetes/tap/workload.yaml" ]
+    condition: "#includeTap"
     chain:
     - type: ReplaceText
       substitutions:
@@ -42,11 +53,88 @@ engine:
         with: "#artifactId.toLowerCase()"
       - text: Sample
         with: "#applicationName"
+    - type: RewritePath
+      rewriteTo: "'config/' + #filename"
     - merge:
-      - type: InvokeFragment
-        reference: tap-workload
-      - include: [ "**" ]
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
       onConflict: UseFirst
+  - include: [ "kubernetes/tap/Tiltfile" ]
+    condition: "#includeTap"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: sample-app
+        with: "#artifactId.toLowerCase()"
+      - text: Sample
+        with: "#applicationName"
+    - type: RewritePath
+      rewriteTo: "#filename"
+  - include: [ "vms/tas/buildpack.yml" ]
+    condition: "#includeTas"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: sample-app
+        with: "#artifactId.toLowerCase()"
+      - text: Sample
+        with: "#applicationName"
+    - type: RewritePath
+      rewriteTo: "#filename"
+  - include: [ "vms/tas/tas-config.yaml" ]
+    condition: "#includeTas"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: sample-app
+        with: "#artifactId.toLowerCase()"
+      - text: Sample
+        with: "#applicationName"
+    - type: RewritePath
+      rewriteTo: "'manifest.yaml'"
+  - include: [ "catalog/catalog-info.yaml" ]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: sample-app
+        with: "#artifactId.toLowerCase()"
+      - text: Sample
+        with: "#applicationName"
+  - name: README
+    type: Combo
+    onConflict: Append
+    merge:
+    - include: [ "README.md"]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: sample-app
+          with: "#artifactId.toLowerCase()"
+        - text: Sample
+          with: "#applicationName"
+    - include: [ "kubernetes/tap/DEPLOYING.md" ]
+      condition: "#includeTap"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: sample-app
+          with: "#artifactId.toLowerCase()"
+        - text: Sample
+          with: "#applicationName"
+      - type: RewritePath
+        rewriteTo: "'README.md'"
+    - include: [ "vms/tas/DEPLOYING.md" ]
+      condition: "#includeTas"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: sample-app
+          with: "#artifactId.toLowerCase()"
+        - text: Sample
+          with: "#applicationName"
+      - type: RewritePath
+        rewriteTo: "'README.md'"
   - include: [ "**/*.cs" ]
     chain:
     - type: ReplaceText
