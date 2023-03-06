@@ -51,7 +51,8 @@ import {AppConfigService} from "../app-config.service";
       useClass: AuthInterceptor,
       multi: true,
     },
-  ], // end providers
+  ],
+  // end providers
   bootstrap: [HomeComponent]
 })
 export class AppModule {
