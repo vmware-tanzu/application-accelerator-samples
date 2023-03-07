@@ -1,3 +1,5 @@
+Version 1
+
 # angular-frontend
 
 angular-frontend provides you an out-of-the-box application setup to fast-start development of a Web Application based
