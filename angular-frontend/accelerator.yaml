@@ -57,8 +57,8 @@ engine:
       expression: '#backendService.toLowerCase()'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
-    - name: authority
-      expression: "#authority.replaceAll(\"/$\", \"\")"
+#    - name: authority
+#      expression: "#authority.replaceAll(\"/$\", \"\")"
   chain:
     - applyTo: [ "nginx.conf" ]
       chain:
