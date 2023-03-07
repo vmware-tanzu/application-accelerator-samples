@@ -101,7 +101,7 @@ engine:
             - type: ReplaceText
               regex:
                 pattern: "// start providers(?:.|\n)+?// end providers"
-                with: "providers: []"
+                with: "''"
       onConflict: UseFirst
 
     - condition: "#useSingleSignOn"
