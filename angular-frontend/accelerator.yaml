@@ -22,6 +22,7 @@ accelerator:
     - name: useSingleSignOn
       dataType: boolean
       inputType: checkbox
+      defaultValue: false
       label: Single Sign-on. If this is checked, 'authority', 'clientId', and 'scope' are required fields, but can easily be changed later.
     - name: authority
       label: Authority
