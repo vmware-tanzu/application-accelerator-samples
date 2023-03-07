@@ -100,8 +100,8 @@ engine:
           chain:
             - type: ReplaceText
               regex:
-                pattern: "// start providers[\\s\\S]+?// end providers"
-                with: "''"
+                pattern: "// start providers(?:.|\n)+?// end providers"
+                with: "providers: []"
       onConflict: UseFirst
 
     - condition: "#useSingleSignOn"
