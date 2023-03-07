@@ -76,6 +76,7 @@ engine:
 
     - applyTo: [ "AUTHORIZATION.md", "src/authorization/", "src/user-profile", "assets/auth.conf.json", "config/clientregistration.yaml", "app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
       chain:
+        - condition: "#useSingleSignOn"
         - type: ReplaceText
           substitutions:
             - text: "<your-authserver-uri>"
