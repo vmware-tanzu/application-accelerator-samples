@@ -14,7 +14,7 @@ In order to further develop this application the following tools may be needed:
 To quickly test locally, run this command in the directory where `func.py` exists.
 
 ```
-pack build python-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.1.0 --env BP_FUNCTION=func.main
+pack build python-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.3.1 --env BP_FUNCTION=func.main
 ```
 
 Where `python-function` is the name of your runnable function image.

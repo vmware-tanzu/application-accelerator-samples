@@ -14,7 +14,7 @@ In order to further develop this application the following tools may be needed:
 To quickly test locally, run this command in the root directory.
 
 ```
-pack build java-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.1.0 --env BP_FUNCTION=functions.Handler
+pack build java-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.3.1 --env BP_JVM_VERSION=17 --env BP_FUNCTION=functions.Handler
 ```
 
 Where `java-function` is the name of your runnable function image, later used by Docker.
