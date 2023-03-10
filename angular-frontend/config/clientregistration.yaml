@@ -5,7 +5,7 @@ metadata:
 spec:
   authServerSelector:
     matchLabels:
-      name: <your-authserver-uri>
+      <your-authserver-match-label-key>: <your-authserver-match-label-value>
   authorizationGrantTypes:
     - authorization_code
   clientAuthenticationMethod: none
