@@ -25,9 +25,31 @@ accelerator:
       defaultValue: false
       label: Single Sign-on. If this is checked, 'authority', 'clientId', and 'scope' are required fields, and can easily be changed later.
     - name: authority
-      label: Authority
+      label: Authority Url
       description: The url of your single sign-on `AuthServer`. If you are unsure, you can see what the `AuthServers` available in your cluster are by running `kubectl get authserver -A` in your Kubernetes cluster and choose the url for the Authserver you want to connect to.
       inputType: text
+      dependsOn:
+        name: useSingleSignOn
+        value: true
+    - name: authorityLabelKey
+      label: Authority Label Key
+      description: A unique label key by which to select your desired `AuthServer`. If you are unsure, run `kubectl label --list authserver/<name-of-authserver> --namespace <authserver-workspace>`
+      inputType: text
+      dependsOn:
+        name: useSingleSignOn
+        value: true
+    - name: authorityLabelValue
+      label: Authority Label Value
+      description: A unique label value by which to select your desired `AuthServer`. If you are unsure, run `kubectl label --list authserver/<name-of-authserver> --namespace <authserver-workspace>`
+      inputType: text
+      dependsOn:
+        name: useSingleSignOn
+        value: true
+    - name: namespace
+      label: Namespace
+      description: The namespace where you are planning to deploy your Angular app. If you don't know yet, remember to change this value in the `auth.config.json` later.
+      inputType: text
+      defaultValue: <your-namespace>
       dependsOn:
         name: useSingleSignOn
         value: true
@@ -64,6 +86,12 @@ engine:
               with: "#authority"
             - text: "<your-client-id>"
               with: "#workloadResourceName"
+            - text: "<your-authserver-match-label-value>"
+              with: "#authorityLabelValue"
+            - text: "<your-authserver-match-label-key>"
+              with: "#authorityLabelKey"
+            - text: "<your-namespace>"
+              with: "#namespace"
 
     - merge:
       - type: InvokeFragment

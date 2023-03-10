@@ -1,5 +1,5 @@
 {
   "authority": "<your-authserver-uri>",
-  "clientId": "<your-client-id>",
+  "clientId": "<your-namespace>_<your-client-id>",
   "scope": [ "openid", "profile", "email", "message.read", "message.write" ]
 }
