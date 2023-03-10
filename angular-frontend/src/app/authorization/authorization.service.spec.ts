@@ -39,8 +39,8 @@ describe('AuthorizationService', () => {
       const authorizationServerWithEndpoint = 'http://authorizationserver:9000/oauth2/authorize';
       const responseTypeCode = 'response_type=code';
       const clientId = 'client_id=angular-frontend';
-      const redirectUri = 'redirect_uri=http%253A%252F%252Fwww.example.com%252F';
-      const scopes = 'scope=openid%2520email';
+      const redirectUri = 'redirect_uri=http%3A%2F%2Fwww.example.com%2F';
+      const scopes = 'scope=openid%20email';
       const state = 'state=a-state';
       const nonce = 'nonce=a-nonce';
       const codeChallengeMethod = 'code_challenge_method=S256';
