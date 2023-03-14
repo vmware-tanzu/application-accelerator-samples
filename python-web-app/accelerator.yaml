@@ -1,0 +1,61 @@
+accelerator:
+  displayName: Tanzu Python Flask Web App
+  description: A sample Python Flask web application built with Tanzu supply-chain
+  iconUrl: https://raw.githubusercontent.com/fullaware/python-web-app/main/pythonlogo.png
+  tags:
+  - python
+  - flask
+  - web
+  - tanzu
+
+  # Accelerator GUI
+  options:
+    - name: repositoryPrefix
+      inputType: text
+      label: Prefix for the container image repository
+      defaultValue: dev.local
+      required: true
+
+  imports:
+    - name: tap-workload
+
+engine:
+  merge:
+    - include: [ "**/*" ]
+      exclude: [ "config/*.yaml", "Tiltfile", "README.md", "catalog/*.yaml" ]
+    - include: [ "Tiltfile" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: python-web-app
+          with: "#artifactId.toLowerCase()"
+      - type: ReplaceText
+        substitutions:
+        - text: your-registry.io/project
+          with: "#repositoryPrefix"
+
+    - include: [ "config/*.yaml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: ": python-web-app"
+          with: "': ' + #artifactId.toLowerCase()"
+      - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
+        onConflict: UseFirst
+
+    - include: [ "README.md" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: python-web-app
+          with: "#artifactId"
+
+    - include: [ "catalog/*.yaml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: python-web-app
+          with: "#artifactId"

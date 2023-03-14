@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: python-web-app
+  description: Python Flask Web App
+  tags:
+    - app-accelerator
+    - python
+    - flask
+    - gunicorn
+    - web
+    - tanzu
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=python-web-app'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team
