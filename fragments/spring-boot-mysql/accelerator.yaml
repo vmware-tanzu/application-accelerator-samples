@@ -5,31 +5,15 @@ accelerator:
       defaultValue: "customer-database"
       label: Database Instance Name
       description: The name of the database instance this application will use
-    - name: databaseMySQLStorageClass
-      label: Database Storage Class
-      inputType: text
-      defaultValue: "default"
-      description: The storage class to be used for storing MySQL data
 
 engine:
   let:
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
-    - name: databaseMySQLStorageClassResourceName
-      expression: '#databaseMySQLStorageClass.toLowerCase()'
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "docker-compose.yaml", "**/workload.yaml", "config/service-operator/mysql.yaml", "config/service-operator/mysql-cluster-role.yaml", "config/service-operator/mysql-cluster-instance-class.yaml", "config/app-operator/mysql-resource-claim.yaml", "config/app-operator/mysql-resource-claim-policy.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
-
-      - include: [ "config/service-operator/*.yaml", "config/app-operator/*.yaml" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "customer-database"
-                with: "#databaseResourceName"
-              - text: "storage-class-standard"
-                with: '#databaseMySQLStorageClassResourceName'
+        exclude: [ "docker-compose.yaml", "**/workload.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
 
       - include: [ "pom.xml" ]
         chain:
@@ -52,4 +36,3 @@ engine:
               with: |
                 '${startOfDependencies}
                     runtimeOnly("com.mysql:mysql-connector-j")${existingDependencies}'
-    
