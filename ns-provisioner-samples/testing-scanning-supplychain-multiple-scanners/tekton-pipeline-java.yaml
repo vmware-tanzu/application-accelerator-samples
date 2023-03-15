@@ -2,12 +2,13 @@
 #@ def in_list(key, list):
 #@  return hasattr(data.values.tap_values, key) and (data.values.tap_values[key] in list)
 #@ end
+#! This if condition ensures that this Java Tekton pipeline is only created if the supply chain is testing or testing_scanning, and the TAP profile used is full, iterate or build.
 #@ if/end in_list('supply_chain', ['testing', 'testing_scanning']) and in_list('profile', ['full', 'iterate', 'build']):
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: developer-defined-tekton-pipeline-java
+  name: tekton-pipeline-java
   labels:
     apps.tanzu.vmware.com/pipeline: test
   annotations:
@@ -41,6 +42,6 @@ spec:
               elif [ -f "$GRADLE" ]; then
                   gradle test --debug
               else
-                  echo "WARNING: No tests were run. This workload is not built with one of the currently supported frameworks (maven or gradle). If using another language/framework, update the image and the script sections of the 'pipeline.tekton.dev/developer-defined-tekton-pipeline' resource in your namespace to match your language/framework."
+                  echo "WARNING: No tests were run. This workload is not built with one of the currently supported frameworks (maven or gradle). If using another language/framework, update the image and the script sections of the 'pipeline.tekton.dev' resource in your namespace to match your language/framework."
                   #exit 1
               fi
