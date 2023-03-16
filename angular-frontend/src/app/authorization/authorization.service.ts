@@ -54,8 +54,7 @@ export class AuthorizationService {
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join("&");
 
-    const authUrl = encodeURI(this.authority + this.authorizationEndpoint + "?" + queryString);
-
+    const authUrl = this.authority + this.authorizationEndpoint + "?" + queryString;
 
     // Redirect to authorization request URL
     this.utils.setDestinationUrlTo(authUrl)

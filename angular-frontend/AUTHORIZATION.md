@@ -15,7 +15,9 @@ Your Angular app should have an `src/assets/auth.conf.json` file that needs conf
 }
 ```
 
-__Note:__ The scpoes listed here are default scopes. Replace with the scopes appropriate for your application. Any scopes you 
+__Note:__ The clientId is made up as such: `<your-namespace>_<your-app-name>`.
+
+__Note:__ The scopes listed here are default scopes. Replace with the scopes appropriate for your application. Any scopes you
 want to have available here also need to be listed in the `clientregistration.yaml`
 
 ## Authserver Configuration
@@ -70,6 +72,8 @@ spec:
     - name: message.read
     - name: message.write
 ```
+
+__Note:__ You can find labels for your `AuthServer` by running `kubectl label --list authserver/<name-of-authserver> --namespace <authserver-workspace>`.
 
 __Note__ that the `clientAuthenticationMethod` must be set to none for a single page application to work with an AppSSO `AuthServer`.
 
