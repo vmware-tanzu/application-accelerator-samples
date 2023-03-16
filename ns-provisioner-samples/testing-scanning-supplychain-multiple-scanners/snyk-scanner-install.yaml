@@ -1,0 +1,51 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:base64", "base64")
+#@ load("@ytt:yaml", "yaml")
+#@ def in_list(key, list):
+#@  return hasattr(data.values.tap_values, key) and (data.values.tap_values[key] in list)
+#@ end
+#@ def get_snyk_values():
+#@   snyk_values = {}
+#@   snyk_values["namespace"] = data.values.name
+#@   snyk_values["targetImagePullSecret"] = "registries-credentials"
+#@   snyk_values["snyk"] = {"tokenSecret": {"name": "snyk-token-secret"}}
+#@   snyk_values["metadataStore"] = {"url": ""}
+#@   return snyk_values
+#@ end
+#@ if in_list('supply_chain', ['testing_scanning']) and in_list('profile', ['full', 'build']):
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: "snyk-scanner"
+  #! Providing the namespace here ensures that all PackageInstall for this scanner are created in a given namespace. (tap-install for this example)
+  #! The name for the PackageInstall will be suffixed with the provisioned namespace name. for e.g. snyk-scanner PackageInstall for
+  #! namespace dev will have the name snyk-scanner-dev to avoid name conflicts with other similar PackageInstalls.
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/create-strategy: fallback-on-update
+spec:
+  packageRef:
+    refName: snyk.scanning.apps.tanzu.vmware.com
+    versionSelection:
+      constraints: ">0.0.0"
+      prereleases: {}
+  serviceAccountName: tap-install-sa
+  values:
+  - secretRef:
+      #! We are appending the name of the namespace using data.values.name so the PackageInstall refers to the secret for the provisioned namespace.
+      name: #@ "snyk-scanner-" + data.values.name
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "snyk-scanner"
+  #! Providing the namespace here ensures that all Secrets for this scanner are created in a given namespace. (tap-install for this example)
+  #! The name for the Secret will be suffixed with the provisioned namespace name. for e.g. snyk-scanner Secret for
+  #! namespace dev will have the name snyk-scanner-dev to avoid name conflicts with other similar Secrets.
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/create-strategy: fallback-on-update
+stringData:
+  values.yml: #@ yaml.encode(get_snyk_values())
+#@ end
