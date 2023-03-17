@@ -5,7 +5,6 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: web
     apps.tanzu.vmware.com/has-tests: "true"
-    apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: python-web-app
 spec:
   params:
