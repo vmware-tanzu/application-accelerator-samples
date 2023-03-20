@@ -1,0 +1,43 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:base64", "base64")
+#@ load("@ytt:yaml", "yaml")
+#@ def in_list(key, list):
+#@  return hasattr(data.values.tap_values, key) and (data.values.tap_values[key] in list)
+#@ end
+#@ def get_cb_values():
+#@   cb_values = {}
+#@   cb_values["namespace"] = data.values.name
+#@   cb_values["targetImagePullSecret"] = "registries-credentials"
+#@   cb_values["carbonBlack"] = {"configSecret": {"name": "cb-config"}}
+#@   return cb_values
+#@ end
+#@ if in_list('supply_chain', ['testing_scanning']) and in_list('profile', ['full', 'build']):
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: "cb-scanner"
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/create-strategy: fallback-on-update
+spec:
+  packageRef:
+    refName: carbonblack.scanning.apps.tanzu.vmware.com
+    versionSelection:
+      constraints: "1.1.0-beta.1"
+      prereleases: {}
+  serviceAccountName: tap-install-sa
+  values:
+  - secretRef:
+      name: #@ "cb-scanner-" + data.values.name
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "cb-scanner"
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/create-strategy: fallback-on-update
+stringData:
+  values.yml: #@ yaml.encode(get_cb_values())
+#@ end
