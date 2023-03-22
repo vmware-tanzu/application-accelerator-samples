@@ -2,7 +2,6 @@ SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='dev.local/python-web-app-sourc
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
 OUTPUT_TO_NULL_COMMAND = os.getenv("OUTPUT_TO_NULL_COMMAND", default=' > /dev/null ')
-allow_k8s_contexts('taplab')
 
 k8s_custom_deploy(
     'python-web-app',
