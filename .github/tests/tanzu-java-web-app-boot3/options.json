@@ -1,0 +1,5 @@
+{
+    "repositoryPrefix": "dev.local",
+    "updateBoot3": true,
+    "javaVersion": "17"
+}

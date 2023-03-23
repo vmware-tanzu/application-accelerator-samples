@@ -1,0 +1,16 @@
+{
+    "updateBoot3": true,
+
+    "buildTool": "maven",
+    "databaseMigrationTool": "flyway",
+    "artifactId": "customer-profile",
+    "groupId": "com.example",
+    "packageName": "com.example.customerprofile",
+    "databaseType": "mysql",
+    "exposeOpenAPIEndpoint": false,
+    "javaVersion": "17",
+    "databaseIntegrationTestType": "testcontainers",
+    "databasePostgresStorageClass": "standard",
+    "liveUpdateIDESupport": true,
+    "sourceRepositoryPrefix": "dev.local"
+}
