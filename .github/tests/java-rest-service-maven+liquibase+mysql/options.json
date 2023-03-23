@@ -2,6 +2,7 @@
   "buildTool": "maven",
   "databaseMigrationTool": "liquibase",
 
+  "updateBoot3": false,
   "artifactId": "customer-profile",
   "groupId": "com.example",
   "packageName": "com.example.customerprofile",
