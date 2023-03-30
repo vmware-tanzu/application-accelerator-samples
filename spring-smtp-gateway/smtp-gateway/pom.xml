@@ -13,7 +13,7 @@
     <parent>
 	   <groupId>org.springframework.boot</groupId>
 	   <artifactId>spring-boot-starter-parent</artifactId>
-	   <version>2.7.9</version>
+	   <version>2.7.10</version>
 	   <relativePath />
     </parent>	
     <developers>
@@ -31,21 +31,21 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<subethasmtp.version>3.1.7</subethasmtp.version>
 		<commons-net.version>3.9.0</commons-net.version>
-		<snakeyaml.version>1.32</snakeyaml.version>
+		<snakeyaml.version>1.33</snakeyaml.version>
 	</properties>   
 	<dependencyManagement>
 		<dependencies>											
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.7.9</version>
+				<version>2.7.10</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>				
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-parent</artifactId>
-				 <version>2021.0.5</version>
+				 <version>2021.0.6</version>
 				<type>pom</type>
 				<scope>import</scope>		
 			</dependency>											
@@ -102,7 +102,11 @@
                <exclusion>
                   <groupId>org.jdom</groupId> 
                   <artifactId>jdom</artifactId>
-               </exclusion>               
+               </exclusion>
+               <exclusion>
+                  <groupId>org.apache.commons</groupId>
+                  <artifactId>commons-text</artifactId>
+               </exclusion>
             </exclusions>					
 		</dependency>		
 		<dependency>
