@@ -9,7 +9,7 @@ group = 'com.vmware.functions'
 version = '0.0.1'
 sourceCompatibility = '11'
 
-ext['snakeyaml.version'] = '1.32'
+ext['snakeyaml.version'] = '1.33'
 
 repositories {
     mavenCentral()
