@@ -1,0 +1,6 @@
+ignore:
+  - vulnerability: CVE-2016-1000027 # Serialization of untrusted data is not an intended use case, will not fix
+  - vulnerability: GHSA-mjmj-j48q-9wg2 # This CVE comes from a Spring Boot dependency and the Boot team has determined that the versions we are using is not susceptible to this CVE
+  - vulnerability: CVE-2022-45868 # H2 has stated this is a false positive
+  - vulnerability: GHSA-22wj-vf5f-wrvj # Duplicate of CVE-2022-45868
+  - vulnerability: GHSA-rp65-9cf3-cjxr # This shows up in where-for-dinner-ui because of a dev (non-prod) dependency. Currently, grype doesn't offer a way to ignore dev dependencies.
