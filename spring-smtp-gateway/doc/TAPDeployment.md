@@ -14,15 +14,18 @@ These instructions assume that you have a TAP 1.2.x or greater iterate cluster (
 * Tanzu Out of the Box Supply Chains
 * Tanzu Out of the Box Templates
 * Tanzu Source Controller
+* Bitnami Services
+* CrossPlane
+
 
 ## Quick Start
 
 This section provides a fast track installation using the application accelerator and the instructions immediately below.  This section assumes you have already installed the application accelerator using the instructions at the top of the page.
 
-* Install Rabbit MQ operator:
+* Deploy RabbitMQ Instance:
 
 ```
-kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.13.1/cluster-operator.yml"
+tanzu service  class-claim  create  msgbroker-spring-smtp-gateway  --class rabbitmq-unmanaged
 ```
 
 * Navigate to your TAP GUI web page and Application Accelerator tab on the left of the screen.  Select the `Choose` button on the `Spring SMTP Gateway` Application
@@ -32,13 +35,7 @@ kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download
 * Open a command shell and navigate to the root directory of the unzipped file from above.  Run the following commands to create a RabbitMQ instance, resource claims, and workloads:
 
 ```
-kubectl create ns service-instances
-
-kubectl apply -f ./config/service-operator/
-
-kubectl apply -f ./config/app-operator/
-
-kubectl apply -f ./config/developer/
+kubectl apply -f ./config/
 ```
 
 Depending on previously installed/cached components, network speed/latency, and available cluster compute, the amount of time for the RabbitMQ cluster to spin up and the workloads to build and deploy may vary greatly.  It is possible for the process to take more than 10 minutes in some instances.

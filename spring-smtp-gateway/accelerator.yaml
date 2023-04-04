@@ -22,20 +22,6 @@ accelerator:
     inputType: text
     dataType: string
     required: true
-  - label: RabbitMQ Cluster Name
-    description: The name of the RabbitMQ cluster that the application services will connect to.
-    defaultValue: rmq-1
-    name: rabbitMQName
-    inputType: text
-    dataType: string
-    required: true
-  - label: RabbitMQ Service Namespace
-    description:  The namespace where the RabbitMQ cluster resides (or will reside once created).
-    defaultValue: service-instances
-    name: serviceNamespace
-    inputType: text
-    dataType: string
-    required: true
   - label: Workload Namespace
     description:  The namespace where the application services will be deployed.  This field is needed for properly creating resource claims.
     defaultValue: workloads
@@ -43,28 +29,12 @@ accelerator:
     inputType: text
     dataType: string
     required: true
-  - label: Create RabbitMQ Cluster Definition
-    description: "If set to true, a RabbitMQ cluster definition yaml file will be created."
-    defaultValue: true
-    name: createRabbitMQCluster
-    inputType: checkbox
-    dataType: boolean
-    required: true
-  - label: Number of RabbitMQ Cluster Nodes
-    description: The number of nodes that will make up the RabbitMQ number.  SHOULD be an odd number.
-    defaultValue: "1"
-    name: numRabbitMQClusterNodes
+  - label: Class Claim Name
+    description: "The name of the Class Claim used to connect to the RabbitMQ service."
+    defaultValue: msgbroker-spring-smtp-gateway
+    name: msgbrokerName
     inputType: text
     dataType: string
-    required: true
-    dependsOn: 
-      name: createRabbitMQCluster
-  - label: Create Resource Claim Defintion
-    description: "If set to true, a resource claim definition yaml file will be created."
-    defaultValue: true
-    name: createResourceClaim
-    inputType: checkbox
-    dataType: boolean
     required: true
   imports:
     - name: tap-workload
@@ -78,23 +48,17 @@ engine:
     chain:
     - type: ReplaceText
       substitutions:
-        - text: "rmq-1"
-          with: "#rabbitMQName"
+        - text: "msgbroker-spring-smtp-gateway"
+          with: "#msgbrokerName"
         - text: "workloads"
           with: "#workloadNamespace"  
         - text: "1026"
           with: "#containerPort"     
         - text: "25"
           with: "#servicePort"
-        - text: "name: smtp-gateway"
-          with: "'name: ' + #artifactId.toLowerCase() + '-smtp-gateway'"
-        - text: "name: smtp-sink"
-          with: "'name: ' + #artifactId.toLowerCase() + '-smtp-sink'"
-        - text: "app.kubernetes.io/part-of: spring-smtp-gateway"
-          with: "'app.kubernetes.io/part-of: ' + #artifactId.toLowerCase()"
     - type: RewritePath
       regex: 'templates/workloads.template'
-      rewriteTo: "'config/developer/workloads.yaml'"
+      rewriteTo: "'config/workloads.yaml'"
     - type: InvokeFragment
       reference: tap-workload
   - include: [ "**/catalog/catalog.yaml" ]
@@ -107,37 +71,7 @@ engine:
             with: "'name: ' + #artifactId.toLowerCase() + '-smtp-sink'"
           - text: "app.kubernetes.io/part-of=spring-smtp-gateway"
             with: "'app.kubernetes.io/part-of=' + #artifactId.toLowerCase()"
-  - condition:
-      "#createRabbitMQCluster"
-    include: ["**/rmqCluster.template"]
-    chain:
-    - type: ReplaceText
-      substitutions:
-        - text: "rmq_instance_name"
-          with: "#rabbitMQName"
-        - text: "rmq_service_namespace"
-          with: "#serviceNamespace"   
-        - text: "numReplicas"
-          with: "#numRabbitMQClusterNodes"            
-    - type: RewritePath
-      regex: 'templates/rmqCluster.template'
-      rewriteTo: "'config/service-operator/rmqCluster.yaml'"
-  - condition:
-      "#createResourceClaim"
-    include: ["**/rmqResourceClaim.template"]
-    chain:
-    - type: ReplaceText
-      substitutions:
-        - text: "rmq_instance_name"
-          with: "#rabbitMQName" 
-        - text: "rmq_service_namespace"
-          with: "#serviceNamespace"
-        - text: "rmq_workloads_namespace"
-          with: "#workloadNamespace"       
-    - type: RewritePath
-      regex: 'templates/rmqResourceClaim.template'
-      rewriteTo: "'config/app-operator/rmqResourceClaim.yaml'"
   - type: InvokeFragment
     reference: build-wrapper-maven
-
+  - include: ["README.md"]  
   - type: Provenance
