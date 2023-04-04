@@ -5,14 +5,15 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: server
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
-    app.kubernetes.io/part-of: spring-smtp-gateway
+    app.kubernetes.io/part-of: smtp-gateway
+    apps.tanzu.vmware.com/has-tests: "true"    
 spec:
   serviceClaims:
   - name: rmq
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ResourceClaim
-      name: rmq-1
+      kind: ClassClaim
+      name: msgbroker-spring-smtp-gateway
   source:
     git:
       url: <https URL for your generated project's Git repository>
