@@ -9,7 +9,7 @@ metadata:
    - url: https://github.com/vmware-tanzu/application-accelerator-samples/blob/main/spring-smtp-gateway/README.md
      title: README
  annotations:
-   'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=spring-smtp-gateway'
+   'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=smtp-sink'
 spec:
  type: service
  lifecycle: experimental
