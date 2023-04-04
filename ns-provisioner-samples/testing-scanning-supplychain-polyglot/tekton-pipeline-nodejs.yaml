@@ -10,7 +10,6 @@ kind: Pipeline
 metadata:
   name: tekton-pipeline-nodejs
   labels:
-    apps.tanzu.vmware.com/pipeline: test
     apps.tanzu.vmware.com/language: nodejs
   annotations:
     kapp.k14s.io/create-strategy: fallback-on-update
