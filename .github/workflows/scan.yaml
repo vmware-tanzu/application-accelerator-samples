@@ -28,7 +28,7 @@ jobs:
       accelerator:
         image: dev.registry.tanzu.vmware.com/app-accelerator/acc-engine:latest
         credentials:
-          username: ${{secrets.TANZUNET_ROBOT}}
+          username: robot$${{secrets.TANZUNET_ROBOT}}
           password: ${{secrets.TANZUNET_PASS}}
         ports:
           - 8888:8080
