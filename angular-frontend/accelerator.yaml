@@ -78,7 +78,7 @@ engine:
               with: "#workloadResourceName"
 
     - condition: "#useSingleSignOn == true"
-      applyTo: [ "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app.module.ts", "config/clientregistration.yaml" ]
+      applyTo: [ "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app.module.ts", "src/app/app-routing.module.ts", "config/clientregistration.yaml" ]
       chain:
         - type: ReplaceText
           substitutions:
@@ -102,12 +102,24 @@ engine:
     - condition: "!#useSingleSignOn"
       merge:
         - include: [ "**" ]
-          exclude: [ "README.md", "src/app/app.module.ts", "AUTHORIZATION.md", "src/app/authorization/**", "src/app/user-profile/**", "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
-        - include: [ "src/app/app.module.ts" ]
+          exclude: [ "README.md", "src/app/app.module.ts", "src/app/app-routing.module.ts", "AUTHORIZATION.md", "src/app/authorization/**", "src/app/user-profile/**", "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
+        - include: [ "src/app/app.module.ts", "src/app/app-routing.module.ts" ]
           chain:
             - type: ReplaceText
               regex:
+                pattern: "// StartSSOImports[\\s\\S]+?// EndSSOImports"
+                with: "''"
+            - type: ReplaceText
+              regex:
                 pattern: "// StartSSOProviders[\\s\\S]+?// EndSSOProviders"
+                with: "''"
+            - type: ReplaceText
+              regex:
+                pattern: "// StartSSOModules[\\s\\S]+?// EndSSOModules"
+                with: "''"
+            - type: ReplaceText
+              regex:
+                pattern: "// StartSSORoutes[\\s\\S]+?// EndSSORoutes"
                 with: "''"
         - include: [ "README.md" ]
           chain:
