@@ -24,29 +24,6 @@ engine:
               '${startOfDependencies}
                   testImplementation("org.testcontainers:mysql:1.17.6")${existingDependencies}'
 
-    - include: [ "docker-compose.yaml" ]
-
-    - include: [ "**/src/main/resources/application-local.properties" ]
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:mysql://localhost:3306/development?currentSchema=local_test'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.username'"
-            value: "'local_test'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.password'"
-            value: "'password'"
-
     - include: [ "**/src/test/resources/application-test.properties" ]
       chain:
         - merge:
