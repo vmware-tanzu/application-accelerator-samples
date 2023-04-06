@@ -9,6 +9,5 @@
   "databaseType": "postgres",
   "exposeOpenAPIEndpoint": false,
   "javaVersion": "11",
-  "databaseIntegrationTestType":  "in-memory",
-  "databasePostgresStorageClass": "standard"
+  "databaseIntegrationTestType":  "in-memory"
 }

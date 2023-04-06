@@ -9,6 +9,5 @@
   "databaseType": "mysql",
   "exposeOpenAPIEndpoint": false,
   "javaVersion": "11",
-  "databaseIntegrationTestType":  "testcontainers",
-  "databasePostgresStorageClass": "standard"
+  "databaseIntegrationTestType":  "testcontainers"
 }

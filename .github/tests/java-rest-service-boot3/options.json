@@ -10,7 +10,6 @@
     "exposeOpenAPIEndpoint": false,
     "javaVersion": "17",
     "databaseIntegrationTestType": "testcontainers",
-    "databasePostgresStorageClass": "standard",
     "liveUpdateIDESupport": true,
     "sourceRepositoryPrefix": "dev.local"
 }
