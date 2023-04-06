@@ -203,8 +203,8 @@ engine:
 
     # Workload Resource name and database resource name
     - merge:
-      - exclude: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
-      - include: [ "config/workload.yaml", "config/test-pipeline.yaml" ]
+      - exclude: [ "config/**" ]
+      - include: [ "config/workload.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
@@ -213,18 +213,6 @@ engine:
               - text: "customer-database"
                 with: "#databaseResourceName"
     # End Workload Resource name
-
-    # Test pipeline
-    - merge:
-      - exclude: [ "config/testcontainers-test-pipeline.yaml", "config/test-pipeline.yaml" ]
-      - include: [ "config/test-pipeline.yaml" ]
-        condition: "#databaseIntegrationTestType != 'testcontainers'"
-      - include: [ "config/testcontainers-test-pipeline.yaml" ]
-        condition: "#databaseIntegrationTestType == 'testcontainers'"
-        chain:
-          - type: RewritePath
-            rewriteTo: "'config/test-pipeline.yaml'"
-    # End Test pipleine
 
     - merge:
       - type: InvokeFragment

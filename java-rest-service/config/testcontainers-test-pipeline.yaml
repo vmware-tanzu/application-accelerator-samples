@@ -3,7 +3,7 @@ kind: Pipeline
 metadata:
   name: java-test-pipeline
   labels:
-    apps.tanzu.vmware.com/pipeline: test-java
+    apps.tanzu.vmware.com/language: java
 spec:
   params:
     - name: source-url

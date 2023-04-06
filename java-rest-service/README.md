@@ -140,12 +140,12 @@ Kubernetes cluster that is provisioned with Tanzu Application Platform (https://
 > Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
 > annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
 
-Before deploying your application a Tekton Pipeline responsible for the testing step needs to be created in your application
-namespace. Please run following command.
+### Test Pipeline
 
-```bash
-kubectl apply -f config/test-pipeline.yaml -n <workload-namespace>
-```
+Before deploying your application a Tekton Pipeline responsible for the testing step needs to be available in your application
+namespace. If your Namespace Provisioner includes a test pipeline for Java then you can rely on that. If not, then you can install one using one provided as part of the [Namespace Provisioner poyglot sample](https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/ns-provisioner-samples/testing-scanning-supplychain-polyglot/tekton-pipeline-java.yaml).
+
+> **NOTE:** if you need support for TestContainers, an alternative pipeline definition to use is available in the Application Accelerators Samples [java-rest-service sample](https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/java-rest-service/config/testcontainers-test-pipeline.yaml).
 
 ### Tanzu CLI
 
