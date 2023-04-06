@@ -7,6 +7,7 @@
   "groupId": "com.example",
   "packageName": "com.example.customerprofile",
   "databaseType": "postgres",
+  "databaseName": "test",
   "exposeOpenAPIEndpoint": false,
   "javaVersion": "11",
   "databaseIntegrationTestType":  "in-memory"
