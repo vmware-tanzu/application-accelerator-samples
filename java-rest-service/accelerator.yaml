@@ -364,6 +364,10 @@ engine:
               with: "'MySQL'"
           - type: ReplaceText
             regex:
+              pattern: "postgresql"
+              with: "'mysql'"
+          - type: ReplaceText
+            regex:
               pattern: "postgres"
               with: "'mysql'"
           - type: ReplaceText
