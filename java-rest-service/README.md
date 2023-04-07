@@ -41,8 +41,7 @@ In order to compile the production code:
 
 ## Database
 
-If you are using Testcontainers for testing then you will need a local database running, see [DATABASE.md](DATABASE.md#local).
-If you selected to use H2 as an in-memory database for testing then you don't need to worry, it is included already.
+You will need a local database running, see [DATABASE.md](DATABASE.md#local).
 
 ## Run tests
 
@@ -143,7 +142,7 @@ Kubernetes cluster that is provisioned with Tanzu Application Platform (https://
 ### Test Pipeline
 
 Before deploying your application a Tekton Pipeline responsible for the testing step needs to be available in your application
-namespace. If your Namespace Provisioner includes a test pipeline for Java then you can rely on that. If not, then you can install one using one provided as part of the [Namespace Provisioner poyglot sample](https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/ns-provisioner-samples/testing-scanning-supplychain-polyglot/tekton-pipeline-java.yaml).
+namespace. If your Namespace Provisioner includes a test pipeline for Java then you can rely on that, otherwise you would need to install a pipeline that is capable of building Maven or Gradle projects.
 
 #### Test Pipeline with support for TestContainers
 
