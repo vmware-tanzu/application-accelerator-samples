@@ -145,7 +145,18 @@ Kubernetes cluster that is provisioned with Tanzu Application Platform (https://
 Before deploying your application a Tekton Pipeline responsible for the testing step needs to be available in your application
 namespace. If your Namespace Provisioner includes a test pipeline for Java then you can rely on that. If not, then you can install one using one provided as part of the [Namespace Provisioner poyglot sample](https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/ns-provisioner-samples/testing-scanning-supplychain-polyglot/tekton-pipeline-java.yaml).
 
-> **NOTE:** if you need support for TestContainers, an alternative pipeline definition to use is available in the Application Accelerators Samples [java-rest-service sample](https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/java-rest-service/config/testcontainers-test-pipeline.yaml).
+#### Test Pipeline with support for TestContainers
+
+If you selected to use TestContainer for tests then a pipeline definition you can use is available in the Application Accelerators Samples [java-rest-service sample](https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/java-rest-service/config/testcontainers-test-pipeline.yaml).
+
+Once that is deployed you can select it by adding a param to the `workload.yaml`:
+
+```
+  params:
+    - name: testing_pipeline_matching_labels
+      value:
+        apps.tanzu.vmware.com/pipeline: testcontainers-java
+```
 
 ### Tanzu CLI
 
