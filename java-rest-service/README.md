@@ -41,8 +41,7 @@ In order to compile the production code:
 
 ## Database
 
-If you are using Testcontainers for testing then you will need a local database running, see [DATABASE.md](DATABASE.md#local).
-If you selected to use H2 as an in-memory database for testing then you don't need to worry, it is included already.
+You will need a local database running, see [DATABASE.md](DATABASE.md#local).
 
 ## Run tests
 
@@ -140,11 +139,22 @@ Kubernetes cluster that is provisioned with Tanzu Application Platform (https://
 > Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
 > annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
 
-Before deploying your application a Tekton Pipeline responsible for the testing step needs to be created in your application
-namespace. Please run following command.
+### Test Pipeline
 
-```bash
-kubectl apply -f config/test-pipeline.yaml -n <workload-namespace>
+Before deploying your application a Tekton Pipeline responsible for the testing step needs to be available in your application
+namespace. If your Namespace Provisioner includes a test pipeline for Java then you can rely on that, otherwise you would need to install a pipeline that is capable of building Maven or Gradle projects.
+
+#### Test Pipeline with support for TestContainers
+
+If you selected to use TestContainer for tests then a pipeline definition you can use is available in the Application Accelerators Samples [java-rest-service sample](https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/java-rest-service/config/testcontainers-test-pipeline.yaml).
+
+Once that is deployed you can select it by adding a param to the `workload.yaml`:
+
+```
+  params:
+    - name: testing_pipeline_matching_labels
+      value:
+        apps.tanzu.vmware.com/pipeline: testcontainers-java
 ```
 
 ### Tanzu CLI

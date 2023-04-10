@@ -16,9 +16,6 @@ spec:
     - name: annotations
       value:
         autoscaling.knative.dev/minScale: "1"
-    - name: testing_pipeline_matching_labels
-      value:
-        apps.tanzu.vmware.com/pipeline: test-java
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -28,5 +25,5 @@ spec:
     - name: database
       ref:
         apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-        kind: ResourceClaim
+        kind: ClassClaim
         name: customer-database

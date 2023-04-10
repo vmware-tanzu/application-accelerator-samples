@@ -5,33 +5,15 @@ accelerator:
       defaultValue: "customer-database"
       label: Database Instance Name
       description: The name of the database instance this application will use
-    - name: databasePostgresStorageClass
-      label: Database Storage Class
-      inputType: text
-      defaultValue: "default"
-      description: The storage class to be used for storing PostgreSQL data and also for monitoring
 
 engine:
   let:
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
-    - name: databasePostgresStorageClassResourceName
-      expression: '#databasePostgresStorageClass.toLowerCase()'
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "docker-compose.yaml", "**/workload.yaml", "config/service-operator/postgres.yaml", "config/service-operator/postgres-cluster-role.yaml", "config/service-operator/postgres-cluster-instance-class.yaml", "config/app-operator/postgres-resource-claim.yaml", "config/app-operator/postgres-resource-claim-policy.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
-
-      - include: [ "config/service-operator/*.yaml", "config/app-operator/*.yaml" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "customer-database"
-                with: "#databaseResourceName"
-              - text: "databasename"
-                with: "#databaseName"
-              - text: "storage-class-standard"
-                with: '#databasePostgresStorageClassResourceName'
+        exclude: [ "docker-compose.yaml", "**/workload.yaml", "pom.xml", "build.gradle.kts", "README.md", "src/main/resources/application-local.properties" ]
 
       - include: [ "pom.xml" ]
         chain:
@@ -54,3 +36,27 @@ engine:
               with: |
                 '${startOfDependencies}
                     runtimeOnly("org.postgresql:postgresql")${existingDependencies}'
+
+      - include: [ "docker-compose.yaml" ]
+
+      - include: [ "src/main/resources/application-local.properties" ]
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:postgresql://localhost:5432/development'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.username'"
+              value: "'user'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.password'"
+              value: "'password'"
+
