@@ -17,7 +17,7 @@ spec:
   env:
     - name: spring.cloud.gateway.httpclient.connect-timeout
       value: "90"
-#@ if data.values.enableSecurity == 'True':
+#@ if data.values.enableSecurity == True:
   sso:
     secret: where-for-dinner-client-registration
 #@ end
