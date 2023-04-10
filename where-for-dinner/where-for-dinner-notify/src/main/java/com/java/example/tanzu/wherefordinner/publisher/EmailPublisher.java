@@ -12,6 +12,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.util.StringUtils;
 
 import com.java.example.tanzu.wherefordinner.config.EmailMessageConfigProperties;
 import com.java.example.tanzu.wherefordinner.model.Availability;
@@ -74,8 +75,11 @@ public class EmailPublisher implements Publisher
 			message.setSubject(subject);
 			message.setText(msgBuilder.toString());
 			
-			for (String toRecip : to)
-				message.addRecipient(RecipientType.TO, new InternetAddress(toRecip));
+			if (StringUtils.hasText(avail.getSendResultsTo()))
+				message.addRecipient(RecipientType.TO, new InternetAddress(avail.getSendResultsTo()));
+			else
+				for (String toRecip : to)
+					message.addRecipient(RecipientType.TO, new InternetAddress(toRecip));
 			
 			emailSender.send(message);
 		}

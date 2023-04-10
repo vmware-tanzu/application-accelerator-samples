@@ -1,0 +1,18 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:regexp", "regexp")
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: where-for-dinner-ingress
+  namespace: #@ data.values.workloadNamespace
+spec:
+  virtualhost:
+    fqdn: #@ regexp.replace("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?", data.values.appWorkloadURL, "$4")
+  routes:
+    - conditions:
+        - prefix: /
+      services:
+        - name: #@ data.values.gatewayName
+          port: 80

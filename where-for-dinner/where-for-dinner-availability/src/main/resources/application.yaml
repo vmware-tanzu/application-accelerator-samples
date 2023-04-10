@@ -16,10 +16,10 @@ spring:
   sql.init.platform: h2
   
   cloud: 
+    function:
+      definition: processAvailability  
     stream:
       defaultBinder: rabbit
-      function:
-        definition: processAvailability
       bindings: 
         processAvailability-in-0: 
           destination: where-for-dinner-search-result

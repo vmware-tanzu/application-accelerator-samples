@@ -1,0 +1,105 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: ui-route-config
+  namespace: #@ data.values.workloadNamespace
+spec:
+  routes:
+  - predicates:
+    - Path=/**
+    - Method=GET
+    order: 1000
+    filters:
+    - StripPrefix=0
+    tags:
+    - ui
+#@ if data.values.enableSecurity == True:    
+  - predicates:
+    - Path=/diningsearch/**
+    - Method=GET
+    filters:
+    - StripPrefix=0  
+    ssoEnabled: true    
+    tags:
+    - ui-secure    
+#@ end
+  service:
+    uri: #@ 'http://where-for-dinner-ui.' + data.values.workloadNamespace
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: ui-route-mapping
+  namespace: #@ data.values.workloadNamespace
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: ui-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: search-route-config
+  namespace: #@ data.values.workloadNamespace
+spec:
+  routes:
+  - predicates:
+    - Path=/api/search/**  
+    filters:
+    - TokenRelay=
+    - StripPrefix=0
+    - RewritePath=/api/search(?<segment>/?.*), $\{segment}
+    - RemoveRequestHeader=Forwarded
+    tags:
+    - search-api
+#@ if data.values.enableSecurity == True:  
+    tokenRelay: true 
+#@ end
+    uri: #@ 'http://where-for-dinner-search.' + data.values.workloadNamespace
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: search-route-mapping
+  namespace: #@ data.values.workloadNamespace
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: search-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: availability-route-config
+  namespace: #@ data.values.workloadNamespace
+spec:
+  routes:
+  - predicates:
+    - Path=/api/availability/**  
+    filters:
+    - StripPrefix=0
+    - RewritePath=/api/availability(?<segment>/?.*), $\{segment}
+    - RemoveRequestHeader=Forwarded
+    tags:
+    - search-api
+#@ if data.values.enableSecurity == True:  
+    tokenRelay: true 
+#@ end    
+    uri: #@ 'http://where-for-dinner-availability.' + data.values.workloadNamespace
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: availability-route-mapping
+  namespace: #@ data.values.workloadNamespace
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: availability-route-config
+       

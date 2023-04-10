@@ -20,4 +20,6 @@ public class SearchCriteria
 	private int radius;
 	
 	private String requestSubject;
+	
+	private String sendResultsTo;	
 }

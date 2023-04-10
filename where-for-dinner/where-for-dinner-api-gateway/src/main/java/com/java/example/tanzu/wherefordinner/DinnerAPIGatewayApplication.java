@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
@@ -16,6 +17,8 @@ import org.springframework.security.web.server.authentication.logout.SecurityCon
 import org.springframework.security.web.server.authentication.logout.ServerLogoutHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
+import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
 @SpringBootApplication
 public class DinnerAPIGatewayApplication 
@@ -24,6 +27,12 @@ public class DinnerAPIGatewayApplication
 	{
 		SpringApplication.run(DinnerAPIGatewayApplication.class, args);
 	}
+	
+    @Bean
+    public ForwardedHeaderTransformer forwardedHeaderTransformer() 
+    {
+    	return new ForwardedHeaderTransformer();
+    }
 	
 	@Profile("!secure")
 	@Bean
@@ -34,17 +43,27 @@ public class DinnerAPIGatewayApplication
         return http.build();
 	}	
 	
+	
 	@Profile("secure")
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http, ReactiveClientRegistrationRepository clientRegistrationRepository) 
     {
-	   http.authorizeExchange().pathMatchers("/diningsearch", "/signin", "/api/search/search/**", "/api/availability/availability/**")
+		/* 
+		 * Match Spring Cloud Gateway logout scheme
+		 * https://docs.vmware.com/en/VMware-Spring-Cloud-Gateway-for-Kubernetes/2.0/scg-k8s/GUID-guides-sso.html#logout
+		 */
+		
+	   final var requiresLogout = ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET,
+			   "/scg-logout");
+		
+	   http
+	   .authorizeExchange().pathMatchers("/diningsearch", "/signin", "/api/search/search/**", "/api/availability/availability/**")
 	   .authenticated()
 	   .pathMatchers("/**").permitAll()
 	   .and()
 	   .oauth2Login(Customizer.withDefaults())
        .logout()
-       .logoutUrl("/scg-logout")
+       .requiresLogout(requiresLogout)
        .logoutHandler(logoutHandler())
        .logoutHandler(new WebSessionServerLogoutHandler())
        .logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));

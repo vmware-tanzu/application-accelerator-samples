@@ -8,10 +8,10 @@ spring:
     name: where-for-dinner-search-proc
 
   cloud: 
+    function:
+      definition: processSearch
     stream:
       defaultBinder: rabbit
-      function:
-        definition: processSearch
       bindings: 
         processSearch-in-0: 
           destination: where-for-dinner-search-criteria

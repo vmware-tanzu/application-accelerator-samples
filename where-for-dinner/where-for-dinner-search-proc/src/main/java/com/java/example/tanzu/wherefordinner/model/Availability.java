@@ -28,6 +28,8 @@ public class Availability
 	
 	private String requestSubject;
 	
+	private String sendResultsTo;
+	
 	private List<AvailabilityWindow> availabilityWindows = new ArrayList<>();
 	
 	@Data

@@ -53,8 +53,8 @@ function App() {
                 </div>
               </Route>
               <Route path="/diningsearch">
-                <form action="/scg-logout" method="POST" id="form">
-                  <input type="hidden" id="var1" name="var1" value=""/>
+                <form action="/scg-logout" method="GET" id="form">
+                  <input type="hidden" id="logout" name="redirect" value="/home"/>
                   {secEnabled ?                  
                     <div align="center" id="logout">
                       <button>Logout</button>
