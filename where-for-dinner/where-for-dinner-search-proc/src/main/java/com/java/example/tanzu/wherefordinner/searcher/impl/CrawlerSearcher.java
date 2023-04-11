@@ -36,6 +36,7 @@ public class CrawlerSearcher implements Searcher
 			{
 				avail.setSearchName(crit.getName());
 				avail.setRequestSubject(crit.getRequestSubject());
+				avail.setSendResultsTo(crit.getSendResultsTo());
 				
 				return avail;
 			});

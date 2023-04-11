@@ -26,6 +26,26 @@ accelerator:
     inputType: text
     dataType: string
     required: true
+  - label: Gateway Type
+    description: The Gateway Implementation to Use.
+    defaultValue: ossscg
+    name: gatewayType
+    inputType: select
+    choices:
+    - value: ossscg
+      text: OSS Spring Cloud Gateway
+    - value: tapscg
+      text: TAP Spring Cloud Gateway
+  - label: Gateway Service Name
+    description: The name of gateway instance that will route requests.
+    defaultValue: gateway-where-for-dinner
+    name: gatewayName
+    inputType: text
+    dataType: string
+    required: true    
+    dependsOn: 
+      name: gatewayType
+      value: tapscg                  
   - label: Message Broker Type
     description: The message broker implementation that services will connect to.
     defaultValue: rabbitmq
@@ -182,15 +202,6 @@ accelerator:
     dataType: string
     required: true
     dependsOn: 
-      name: enableSecurity                  
-  - label: Workload URL
-    description: "The URL where the application will be published; used for AppSSO redirects.  Generally 'https://where-for-dinner.<domain name>"
-    defaultValue: https://where-for-dinner.<UPDATE ME>
-    name: appWorkloadURL
-    inputType: text
-    dataType: string
-    required: true
-    dependsOn: 
       name: enableSecurity         
   - label: Create Default Dev Account
     description: "If set to true, you can create a default dev account below.  This should not be used for production use."
@@ -219,6 +230,13 @@ accelerator:
     required: false
     dependsOn: 
       name: enableDefaultDevAccount
+  - label: Workload URL
+    description: "The URL where the application is published; required when using Security/AppSSO or TAP Spring Cloud Gateway.  Generally 'http<s>://where-for-dinner.<domain name>.  See README for more details."
+    defaultValue: https://where-for-dinner.<UPDATE ME>
+    name: appWorkloadURL
+    inputType: text
+    dataType: string
+    required: true        
   imports:
     - name: tap-workload
     - name: build-wrapper-maven
@@ -230,7 +248,22 @@ engine:
         "'secure'"
   merge:
   - exclude: 
-      ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**"]
+      ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**"]
+  - condition: "#gatewayType == 'ossscg'"
+    include: ["**/where-for-dinner-api-gateway/**"]
+  - condition: "#gatewayType == 'tapscg'"
+    include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml", "**/templates/ingress.yaml"]   
+    chain:
+    - type: YTT  
+    - type: RewritePath
+      regex: 'templates/scgInstance.yaml'
+      rewriteTo: "'config/service-operator/scgInstance.yaml'"  
+    - type: RewritePath
+      regex: 'templates/scgRoutes.yaml'
+      rewriteTo: "'config/app-operator/scgRoutes.yaml'" 
+    - type: RewritePath
+      regex: 'templates/ingress.yaml'
+      rewriteTo: "'config/app-operator/ingress.yaml'"    
   - include: ["**/templates/workloads.yaml"]
     chain:
     - type: YTT

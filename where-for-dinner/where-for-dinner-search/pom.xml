@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.10</version>
+		<version>3.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -15,10 +15,12 @@
 	<description>Demo</description>		
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2021.0.6</spring-cloud.version>
+		<spring-cloud.version>2022.0.2</spring-cloud.version>
 		<revision>0.0.1-SNAPSHOT</revision>		
 		<spring-cloud-bindings.version>1.11.0</spring-cloud-bindings.version>
 		<snakeyaml.version>1.33</snakeyaml.version>
+		<springdoc.version>2.1.0</springdoc.version>
+		<mariadb.version>1.1.4</mariadb.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -64,12 +66,12 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-kafka</artifactId>
-		</dependency>				
-	   <dependency>
-	      <groupId>org.springdoc</groupId>
-	      <artifactId>springdoc-openapi-webflux-ui</artifactId>
-	      <version>1.6.14</version>
-	   </dependency>		
+		</dependency>					
+	    <dependency>
+	        <groupId>org.springdoc</groupId>
+	        <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+	        <version>${springdoc.version}</version>
+	    </dependency>		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -92,8 +94,9 @@
         <dependency>
             <groupId>org.mariadb</groupId>
             <artifactId>r2dbc-mariadb</artifactId>
-        </dependency>			
-	    <dependency>
+            <version>${mariadb.version}</version>
+        </dependency>	
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>r2dbc-postgresql</artifactId>
         </dependency>	
@@ -101,13 +104,6 @@
 	       <groupId>io.r2dbc</groupId>
 	       <artifactId>r2dbc-h2</artifactId>
 	    </dependency>	
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-stream</artifactId>
-		    <type>test-jar</type>
-		    <scope>test</scope>
-		    <classifier>test-binder</classifier>
-		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>

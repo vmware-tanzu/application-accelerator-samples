@@ -41,4 +41,7 @@ public class Search
 	@Column("requestSubject")
 	private String requestSubject;
 	
+	@Column("sendResultsTo")
+	private String sendResultsTo;	
+	
 }

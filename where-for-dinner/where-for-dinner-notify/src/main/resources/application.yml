@@ -10,10 +10,10 @@ spring:
     name: where-for-dinner-notify
 
   cloud: 
+    function:
+      definition: notifyAvailability  
     stream:
       defaultBinder: rabbit
-      function:
-        definition: notifyAvailability
       bindings: 
         notifyAvailability-in-0: 
           destination: where-for-dinner-search-result

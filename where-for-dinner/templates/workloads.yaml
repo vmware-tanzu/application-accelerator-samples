@@ -103,6 +103,7 @@
 #@ end
 #@ end
 
+#@ if data.values.gatewayType == 'ossscg':
 ---
 apiVersion: carto.run/v1alpha1
 kind: Workload
@@ -113,6 +114,7 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: where-for-dinner-api-gateway
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true" 
 spec:
   env: #@ buildAppEnv(True,False,False,False,False)
   params:
@@ -139,7 +141,7 @@ spec:
       ref:
         branch: main
     subPath: where-for-dinner-api-gateway
-    
+#@ end       
 ---
 apiVersion: carto.run/v1alpha1
 kind: Workload
@@ -151,6 +153,8 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-search
     networking.knative.dev/visibility: cluster-local
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true" 
+    apis.apps.tanzu.vmware.com/register-api: "true"    
 spec:
   env: #@ buildAppEnv(True,True,False,False,True)
   params:
@@ -159,6 +163,14 @@ spec:
       autoscaling.knative.dev/minScale: "1"
       autoscaling.knative.dev/target: "200"
       autoscaling.knative.dev/maxScale: "4"
+  - name: api_descriptor
+    value:
+      type: openapi 
+      location:
+        path: "/v3/api-docs"
+      system: where-for-dinner
+      owner: where-for-dinner-team  
+      description: "Core Where for Dinner service for submitting searches and parameters"    
   serviceClaims: #@ buildServiceClaimsBinding(True, True, True, False)
   resources:     
     requests:         
@@ -188,7 +200,8 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: where-for-dinner-search-proc
     networking.knative.dev/visibility: cluster-local
-    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"  
+    apps.tanzu.vmware.com/has-tests: "true"  
 spec:
   env: #@ buildAppEnv(False,False,True,True,True)
   build:
@@ -220,7 +233,8 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: where-for-dinner-notify
     networking.knative.dev/visibility: cluster-local
-    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"   
+    apps.tanzu.vmware.com/has-tests: "true" 
 spec:
   env: #@ buildAppEnv(False,False,False,False,True)
   build:
@@ -252,6 +266,8 @@ metadata:
     app.kubernetes.io/part-of: where-for-dinner-availability
     networking.knative.dev/visibility: cluster-local
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/has-tests: "true"
+    apis.apps.tanzu.vmware.com/register-api: "true"     
 spec:
   build:
      env: #@ buildBuildParams()
@@ -262,6 +278,14 @@ spec:
       autoscaling.knative.dev/minScale: "1"
       autoscaling.knative.dev/target: "200"
       autoscaling.knative.dev/maxScale: "4"
+  - name: api_descriptor
+    value:
+      type: openapi 
+      location:
+        path: "/v3/api-docs"
+      system: where-for-dinner
+      owner: where-for-dinner-team  
+      description: "Core Where For Dinner service for retrieving dining availability"        
   serviceClaims: #@ buildServiceClaimsBinding(True, True, True, False)
   resources:     
     requests:         
@@ -287,6 +311,7 @@ metadata:
     apps.tanzu.vmware.com/workload-type: web
     app.kubernetes.io/part-of: where-for-dinner-ui
     networking.knative.dev/visibility: cluster-local
+    apps.tanzu.vmware.com/has-tests: "true"
 spec:
   build:
     env:
@@ -321,8 +346,8 @@ metadata:
   labels:
     apps.tanzu.vmware.com/workload-type: server
     app.kubernetes.io/part-of: where-for-dinner-crawler
-    networking.knative.dev/visibility: cluster-local 
-    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"  
+    apps.tanzu.vmware.com/has-tests: "true"  
 spec:
   params:
   - name: ports

@@ -12,6 +12,7 @@ function SearchDefForm(props)
   const zipCodeRef = useRef(null);
   const radiusRef = useRef(null);
   const diningNameRef = useRef(null);
+  const sendResultsToRef = useRef(null);
 
   const handlStartDate = (e) => {
     setStartTime(new Date(e.target.value));
@@ -59,6 +60,7 @@ function SearchDefForm(props)
           name: searchNameRef.current.value,
           startTime: startTime.valueOf(),
           endTime: endTime.valueOf(),
+          sendResultsTo: sendResultsToRef.current.value,
           continousSearch: "true"
         };
 
@@ -94,7 +96,9 @@ function SearchDefForm(props)
             <label id="startTimeLabel">Start Time</label>
             <input id="startTime" type="datetime-local" onChange={handlStartDate} value={startTime.toISOString().substring(0,16)} required></input><br/>   
             <label id="endTimeLabel">End Time</label>
-            <input id="endTime" type="datetime-local" onChange={handlEndDate} value={endTime.toISOString().substring(0,16)} required></input>   
+            <input id="endTime" type="datetime-local" onChange={handlEndDate} value={endTime.toISOString().substring(0,16)} required></input>  
+            <label id="sendResultsToLabel">Send Results To (Optional)</label>
+            <input id="sendResultsTo" type="email" placeholder="user@example.com" ref={sendResultsToRef}></input><br/>                       
             <div align="center" id="submitSearch">
             <button>Submit Search</button>
             </div>
