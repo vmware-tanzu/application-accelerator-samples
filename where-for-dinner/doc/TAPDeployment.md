@@ -265,6 +265,7 @@ The accelerator contains the following configuration options:
 * **Workload URL :**  If security is enabled or TAP Spring Cloud Gateway is selected, this is the expected URL of the Hungman application's UI web page.  
 It will be used to generate the redirect URI back the API gateway service after a successful user authentication.  **Note:**  If the TAP Spring Cloud Gateway option is selected,
 the default scheme for the redirect URI will be `http` vs `https`.
+* **Alternate Workload Implementations :** If this box is checked, certain services will be built using alternative implementations written in different programming languages.
 
 **NOTE:** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.
 

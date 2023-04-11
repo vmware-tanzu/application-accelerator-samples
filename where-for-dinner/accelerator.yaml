@@ -236,7 +236,14 @@ accelerator:
     name: appWorkloadURL
     inputType: text
     dataType: string
-    required: true        
+    required: true     
+  - label: Alternate Workload Implementations
+    description: "When checked, certain workloads will use alternative implementations written in different programming languages demostrating polyglot capabilities"
+    defaultValue: false
+    name: ployglotWorkloads
+    inputType: checkbox
+    dataType: boolean
+    required: true          
   imports:
     - name: tap-workload
     - name: build-wrapper-maven
