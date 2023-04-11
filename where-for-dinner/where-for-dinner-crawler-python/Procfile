@@ -1,0 +1,2 @@
+web: gunicorn -b :8080 apiserver:app --log-file=- --reload --access-logfile=- --workers=2 --threads=4 --worker-class=gthread --pythonpath src
+#web: python3 src/apiserver.py

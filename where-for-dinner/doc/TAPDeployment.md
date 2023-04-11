@@ -54,6 +54,9 @@ kubectl apply -f ./config/app-operator/
 kubectl apply -f ./config/developer/
 ```
 
+**NOTE:**  If you have chosen AppSSO as well as TAP Spring Cloud gateway as configuration options, it is likely that the Gateway component will fail to 
+deploy due to the AppSSO client registration secret not being created yet.  If this occurs, delete the Spring Cloud Gateway instance and rerun the `kubectl apply -f ./config/service-operator/` command after applying configuration in the `./config/app-operator` directory.
+
 Depending on previously installed/cached components, network speed/latency, and available cluster compute, the amount of time for the RabbitMQ cluster to spin up and the workloads to build and deploy may vary greatly.  It is possible for the process to take more than 10 minutes in some instances.
 
 Once the applications have been successfully built and deployed, you can get the URL of the Where for Dinner application by running the following command.  **Note** If need be, change the namespace `workloads` to the namespace where you deployed the applications.
@@ -265,6 +268,7 @@ The accelerator contains the following configuration options:
 * **Workload URL :**  If security is enabled or TAP Spring Cloud Gateway is selected, this is the expected URL of the Hungman application's UI web page.  
 It will be used to generate the redirect URI back the API gateway service after a successful user authentication.  **Note:**  If the TAP Spring Cloud Gateway option is selected,
 the default scheme for the redirect URI will be `http` vs `https`.
+* **Alternate Workload Implementations :** If this box is checked, certain services will be built using alternative implementations written in different programming languages.
 
 **NOTE:** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.
 

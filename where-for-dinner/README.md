@@ -30,7 +30,7 @@ The value proposition of the Where for Dinner application is to search for avail
 
 Where for Dinner consists of five main service modules:
 
-* A gateway (`where-for-dinner-api-gateway`)
+* A gateway (`where-for-dinner-api-gateway` or Commercial Spring Cloud Gateway)
 * A web UI service (`where-for-dinner-ui`)
 * An API service for submitting search requests (`where-for-dinner-search`)
 * A processor service for executing searches against availability sources and managing results (`where-for-dinner-search-proc`)
@@ -38,7 +38,7 @@ Where for Dinner consists of five main service modules:
 
 Where for Dinner also has two optional components:
 
-* A crawler service that collects establishment availability and provides a query API (`where-for-dinner-crawler`)
+* A crawler service that collects establishment availability and provides a query API (`where-for-dinner-crawler` or `where-for-dinner-crawler-python`)
 * A real time notification service that publishes availability to configured destinations (`where-for-dinner-notifiy`)
 
 The high level data flow looks like the following:

@@ -1,0 +1,29 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: where-for-dinner-crawler
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: where-for-dinner-crawler
+    networking.knative.dev/visibility: cluster-local  
+    apps.tanzu.vmware.com/has-tests: "true"        
+spec:
+  params:
+  - name: ports
+    value:
+    - port: 80
+      containerPort: 8080
+      name: http      
+  resources:     
+    requests:         
+      memory: "500M"
+      cpu: "100m"
+    limits:         
+      memory: "750M"
+      cpu: "1500m"                
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main
+    subPath: where-for-dinner-crawler-python
