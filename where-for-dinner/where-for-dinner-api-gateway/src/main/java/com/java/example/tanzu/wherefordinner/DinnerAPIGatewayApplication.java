@@ -16,6 +16,7 @@ import org.springframework.security.web.server.authentication.logout.SecurityCon
 import org.springframework.security.web.server.authentication.logout.ServerLogoutHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
+import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 
 @SpringBootApplication
 public class DinnerAPIGatewayApplication 
@@ -24,6 +25,12 @@ public class DinnerAPIGatewayApplication
 	{
 		SpringApplication.run(DinnerAPIGatewayApplication.class, args);
 	}
+	
+    @Bean
+    public ForwardedHeaderTransformer forwardedHeaderTransformer() 
+    {
+    	return new ForwardedHeaderTransformer();
+    }	
 	
 	@Profile("!secure")
 	@Bean
