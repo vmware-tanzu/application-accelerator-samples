@@ -6,4 +6,6 @@ pushd $1
 test -f config/workload.yaml
 test -f catalog/catalog-info.yaml
 
+npm install
+
 popd
