@@ -14,9 +14,9 @@ engine:
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "docker-compose.yaml", "**/workload.yaml", "README.md" ]
+        exclude: [ "config/workload.yaml", "DATABASE.md" ]
 
-      - include: [ "**/workload.yaml" ]
+      - include: [ "config/workload.yaml", "DATABASE.md" ]
         chain:
           - type: ReplaceText
             substitutions:

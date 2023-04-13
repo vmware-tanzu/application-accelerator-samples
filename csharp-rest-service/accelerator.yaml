@@ -60,19 +60,12 @@ accelerator:
         dependsOn:
           name: databaseType
           value: postgres
-      - name: databasePostgresStorageClass
-        dependsOn:
-          name: databaseType
-          value: postgres
-      - name: databasePostgresStorageClass
-        dependsOn:
-          name: databaseType
-          value: postgres
 
 engine:
   let:
   - name: compilerSafeAppName
     expression: '#applicationName.replace("-", "_")'
+
   chain:
   - condition: "#databaseType == 'postgres'"
     merge:
@@ -80,7 +73,13 @@ engine:
         reference: steeltoe-postgresql
       - include: [ "**" ]
     onConflict: UseFirst
-    
+
+  - merge:
+      - type: InvokeFragment
+        reference: tap-workload
+      - include: [ "**" ]
+    onConflict: UseFirst
+
   - merge:
     - include: [ "**" ]
       exclude: [ "*.csproj", "config/workload-basic.yaml", "config/workload-api-provider.yaml" ]
@@ -123,7 +122,6 @@ engine:
           reference: tap-workload
         - include: [ "**" ]
         onConflict: UseFirst
-    - include: [ "DATABASE.md" ]
     - include: [ "**/*.cs" ]
       chain:
       - type: ReplaceText
