@@ -123,6 +123,7 @@ engine:
           reference: tap-workload
         - include: [ "**" ]
         onConflict: UseFirst
+    - include: [ "DATABASE.md" ]
     - include: [ "**/*.cs" ]
       chain:
       - type: ReplaceText
