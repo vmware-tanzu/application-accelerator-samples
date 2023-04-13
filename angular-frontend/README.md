@@ -66,42 +66,12 @@ You can access the public page at `http://localhost:4200/` by a web browser.
 Using the `config/workload.yaml` it is possible to test, build and deploy this application onto a
 Kubernetes cluster that is provisioned with [Tanzu Application Platform](https://tanzu.vmware.com/application-platform).
 
-Before deploying your application a Tekton Pipeline responsible for the testing step shall be created in your application
-namespace. Please execute following command.
-
-```bash
-kubectl apply -f config/test-pipeline.yaml
-```
-
-> One can have several pipelines available simultaneously. Matching of a pipeline with a workload is done based on a label assign to a pipeline.  
-> Pipeline:
-
-> ```yaml
-> apiVersion: tekton.dev/v1beta1
-> kind: Pipeline
-> metadata:
->   name: angular-test-pipeline
->   labels:
->     apps.tanzu.vmware.com/pipeline: test-angular
-> ...
-> ```  
-
-> Workload:
-
-> ```yaml
-> apiVersion: carto.run/v1alpha1
-> kind: Workload
-> ...
-> spec:
->   params:
->     - name: testing_pipeline_matching_labels
->       value:
->         apps.tanzu.vmware.com/pipeline: test-angular
-> ```
+If your TAP cluster uses a supply chain that has a test step, then you do need to have a test pipeline that supports testing Angular apps.
+You can find a sample pipline in the [application-accelerator-samples](https://github.com/vmware-tanzu/application-accelerator-samples/tree/main/angular-frontend/tekton) repo.
 
 ### Tanzu CLI
 
-Using the Tanzu CLI one could apply the workload using the local sources:
+Using the Tanzu CLI you could apply the workload using the local sources:
 
 ```bash
 tanzu apps workload apply \
