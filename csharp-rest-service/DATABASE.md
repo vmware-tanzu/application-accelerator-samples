@@ -17,7 +17,7 @@ As with the local deployment a PostgreSQL instance needs to be available at the 
 
 1. App Operator Tasks
 
-   - Create the service `ClassClaim` to be consumed by your workload that references your postgres instance:
+   - Create the service `ClassClaim` to be consumed by your workload that references your PostgreSQL instance:
 
       ```bash
       $ tanzu service class-claim create customer-database --class postgresql-unmanaged -n <workload-namespace>
