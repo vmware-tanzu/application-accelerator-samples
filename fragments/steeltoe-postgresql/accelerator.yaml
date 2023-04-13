@@ -4,45 +4,21 @@ accelerator:
       inputType: text
       defaultValue: "customer-database"
       label: Database Instance Name
-      description: The name of the database instance this application will use (can be existing one in the cluster)
+      description: The name of the database instance this application will use
       required: true
-    - name: databasePostgresStorageClass
-      inputType: text
-      defaultValue: "default"
-      description: The storage class to be used for storing PostgreSQL data
 
 engine:
   let:
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
-    - name: databasePostgresStorageClassResourceName
-      expression: '#databasePostgresStorageClass.toLowerCase()'
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "docker-compose.yaml", "**/workload.yaml", "config/service-operator/postgres.yaml", "config/service-operator/postgres-cluster-role.yaml", "config/service-operator/postgres-cluster-instance-class.yaml", "config/app-operator/postgres-resource-claim.yaml", "config/app-operator/postgres-resource-claim-policy.yaml", "README.md" ]
+        exclude: [ "docker-compose.yaml", "**/workload.yaml", "README.md" ]
 
       - include: [ "**/workload.yaml" ]
         chain:
           - type: ReplaceText
             substitutions:
-              - text: "postgres-database"
+              - text: "customer-database"
                 with: "#databaseResourceName"
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.yaml.MergeYaml
-            options:
-              key: "'$.spec'"
-              yaml: "'serviceClaims:\n  - name: postgres-db\n    ref:\n      apiVersion: services.apps.tanzu.vmware.com/v1alpha1\n      kind: ResourceClaim\n      name: ' + #databaseResourceName + '-claim'"
-
-      - include: [ "config/service-operator/postgres.yaml", "config/service-operator/postgres-cluster-role.yaml", "config/service-operator/postgres-cluster-instance-class.yaml", "config/app-operator/postgres-resource-claim.yaml", "config/app-operator/postgres-resource-claim-policy.yaml" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "monitoring-storage-class-standard"
-                with: '#databasePostgresStorageClassResourceName'
-              - text: "storage-class-standard"
-                with: '#databasePostgresStorageClassResourceName'
-              - text: "postgres-database"
-                with: "#databaseResourceName"
-              - text: "postgresdatabase"
-                with: "#databaseName"
