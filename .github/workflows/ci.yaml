@@ -40,6 +40,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
+      - name: Set up NodeJS 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
       - name: Wait for Engine Container
         uses: ifaxity/wait-on-action@v1
         with:
