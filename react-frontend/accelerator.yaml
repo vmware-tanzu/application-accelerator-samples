@@ -46,4 +46,7 @@ engine:
       - include: [ "**" ]
       onConflict: UseFirst
 
+    - include: [ "**" ]
+      exclude: [ "tekton/**" ]
+
     - type: Provenance

@@ -69,53 +69,13 @@ $ npm start
 You can access the public page at `http://localhost:3000/` by a web browser.
 
 # Deployment
+
 ## Tanzu Application Platform (TAP)
 Using the `config/workload.yaml` it is possible to test, build and deploy this application onto a
 Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
 
-Before deploying your application a Tekton Pipeline responsible for the testing step should be created in your application
-namespace. To support [Pact](https://docs.pact.io/)-based consumer-driven contract testing Python and GCC should be available on an environment where
-tests are executed. You need to create a Docker image which provides this kind of environment. You can use a Docker file
-available in the `config/Dockerfile` to create one. Please go the `config` directory and execute use following commands.
-
-> Be aware that you have to login to the image registry of your choice beforehand and you must have a write access to this registry.
-
-> **Note:** The image that is created must be an `amd64` image so you can not build this on a system with an ARM processor like the newer Apple systems with M1 or M2 processors.
-
-```bash
- docker build -t <your-image-registry.io>/<your-developer-namespace-project>/react-test-with-pact:node-19 - < Dockerfile
- docker push <your-image-registry.io>/<your-developer-namespace-project>/react-test-with-pact:node-19
-```
-
-Please ensure that an image which referenced in the pipeline definition (`config/react-test-pipeline.yaml` line 24) is the same
-as the one you created on the previous step. To create a pipeline you can use following command.
-
-```bash
-kubectl apply -f config/react-test-pipeline.yaml
-```
-
-> One can have several pipelines available simultaneously. Matching of a pipeline with a workload is done based on a label assign to a pipeline.  
-> Pipeline:
-> ```
-> apiVersion: tekton.dev/v1beta1
-> kind: Pipeline
-> metadata:
->   name: react-test-pipeline
->   labels:
->     apps.tanzu.vmware.com/pipeline: test-react
-> ...
-> ```  
-> Workload:
-> ```
-> apiVersion: carto.run/v1alpha1
-> kind: Workload
-> ...
-> spec:
->   params:
->     - name: testing_pipeline_matching_labels
->       value:
->         apps.tanzu.vmware.com/pipeline: test-react
-> ``` 
+If your TAP cluster uses a supply chain that has a test step, then you do need to have a test pipeline that supports testing React apps.
+You can find a sample pipline in the [application-accelerator-samples](https://github.com/vmware-tanzu/application-accelerator-samples/tree/main/react-frontend/tekton) repo.
 
 ### Tanzu CLI
 Using the Tanzu CLI one could apply the workload using the local sources:
