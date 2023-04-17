@@ -8,7 +8,9 @@ If you don't already have one, then you could deploy the sample pipeline by runn
 kubectl apply -f https://raw.githubusercontent.com/vmware-tanzu/application-accelerator-samples/main/angular-frontend/tekton/test-pipeline.yaml
 ```
 
-> You can have several pipelines available simultaneously. Matching of a pipeline with a workload is done based on a label assigned to a pipeline. You would need to modify the provided config files accordingly.
+## Using multiple pipelines 
+
+You can have several pipelines available simultaneously. Matching of a pipeline with a workload is done based on a label assigned to a pipeline. You would need to modify the provided config files accordingly.
 
 > Pipeline:
 

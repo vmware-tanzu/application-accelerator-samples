@@ -24,7 +24,9 @@ To create a pipeline you can use following command.
 kubectl apply -f react-test-pipeline.yaml
 ```
 
-> You can have several pipelines available simultaneously. Matching of a pipeline with a workload is done based on a label assigned to a pipeline. You would need to modify the provided config files accordingly.
+## Using multiple pipelines 
+
+You can have several pipelines available simultaneously. Matching of a pipeline with a workload is done based on a label assigned to a pipeline. You would need to modify the provided config files accordingly.
 
 > Pipeline:
 > ```
