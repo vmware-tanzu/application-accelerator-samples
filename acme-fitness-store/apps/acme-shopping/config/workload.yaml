@@ -1,0 +1,40 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: acme-shopping
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: acme-shopping
+    apps.tanzu.vmware.com/has-tests: "true"
+spec:
+  env:
+  - name: PORT
+    value: "8080"
+  build:
+    env:
+    - name: BP_NODE_RUN_SCRIPTS
+      value: "build"
+    - name: BP_WEB_SERVER
+      value: "httpd"
+    - name: BP_WEB_SERVER_ROOT
+      value: "public"
+    - name: BP_WEB_SERVER_ENABLE_PUSH_STATE
+      value: "true"
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  - name: testing_pipeline_matching_labels
+    value:
+        apps.tanzu.vmware.com/pipeline: acme-fitness-generic-test   
+  - name: ports
+    value:
+    - port: 80
+      containerPort: 8080
+      name: http
+  source:
+    subPath: apps/acme-cart
+    git:
+      url: https://github.com/gm2552-commercial/acme-fitness-store
+      ref:
+        branch: Azure

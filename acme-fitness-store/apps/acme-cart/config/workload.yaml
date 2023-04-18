@@ -1,0 +1,46 @@
+
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: acme-cart
+  labels:
+    apps.tanzu.vmware.com/workload-type: server
+    app.kubernetes.io/part-of: acme-cart
+    apps.tanzu.vmware.com/has-tests: "true"
+spec:
+  env:
+  - name: CART_PORT
+    value: "8080"
+  - name: AUTH_URL
+    value:  <Update ME>
+  - name: AUTH_MODE
+    value: "0"
+  - name: REDIS_HOST
+    value: cart-redis
+  - name: REDIS_PORT
+    value: "6379"
+  - name: REDIS_TLS_ENABLED
+    value: "false"
+  - name: REDIS_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: cart-redis-pass
+        key: password
+  params:
+  - name: annotations
+    value:
+      autoscaling.knative.dev/minScale: "1"
+  - name: testing_pipeline_matching_labels
+    value:
+        apps.tanzu.vmware.com/pipeline: acme-fitness-generic-test         
+  - name: ports
+    value:
+    - port: 80
+      containerPort: 8080
+      name: http
+  source:
+    subPath: apps/acme-cart
+    git:
+      url: https://github.com/gm2552-commercial/acme-fitness-store
+      ref:
+        branch: Azure

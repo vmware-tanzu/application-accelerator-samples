@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-cart
+  description: ACME Fitness Store Cart Service
+  tags:
+    - java
+    - spring
+    - web
+    - tanzu
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=acme-cart'
+spec:
+  type: service
+  lifecycle: production
+  owner: default-team
+  system: fitness-store
