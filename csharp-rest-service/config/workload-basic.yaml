@@ -5,6 +5,7 @@ metadata:
   name: csharp-rest-service
   labels:
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-tests: "true"
     app.kubernetes.io/part-of: csharp-rest-service
     tanzu.app.live.view: "true"
     tanzu.app.live.view.application.flavours: steeltoe

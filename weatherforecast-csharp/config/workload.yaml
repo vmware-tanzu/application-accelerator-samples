@@ -4,6 +4,7 @@ metadata:
   name: sample-app
   labels:
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-tests: "true"
     app.kubernetes.io/part-of: sample-app
 spec:
   params:
