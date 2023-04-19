@@ -4,7 +4,6 @@ metadata:
   name: my-project
   labels:
     apps.tanzu.vmware.com/workload-type: web
-    apps.tanzu.vmware.com/has-tests: "true"
     app.kubernetes.io/part-of: my-project
 spec:
   source:
