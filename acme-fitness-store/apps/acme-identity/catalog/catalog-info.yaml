@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: acme-identity
+  description: ACME Fitness Store Identity Service
+  tags:
+    - java
+    - spring
+    - tanzu
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=acme-identity'
+spec:
+  type: service
+  lifecycle: production
+  owner: default-team
