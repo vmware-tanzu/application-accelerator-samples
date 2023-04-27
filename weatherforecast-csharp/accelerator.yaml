@@ -15,6 +15,9 @@ accelerator:
     required: true
 
 engine:
+  let:
+    - name: compilerSafeAppName
+      expression: '#applicationName.replace("-", "_")'
   merge:
   - include: [ "**" ]
     exclude: [ "README.md", "Sample.csproj", "config/**", "catalog/**" ]
@@ -33,3 +36,9 @@ engine:
       substitutions:
       - text: sample-app
         with: "#artifactId.toLowerCase()"
+  - include: [ "**/*.cs" ]
+    chain:
+      - type: ReplaceText
+        substitutions:
+        - text: Sample
+          with: "#compilerSafeAppName"

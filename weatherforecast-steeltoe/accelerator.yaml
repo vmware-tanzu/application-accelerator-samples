@@ -8,7 +8,6 @@ accelerator:
   - c#
   - steeltoe
   - tanzu
-  - cloud-foundry
 
   options:
   - name: applicationName
@@ -18,10 +17,10 @@ accelerator:
     defaultValue: Sample
     required: true
 
-  imports:
-  - name: tap-workload
-
 engine:
+  let:
+    - name: compilerSafeAppName
+      expression: '#applicationName.replace("-", "_")'
   merge:
   - include: ["**"]
     exclude: ["README.md", "config/**", "catalog/**", "Tiltfile"]
@@ -41,8 +40,9 @@ engine:
         with: "#artifactId.toLowerCase()"
       - text: Sample
         with: "#applicationName"
-    - merge:
-      - type: InvokeFragment
-        reference: tap-workload
-      - include: ["**"]
-      onConflict: UseFirst
+  - include: [ "**/*.cs" ]
+    chain:
+      - type: ReplaceText
+        substitutions:
+          - text: Sample
+            with: "#compilerSafeAppName"
