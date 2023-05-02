@@ -62,8 +62,50 @@ spec:
               secretTemplate:
                 type: Opaque
                 stringData:
-                  password: $(value)      
+                  password: $(value)    
+                  port: "6379"
+                  provider: bitnami
+                  type: redis  
+        connectionDetails:
+        - apiVersion: v1
+          fieldPath: data.provider
+          kind: Secret
+          namespace: ""
+          toConnectionSecretKey: provider
+        - apiVersion: v1
+          fieldPath: data.type
+          kind: Secret
+          namespace: ""
+          toConnectionSecretKey: type
+        - apiVersion: v1
+          fieldPath: spec.clusterIP
+          kind: Service
+          namespace: ""
+          toConnectionSecretKey: host
+        - apiVersion: v1
+          fieldPath: data.port
+          kind: Secret
+          namespace: ""
+          toConnectionSecretKey: port
+        - apiVersion: v1
+          fieldPath: data.password
+          kind: Secret
+          namespace: ""
+          toConnectionSecretKey: password  
+        writeConnectionSecretToRef:
+          namespace: default                              
     patches: 
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.writeConnectionSecretToRef.namespace    
+        type: FromCompositeFieldPath          
+      - fromFieldPath: metadata.uid
+        toFieldPath: spec.writeConnectionSecretToRef.name
+        transforms:
+        - string:
+            fmt: '%s-redis'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath     
       - fromFieldPath: spec.serviceNamespace
         toFieldPath: spec.forProvider.manifest.metadata.namespace      
       - fromFieldPath: metadata.name
@@ -73,6 +115,63 @@ spec:
             fmt: '%s-redis-password'
             type: Format
           type: string 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[0].name
+        transforms:
+        - string:
+            fmt: '%s-redis-password'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath     
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[1].name
+        transforms:
+        - string:
+            fmt: '%s-redis-password'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath   
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[2].name
+        type: FromCompositeFieldPath 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[3].name
+        transforms:
+        - string:
+            fmt: '%s-redis-password'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[4].name
+        transforms:
+        - string:
+            fmt: '%s-redis-password'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath 
+          
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[0].namespace
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[1].namespace
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[2].namespace
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[3].namespace
+        type: FromCompositeFieldPath
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[4].namespace
+        type: FromCompositeFieldPath
+    connectionDetails:
+    - fromConnectionSecretKey: provider
+    - fromConnectionSecretKey: type
+    - fromConnectionSecretKey: host
+    - fromConnectionSecretKey: port
+    - fromConnectionSecretKey: password        
   - base:
       apiVersion: kubernetes.crossplane.io/v1alpha1
       kind: Object
@@ -165,92 +264,6 @@ spec:
             fmt: '%s-redis-password'
             type: Format
           type: string  
-  - base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: secretgen.carvel.dev/v1alpha1
-            kind: SecretTemplate
-            metadata:
-             namespace: service-instances
-            spec:
-             inputResources:
-             - name: creds
-               ref:
-                 apiVersion: v1
-                 kind: Secret
-             template:
-              metadata:
-               labels:
-                 app.kubernetes.io/component: redis
-                 services.apps.tanzu.vmware.com/class: bitnami-redis
-              type: connection.crossplane.io/v1alpha1                 
-              stringData:
-                port: "6379"
-                provider: bitnami
-                type: redis
-              data:
-                password: $(.creds.data.password)  
-    patches: 
-      - fromFieldPath: spec.serviceNamespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace      
-      - fromFieldPath: spec.writeConnectionSecretToRef.name
-        toFieldPath: spec.forProvider.manifest.metadata.name
-        type: FromCompositeFieldPath 
-      - fromFieldPath: metadata.name
-        toFieldPath: spec.forProvider.manifest.spec.inputResources[0].ref.name   
-        transforms:
-        - string:
-            fmt: '%s-redis-password'
-            type: Format
-          type: string   
-      - fromFieldPath: metadata.name
-        toFieldPath: spec.forProvider.manifest.spec.template.stringData.host  
-        transforms:
-        - string:
-            fmt: '%s.service-instances'
-            type: Format
-          type: string                                                                                                                                                                                              
-  - base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: secretgen.carvel.dev/v1alpha1
-            kind: SecretExport
-            metadata:
-              namespace: service-instances
-    patches:
-      - fromFieldPath: spec.serviceNamespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace      
-      - fromFieldPath: spec.writeConnectionSecretToRef.name
-        toFieldPath: spec.forProvider.manifest.metadata.name
-        type: FromCompositeFieldPath
-      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
-        toFieldPath: spec.forProvider.manifest.spec.toNamespace
-        type: FromCompositeFieldPath
-  - base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: secretgen.carvel.dev/v1alpha1
-            kind: SecretImport
-            spec:
-              fromNamespace: service-instances
-    patches:
-      - fromFieldPath: spec.serviceNamespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace      
-      - fromFieldPath: spec.writeConnectionSecretToRef.name
-        toFieldPath: spec.forProvider.manifest.metadata.name
-        type: FromCompositeFieldPath
-      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace
-        type: FromCompositeFieldPath
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ClusterInstanceClass
@@ -262,3 +275,25 @@ spec:
   provisioner:
     crossplane:
       compositeResourceDefinition: xredisinstances.wherefordinner.caching.example.org
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: crossplane-kubernetes-provider-service-read-writer
+ labels:   
+   services.tanzu.vmware.com/aggregate-to-provider-kubernetes: "true"
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: crossplane-kubernetes-provider-deployment-read-writer
+ labels:
+   services.tanzu.vmware.com/aggregate-to-provider-kubernetes: "true"
+rules:
+- apiGroups: ["apps"]                       
+  resources: ["deployments"]      
+  verbs: ["*"]      

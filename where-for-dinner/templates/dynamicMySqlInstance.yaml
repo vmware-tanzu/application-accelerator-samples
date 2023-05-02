@@ -63,7 +63,49 @@ spec:
               highAvailability:
                 enabled: false
             storageSize: 1Gi
+        connectionDetails:
+        - apiVersion: v1
+          kind: Secret
+          fieldPath: data.provider
+          toConnectionSecretKey: provider
+        - apiVersion: v1
+          kind: Secret
+          fieldPath: data.type
+          toConnectionSecretKey: type
+        - apiVersion: v1
+          kind: Secret
+          fieldPath: data.host
+          toConnectionSecretKey: host
+        - apiVersion: v1
+          kind: Secret
+          fieldPath: data.port
+          toConnectionSecretKey: port
+        - apiVersion: v1
+          kind: Secret
+          fieldPath: data.username
+          toConnectionSecretKey: username
+        - apiVersion: v1
+          kind: Secret
+          fieldPath: data.password
+          toConnectionSecretKey: password
+        - apiVersion: v1
+          kind: Secret
+          fieldPath: data.database
+          toConnectionSecretKey: database
+        writeConnectionSecretToRef:
+          namespace: default          
     patches:
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.writeConnectionSecretToRef.namespace    
+        type: FromCompositeFieldPath          
+      - fromFieldPath: metadata.uid
+        toFieldPath: spec.writeConnectionSecretToRef.name
+        transforms:
+        - string:
+            fmt: '%s-mysql'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath          
       - fromFieldPath: spec.serviceNamespace
         toFieldPath: spec.forProvider.manifest.metadata.namespace
         type: FromCompositeFieldPath       
@@ -81,87 +123,98 @@ spec:
             type: Format
           type: string
         type: FromCompositeFieldPath
-  - base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: secretgen.carvel.dev/v1alpha1
-            kind: SecretTemplate
-            metadata:
-              namespace: service-instances
-            spec:
-              inputResources:
-              - name: creds
-                ref:
-                  apiVersion: v1
-                  kind: Secret
-              template:
-                type: connection.crossplane.io/v1alpha1
-                data:
-                  provider: "$(.creds.data.provider)"
-                  type: "$(.creds.data.type)"
-                  host: "$(.creds.data.host)"
-                  port: "$(.creds.data.port)"
-                  username: "$(.creds.data.username)"
-                  password: "$(.creds.data.password)"
-                  database: "$(.creds.data.database)"
-    patches: 
-      - fromFieldPath: spec.serviceNamespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace
-        type: FromCompositeFieldPath       
       - fromFieldPath: metadata.name
-        toFieldPath: spec.forProvider.manifest.spec.inputResources[0].ref.name
+        toFieldPath: spec.connectionDetails[0].name
         transforms:
         - string:
             fmt: '%s-app-user-db-secret'
             type: Format
           type: string
-        type: FromCompositeFieldPath
-      - fromFieldPath: spec.writeConnectionSecretToRef.name
-        toFieldPath: spec.forProvider.manifest.metadata.name
-        type: FromCompositeFieldPath
-  - base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: secretgen.carvel.dev/v1alpha1
-            kind: SecretExport
-            metadata:
-              namespace: service-instances
-    patches:
+        type: FromCompositeFieldPath     
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[1].name
+        transforms:
+        - string:
+            fmt: '%s-app-user-db-secret'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath   
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[2].name
+        transforms:
+        - string:
+            fmt: '%s-app-user-db-secret'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[3].name
+        transforms:
+        - string:
+            fmt: '%s-app-user-db-secret'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[4].name
+        transforms:
+        - string:
+            fmt: '%s-app-user-db-secret'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[5].name
+        transforms:
+        - string:
+            fmt: '%s-app-user-db-secret'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath 
+      - fromFieldPath: metadata.name
+        toFieldPath: spec.connectionDetails[6].name
+        transforms:
+        - string:
+            fmt: '%s-app-user-db-secret'
+            type: Format
+          type: string
+        type: FromCompositeFieldPath 
       - fromFieldPath: spec.serviceNamespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace
-        type: FromCompositeFieldPath       
-      - fromFieldPath: spec.writeConnectionSecretToRef.name
-        toFieldPath: spec.forProvider.manifest.metadata.name
-        type: FromCompositeFieldPath
-      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
-        toFieldPath: spec.forProvider.manifest.spec.toNamespace
-        type: FromCompositeFieldPath
-  - base:
-      apiVersion: kubernetes.crossplane.io/v1alpha1
-      kind: Object
-      spec:
-        forProvider:
-          manifest:
-            apiVersion: secretgen.carvel.dev/v1alpha1
-            kind: SecretImport
-            spec:
-              fromNamespace: service-instances
-    patches:
+        toFieldPath: spec.connectionDetails[0].namespace
+        type: FromCompositeFieldPath    
       - fromFieldPath: spec.serviceNamespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace
-        type: FromCompositeFieldPath       
-      - fromFieldPath: spec.writeConnectionSecretToRef.name
-        toFieldPath: spec.forProvider.manifest.metadata.name
+        toFieldPath: spec.connectionDetails[1].namespace
+        type: FromCompositeFieldPath    
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[2].namespace
+        type: FromCompositeFieldPath    
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[3].namespace
+        type: FromCompositeFieldPath    
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[4].namespace
+        type: FromCompositeFieldPath    
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[5].namespace
+        type: FromCompositeFieldPath    
+      - fromFieldPath: spec.serviceNamespace
+        toFieldPath: spec.connectionDetails[6].namespace
         type: FromCompositeFieldPath
-      - fromFieldPath: spec.writeConnectionSecretToRef.namespace
-        toFieldPath: spec.forProvider.manifest.metadata.namespace
-        type: FromCompositeFieldPath
+    connectionDetails:
+    - fromConnectionSecretKey: type
+      name: type
+    - fromConnectionSecretKey: provider
+      name: provider
+    - fromConnectionSecretKey: password     
+      name: password
+    - fromConnectionSecretKey: database
+      name: database    
+    - fromConnectionSecretKey: username
+      name: username      
+    - fromConnectionSecretKey: host
+      name: host       
+    - fromConnectionSecretKey: port 
+      name: port           
 ---
 apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ClusterInstanceClass
@@ -173,3 +226,14 @@ spec:
   provisioner:
     crossplane:
       compositeResourceDefinition: xmysqlinstances.wherefordinner.database.example.org
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: crossplane-kubernetes-provider-mysql-read-writer
+ labels:
+   services.tanzu.vmware.com/aggregate-to-provider-kubernetes: "true"
+rules:
+- apiGroups: ["with.sql.tanzu.vmware.com"]
+  resources: ["mysqls"]
+  verbs: ["*"]
