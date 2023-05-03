@@ -54,7 +54,7 @@ accelerator:
     choices:
     - value: rabbitmq
       text: RabbitMQ
-  - label: Dyamically Provision Message Broker
+  - label: Dynamically Provision Message Broker
     description: "If set to true, the message broker will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
     defaultValue: false
     name: dynamicMsgBroker
@@ -98,7 +98,7 @@ accelerator:
     - value: h2
       text: H2 (In Memory DB)
     required: true
-  - label: Dyamically Provision Database
+  - label: Dynamically Provision Database
     description: "If set to true, the database will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
     defaultValue: false
     name: dynamicDatabase
@@ -138,7 +138,7 @@ accelerator:
     - value: redisCache
       text: Redis
     required: true
-  - label: Dyamically Provision Cache
+  - label: Dynamically Provision Cache
     description: "If set to true, the cache will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
     defaultValue: false
     name: dynamicCache
@@ -287,11 +287,11 @@ engine:
       regex: 'templates/rmqCluster.yaml'
       rewriteTo: "'config/service-operator/rmqCluster.yaml'"   
   - condition: "#msgBrokerType == 'rabbitmq' && #dynamicMsgBroker"
-    include: ["**/dyanmicRabbitMQCluster.yaml"]
+    include: ["**/dynamicRabbitMQCluster.yaml"]
     chain:
     - type: RewritePath
-      regex: 'templates/dyanmicRabbitMQCluster.yaml'
-      rewriteTo: "'config/service-operator/dyanmicRabbitMQCluster.yaml'"         
+      regex: 'templates/dynamicRabbitMQCluster.yaml'
+      rewriteTo: "'config/service-operator/dynamicRabbitMQCluster.yaml'"         
   - condition: "#dbType == 'mysql' && !#dynamicDatabase"
     include: ["**/mysqlInstance.yaml"]
     chain:
