@@ -139,5 +139,5 @@ engine:
       rewriteTo: "'config/app-operator/rmqResourceClaim.yaml'"
   - type: InvokeFragment
     reference: build-wrapper-maven
-
+  - include: ["README.md"]
   - type: Provenance
