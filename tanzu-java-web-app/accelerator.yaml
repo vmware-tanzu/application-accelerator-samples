@@ -1,5 +1,5 @@
 accelerator:
-  displayName: Tanzu Java Web App
+  displayName: Tanzu Java Web App - buildTool
   description: A sample Spring Boot web application built with Tanzu supply-chain
   tags:
   - java
@@ -89,9 +89,9 @@ engine:
     onConflict: UseLast
 
   # Maven build files
-  - condition: "#buildType != 'maven'"
+  - condition: "#buildTool != 'maven'"
     exclude: ["pom.xml"]
-  - condition: "#buildType == 'maven'"
+  - condition: "#buildTool == 'maven'"
     merge:
     - include: [ "**" ]
     - type: InvokeFragment
@@ -99,9 +99,9 @@ engine:
     onConflict: UseLast
 
   # Gradle build files
-  - condition: "#buildType != 'gradle'"
+  - condition: "#buildTool != 'gradle'"
     exclude: ["*gradle*"]
-  - condition: "#buildType == 'gradle'"
+  - condition: "#buildTool == 'gradle'"
     merge:
     - include: [ "**" ]
     - type: InvokeFragment

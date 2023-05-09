@@ -1,6 +1,8 @@
 {
+    "projectName": "kdv",
     "repositoryPrefix": "dev.local",
     "updateBoot3": true,
     "javaVersion": "11",
-    "buildType": "gradle"
+    "buildTool": "gradle",
+    "includeBuildToolWrapper": true
 }
