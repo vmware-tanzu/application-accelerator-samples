@@ -1,12 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+rm -fr /tmp/result
 mkdir /tmp/result
 
 [[ $1 =~ (.*)-.* ]]
 accname=${BASH_REMATCH[1]}
 
 pushd ${GITHUB_WORKSPACE}
+echo GITHUB_WORKSPACE=$GITHUB_WORKSPACE
 
 .github/tests/tanzu-accelerator-linux_amd64 generate-from-local \
   --server-url http://localhost:8888 \
