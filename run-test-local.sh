@@ -16,6 +16,8 @@ done
 
 pushd .github/tests
 for test_name in tanzu-java-*; do
+#for test_name in tanzu-java-*-boot3; do
+#for test_name in tanzu-java-*-boot3_gradle; do
    ./generate.sh $test_name
    ./run-test.sh $test_name
 done

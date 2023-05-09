@@ -44,8 +44,8 @@ engine:
   chain:
   - merge:
     - include: [ "**/*" ]
-      exclude: [ "config/*.yaml", "Tiltfile", "README.md", "grype.yaml", "catalog/*.yaml", ".github/workflows/**" ]
-    - include: [ "Tiltfile" ]
+      exclude: [ "config/*.yaml", "Tiltfile*", "README.md", "grype.yaml", "catalog/*.yaml", ".github/workflows/**" ]
+    - include: [ "Tiltfile*" ]
       chain:
       - type: ReplaceText
         substitutions:
@@ -55,7 +55,12 @@ engine:
         substitutions:
         - text: your-registry.io/project
           with: "#repositoryPrefix"
-
+      - condition: "#buildTool == 'gradle'"
+        type: RewritePath
+        regex: "Tiltfile_gradle"
+        rewriteTo: "'Tiltfile'"
+      - exclude: ["Tiltfile_gradle"]
+      onConflict: UseLast
     - include: [ "config/*.yaml" ]
       chain:
       - type: ReplaceText
