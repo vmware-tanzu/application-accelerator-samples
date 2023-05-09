@@ -104,6 +104,12 @@ engine:
   - condition: "#buildTool == 'gradle'"
     merge:
     - include: [ "**" ]
+    - chain:
+      - include: [ "settings.gradle" ]
+      - type: ReplaceText
+        substitutions:
+          - text: 'tanzu-java-web-app'
+            with: "#projectName"
     - type: InvokeFragment
       reference: build-wrapper-gradle
     onConflict: UseLast
