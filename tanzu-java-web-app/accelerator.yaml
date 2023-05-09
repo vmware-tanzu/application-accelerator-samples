@@ -5,15 +5,33 @@ accelerator:
   tags:
   - java
   - spring
+  - gradle
+  - maven
   - web
   - tanzu
-
   options:
-  - name: repositoryPrefix
-    inputType: text
-    label: Prefix for the container image repository
-    defaultValue: dev.local
+  - name: buildTool
+    label: Build Tool
+    inputType: select
     required: true
+    defaultValue: maven
+    choices:
+      - value: maven
+        text: Maven (https://maven.apache.org/)
+      - value: gradle
+        text: Gradle (https://gradle.org/)
+  - name: ide
+    label: IDE
+    inputType: select
+    dependsOn: 
+      name: buildTool
+      value: gradle
+    choices:
+      - value: intellij
+        text: IntelliJ Idea
+      - value: vscode
+        text: Visual Studio Code
+    defaultValue: intellij
   - name: updateBoot3
     inputType: checkbox
     dataType: boolean
@@ -25,6 +43,7 @@ accelerator:
   - name: java-version
   - name: tap-workload
   - name: build-wrapper-maven
+  - name: build-wrapper-gradle
 
 engine:
   let:
@@ -33,18 +52,23 @@ engine:
   chain:
   - merge:
     - include: [ "**/*" ]
-      exclude: [ "config/*.yaml", "Tiltfile", "README.md", "grype.yaml", "catalog/*.yaml", ".github/workflows/**" ]
-    - include: [ "Tiltfile" ]
+      exclude: [ "config/*.yaml", "Tiltfile*", "README.md", "grype.yaml", "catalog/*.yaml", ".github/workflows/**" ]
+    - include: [ "Tiltfile*" ]
       chain:
       - type: ReplaceText
         substitutions:
         - text: tanzu-java-web-app
           with: "#artifactId.toLowerCase()"
-      - type: ReplaceText
-        substitutions:
-        - text: your-registry.io/project
-          with: "#repositoryPrefix"
-
+      - condition: "#buildTool == 'gradle' && #ide == 'intellij'"
+        type: RewritePath
+        regex: "Tiltfile_gradle_intellij"
+        rewriteTo: "'Tiltfile'"
+      - condition: "#buildTool == 'gradle' && #ide == 'vscode'"
+        type: RewritePath
+        regex: "Tiltfile_gradle_vscode"
+        rewriteTo: "'Tiltfile'"
+      - exclude: ["Tiltfile_*"]
+      onConflict: UseLast
     - include: [ "config/*.yaml" ]
       chain:
       - type: ReplaceText
@@ -77,10 +101,30 @@ engine:
       reference: java-version
     onConflict: UseLast
 
-  - merge:
+  # Maven build files
+  - condition: "#buildTool != 'maven'"
+    exclude: ["pom.xml"]
+  - condition: "#buildTool == 'maven'"
+    merge:
     - include: [ "**" ]
     - type: InvokeFragment
       reference: build-wrapper-maven
+    onConflict: UseLast
+
+  # Gradle build files
+  - condition: "#buildTool != 'gradle'"
+    exclude: ["*gradle*"]
+  - condition: "#buildTool == 'gradle'"
+    merge:
+    - include: [ "**" ]
+    - chain:
+      - include: [ "settings.gradle" ]
+      - type: ReplaceText
+        substitutions:
+          - text: 'tanzu-java-web-app'
+            with: "#projectName"
+    - type: InvokeFragment
+      reference: build-wrapper-gradle
     onConflict: UseLast
 
   - condition: "#updateBoot3"
@@ -104,6 +148,25 @@ engine:
       - type: ReplaceText
         regex:
           pattern: "\\s+<spring-security.version>5.8.2</spring-security.version>"
+          with: "''"
+    # Gradle
+    - include: [ "build.gradle.kts" ]
+      chain:
+      - type: ReplaceText
+        regex:
+          pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
+          with: "'id(\"org.springframework.boot\") version \"3.0.5\"'"
+      - type: ReplaceText
+        regex:
+          pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
+          with: "'id(\"io.spring.dependency-management\") version \"1.1.0\"'"
+      - type: ReplaceText
+        regex:
+          pattern: "\\s*extra\\[\"snakeyaml.version\"\\] = \"1.33\""
+          with: "''"
+      - type: ReplaceText
+        regex:
+          pattern: "\\s*extra\\[\"spring-security.version\"\\] = \"5.8.2\""
           with: "''"
     # HttpTraceRepository to HttpExchangeRepository
     - include: [ "**/*.java" ]

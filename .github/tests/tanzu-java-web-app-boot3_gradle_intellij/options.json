@@ -1,0 +1,7 @@
+{
+    "projectName": "was-renamed-to-this",
+    "updateBoot3": true,
+    "javaVersion": "11",
+    "buildTool": "gradle",
+    "includeBuildToolWrapper": true
+}
