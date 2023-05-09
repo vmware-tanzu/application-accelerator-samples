@@ -96,7 +96,8 @@ engine:
     - type: InvokeFragment
       reference: build-wrapper-maven
     onConflict: UseLast
-  - merge:
+  - condition: "#buildType == 'gradle'"
+    merge:
     - include: [ "**" ]
     - type: InvokeFragment
       reference: build-wrapper-gradle
