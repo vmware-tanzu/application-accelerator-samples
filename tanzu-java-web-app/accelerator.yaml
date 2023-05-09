@@ -88,14 +88,19 @@ engine:
       reference: java-version
     onConflict: UseLast
 
-  # Gradle support
-  - condition: "#buildType != 'gradle'"
-    exclude: ["*gradle*"]
-  - merge:
+  # Maven build files
+  - condition: "#buildType != 'maven'"
+    exclude: ["pom.xml"]
+  - condition: "#buildType == 'maven'"
+    merge:
     - include: [ "**" ]
     - type: InvokeFragment
       reference: build-wrapper-maven
     onConflict: UseLast
+
+  # Gradle build files
+  - condition: "#buildType != 'gradle'"
+    exclude: ["*gradle*"]
   - condition: "#buildType == 'gradle'"
     merge:
     - include: [ "**" ]
@@ -124,6 +129,25 @@ engine:
       - type: ReplaceText
         regex:
           pattern: "\\s+<spring-security.version>5.8.2</spring-security.version>"
+          with: "''"
+    # Gradle
+    - include: [ "build.gradle.kts" ]
+      chain:
+      - type: ReplaceText
+        regex:
+          pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
+          with: "'id(\"org.springframework.boot\") version \"3.0.5\"'"
+      - type: ReplaceText
+        regex:
+          pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
+          with: "'id(\"io.spring.dependency-management\") version \"1.1.0\"'"
+      - type: ReplaceText
+        regex:
+          pattern: "\\s*extra\\[\"snakeyaml.version\"\\] = \"1.33\""
+          with: "''"
+      - type: ReplaceText
+        regex:
+          pattern: "\\s*extra\\[\"spring-security.version\"\\] = \"5.8.2\""
           with: "''"
     # HttpTraceRepository to HttpExchangeRepository
     - include: [ "**/*.java" ]

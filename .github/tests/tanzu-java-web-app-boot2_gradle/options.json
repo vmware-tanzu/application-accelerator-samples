@@ -1,0 +1,6 @@
+{
+    "repositoryPrefix": "dev.local",
+    "updateBoot3": false,
+    "javaVersion": "11",
+    "buildType": "gradle"
+}
