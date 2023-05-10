@@ -16,7 +16,7 @@ if [ -e Tiltfile_gradle ]; then
 fi
 if ! grep -q -F '/build/classes/java/main' "Tiltfile"; then
   echo "Tiltfile isn't suitable for gradle project?"
-  echo "Couldn't find build/classes/java/main in it."
+  echo "Couldn't find the string 'build/classes/java/main' in it."
   exit 1
 fi
 ./gradlew build
