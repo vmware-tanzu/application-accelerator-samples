@@ -262,3 +262,40 @@ spec:
   provisioner:
     crossplane:
       compositeResourceDefinition: xredisinstances.wherefordinner.caching.example.org
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: crossplane-kubernetes-provider-service-read-writer
+ labels:   
+   services.tanzu.vmware.com/aggregate-to-provider-kubernetes: "true"
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+ name: crossplane-kubernetes-provider-deployment-read-writer
+ labels:
+   services.tanzu.vmware.com/aggregate-to-provider-kubernetes: "true"
+rules:
+- apiGroups: ["apps"]                       
+  resources: ["deployments"]      
+  verbs: ["*"]  
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: crossplane-kubernetes-secret-import-read-writer
+  labels:
+    services.tanzu.vmware.com/aggregate-to-provider-kubernetes: "true"
+rules:
+- apiGroups:
+  - secretgen.carvel.dev
+  resources:
+  - secretimports
+  verbs:
+  - '*'
+  
