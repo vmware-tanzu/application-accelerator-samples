@@ -7,11 +7,19 @@ mkdir /tmp/result
 [[ $1 =~ (.*)-.* ]]
 accname=${BASH_REMATCH[1]}
 
-pushd ${GITHUB_WORKSPACE}
-echo GITHUB_WORKSPACE=$GITHUB_WORKSPACE
+WORKSPACE="${TEST_WORKSPACE:-$GITHUB_WORKSPACE}"
 
-.github/tests/tanzu-accelerator-linux_amd64 generate-from-local \
-  --server-url http://localhost:8888 \
+echo WORKSPACE=$WORKSPACE
+pushd ${WORKSPACE}
+
+CMD="${TANZU_CLI:-.github/tests/tanzu-accelerator-linux_amd64}"
+PLUGIN="${CLI_PLUGIN:-}"
+
+SERVER_URL="${ACC_SERVER_URL:-http://localhost:8888}"
+echo SERVER_URL=$SERVER_URL
+
+${CMD} ${PLUGIN} generate-from-local \
+  --server-url $SERVER_URL \
   --output-dir /tmp/result \
   --fragment-paths                       app-sso-client=fragments/app-sso-client \
   --fragment-paths                         java-version=fragments/java-version \
