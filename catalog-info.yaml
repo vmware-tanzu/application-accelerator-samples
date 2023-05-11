@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: application-accelerator-samples
+  annotations:
+    github.com/project-slug: imurata/application-accelerator-samples
+spec:
+  type: other
+  lifecycle: unknown
+  owner: guests
