@@ -5,9 +5,9 @@ set -euo pipefail
 # 
 # export TANZU_CLI=tanzu
 # export CLI_PLUGIN=acc
-# export TEST_PATTERN=tanzu-java-web-app-*
+export TEST_PATTERN=tanzu-java-*
 # export TEST_PATTERN=tanzu-java-*-boot3
-export TEST_PATTERN=tanzu-java-*-boot3_gradle
+#export TEST_PATTERN=tanzu-java-*-boot3_gradle_vscode
 export TEST_WORKSPACE=$PWD
 # export ACC_SERVER_URL=<URL>
 

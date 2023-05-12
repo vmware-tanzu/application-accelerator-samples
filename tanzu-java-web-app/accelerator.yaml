@@ -10,11 +10,6 @@ accelerator:
   - web
   - tanzu
   options:
-  - name: repositoryPrefix
-    inputType: text
-    label: Prefix for the container image repository
-    defaultValue: dev.local
-    required: true
   - name: buildTool
     label: Build Tool
     inputType: select
@@ -25,6 +20,18 @@ accelerator:
         text: Maven (https://maven.apache.org/)
       - value: gradle
         text: Gradle (https://gradle.org/)
+  - name: ide
+    label: IDE
+    inputType: select
+    dependsOn: 
+      name: buildTool
+      value: gradle
+    choices:
+      - value: intellij
+        text: IntelliJ Idea
+      - value: vscode
+        text: Visual Studio Code
+    defaultValue: intellij
   - name: updateBoot3
     inputType: checkbox
     dataType: boolean
@@ -52,15 +59,15 @@ engine:
         substitutions:
         - text: tanzu-java-web-app
           with: "#artifactId.toLowerCase()"
-      - type: ReplaceText
-        substitutions:
-        - text: your-registry.io/project
-          with: "#repositoryPrefix"
-      - condition: "#buildTool == 'gradle'"
+      - condition: "#buildTool == 'gradle' && #ide == 'intellij'"
         type: RewritePath
-        regex: "Tiltfile_gradle"
+        regex: "Tiltfile_gradle_intellij"
         rewriteTo: "'Tiltfile'"
-      - exclude: ["Tiltfile_gradle"]
+      - condition: "#buildTool == 'gradle' && #ide == 'vscode'"
+        type: RewritePath
+        regex: "Tiltfile_gradle_vscode"
+        rewriteTo: "'Tiltfile'"
+      - exclude: ["Tiltfile_*"]
       onConflict: UseLast
     - include: [ "config/*.yaml" ]
       chain:

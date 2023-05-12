@@ -12,21 +12,12 @@ k8s_custom_deploy(
     delete_cmd="tanzu apps workload delete -f config/workload.yaml --namespace " + NAMESPACE + " --yes",
     container_selector='workload',
 
-    # Live update: Depending on whether you use Vscode or IntelliJ,
-    # comment out one or the other below.
-
     # Live Update IntelliJ:
     deps=['build.gradle.kts', './build/classes/java/main', './build/resources/main'],
     live_update=[
        sync('./build/classes/java/main', '/workspace/BOOT-INF/classes'),
        sync('./build/resources/main', '/workspace/BOOT-INF/classes')
     ]
-
-    # Live Update VScode:
-    # deps=['build.gradle.kts', './bin/main'],
-    # live_update=[
-    #    sync('./bin/main', '/workspace/BOOT-INF/classes'),
-    # ]
 )
 
 k8s_resource('tanzu-java-web-app', port_forwards=["8080:8080"],
