@@ -1,4 +1,5 @@
 {
+    "nativeBuild": false,
     "updateBoot3": false,
     "javaVersion": "11",
     "buildTool": "gradle"
