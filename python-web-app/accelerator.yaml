@@ -8,14 +8,6 @@ accelerator:
   - web
   - tanzu
 
-  # Accelerator GUI
-  options:
-    - name: repositoryPrefix
-      inputType: text
-      label: Prefix for the container image repository
-      defaultValue: dev.local
-      required: true
-
   imports:
     - name: tap-workload
 
@@ -29,10 +21,6 @@ engine:
         substitutions:
         - text: python-web-app
           with: "#artifactId.toLowerCase()"
-      - type: ReplaceText
-        substitutions:
-        - text: your-registry.io/project
-          with: "#repositoryPrefix"
 
     - include: [ "config/*.yaml" ]
       chain:

@@ -23,14 +23,6 @@ accelerator:
       text: Skip Kubernetes deployment
     defaultValue: workload
     required: true
-  - name: sourceRepositoryPrefix
-    inputType: text
-    label: The source image repository prefix to use when pushing the source
-    description: The prefix for the source image repository where source can be stored during development
-    defaultValue: dev.local
-    dependsOn:
-      name: deploymentType
-      value: workload
   imports:
   - name: tap-workload
   - name: build-wrapper-maven
@@ -84,10 +76,6 @@ engine:
       substitutions:
       - text: hello-fun
         with: "#artifactId"
-    - type: ReplaceText
-      substitutions:
-        - text: dev.local
-          with: "#sourceRepositoryPrefix"
     - type: RewritePath
       rewriteTo: "#filename"
   - include: [ "kubernetes/tap/.tanzuignore" ]
