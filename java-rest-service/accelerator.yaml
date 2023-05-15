@@ -112,7 +112,6 @@ accelerator:
         dependsOn:
           name: buildTool
           value: 'maven'
-      - name: sourceRepositoryPrefix
   - name: tap-workload
   - name: build-wrapper-maven
   - name: build-wrapper-gradle
