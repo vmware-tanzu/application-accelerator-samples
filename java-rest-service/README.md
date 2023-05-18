@@ -164,14 +164,12 @@ Using the Tanzu CLI one could apply the workload using the local sources:
 tanzu apps workload apply \
   --file config/workload.yaml \
   --namespace <workload-namespace> \
-  --source-image <image-registry> \
   --local-path . \
   --yes \
   --tail
 ```
 
-Note: change the namespace to where you would like to deploy this workload. Also define the (private) image registry you
-are allowed to push the source-image, like: `docker.io/username/repository`.
+Note: change the namespace to where you would like to deploy this workload.
 
 ### Visual Studio Code Tanzu Plugin
 

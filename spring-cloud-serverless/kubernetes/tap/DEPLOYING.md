@@ -8,8 +8,6 @@ Follow [instructions in the documentation](https://docs.vmware.com/en/Tanzu-Appl
 
 These are the basic steps to use live update:
 
-1. In Visual Studio Code, navigate to `Preferences > Settings > Extensions > Tanzu`.
-    - In the `Source Image` field, provide the destination image repository to publish an image containing your workload source code. This should match what is specified for `SOURCE_IMAGE` default in the Tiltfile.
 1. From the Command Palette (⇧⌘P), type "Tanzu", and select `Tanzu: Live Update Start`. You can view output from Tanzu Application Platform and from Tilt indicating that the container is being built and deployed.
     - You see "Live Update starting..." in the status bar at the bottom right.
     - Live update can take 1-3 minutes while the workload deploys and the Knative service becomes available.
@@ -40,7 +38,6 @@ If you would like deploy the code from your local working directory you can use 
 ```
 tanzu apps workload create hello-fun -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/hello-fun-source \
   --type web
 ```
 

@@ -17,7 +17,6 @@ If you would like to deploy the code from your local working directory you can u
 ```
 tanzu apps workload create my-project -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/my-project-source \
   --type web
 ```
 

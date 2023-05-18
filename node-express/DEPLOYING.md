@@ -15,7 +15,6 @@ If you would like deploy the code from your local working directory you can use 
 ```
 tanzu apps workload create node-express -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/node-express-source \
   --type web
 ```
 

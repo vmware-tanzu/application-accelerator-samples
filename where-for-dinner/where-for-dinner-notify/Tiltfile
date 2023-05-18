@@ -1,4 +1,3 @@
-SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='your-registry.io/project/where-for-dinner-notify-source')
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
 
@@ -6,7 +5,6 @@ k8s_custom_deploy(
     'where-for-dinner-notify',
     apply_cmd="tanzu apps workload apply -f config/workload.yaml --update-strategy replace --debug --live-update" +
         " --local-path " + LOCAL_PATH +
-        " --source-image " + SOURCE_IMAGE +
         " --namespace " + NAMESPACE +
         " --yes --output yaml",
     delete_cmd="tanzu apps workload delete -f config/workload.yaml --namespace " + NAMESPACE + " --yes" ,

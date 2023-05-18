@@ -31,7 +31,7 @@ tanzu apps workload apply -f config/workload.yaml
 Deploy your app from your local working directory by running:
 
 ```script
-tanzu apps workload create csharp-rest-service -f config/workload.yaml --local-path . --source-image <REPOSITORY-PREFIX>/csharp-rest-service-source --type web
+tanzu apps workload create csharp-rest-service -f config/workload.yaml --local-path . csharp-rest-service-source --type web
 ```
 
 ## Accessing the app deployed to your cluster
@@ -54,10 +54,7 @@ You will have to update some fields in the root directory's `Tiltfile` to connec
 
 Update the `allow_k8s_contexts` line of the `Tiltfile` to indicate the Kubernetes context to use.
 
-Update the `Tiltfile` or set the SOURCE_IMAGE environment variable to indicate the registry path where TAP should store your image.
-
 ```script
-export SOURCE_IMAGE=registry/project/csharp-rest-service
 export K8S_TEST_CONTEXT="a-kubernetes-context"
 tilt up
 tilt down

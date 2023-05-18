@@ -1,5 +1,4 @@
 # You will need to modify this file to enable Tilt live debugging
-SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='source-image-location') # CHANGEME - replace `source-image-location` with your writable repository
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
 
@@ -9,7 +8,6 @@ k8s_custom_deploy(
     'java-function',
     apply_cmd="tanzu apps workload apply -f config/workload.yaml --update-strategy replace --debug --live-update" +
         " --local-path " + LOCAL_PATH +
-        " --source-image " + SOURCE_IMAGE +
         " --namespace " + NAMESPACE +
         " --yes --output yaml",
     delete_cmd="tanzu apps workload delete -f config/workload.yaml --namespace " + NAMESPACE + " --yes" ,

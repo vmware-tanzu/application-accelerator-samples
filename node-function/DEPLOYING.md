@@ -67,7 +67,6 @@ If you would like deploy the code from your local working directory you can use 
 ```
 tanzu apps workload create node-function -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/node-function-source \
   --type web
 ```
 
@@ -91,10 +90,7 @@ You may use [tilt](https://github.com/tilt-dev/tilt) `>v0.27.2` in combination w
 
 Update the `allow_k8s_contexts` line of the `Tiltfile` to indicate the Kubernetes context to use. 
 
-Update the `Tiltfile` or set the SOURCE_IMAGE environment variable to indicate the registry path where TAP should store your image. 
-
 ```
-export SOURCE_IMAGE=registry/project/node-function
 export K8S_TEST_CONTEXT="a-kubernetes-context"
 tilt up
 tilt down
