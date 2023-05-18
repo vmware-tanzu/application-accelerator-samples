@@ -6,6 +6,5 @@
   "groupId": "com.example",
   "packageName": "com.example.serversideuistarter",
   "javaVersion": "11",
-  "liveUpdateIDESupport": true,
-  "sourceRepositoryPrefix": "dev.local"
+  "liveUpdateIDESupport": true
 }

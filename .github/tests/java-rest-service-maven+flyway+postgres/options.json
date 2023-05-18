@@ -11,6 +11,5 @@
   "exposeOpenAPIEndpoint": false,
   "javaVersion": "11",
   "databaseIntegrationTestType":  "testcontainers",
-  "liveUpdateIDESupport": true,
-  "sourceRepositoryPrefix": "dev.local"
+  "liveUpdateIDESupport": true
 }

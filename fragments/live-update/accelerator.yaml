@@ -8,14 +8,6 @@ accelerator:
       dataType: boolean
       defaultValue: true
 
-    - name: sourceRepositoryPrefix
-      inputType: text
-      label: The source image repository prefix to use when pushing the source
-      description: The prefix for the source image repository where source can be stored during development
-      defaultValue: dev.local
-      dependsOn:
-        name: liveUpdateIDESupport
-
 engine:
   merge:
     - condition: "#liveUpdateIDESupport"
@@ -25,10 +17,6 @@ engine:
           substitutions:
             - text: my-project
               with: "#artifactId"
-        - type: ReplaceText
-          substitutions:
-            - text: dev.local
-              with: "#sourceRepositoryPrefix"
     - condition: "#liveUpdateIDESupport"
       include: ["DEPLOYING.md"]
       chain:
@@ -36,7 +24,3 @@ engine:
           substitutions:
             - text: my-project
               with: "#artifactId"
-        - type: ReplaceText
-          substitutions:
-            - text: dev.local
-              with: "#sourceRepositoryPrefix"
