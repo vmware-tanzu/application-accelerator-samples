@@ -92,7 +92,6 @@ If you would like deploy the code from your local working directory you can use 
 ```
 tanzu apps workload create java-function -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/java-function-source \
   --type web
 ```
 
@@ -152,10 +151,7 @@ You will have to update some fields in the root directory's `Tiltfile` to connec
 
 Update the `allow_k8s_contexts` line of the `Tiltfile` to indicate the Kubernetes context to use. 
 
-Update the `Tiltfile` or set the SOURCE_IMAGE environment variable to indicate the registry path where TAP should store your image. 
-
 ```
-export SOURCE_IMAGE=registry/project/java-function
 export K8S_TEST_CONTEXT="a-kubernetes-context"
 tilt up
 tilt down

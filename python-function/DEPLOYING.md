@@ -76,7 +76,6 @@ If you would like deploy the code from your local working directory you can use 
 ```
 tanzu apps workload create python-function -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/python-function-source \
   --type web
 ```
 

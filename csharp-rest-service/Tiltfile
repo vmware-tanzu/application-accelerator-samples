@@ -1,4 +1,3 @@
-SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='your-registry.io/project/csharp-rest-service-source') # update registry
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
 NAME = "csharp-rest-service"
@@ -7,7 +6,6 @@ k8s_custom_deploy(
   NAME,
   apply_cmd="tanzu apps workload apply -f config/workload.yaml --update-strategy replace --debug --live-update" +
             " --local-path " + LOCAL_PATH +
-            " --source-image " + SOURCE_IMAGE +
             " --namespace " + NAMESPACE +
             " --build-env BP_DEBUG_ENABLED=true" +
             " --yes " +

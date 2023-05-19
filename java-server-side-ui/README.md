@@ -81,14 +81,13 @@ Using the Tanzu CLI one could apply the workload using the local sources:
 ```bash
 tanzu apps workload apply \
   --file config/workload.yaml \
-  --namespace <namespace> --source-image <image-registry> \
+  --namespace <namespace> \
   --local-path . \
   --yes \
   --tail
 ````
 
-> Change the namespace to where you would like to deploy this workload. Also define the (private) image registry you
-are allowed to push the source-image, like: `docker.io/username/repository`.
+> Change the namespace to where you would like to deploy this workload.
 
 ### Visual Studio Code Tanzu Plugin
 When developing locally but would like to deploy the local code to the cluster, the Tanzu Plugin could help.

@@ -34,7 +34,6 @@ If you would like deploy the code from your local working directory you can use 
 ```
 tanzu apps workload create sample-app -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/sample-app-source \
   --type web
 ```
 

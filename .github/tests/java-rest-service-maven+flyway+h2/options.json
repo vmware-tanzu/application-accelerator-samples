@@ -11,6 +11,5 @@
   "exposeOpenAPIEndpoint": false,
   "javaVersion": "11",
   "databaseIntegrationTestType":  "in-memory",
-  "liveUpdateIDESupport": true,
-  "sourceRepositoryPrefix": "dev.local"
+  "liveUpdateIDESupport": true
 }

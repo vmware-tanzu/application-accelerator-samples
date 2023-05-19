@@ -1,4 +1,3 @@
-SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='dev.local/where-for-dinner-crawler-python-source')
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
 OUTPUT_TO_NULL_COMMAND = os.getenv("OUTPUT_TO_NULL_COMMAND", default=' > /dev/null ')
@@ -7,7 +6,6 @@ k8s_custom_deploy(
     'where-for-dinner-crawler',
     apply_cmd="tanzu apps workload apply -f config/workload.yaml --update-strategy replace --debug --live-update" +
                " --local-path " + LOCAL_PATH +
-               " --source-image " + SOURCE_IMAGE +
                " --namespace " + NAMESPACE +
                " --yes " +
                OUTPUT_TO_NULL_COMMAND +

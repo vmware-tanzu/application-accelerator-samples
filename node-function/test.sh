@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-# Prerequisites: set these two environment variables for the Tiltfile
-#SOURCE_IMAGE
+# Prerequisites: set environment variable(s) for the Tiltfile
 #K8S_TEST_CONTEXT
 
 # Delete the previous run
