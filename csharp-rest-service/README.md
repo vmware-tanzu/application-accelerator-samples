@@ -31,7 +31,7 @@ tanzu apps workload apply -f config/workload.yaml
 Deploy your app from your local working directory by running:
 
 ```script
-tanzu apps workload create csharp-rest-service -f config/workload.yaml --local-path . csharp-rest-service-source --type web
+tanzu apps workload create csharp-rest-service -f config/workload.yaml --local-path . --type web
 ```
 
 ## Accessing the app deployed to your cluster
