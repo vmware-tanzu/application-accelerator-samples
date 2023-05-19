@@ -119,12 +119,16 @@ where-for-dinner:
 spring:
   config.activate.on-profile: redis
 
+  redis:
+    ssl: false
+
   data:
     redis:
       # Workaround for https://github.com/spring-cloud/spring-cloud-bindings/issues/87:
       host: ${spring.redis.host}
       password: ${spring.redis.password}
       port: ${spring.redis.port}
+      ssl: ${spring.redis.ssl}
   
 management:
   health:

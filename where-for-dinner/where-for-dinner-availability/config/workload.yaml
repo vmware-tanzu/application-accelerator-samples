@@ -28,8 +28,8 @@ spec:
   - name: rmq
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ResourceClaim
-      name: rmq-where-for-dinner
+      kind: ClassClaim
+      name: msgbroker-where-for-dinner
   source:
     git:
       url: <https URL for your generated project's Git repository>
