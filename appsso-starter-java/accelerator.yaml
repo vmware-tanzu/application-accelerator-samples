@@ -11,6 +11,12 @@ accelerator:
   imports:
     - name: tap-workload
     - name: build-wrapper-gradle
+  options:
+    - name: appssoOfferingName
+      description: To find the available AppSSO service in your cluster, run `tanzu services classes list`.
+      inputType: text
+      label: AppSSO Offering name
+      required: true
 
 engine:
   chain:
@@ -31,6 +37,12 @@ engine:
                 with: "'\n  name: ' + #artifactId.toLowerCase()"
               - text: "app.kubernetes.io/part-of: appsso-starter-java"
                 with: "'app.kubernetes.io/part-of: ' + #artifactId.toLowerCase()"
+      - include: [ "README.md", "config/workload.yaml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "<your-selected-appsso-offering>"
+                with: "#appssoOfferingName"
     - merge:
       - type: InvokeFragment
         reference: build-wrapper-gradle
