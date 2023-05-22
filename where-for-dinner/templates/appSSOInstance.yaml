@@ -19,7 +19,7 @@ apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
 kind: AuthServer
 metadata:
   name: #@ data.values.appSSOName
-  namespace: #@ data.values.workloadNamespace
+  namespace: #@ data.values.serviceNamespace
   labels:
     name: #@ data.values.appSSOName
     app: where-for-dinner    
@@ -39,7 +39,7 @@ apiVersion: secretgen.k14s.io/v1alpha1
 kind: RSAKey
 metadata:
   name: #@ data.values.appSSOName + "-signing-key"
-  namespace: #@ data.values.workloadNamespace
+  namespace: #@ data.values.serviceNamespace
 spec:
   secretTemplate:
     type: Opaque
@@ -48,28 +48,18 @@ spec:
       pub.pem: $(publicKey)
       
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterWorkloadRegistrationClass
 metadata:
-  name: where-for-dinner-client-registration-app-operator-reader
-  labels:
-    servicebinding.io/controller: "true"
-rules:
-- apiGroups: ["sso.apps.tanzu.vmware.com"]
-  resources: ["ClientRegistration"]
-  verbs: ["get", "list", "watch"]
-
----
-apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ClusterInstanceClass
-metadata:
-  name: clientreg-where-for-dinner
+  name: workloadreg-where-for-dinner
 spec:
   description:
-    short: Where For Dinner AppSSO Client Registrations
-  pool:
-    group: sso.apps.tanzu.vmware.com
-    kind: ClientRegistration
-    labelSelector:
-      matchLabels:
-        services.apps.tanzu.vmware.com/class: clientreg-where-for-dinner    
+    short: "Where For Dinner AppSSO Workload Registrations" 
+  base: 
+    metadata:  
+      annotations:
+        sso.apps.tanzu.vmware.com/template-unsafe-redirect-uris: ""
+    spec:
+      authServerSelector:
+        matchLabels:
+          name: #@ data.values.appSSOName

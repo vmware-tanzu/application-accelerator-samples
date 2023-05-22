@@ -55,7 +55,19 @@ kubectl apply -f ./config/developer/
 ```
 
 **NOTE:**  If you have chosen AppSSO as well as TAP Spring Cloud gateway as configuration options, it is likely that the Gateway component will fail to 
-deploy due to the AppSSO client registration secret not being created yet.  If this occurs, delete the Spring Cloud Gateway instance and rerun the `kubectl apply -f ./config/service-operator/` command after applying configuration in the `./config/app-operator` directory.
+deploy due to the AppSSO secret needing to be updated.  If this occurs, you will need to retrieve the secret from the `WorkloadRegistration` object, update the secret in the `./config/servie-operator/scgInstance.yaml` file, and rerun the `kubectl apply -f ./config/service-operator/` command (you will need to execute these steps after applying configuration in the `./config/app-operator` directory).  To retrieve the secret name from the `WorkloadRegistration` object, run the following commands (these assume the application is deployed into a namespace named `workloads` and the AppSSO instance is named `appsso-where-for-dinner`)
+
+To retrieve the `WorkloadRegistration` object, run the following command.
+```
+kubectl get workloadreg -n workloads | grep appsso-where-for-dinner
+```
+
+You should get something similar to the following: `appsso-where-for-dinner-fjqz4   Ready` where `appsso-where-for-dinner-fjqz4` is the `WorkloadRegistration` name.  Next run the following command to retrieve the secret name using the `WorkloadRegistration` name from above:
+
+```
+kb get workloadreg appsso-where-for-dinner-fjqz4 -n workloads -o jsonpath='{.status.binding.name}'  
+```
+
 
 Depending on previously installed/cached components, network speed/latency, and available cluster compute, the amount of time for the RabbitMQ cluster to spin up and the workloads to build and deploy may vary greatly.  It is possible for the process to take more than 10 minutes in some instances.
 
@@ -70,7 +82,7 @@ If the application was successfully deployed, you should see a section at the bo
 ```
 Knative Services
 NAME                READY   URL
-where-for-dinner    Ready   http://where-for-dinner.perfect300rock.com
+where-for-dinner    Ready   https://where-for-dinner.perfect300rock.com
 ```
 
 ### Monitor and Verify Installation
@@ -265,9 +277,8 @@ The accelerator contains the following configuration options:
 * **Create Default Dev Account:**  If this box is checked, a default development account will be created that can be used to authenticate with the AppSSO service.
 * **Dev Account Username:** The username of the default dev account in the AppSSO instance.
 * **Dev Account Password:** The plain text password of the default dev account in the AppSSO instance.
-* **Workload URL :**  If security is enabled or TAP Spring Cloud Gateway is selected, this is the expected URL of the Hungman application's UI web page.  
-It will be used to generate the redirect URI back the API gateway service after a successful user authentication.  **Note:**  If the TAP Spring Cloud Gateway option is selected,
-the default scheme for the redirect URI will be `http` vs `https`.
+* **Workload URL :**  If TAP Spring Cloud Gateway is selected, this is the expected URL of the Where For Dinner application's UI web page.  
+**Note:**  If the TAP Spring Cloud Gateway option is selected, the default scheme for the Workload URI will be `http`.
 * **Alternate Workload Implementations :** If this box is checked, certain services will be built using alternative implementations written in different programming languages.
 
 **NOTE:** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.
