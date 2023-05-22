@@ -1,5 +1,6 @@
 {
-    "nativeBuild": false,
+    "buildTool": "maven",
+    "nativeBuild": true,
     "updateBoot3": true,
     "javaVersion": "17"
 }

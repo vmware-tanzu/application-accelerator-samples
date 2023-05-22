@@ -1,5 +1,6 @@
 {
     "projectName": "was-renamed-to-this",
+    "nativeBuild": false,
     "updateBoot3": true,
     "javaVersion": "11",
     "buildTool": "gradle",
