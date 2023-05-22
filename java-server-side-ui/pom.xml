@@ -20,8 +20,8 @@
     <properties>
         <java.version>11</java.version>
         <snakeyaml.version>1.33</snakeyaml.version>
+        <spring-security.version>5.8.2</spring-security.version>
     </properties>
-
 
     <dependencies>
         <!-- Spring -->

@@ -10,6 +10,7 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 extra["snakeyaml.version"] = "1.33"
+extra["spring-security.version"] = "5.8.2"
 
 repositories {
     mavenCentral()
