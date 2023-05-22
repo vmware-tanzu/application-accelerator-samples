@@ -253,11 +253,14 @@ engine:
     - name: secureProfile
       expression:
         "'secure'"
+    - name: empty
+      expression:
+        "''"        
   merge:
   - exclude: 
       ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**", "**/where-for-dinner-api-gateway/**"]
   - condition: "#gatewayType == 'ossscg'"
-    include: ["**/where-for-dinner-api-gateway/**"]
+    include: ["**/where-for-dinner-api-gateway/**"]  
   - condition: "#gatewayType == 'tapscg'"
     include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml", "**/templates/ingress.yaml"]   
     chain:
@@ -373,5 +376,42 @@ engine:
   - type: InvokeFragment
     reference: build-wrapper-maven
   - include: ["README.md"]      
-
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'where-for-dinner-search/' + (#folder != null ? #folder : '') + #filename"  
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'where-for-dinner-availability/' + (#folder != null ? #folder : '') + #filename"  
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'where-for-dinner-notify/' + (#folder != null ? #folder : '') + #filename"  
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'where-for-dinner-search-proc/' + (#folder != null ? #folder : '') + #filename"   
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'where-for-dinner-crawler/' + (#folder != null ? #folder : '') + #filename"          
+  - condition: "#gatewayType == 'ossscg'"
+    chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'where-for-dinner-api-gateway/' + (#folder != null ? #folder : '') + #filename" 
+  - condition: "#gatewayType == 'tapscg'" 
+    include: ["pom.xml"]
+    chain:
+    - type: ReplaceText
+      substitutions:
+        - text: "<module>./where-for-dinner-api-gateway</module>"
+          with: "#empty"                   
   - type: Provenance

@@ -73,5 +73,15 @@ engine:
             with: "'app.kubernetes.io/part-of=' + #artifactId.toLowerCase()"
   - type: InvokeFragment
     reference: build-wrapper-maven
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'smtp-gateway/' + (#folder != null ? #folder : '') + #filename"       
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'smtp-sink/' + (#folder != null ? #folder : '') + #filename"  
   - include: ["README.md"]  
   - type: Provenance
