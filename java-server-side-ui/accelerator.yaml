@@ -42,15 +42,6 @@ accelerator:
       defaultValue: true
   imports:
     - name: app-sso-client
-      expose:
-        - name: workloadURL
-          dependsOn:
-            name: includeAppSsoIntegration
-            value: true
-        - name: appSsoServerLabel
-          dependsOn:
-            name: includeAppSsoIntegration
-            value: true
     - name: spring-boot-app-sso-auth-code-flow
     - name: java-version
     - name: live-update
