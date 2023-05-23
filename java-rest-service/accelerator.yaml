@@ -73,8 +73,6 @@ accelerator:
       defaultValue: "postgres"
       required: true
   imports:
-  - name: java-version
-    expose: []
   - name: spring-boot-postgresql
     expose:
     - name: databaseName
@@ -195,12 +193,6 @@ engine:
               - text: "customer-database"
                 with: "#databaseResourceName"
     # End Workload Resource name
-
-    - merge:
-      - type: InvokeFragment
-        reference: java-version
-      - include: [ "**" ]
-      onConflict: UseFirst
 
     - merge:
         - type: InvokeFragment
