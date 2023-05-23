@@ -1,0 +1,14 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: #@ data.values.appSSOName
+  namespace: #@ data.values.workloadNamespace
+spec:
+  classRef:
+    name: workloadreg-where-for-dinner
+  parameters: 
+    redirectPaths: ['/']
+    workloadRef:
+      name: where-for-dinner

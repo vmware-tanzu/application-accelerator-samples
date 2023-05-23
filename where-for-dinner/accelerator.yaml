@@ -231,12 +231,15 @@ accelerator:
     dependsOn: 
       name: enableDefaultDevAccount
   - label: Workload URL
-    description: "The URL where the application is published; required when using Security/AppSSO or TAP Spring Cloud Gateway.  Generally 'http<s>://where-for-dinner.<domain name>.  See README for more details."
-    defaultValue: https://where-for-dinner.<UPDATE ME>
+    description: "The URL where the application is published; required when using TAP Spring Cloud Gateway.  Generally 'http<s>://where-for-dinner.<domain name>.  See README for more details."
+    defaultValue: http://where-for-dinner.<UPDATE ME>
     name: appWorkloadURL
     inputType: text
     dataType: string
-    required: true     
+    required: true
+    dependsOn: 
+      name: gatewayType
+      value: tapscg  
   - label: Alternate Workload Implementations
     description: "When checked, certain workloads will use alternative implementations written in different programming languages demostrating polyglot capabilities"
     defaultValue: false
@@ -332,15 +335,15 @@ engine:
       rewriteTo: "'config/app-operator/knEventing.yaml'"  
   - condition:
       "#enableSecurity"
-    include: ["**/appSSOInstance.yaml", "**/clientRegistrationResourceClaim.yaml"]
+    include: ["**/appSSOInstance.yaml", "**/workloadRegistrationResourceClaim.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/appSSOInstance.yaml'
       rewriteTo: "'config/service-operator/appSSOInstance.yaml'"  
     - type: RewritePath
-      regex: 'templates/clientRegistrationResourceClaim.yaml'
-      rewriteTo: "'config/app-operator/clientRegistrationResourceClaim.yaml'"   
+      regex: 'templates/workloadRegistrationResourceClaim.yaml'
+      rewriteTo: "'config/app-operator/workloadRegistrationResourceClaim.yaml'"   
   - condition:
       "#enableSecurity"
     include: ["where-for-dinner-ui/.env"]

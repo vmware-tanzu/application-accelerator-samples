@@ -19,5 +19,5 @@ spec:
       value: "90"
 #@ if data.values.enableSecurity == True:
   sso:
-    secret: where-for-dinner-client-registration
+    secret: #@ data.values.appSSOName + "_UPDATE_ME"
 #@ end
