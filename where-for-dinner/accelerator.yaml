@@ -231,7 +231,7 @@ accelerator:
     dependsOn: 
       name: enableDefaultDevAccount
   - label: Workload URL
-    description: "The URL where the application is published; required when TAP Spring Cloud Gateway.  Generally 'http<s>://where-for-dinner.<domain name>.  See README for more details."
+    description: "The URL where the application is published; required when using TAP Spring Cloud Gateway.  Generally 'http<s>://where-for-dinner.<domain name>.  See README for more details."
     defaultValue: http://where-for-dinner.<UPDATE ME>
     name: appWorkloadURL
     inputType: text
