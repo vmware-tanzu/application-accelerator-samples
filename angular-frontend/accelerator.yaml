@@ -78,7 +78,7 @@ engine:
               with: "#workloadResourceName"
 
     - condition: "#useSingleSignOn == true"
-      applyTo: [ "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app.module.ts", "src/app/app-routing.module.ts", "config/clientregistration.yaml" ]
+      applyTo: [ "src/assets/auth.conf.json", "src/app/app.module.ts", "src/app/app-routing.module.ts"]
       chain:
         - type: ReplaceText
           substitutions:
@@ -102,7 +102,7 @@ engine:
     - condition: "!#useSingleSignOn"
       merge:
         - include: [ "**" ]
-          exclude: [ "README.md", "src/app/app.module.ts", "src/app/app-routing.module.ts", "AUTHORIZATION.md", "src/app/authorization/**", "src/app/user-profile/**", "src/assets/auth.conf.json", "config/clientregistration.yaml", "src/app/app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
+          exclude: [ "README.md", "src/app/app.module.ts", "src/app/app-routing.module.ts", "AUTHORIZATION.md", "src/app/authorization/**", "src/app/user-profile/**", "src/assets/auth.conf.json", "src/app/app-config.service.ts", "src/utils.ts", "src/utils.spec.ts" ]
         - include: [ "src/app/app.module.ts", "src/app/app-routing.module.ts" ]
           chain:
             - type: ReplaceText
