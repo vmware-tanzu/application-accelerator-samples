@@ -1,6 +1,6 @@
 package com.vmware.tap.accelerators.restservicedb.domain;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 public class CustomerProfileCreateRequest {
 

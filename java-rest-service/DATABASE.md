@@ -4,8 +4,6 @@
 
 [local]
 
-> Note: If you start the application locally please be sure that `local` profile is active.
-
 ## Using PostgreSQL as the database with Tanzu Application Platform (TAP)
 
 Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a

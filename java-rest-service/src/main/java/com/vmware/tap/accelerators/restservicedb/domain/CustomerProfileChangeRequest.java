@@ -1,6 +1,6 @@
 package com.vmware.tap.accelerators.restservicedb.domain;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Request to update/change the customer profile. Only first and lastName can be changed.
