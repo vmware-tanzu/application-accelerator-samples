@@ -1,9 +1,0 @@
-apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-kind: ResourceClaim
-metadata:
-  name: <my-workload>-client-registration-claim
-spec:
-  ref:
-    apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
-    kind: ClientRegistration
-    name: <my-workload>-client-registration

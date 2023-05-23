@@ -12,22 +12,6 @@ show the logged-in subject.
 > This fragment can be used together with `app-sso-client` which configures the Tanzu Application Platform workload.yaml
 > to bind the ClientRegistration claim. This way Spring Boot is able to find the OAuth 2.0 Client Registration configuration at run-time.
 
-It will include a `application-local.yaml` which can be used for local development: fill in the AppSSO registered client
-credentials, which you can find with:
-
-```bash
-NS=<your-developer-namespace>
-SECRET=<your-client-registration>
-CLIENT_ID=$(kubectl get secret $SECRET -n $NS -o jsonpath="{.data.client-id}" | base64 -d)
-CLIENT_SECRET=$(kubectl get secret $SECRET -n $NS -o jsonpath="{.data.client-secret}" | base64 -d)
-ISSUER_URI=$(kubectl get secret $SECRET -n $NS -o jsonpath="{.data.issuer-uri}" | base64 -d)
-
-echo "CLIENT_ID: $CLIENT_ID"
-echo "CLIENT_SECRET: $CLIENT_SECRET"
-echo "ISSUER_URI: $ISSUER_URI"
-curl -XPOST "$ISSUER_URI/oauth2/token?grant_type=client_credentials&scope=openid" -u "$CLIENT_ID:$CLIENT_SECRET"
-```
-
 > If you start a generated application locally please be sure that `local` profile is active. 
 
 ## Using the fragment
