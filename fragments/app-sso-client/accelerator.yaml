@@ -1,3 +1,10 @@
+accelerator:
+  options:
+    - name: appssoOfferingName
+      description: To find the available AppSSO service offerings in your cluster, run `tanzu services classes list`.
+      inputType: text
+      label: AppSSO offering name
+
 engine:
   merge:
     - include: [ "**/workload.yaml" ]
@@ -63,3 +70,5 @@ engine:
           substitutions:
             - text: "<your-workload>"
               with: "#workloadName"
+            - text: "<your-selected-appsso-offering>"
+              with: "#appssoOfferingName"
