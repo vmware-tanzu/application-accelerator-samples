@@ -2,6 +2,7 @@ package com.vmware.tanzu.apps.sso.accelerator.config;
 
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -22,8 +23,8 @@ public class WebSecurityConfig {
 
 	@Bean(name = "issuerTrust")
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	IssuerTrust issuerTrust(OAuth2ClientProperties properties) {
-		return new IssuerTrust(properties);
+	IssuerTrust issuerTrust(OAuth2ClientProperties properties, ApplicationContext context) {
+		return new IssuerTrust(properties, context);
 	}
 
 	@Bean
@@ -33,7 +34,7 @@ public class WebSecurityConfig {
 				// Add an authentication check filter to enable auto-redirects if the user is already signed in,
 				// or if the user is attempting to navigate to protected paths.
 				.addFilterAfter(new AuthenticationCheckFilter(), UsernamePasswordAuthenticationFilter.class)
-				.authorizeRequests(authorizeRequests ->
+				.authorizeHttpRequests(authorizeRequests ->
 						authorizeRequests
 								// Permit all public paths explicitly.
 								.requestMatchers("/", "/home", "/webjars/**", "/styles/**", "/images/**").permitAll()
@@ -41,8 +42,10 @@ public class WebSecurityConfig {
 								.anyRequest().authenticated()
 				)
 				// After a successful logout, redirect to /home.
-				.logout().logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)).logoutSuccessUrl("/home")
-				.and()
+				.logout((customizer) -> {
+					customizer.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
+					customizer.logoutSuccessUrl("/home");
+				})
 				.oauth2Login(withDefaults())
 				.oauth2Client(withDefaults());
 		return http.build();
