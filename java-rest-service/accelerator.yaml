@@ -62,21 +62,6 @@ accelerator:
       defaultValue: "Manage customer profiles"
       dependsOn:
         name: exposeOpenAPIEndpoint
-    - name: updateBoot3
-      inputType: checkbox
-      dataType: boolean
-      label: Use Spring Boot 3.0 (Requires Java 17)
-      defaultValue: false
-    # override java version choices, Java 8 is not available for this sample
-    - name: javaVersion
-      inputType: select
-      label: Java version to use
-      choices:
-      - value: "11"
-        text: Java 11
-      - value: "17"
-        text: Java 17
-      defaultValue: "11"
     - name: databaseType
       inputType: select
       label: Database type to use
@@ -88,8 +73,6 @@ accelerator:
       defaultValue: "postgres"
       required: true
   imports:
-  - name: java-version
-    expose: []
   - name: spring-boot-postgresql
     expose:
     - name: databaseName
@@ -122,8 +105,6 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
-    - name: javaVersion
-      expression: "#updateBoot3 == true ? '17' : #javaVersion"
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
   chain:
@@ -214,12 +195,6 @@ engine:
     # End Workload Resource name
 
     - merge:
-      - type: InvokeFragment
-        reference: java-version
-      - include: [ "**" ]
-      onConflict: UseFirst
-
-    - merge:
         - type: InvokeFragment
           reference: spring-boot-database
         - include: [ "**" ]
@@ -276,68 +251,6 @@ engine:
           - text: "rest-service-db"
             with: "#artifactId"
 
-    - condition: "#updateBoot3"
-      merge:
-      - include: [ "**" ]
-      # Maven
-      - include: [ "pom.xml" ]
-        chain:
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.maven.ChangeParentPom
-          options:
-            oldGroupId: "'org.springframework.boot'"
-            newGroupId: "'org.springframework.boot'"
-            oldArtifactId: "'spring-boot-starter-parent'"
-            newArtifactId: "'spring-boot-starter-parent'"
-            newVersion: "'3.0.5'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.maven.ChangePropertyValue
-          options:
-            key: "'springdoc.version'"
-            newValue: "'2.0.2'"
-        - type: ReplaceText
-          regex:
-            pattern: "springdoc-openapi-webmvc-core"
-            with: "'springdoc-openapi-starter-webmvc-api'"
-        - type: ReplaceText
-          regex:
-            pattern: "\\s+<snakeyaml.version>1.33</snakeyaml.version>"
-            with: "''"
-      # Gradle Kotlin DSL
-      - include: [ "build.gradle.kts" ]
-        chain:
-        - type: ReplaceText
-          regex:
-            pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-            with: "'id(\"org.springframework.boot\") version \"3.0.4\"'"
-        - type: ReplaceText
-          regex:
-            pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
-            with: "'id(\"io.spring.dependency-management\") version \"1.1.0\"'"
-        - type: ReplaceText
-          regex:
-            pattern: "springdocVersion = .*"
-            with: "'springdocVersion = \"2.0.2\"'"
-        - type: ReplaceText
-          regex:
-            pattern: "springdoc-openapi-webmvc-core"
-            with: "'springdoc-openapi-starter-webmvc-api'"
-        - type: ReplaceText
-          regex:
-            pattern: "\\s*extra\\[\"snakeyaml.version\"\\] = \"1.33\""
-            with: "''"
-      # javax to jakarta imports
-      - include: [ "**/*.java" ]
-        chain:
-        - type: ReplaceText
-          regex:
-            pattern: "import javax\\.persistence"
-            with: "'import jakarta.persistence'"
-        - type: ReplaceText
-          regex:
-            pattern: "import javax\\.validation"
-            with: "'import jakarta.validation'"
-
     - merge:
       - include: [ "**" ]
       - type: InvokeFragment
@@ -374,22 +287,10 @@ engine:
               - text: "customer-database"
                 with: "#databaseResourceName"
           - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'in-memory'"
             regex:
               pattern: "\\[local\\]"
               with: |
-                'For local development an in-memory database is provided and configured with the local profile. 
-                '
-          - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'testcontainers'"
-            regex:
-              pattern: "\\[local\\]"
-              with: |
-                'Running a MySQL instance can easily be done by using `docker compose`:
-                
-                ```bash
-                \$ docker compose up -d
-                ```
+                'For local development a `docker compose` database instance will be started using `spring-boot-docker-compose`. 
                 '
       - condition: "#databaseType == 'postgres'"
         include: [ "DATABASE.md" ]
@@ -399,22 +300,10 @@ engine:
               - text: "customer-database"
                 with: "#databaseResourceName"
           - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'in-memory'"
             regex:
               pattern: "\\[local\\]"
               with: |
-                'For local development an in-memory database is provided and configured with the local profile. 
-                '
-          - type: ReplaceText
-            condition: "#databaseIntegrationTestType == 'testcontainers'"
-            regex:
-              pattern: "\\[local\\]"
-              with: |
-                'Running a PostgreSQL instance can easily be done by using `docker compose`:
-                
-                ```bash
-                \$ docker compose up -d
-                ```
+                'For local development a `docker compose` database instance will be started using `spring-boot-docker-compose`. 
                 '
     # end of DATABASE.md
 

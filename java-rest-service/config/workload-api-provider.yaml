@@ -12,7 +12,7 @@ spec:
   build:
     env:
       - name: BP_JVM_VERSION
-        value: "11"
+        value: "17"
   params:
     - name: annotations
       value:

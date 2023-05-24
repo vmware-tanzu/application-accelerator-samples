@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -64,7 +64,7 @@ public class CustomerProfileController {
                     description = "Passed customer profile is invalid."
             )
     })
-    @PostMapping("")
+    @PostMapping({ "", "/" })
     public ResponseEntity<CustomerProfileResponse> create(@Valid @RequestBody CustomerProfileCreateRequest body) {
         var customerProfileResponse = service.create(body);
         return ResponseEntity
@@ -127,7 +127,7 @@ public class CustomerProfileController {
             )
     })
     @Transactional(readOnly = true)
-    @GetMapping("/")
+    @GetMapping({ "", "/" })
     public ResponseEntity<List<CustomerProfileResponse>> getAll() {
         List<CustomerProfileResponse> all = service.getAll().collect(Collectors.toList());
         return ResponseEntity.ok(all);
