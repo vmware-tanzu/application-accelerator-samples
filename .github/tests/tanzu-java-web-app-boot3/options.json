@@ -1,5 +1,5 @@
 {
     "nativeBuild": false,
-    "updateBoot3": true,
+    "springBootVersion" : "3.0",
     "javaVersion": "17"
 }
