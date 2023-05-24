@@ -66,12 +66,12 @@ to start the application a database instance should be running.
 Launch application using a `docker-compose` database instance:
 --- StartMaven
 ```bash
-./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+./mvnw spring-boot:run
 ```
 --- EndMaven
 --- StartGradle
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=local'
+./gradlew bootRun
 ```
 --- EndGradle
 
