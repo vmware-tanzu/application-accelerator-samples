@@ -9,6 +9,6 @@ spec:
   classRef:
     name: workloadreg-where-for-dinner
   parameters: 
-    redirectPaths: ['/']
+    redirectPaths: ['/login/oauth2/code/sso']
     workloadRef:
       name: where-for-dinner
