@@ -3,7 +3,7 @@
   "includeAppSsoIntegration": true,
   "workloadURL": "https://my-app.cluster.local",
   "appSsoServerLabel": "name: authserver",
-
+  "appssoOfferingName": "test",
   "artifactId": "server-side-ui-starter",
   "groupId": "com.example",
   "packageName": "com.example.serversideuistarter",
