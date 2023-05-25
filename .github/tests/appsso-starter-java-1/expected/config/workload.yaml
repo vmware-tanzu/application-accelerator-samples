@@ -19,7 +19,7 @@ spec:
     - name: appsso-starter-java
       ref:
         apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-        kind: ResourceClaim
+        kind: ClassClaim
         name: appsso-starter-java
   source:
     git:
