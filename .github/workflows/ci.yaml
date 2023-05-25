@@ -45,7 +45,5 @@ jobs:
         with:
           resource: http://localhost:8888/actuator
           timeout: 10000
-      - name: Generate ${{matrix.test}}
-        run: .github/tests/generate.sh ${{matrix.test}}
-      - name: Test ${{matrix.test}}
+      - name: ${{matrix.test}}
         run: .github/tests/run-test.sh ${{matrix.test}}
