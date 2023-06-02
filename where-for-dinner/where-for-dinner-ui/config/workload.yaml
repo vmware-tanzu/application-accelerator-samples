@@ -32,4 +32,4 @@ spec:
       url: <https URL for your generated project's Git repository>
       ref:
         branch: main
-    subPath: where-for-dinner-notify
+    subPath: where-for-dinner-ui
