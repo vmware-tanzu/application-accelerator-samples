@@ -60,6 +60,14 @@ spring:
     stream:
       defaultBinder: kafka
 
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
+management:
+  health:
+    rabbit:
+      enabled: false
+
 ---
 
 spring:
@@ -67,5 +75,13 @@ spring:
   
   cloud: 
     stream:
-      defaultBinder: kinesis      
+      defaultBinder: kinesis 
+      
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
+management:
+  health:
+    rabbit:
+      enabled: false     
           
