@@ -1,0 +1,6 @@
+{
+  "buildType": "gradle",
+  "interfaceType": "http",
+
+  "includeTap": true
+}

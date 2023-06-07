@@ -1,0 +1,6 @@
+{
+  "buildType": "maven",
+  "interfaceType": "cloudevents",
+
+  "includeTap": true
+}
