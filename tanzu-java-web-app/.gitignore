@@ -3,6 +3,11 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+bin/
+
 # maven-wrapper.jar
 **/maven-wrapper.jar
 
