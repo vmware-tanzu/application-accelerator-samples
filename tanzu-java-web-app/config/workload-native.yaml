@@ -14,11 +14,22 @@ spec:
       value: "17"
     - name: BP_NATIVE_IMAGE
       value: "true"
-    - name: BP_MAVEN_BUILD_ARGUMENTS
-      value: -Pnative -Dmaven.test.skip=true --no-transfer-progress package -Dspring-boot.aot.jvmArguments='-Dmanagement.health.probes.enabled='true'
-        -Dmanagement.endpoint.health.probes.add-additional-paths='true' -Dmanagement.endpoint.health.show-details='always'
-        -Dmanagement.endpoints.web.base-path='/actuator' -Dmanagement.endpoints.web.exposure.include='*'
-        -Dmanagement.server.port=8081 -Dserver.port=8080'
+    - name: BP_MAVEN_ADDITIONAL_BUILD_ARGUMENTS
+      value: -Pnative
+    - name: MANAGEMENT_HEALTH_PROBES_ENABLED
+      value: "true"
+    - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ADD_ADDITIONAL_PATHS
+      value: "true"
+    - name: MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS
+      value: always
+    - name: MANAGEMENT_ENDPOINTS_WEB_BASE_PATH
+      value: /actuator
+    - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+      value: '*'
+    - name: MANAGEMENT_SERVER_PORT
+      value: "8081"
+    - name: SERVER_PORT
+      value: "8080"
   env:
   - name: MANAGEMENT_HEALTH_PROBES_ENABLED
     value: "true"

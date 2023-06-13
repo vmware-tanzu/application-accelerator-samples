@@ -48,10 +48,6 @@ accelerator:
     inputType: checkbox
     dataType: boolean
     defaultValue: false
-    dependsOn: 
-      name: buildTool
-      value: maven
-
 
   imports:
   - name: java-version
@@ -62,7 +58,7 @@ accelerator:
 engine:
   let:
     - name: updateBoot3
-      expression: "#nativeBuild == true && #buildTool == 'maven' ? true : ( #springBootVersion == '2.7' ? false : true )"
+      expression: "#nativeBuild == true ? true : ( #springBootVersion == '2.7' ? false : true )"
     - name: javaVersion
       expression: "#updateBoot3 == true ? '17' : #javaVersion"
   chain:
@@ -97,7 +93,7 @@ engine:
         - include: [ "**" ]
         onConflict: UseFirst
     - include: [ "config/workload-native.yaml" ]
-      condition: "#nativeBuild && #buildTool == 'maven'"
+      condition: "#nativeBuild"
       chain:
       - type: ReplaceText
         substitutions:
@@ -125,7 +121,7 @@ engine:
           - text: tanzu-java-web-app
             with: "#artifactId"
       - include: [ "README-native.md" ]
-        condition: "#nativeBuild && #buildTool == 'maven'"
+        condition: "#nativeBuild"
         chain:
         - type: ReplaceText
           substitutions:
