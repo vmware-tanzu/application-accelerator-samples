@@ -3,7 +3,7 @@ engine:
     - name: repoUrl
       expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString('https://' + #bsGitRepository).build(true)"
   condition: "#bsGitRepository != null"
-  applyTo: [ "**/workload.yaml", "**/workloads.yaml" ]
+  applyTo: [ "**/workload.yaml", "**/workload-native.yaml", "**/workloads.yaml" ]
   chain:
     - type: OpenRewriteRecipe
       recipe: org.openrewrite.yaml.ChangeValue
