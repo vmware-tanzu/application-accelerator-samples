@@ -85,7 +85,19 @@ engine:
         rewriteTo: "'Tiltfile'"
       - exclude: ["Tiltfile_*"]
       onConflict: UseLast
-    - include: [ "config/*.yaml" ]
+    - include: [ "config/workload.yaml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: ": tanzu-java-web-app"
+          with: "': ' + #artifactId.toLowerCase()"
+      - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
+        onConflict: UseFirst
+    - include: [ "config/workload-native.yaml" ]
+      condition: "#nativeBuild && #buildTool == 'maven'"
       chain:
       - type: ReplaceText
         substitutions:
