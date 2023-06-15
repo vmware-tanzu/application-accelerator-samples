@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 public class GetMessageHeaderStream
 {

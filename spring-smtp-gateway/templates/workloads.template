@@ -10,6 +10,9 @@ metadata:
     app.kubernetes.io/part-of: smtp-gateway
     apps.tanzu.vmware.com/has-tests: "true"
 spec:
+  env: 
+  - name: spring_profiles_active
+    value: <profile>
   serviceClaims:
   - name: rmq
     ref:
@@ -22,6 +25,10 @@ spec:
       ref:
         branch: main
     subPath: smtp-gateway
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"   
   params:
   - name: ports
     value:
@@ -40,12 +47,19 @@ metadata:
     app.kubernetes.io/part-of: smtp-sink
     apps.tanzu.vmware.com/has-tests: "true"
 spec:
+  env: 
+  - name: spring_profiles_active
+    value: <profile>
   serviceClaims:
   - name: rmq
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
       kind: ClassClaim
       name: msgbroker-spring-smtp-gateway
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"   
   source:
     git:
       url: <https URL for your generated project's Git repository>

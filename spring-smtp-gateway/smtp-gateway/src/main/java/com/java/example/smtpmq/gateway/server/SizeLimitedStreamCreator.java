@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 public class SizeLimitedStreamCreator
 {

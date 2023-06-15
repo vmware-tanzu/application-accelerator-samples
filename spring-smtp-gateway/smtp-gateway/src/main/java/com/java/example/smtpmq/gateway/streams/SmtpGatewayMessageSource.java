@@ -2,15 +2,15 @@ package com.java.example.smtpmq.gateway.streams;
 
 import java.util.List;
 
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.InternetAddress;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.nhindirect.common.mail.SMTPMailMessage;
-import org.nhindirect.common.mail.streams.SMTPMailMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Component;
+
+import com.java.example.smtpmq.gateway.server.SMTPMailMessage;
 
 
 @Component

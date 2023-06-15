@@ -9,8 +9,26 @@ info:
 spring:
   cloud:
     stream:
+      defaultBinder: rabbit
       # Need to define an explicit source binding name since we are using a StreamBridge
       source: smtp-gateway-message
       bindings:
         smtp-gateway-message-out-0:
           destination: smtp-mq-gateway
+          
+---
+
+spring:
+  config.activate.on-profile: kafka
+  
+  cloud: 
+    stream:
+      defaultBinder: kafka
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
+management:
+  health:
+    rabbit:
+      enabled: false

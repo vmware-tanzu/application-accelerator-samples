@@ -12,13 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.net.smtp.SMTPClient;
-import org.nhindirect.common.mail.SMTPMailMessage;
-import org.nhindirect.common.mail.streams.SMTPMailMessageConverter;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
@@ -27,6 +25,9 @@ import org.springframework.messaging.Message;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.subethamail.smtp.server.SMTPServer;
+
+import com.java.example.smtpmq.gateway.server.SMTPMailMessage;
+import com.java.example.smtpmq.gateway.streams.SMTPMailMessageConverter;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:properties/testConfig.properties")
