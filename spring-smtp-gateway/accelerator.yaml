@@ -29,8 +29,18 @@ accelerator:
     inputType: text
     dataType: string
     required: true
+  - label: Messaging Service Type
+    description: The type of messaging services the workload will connect to.
+    inputType: select
+    defaultValue: rabbitmq
+    name: brokerType
+    choices:
+    - value: rabbitmq
+      text: RabbitMQ
+    - value: kafka
+      text: Kafka
   - label: Class Claim Name
-    description: "The name of the Class Claim used to connect to the RabbitMQ service."
+    description: "The name of the Class Claim used to connect to the messaging service."
     defaultValue: msgbroker-spring-smtp-gateway
     name: msgbrokerName
     inputType: text
@@ -56,6 +66,8 @@ engine:
           with: "#containerPort"     
         - text: "25"
           with: "#servicePort"
+        - text: "<profile>"
+          with: "#brokerType"          
     - type: RewritePath
       regex: 'templates/workloads.template'
       rewriteTo: "'config/workloads.yaml'"

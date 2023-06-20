@@ -6,18 +6,18 @@ import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.CountingInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.nhindirect.common.mail.SMTPMailMessage;
 import org.springframework.util.StringUtils;
 import org.subethamail.smtp.MessageHandler;
 import org.subethamail.smtp.RejectException;
@@ -93,7 +93,6 @@ public class SMTPMessageHandler implements MessageHandler
 		
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void data(InputStream data) throws RejectException, TooMuchDataException, IOException
 	{
@@ -113,7 +112,7 @@ public class SMTPMessageHandler implements MessageHandler
 		       // because of size issues
 		       msgIn = sizeLimitedStreamCreator.create(headerStream, msgIn);
 		       countingInputStream = new CountingInputStream(msgIn);
-		      mimeMessage = new MimeMessage((Session) null, countingInputStream) 
+		      mimeMessage = new MimeMessage(Session.getDefaultInstance(new Properties()), countingInputStream) 
 		      {
 		        @Override
 		        protected void updateMessageID() throws MessagingException 

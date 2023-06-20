@@ -47,14 +47,16 @@ smtpmqgateway.clientsafelist.cidr=127.0.0.1/16,192.168.0.1/16
 
 The applications services are pre-configured to use a RabbitMQ binding and by default attempt to connect to `localhost:5672` with a username\password of `guest\guest`.  These can be overriden using standard [Spring configuration properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#appendix.application-properties.integration) for RabbitMQ.  When used along side with Kubernetes `service binding` and the `spring cloud bindings` library, binding properties will be "injected" into the container using `workload projection`, be available as Kubernetes secrets, and be converted into appropriate RabbitMQ Spring properties.
 
+The accelerator contains a selection to optionally use Kafka instead of RabbitMQ.
 
-## RabbitMQ
 
-The default build configuration requires a RabbitMQ cluster to function properly.
+## Messaging System
+
+The application services requires a messaging system to function properly.  RabbitMQ and Kafka are currently supported.
 
 ### Connectivity Configuration
 
-The application services do not care where or how the RabbitMQ cluster is installed; they just need configuration information to connect to the cluster.  As described earlier in this document, the configuration is done through Spring configuration properties, and there are many options to provided those properties.
+The application services do not care where or how the messaging system is installed; they just need configuration information to connect to the cluster.  As described earlier in this document, the configuration is done through Spring configuration properties, and there are many options to provided those properties.
 
 #### Kubenetes Service Binding
 
@@ -63,7 +65,7 @@ If you are using Tanzu Application Platform or some other build system like `pac
 
 ## Tanzu Application Platform Accelerator
 
-This repository includes an `accelerator.yaml` file that is used by the Tanzu Application Platform [Accelerator](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.4/tap/application-accelerator-about-application-accelerator.html) feature.  Using this repository as the backing for an accelerator, you can generate project and configuration files to facilitate connecting to necessary data services (eg. RabbitMQ) and building/deploying the application services.
+This repository includes an `accelerator.yaml` file that is used by the Tanzu Application Platform [Accelerator](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.4/tap/application-accelerator-about-application-accelerator.html) feature.  Using this repository as the backing for an accelerator, you can generate project and configuration files to facilitate connecting to necessary data services (eg. RabbitMQ or Kafka) and building/deploying the application services.
 
 ### Configuration Options
 
@@ -72,18 +74,29 @@ The accelerator contains the following configuration options:
 * **SMTP Gateway Container Port:**  The port that the smtp-gateway micro-service will be listening on for SMTP connections and SHOULD match the application's port configuration.  The default port is 1026 which is the same default port that the application listens on.
 * **SMTP Gateway Service Port:** The port that the Kubernetes service resource will be listening on.
 * **Workload Namespace:** The namespace where the application micro-services will be deployed.  It is assumed that this namespace has already been created.
-* **Class Claim Name:** The name of the class claim used to connect to RabbitMQ.
+* **Messaging Service Type:** The messaging system that the application will expect to connect to.  Options are RabbitMQ and Kafka.
+* **Class Claim Name:** The name of the class claim used to connect to messaging system.
 
 The generated zip file from the accelerator will contain project folders for all micro-services.  It will also contain updated workload.yaml files that contain configuration data from the choices above.
 
 ### Application Deployment
 
-Before deploying the application, an appropriate persona (potentially a developer) should first deploy the RabbitMQ cluster.  TAP includes an out-of-the-box 
-'ClusterInstanceClass' and supporting CrossPlane configuration for creating a RabbitMQ cluster via the Tanzu CLI.  Run the following command to create the 
-RabbitMQ cluster.
+Before deploying the application, an appropriate persona (potentially a developer) should first deploy the messaging system.  TAP includes an out-of-the-box 
+'ClusterInstanceClass' and supporting CrossPlane configuration for creating a RabbitMQ or Kafka instance via the Tanzu CLI.  
+
+Run the appropriate command below to create a messaging system isntance that matches your selection in the accelerator options.
+
+
+RabbitMQ:
 
 ```
 tanzu service  class-claim  create  msgbroker-spring-smtp-gateway  --class rabbitmq-unmanaged
+```
+
+Kafka:
+
+```
+tanzu service  class-claim  create  msgbroker-spring-smtp-gateway  --class kafka-unmanaged
 ```
 
 Each project folder contains a `workload.yaml` file under its `config` folder.  If you are using the `tanzu cli`, you can use these files to build and deploy the micro-services.
