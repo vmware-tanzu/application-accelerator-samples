@@ -6,6 +6,8 @@ accelerator:
   - dotnet
   - C#
   - tanzu
+  - steeltoe
+
   options:
   - name: applicationName
     label: Application Name
@@ -23,22 +25,23 @@ engine:
     expression: '#applicationName.replace("-", "_")'
   merge:
   - include: [ "**" ]
-    exclude: [ "README.md", "Sample.csproj", "config/**", "catalog/**" ]
+    exclude: [ "README.md", "config/**", "catalog/**", "Tiltfile" ]
     chain:
     - type: ReplaceText
       substitutions:
       - text: Sample
         with: "#applicationName"
-  - include: [ "Sample.csproj" ]
-    chain:
     - type: RewritePath
-      rewriteTo: "#applicationName + '.csproj'"
+      regex: "Sample(.*)"
+      rewriteTo: "#applicationName + #g1"
   - include: [ "README.md", "config/*.yaml", "catalog/*.yaml" ]
     chain:
     - type: ReplaceText
       substitutions:
       - text: sample-app
         with: "#artifactId.toLowerCase()"
+      - text: Sample
+        with: "#applicationName"
     - merge:
       - type: InvokeFragment
         reference: tap-workload

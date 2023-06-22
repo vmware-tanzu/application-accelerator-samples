@@ -4,9 +4,12 @@ A sample accelerator for C#.
 
 This sample is the Weather Forecast RESTful API application made available from Microsoft.
 
+The application also uses [Steeltoe](https://steeltoe.io) to provide dynamic logging and application management endpoints.
+
 The starting source for this sample was created using:
+
 ```
-$ dotnet new webapi --framework net6.0 --language C#
+dotnet new steeltoe-webapi --logging-dynamic-logger --management-endpoints
 ```
 
 ## Running the app locally
@@ -14,8 +17,10 @@ $ dotnet new webapi --framework net6.0 --language C#
 To run the sample application:
 
 ```
-$ dotnet run
+dotnet run
 ```
+
+For more details on Steeltoe endpoints, visit <https://docs.steeltoe.io/>.
 
 ## Deploying to Kubernetes as a TAP workload with Tanzu CLI
 
