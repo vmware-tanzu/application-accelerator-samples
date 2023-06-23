@@ -1,7 +1,7 @@
 {
     "workloadNamespace": "workloads",
     "serviceNamespace": "service-instances",
-    "rabbitMQName": "rmq-where-for-dinner",
+    "msgbrokerName": "rmq-where-for-dinner",
     "numRabbitMQClusterNodes": 1,
     "dbType": "h2",
     "cacheType": "inmemCache",
