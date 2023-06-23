@@ -1,14 +1,13 @@
 using Microsoft.Extensions.FileProviders;
+using Steeltoe.Common.Hosting;
+using Steeltoe.Management.Endpoint;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// honor PORT var if set
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-var url = string.Concat("http://0.0.0.0:", port);
-builder.WebHost.UseUrls(url);
+builder.UseCloudHosting();
 
 // Learn more about management endpoints at https://docs.steeltoe.io/api/v3/management/
-builder.WebHost.AddAllActuators();
+builder.AddAllActuators();
 
 // Add services to the container.
 builder.Services.AddControllers();
