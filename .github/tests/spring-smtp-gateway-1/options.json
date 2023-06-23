@@ -1,10 +1,9 @@
 {
+    "brokerType": "rabbitmq",
     "containerPort": "1026",
+    "includeBuildToolWrapper": true,
+    "msgbrokerName": "msgbroker-spring-smtp-gateway",
+    "projectName": "spring-smtp-gateway",
     "servicePort": "25",
-    "rabbitMQName": "rmq-1",
-    "serviceNamespace": "service-instances",
-    "workloadNamespace": "workloads",
-    "createRabbitMQCluster": true,
-    "numRabbitMQClusterNodes": "1",
-    "createResourceClaim": true
+    "workloadNamespace": "workloads"
 }
