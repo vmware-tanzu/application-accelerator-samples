@@ -13,7 +13,7 @@
     <parent>
 	   <groupId>org.springframework.boot</groupId>
 	   <artifactId>spring-boot-starter-parent</artifactId>
-	   <version>3.1.0</version>
+	   <version>3.1.1</version>
 	   <relativePath />
     </parent>	
     <developers>
@@ -31,7 +31,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<subethasmtp.version>3.1.7</subethasmtp.version>
 		<commons-net.version>3.9.0</commons-net.version>
-		<snakeyaml.version>1.33</snakeyaml.version>
 		<commons-io.version>2.11.0</commons-io.version>
 		<javax-mail.version>1.6.2</javax-mail.version>
 	</properties>   
@@ -40,7 +39,7 @@
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>				
