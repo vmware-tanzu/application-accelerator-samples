@@ -11,3 +11,4 @@ ignore:
   - vulnerability: CVE-2021-37136 # false positives for reactor-netty - need this issue resolved: https://github.com/anchore/grype/issues/1009
   - vulnerability: CVE-2021-37137 # false positives for reactor-netty - need this issue resolved: https://github.com/anchore/grype/issues/1009
   - vulnerability: CVE-2022-41881 # false positives for reactor-netty - need this issue resolved: https://github.com/anchore/grype/issues/1009
+  - vulnerability: CVE-2023-35116 # this CVE is disputed - see https://github.com/FasterXML/jackson-databind/issues/3972
