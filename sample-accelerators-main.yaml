@@ -310,24 +310,13 @@ spec:
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
 metadata:
-  name: weatherforecast-csharp
+  name: csharp-weatherforecast
 spec:
   git:
     ref:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: weatherforecast-csharp
----
-apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
-kind: Accelerator
-metadata:
-  name: weatherforecast-steeltoe
-spec:
-  git:
-    ref:
-      branch: main
-    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: weatherforecast-steeltoe
+    subPath: csharp-weatherforecast
 ---
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
