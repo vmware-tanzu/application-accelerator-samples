@@ -34,7 +34,7 @@ engine:
     - type: RewritePath
       regex: "Sample(.*)"
       rewriteTo: "#applicationName + #g1"
-  - include: [ "README.md", "config/*.yaml", "catalog/*.yaml" ]
+  - include: [ "README.md", "config/*.yaml", "catalog/*.yaml", "Tiltfile" ]
     chain:
     - type: ReplaceText
       substitutions:
