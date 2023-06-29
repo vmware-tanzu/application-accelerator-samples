@@ -28,6 +28,8 @@ spring:
       bindings: 
         submittedSearches-out-0: 
           destination: where-for-dinner-search-criteria
+        deletedSearches-out-0: 
+          destination: where-for-dinner-search-deletion
 
 springdoc:
   packages-to-scan: com.java.example.tanzu.wherefordinner.resources

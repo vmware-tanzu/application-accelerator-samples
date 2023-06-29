@@ -50,7 +50,9 @@ public class SearchResource
 {
 	protected static final String UNKNOWN_REQUEST_SUBJECT_ID = "ffffffff-ffff-ffff-ffff-ffffffffffff";
 	
-	protected static final String STREAM_BRIDGE_OUTPUT_CHANNLE = "submittedSearches-out-0";
+	protected static final String STREAM_BRIDGE_SEARCH_OUTPUT_CHANNLE = "submittedSearches-out-0";
+	
+	protected static final String STREAM_BRIDGE_DELETE_SEARCH_OUTPUT_CHANNLE = "deletedSearches-out-0";
 	
 	protected SearchRepository searchRepo;
 	
@@ -148,7 +150,7 @@ public class SearchResource
 			}
 				
 			return searchRepo.save(search)
-			           .doOnSuccess(addedSearch -> streamBridge.send(STREAM_BRIDGE_OUTPUT_CHANNLE, addedSearch))
+			           .doOnSuccess(addedSearch -> streamBridge.send(STREAM_BRIDGE_SEARCH_OUTPUT_CHANNLE, addedSearch))
 			    	   .onErrorResume(e -> { 
 			    	    	log.error("Error adding search.", e);
 			    	    	return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -167,14 +169,34 @@ public class SearchResource
         )
     })
 	@DeleteMapping("{id}") 
-	public Mono<Void> deleteSearch(@PathVariable("id") Long id)
+	public Mono<Void> deleteSearch(@PathVariable("id") Long id, Principal oauth2User)
 	{
 		log.info("Deleting search id {}", id);
 		
-		return searchRepo.deleteById(id)
-    	   .onErrorResume(e -> { 
-    	    	log.error("Error deleting search.", e);
-    	    	return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
-    	   });
+		final var reqSub = getPrincipalName(oauth2User);
+		
+		return searchRepo.findById(id)
+			.switchIfEmpty(Mono.just(new Search()))
+			.flatMap(foundSearch -> 
+			{
+				if (StringUtils.hasText(foundSearch.getName()))
+				{
+					if (foundSearch.getRequestSubject().compareTo(reqSub) != 0)
+					{
+		    	    	log.error("Cannot delete search id{} as it is not owned by request subject {}.",id, reqSub);
+		    	    	return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN));
+					}
+					
+					return searchRepo.deleteById(id)
+						.doOnSuccess(addedSearch -> streamBridge.send(STREAM_BRIDGE_DELETE_SEARCH_OUTPUT_CHANNLE, foundSearch))
+			    	    .onErrorResume(e -> { 
+			    	    	log.error("Error deleting search.", e);
+			    	    	return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+			    	    });
+				}
+				
+				return Mono.empty();
+			});
+
 	}
 }
