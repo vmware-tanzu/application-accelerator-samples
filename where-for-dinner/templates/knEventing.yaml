@@ -74,6 +74,26 @@ kind: Trigger
 metadata:
   labels:
     eventing.knative.dev/broker: where-for-dinner
+  name: where-for-dinner-search-deletion
+  namespace: #@ data.values.workloadNamespace
+  annotations: #@ buildTriggerAnnotations()
+spec:
+  broker: where-for-dinner
+  filter:
+    attributes:
+      source: #@ '/apis/v1/namespaces/' + data.values.workloadNamespace + '/rabbitmqsources/where-for-dinner-search-deletion-rabbit-source#where-for-dinner-search-deletion'
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: where-for-dinner-availability
+    uri: /processDeletedSearch
+---
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  labels:
+    eventing.knative.dev/broker: where-for-dinner
   name: where-for-dinner-notify
   namespace: #@ data.values.workloadNamespace
   annotations: #@ buildTriggerAnnotations()
@@ -161,6 +181,56 @@ spec:
     namespace: #@ data.values.serviceNamespace
   vhost: /
 ---
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: where-for-dinner-search-deletion-rabbit-source
+  name: where-for-dinner-search-deletion
+  namespace: #@ data.values.workloadNamespace
+spec:
+  durable: true
+  name: where-for-dinner-search-deletion
+  rabbitmqClusterReference:
+    name: #@ data.values.msgbrokerName
+    namespace: #@ data.values.serviceNamespace
+  type: topic
+  vhost: /
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: where-for-dinner-search-deletion-rabbit-source
+  name: where-for-dinner-search-deletion
+  namespace: #@ data.values.workloadNamespace
+spec:
+  durable: true
+  autoDelete: false
+  name: where-for-dinner-search-deletion
+  rabbitmqClusterReference:
+    name: #@ data.values.msgbrokerName
+    namespace: #@ data.values.serviceNamespace
+  type: quorum
+  vhost: /
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  labels:
+    eventing.knative.dev/SourceName: where-for-dinner-search-deletion-rabbit-source
+  name: where-for-dinner-search-deletion
+  namespace: #@ data.values.workloadNamespace
+spec:
+  source: where-for-dinner-search-deletion
+  destination: where-for-dinner-search-deletion
+  destinationType: queue
+  routingKey: '#'
+  rabbitmqClusterReference:
+    name: #@ data.values.msgbrokerName
+    namespace: #@ data.values.serviceNamespace
+  vhost: /  
+---
 apiVersion: sources.knative.dev/v1alpha1
 kind: RabbitmqSource
 metadata:
@@ -175,5 +245,21 @@ spec:
     predeclared: true 
     parallelism: 5
     queueName: where-for-dinner-search-criteria
+  sink:
+    uri: #@ buildBrokerURI()
+---
+apiVersion: sources.knative.dev/v1alpha1
+kind: RabbitmqSource
+metadata:
+  name: where-for-dinner-search-deletion-rabbit-source
+  namespace: #@ data.values.workloadNamespace
+spec:
+  rabbitmqClusterReference:
+    name: #@ data.values.msgbrokerName
+    namespace: #@ data.values.serviceNamespace
+  rabbitmqResourcesConfig:
+    predeclared: true
+    parallelism: 5
+    queueName: where-for-dinner-search-deletion
   sink:
     uri: #@ buildBrokerURI()
