@@ -12,3 +12,6 @@ ignore:
   - vulnerability: CVE-2021-37137 # false positives for reactor-netty - need this issue resolved: https://github.com/anchore/grype/issues/1009
   - vulnerability: CVE-2022-41881 # false positives for reactor-netty - need this issue resolved: https://github.com/anchore/grype/issues/1009
   - vulnerability: CVE-2023-35116 # this CVE is disputed - see https://github.com/FasterXML/jackson-databind/issues/3972
+  - vulnerability: CVE-2023-34453 # this CVE can't be exploited by user provided data, needs specific code compiled
+  - vulnerability: CVE-2023-34454 # this CVE can't be exploited by user provided data, needs specific code compiled
+  - vulnerability: CVE-2023-34455 # this CVE can't be exploited by user provided data, needs specific code compiled
