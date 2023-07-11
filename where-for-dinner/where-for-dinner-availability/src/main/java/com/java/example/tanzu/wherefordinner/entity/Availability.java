@@ -6,11 +6,13 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Table
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Availability 
 {
 	@Id
