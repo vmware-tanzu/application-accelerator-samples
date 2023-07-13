@@ -1,0 +1,242 @@
+accelerator:
+  displayName: Spring Cloud Streams App Template
+  description: Template acclerator for creating a Spring Cloud Streams application.  Applications can be play the role or source, processor, sink, or any combination thereof.
+  iconUrl: data:image/png;base64, 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
+  tags:
+  - java
+  - spring
+  - streaming
+  options:
+    - name: groupId
+      inputType: text
+      defaultValue: "com.example"
+      label: Maven Group Name
+      description: "The name of the workload/project that will be created. The spring.application.name will also reflect this option."
+      required: true
+    - name: packageName
+      inputType: text
+      defaultValue: "com.example.tanzu.streamtemplate"
+      label: Service Root Package Name  
+      description: "The base Java package name used for the application."      
+      required: true
+    - name: mainClassName
+      inputType: text
+      defaultValue: "StreamApplication"
+      label: Application Main Class Name
+      description: "The name of class that will be used as the SpringBoot main class."           
+      required: true      
+    - name: objectModelClassName
+      inputType: text
+      defaultValue: "Foo"
+      label: Model Class Name
+      description: "The name of class that will be used for the model object that implements the event passed between services."           
+      required: true  
+    - label: Event Source
+      description: "If checked, the generated application will contain code to function as an event source."
+      defaultValue: true
+      name: eventSourceRole
+      inputType: checkbox
+      dataType: boolean
+      required: true    
+    - label: Event Processor
+      description: "If checked, the generated application will contain code to function as an event processor."
+      defaultValue: false
+      name: eventProcessRole
+      inputType: checkbox
+      dataType: boolean
+      required: true      
+    - label: Event Sink
+      description: "If checked, the generated application will contain code to function as an event sink."
+      defaultValue: false
+      name: eventSinkRole
+      inputType: checkbox
+      dataType: boolean
+      required: true                 
+    - label: Event Source Channel
+      name: sourceChannel
+      inputType: text
+      defaultValue: "foo-source"
+      description: Name of the source channel that flows from the producer to the processor.  Needed if the application functions as an event source or processor.
+      required: true   
+    - label: Event Source Channel Group    
+      name: sourceChannelGroup
+      inputType: text
+      defaultValue: "foo-source-group"
+      description: Name of the source channel group.  Needed if the application functions as an event processor.
+      required: true 
+      dependsOn: 
+        name: eventProcessRole    
+    - label: Event Result Channel         
+      name: resultChannel
+      inputType: text
+      defaultValue: "foo-result"
+      description: Name of the result chanel that flows from the processor to the sink.   Needed if the application functions as an event processor or sink.
+      required: true  
+    - label: Event Result Channel Group   
+      name: resultChannelGroup
+      inputType: text
+      defaultValue: "foo-result-group"
+      description: Name of the result chanel group.  Needed if the application functions as an event processor or sink.
+      required: true    
+      dependsOn: 
+        name: eventSinkRole    
+    - label: Message Broker Name       
+      name: msgBrokerName
+      inputType: text
+      defaultValue: "stream-sample-message-broker"
+      description: The name of the message broker to connect to for sending and receiving events.
+      required: true                              
+  imports:  
+  - name: live-update
+    expose:
+      - name: liveUpdateIDESupport
+      - name: sourceRepositoryPrefix
+  - name: tap-workload
+  - name: build-wrapper-maven
+
+engine:
+  let:
+    - name: packageDirectory
+      expression: '#packageName.replace(".", "/")'
+    - name: workloadResourceName
+      expression: '#artifactId.toLowerCase()'
+    - name: lambaObjectPlural
+      expression: "#objectModelClassName.toLowerCase() + 's'"      
+    - name: lambaObjectSingleton
+      expression: "#objectModelClassName.toLowerCase()"   
+    - name: bindingName
+      expression: "#objectModelClassName.toLowerCase()"                
+  chain:
+ 
+    # Maven group updated
+    - merge:
+        - include: [ "**" ]
+          exclude: [ "pom.xml", "**/templates/application.yaml", "**/catalog/catalog-info.yaml"]
+        - include: [ "pom.xml", "**/catalog/catalog-info.yaml"]       
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "<groupId>com.example</groupId>"
+                  with: "'<groupId>' + #groupId + '</groupId>'"
+                - text: "<groupId>streaming-app-template</groupId>"
+                  with: "'<groupId>' + #projectName + '</groupId>'"     
+                - text: "streaming-app-template"
+                  with: "#projectName"                                                     
+        - include: [ "**/templates/application.yaml" ]          
+          chain:
+            - type: ReplaceText
+              substitutions:        
+                - text: "Foo"
+                  with: "#objectModelClassName"                   
+            - type: YTT
+            - type: RewritePath
+              regex: 'templates/application.yaml'
+              rewriteTo: "'src/main/resources/application.yaml'"                                                      
+    - merge:
+      - exclude: [ "**/*.java"]
+      - include: [ "**/StreamingAppTemplateApplicationTests.java", "**/StreamingAppTemplateApplication.java", "**/Foo.java"]                      
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "com.example.tanzu.streamtemplate"
+                with: "#packageName"
+          - type: ReplaceText
+            substitutions:
+              - text: "StreamingAppTemplateApplication"
+                with: "#mainClassName"                
+          - type: ReplaceText
+            substitutions:
+              - text: "Foo"
+                with: "#objectModelClassName"     
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/StreamingAppTemplateApplicationTests.java"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #mainClassName + 'Tests.java'"    
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/StreamingAppTemplateApplication.java"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #mainClassName + '.java'"                                                 
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/model/Foo.java"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/model/' + #objectModelClassName + '.java'"                                                           
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate(?<untouchedpath>.*)"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #untouchedpath"            
+      - condition: '#eventSourceRole'
+        include: [ "**/FooSource.java"]                      
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "com.example.tanzu.streamtemplate"
+                with: "#packageName"             
+          - type: ReplaceText
+            substitutions:
+              - text: "Foo"
+                with: "#objectModelClassName"   
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/functions/FooSource.java"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/functions/' + #objectModelClassName + 'Source.java'"  
+      - condition: '#eventProcessRole'
+        include: [ "**/FooProcessor.java"]                      
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "com.example.tanzu.streamtemplate"
+                with: "#packageName"             
+          - type: ReplaceText
+            substitutions:
+              - text: "Foo"
+                with: "#objectModelClassName"   
+          - type: ReplaceText
+            substitutions:
+              - text: "foos"
+                with: "#lambaObjectPlural"  
+          - type: ReplaceText
+            substitutions:
+              - text: "foo"
+                with: "#lambaObjectSingleton"  
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/functions/FooProcessor.java"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/functions/' + #objectModelClassName + 'Processor.java'"  
+      - condition: '#eventSinkRole'
+        include: [ "**/FooSink.java"]                      
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "com.example.tanzu.streamtemplate"
+                with: "#packageName"             
+          - type: ReplaceText
+            substitutions:
+              - text: "Foo"
+                with: "#objectModelClassName"   
+          - type: ReplaceText
+            substitutions:
+              - text: "foos"
+                with: "#lambaObjectPlural"  
+          - type: ReplaceText
+            substitutions:
+              - text: "foo"
+                with: "#lambaObjectSingleton"  
+          - type: RewritePath
+            regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/functions/FooSink.java"
+            rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/functions/' + #objectModelClassName + 'Sink.java'"    
+    - merge:
+      - exclude: [ "config/workload.yaml"]
+      - include: [ "config/workload.yaml"]
+        chain:
+          - type: YTT
+    - merge:
+        - type: InvokeFragment
+          reference: live-update
+        - include: [ "**" ]
+      onConflict: UseFirst          
+    - merge:
+        - type: InvokeFragment
+          reference: tap-workload
+        - include: [ "**" ]
+        - type: InvokeFragment
+          reference: build-wrapper-maven 
+        - type: Provenance       
+      onConflict: UseFirst                                  
+   
+  
+
+      
