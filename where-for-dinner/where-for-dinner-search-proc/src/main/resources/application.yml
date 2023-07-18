@@ -121,6 +121,7 @@ spring:
 
   redis:
     ssl: false
+    port: 6379
 
   data:
     redis:
@@ -128,7 +129,7 @@ spring:
       host: ${spring.redis.host}
       password: ${spring.redis.password}
       port: ${spring.redis.port}
-      ssl: ${spring.redis.ssl}
+      ssl.eanbled: ${spring.redis.ssl}
   
 management:
   health:

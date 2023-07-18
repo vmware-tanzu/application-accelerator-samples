@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.7</version>
+		<version>3.1.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -15,11 +15,10 @@
 	<description>Where For Dinner service for storing and retriving establishment reservation openings.</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.2</spring-cloud.version>
+		<spring-cloud.version>2022.0.3</spring-cloud.version>
 		<spring-cloud-bindings.version>1.11.0</spring-cloud-bindings.version>		
 		<snakeyaml.version>1.33</snakeyaml.version>
-		<springdoc.version>2.1.0</springdoc.version>
-		<mariadb.version>1.1.4</mariadb.version>		
+		<springdoc.version>2.1.0</springdoc.version>	
 	</properties>
 	<dependencies>
 		<dependency>
@@ -61,7 +60,6 @@
         <dependency>
             <groupId>org.mariadb</groupId>
             <artifactId>r2dbc-mariadb</artifactId>
-            <version>${mariadb.version}</version>
         </dependency>	
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -81,6 +79,36 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.testcontainers</groupId>
+		    <artifactId>rabbitmq</artifactId>
+		    <scope>test</scope>
+		</dependency>	
+		<dependency>
+		    <groupId>org.testcontainers</groupId>
+		    <artifactId>mariadb</artifactId>
+		    <scope>test</scope>
+		</dependency>	
+		<dependency>
+		    <groupId>org.testcontainers</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <scope>test</scope>
+		</dependency>	
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+		    <groupId>org.testcontainers</groupId>
+		    <artifactId>r2dbc</artifactId>
+		    <scope>test</scope>
+		</dependency>        										
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
