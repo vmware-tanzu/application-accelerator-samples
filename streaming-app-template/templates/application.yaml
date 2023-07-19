@@ -1,0 +1,59 @@
+#@ load("@ytt:data", "data")
+
+#@ def buildFunctionDefinition():
+#@ definitions = ""
+#@ if data.values.eventSourceRole == True:
+#@ definitions = "supply" + data.values.objectModelClassName 
+#@ end
+#@ if data.values.eventProcessRole == True:
+#@ if definitions != "":
+#@    definitions = definitions + ":"
+#@ end
+#@ definitions = definitions + "process" + data.values.objectModelClassName 
+#@ end
+#@ if data.values.eventSinkRole == True:
+#@ if definitions != "":
+#@    definitions = definitions + ":"
+#@ end
+#@ definitions = definitions + "store" + data.values.objectModelClassName 
+#@ end
+#@ return definitions
+#@ end
+
+---
+server.port: 0
+
+spring:
+  application:
+    name: #@ data.values.projectName
+
+  cloud: 
+    function: 
+      definition: #@ buildFunctionDefinition()
+    stream:
+      defaultBinder: rabbit
+      bindings:
+#@ if data.values.eventSinkRole == True:
+        storeFoo-in-0: 
+          destination: #@ data.values.resultChannel
+          group: #@ data.values.resultChannelGroup
+          consumer: 
+            maxAttempts: 4
+            backOffInitialInterval: 15000
+            backOffMaxInterval: 60000 
+#@ end
+#@ if data.values.eventProcessRole == True:
+        processFoo-in-0: 
+          destination: #@ data.values.sourceChannel
+          group: #@ data.values.sourceChannelGroup
+          consumer: 
+            maxAttempts: 4
+            backOffInitialInterval: 15000
+            backOffMaxInterval: 60000          
+        processFoo-out-0: 
+          destination: #@ data.values.resultChannel
+#@ end 
+#@ if data.values.eventSourceRole == True:       
+        supplyFoo-out-0: 
+          destination: #@ data.values.sourceChannel
+#@ end

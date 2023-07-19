@@ -1,0 +1,34 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: #@ data.values.projectName
+  labels:
+    apps.tanzu.vmware.com/workload-type: worker
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/auto-configure-actuators: "true"
+    app.kubernetes.io/part-of: #@ data.values.projectName
+spec:
+  build:
+    env:
+      - name: BP_JVM_VERSION
+        value: "17"
+  resources:     
+    requests:         
+      memory: "500M"
+      cpu: "100m"
+    limits:         
+      memory: "750M"
+      cpu: "1.5" 
+  serviceClaims:
+  - name: msgbroker
+    ref:
+      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+      kind: ClassClaim
+      name: #@ data.values.msgBrokerName            
+  source:
+    git:
+      url: <https URL for your generated project's Git repository>
+      ref:
+        branch: main

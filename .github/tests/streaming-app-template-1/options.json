@@ -1,0 +1,15 @@
+{
+    "groupId": "com.example",
+    "packageName": "com.example.tanzu.streamtemplate",
+    "mainClassName": "StreamApplication",
+    "objectModelClassName": "Foo",
+    "eventSourceRole": true,
+    "eventProcessRole": false,
+    "eventSinkRole": false,
+    "sourceChannel": "foo-source",
+    "sourceChannelGroup": "foo-source-group",
+    "resultChannel": "foo-result",
+    "resultChannelGroup": "foo-result-group",
+    "msgBrokerName": "stream-sample-message-broker"
+    
+}
