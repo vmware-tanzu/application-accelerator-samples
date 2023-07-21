@@ -19,8 +19,10 @@ public class FooSource
 	@PollableBean
 	public Supplier<Flux<Foo>> supplyFoo()
 	{
-		log.info("Supplier generating new {}",  Foo.class.getName());
-		
-		return () -> Flux.fromIterable(Collections.singletonList(new Foo("Test data: " + UUID.randomUUID().toString())));
+		return () -> {
+
+			log.info("Supplier generating new {}",  Foo.class.getName());
+			return Flux.fromIterable(Collections.singletonList(new Foo("Test data: " + UUID.randomUUID().toString())));
+		};
 	}
 }
