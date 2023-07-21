@@ -16,3 +16,21 @@ spring:
       bindings: 
         submittedSearches-out-0: 
           destination: where-for-dinner-search-criteria
+---
+
+spring:
+  config.activate.on-profile: mysql
+  
+  sql.init.platform: mysql
+  
+  r2dbc: 
+    #Default properties to work with MariaDB driver
+    properties.sslMode: TRUST  
+    properties.tlsVersion: TLSv1.2
+    
+---
+
+spring:
+  config.activate.on-profile: postgres
+  
+  sql.init.platform: postgresql
