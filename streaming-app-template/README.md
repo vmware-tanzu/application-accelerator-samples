@@ -53,7 +53,7 @@ By default, a source application generates a new event using a `PollableBean` me
 generated every second).  The processor simply logs out a message that the event was received and returns the event unmodified.  Lastly, the sink outputs that the 
 processor result was received.
 
-The following diagram illustrates the complete message flow from the source to sink.
+The following diagram illustrates the complete message flow from the source to the sink.
 
 ![](doc/images/messasgeFlow.png)
 
