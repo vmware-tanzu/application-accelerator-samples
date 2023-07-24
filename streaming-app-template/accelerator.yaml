@@ -31,27 +31,19 @@ accelerator:
       label: Model Class Name
       description: "The name of class that will be used for the model object that implements the event/message passed between services."           
       required: true  
-    - label: Event Source
-      description: "If checked, the generated application will contain code to function as a producer/source."
-      defaultValue: true
-      name: eventSourceRole
-      inputType: checkbox
-      dataType: boolean
-      required: true    
-    - label: Event Processor
-      description: "If checked, the generated application will contain code to function as a processor."
-      defaultValue: false
-      name: eventProcessRole
-      inputType: checkbox
-      dataType: boolean
-      required: true      
-    - label: Event Sink
-      description: "If checked, the generated application will contain code to function as a consumer/sink."
-      defaultValue: false
-      name: eventSinkRole
-      inputType: checkbox
-      dataType: boolean
-      required: true                 
+    - label: Application Role
+      description: "The stream role of the generated application.  The application can be a source, processor, or sink."
+      defaultValue: source
+      name: applicationRole
+      inputType: radio
+      required: true   
+      choices:
+        - text: "Source: If selected, the generated application will contain code to function as a producer/source."
+          value: source
+        - text: "Processor: If selected, the generated application will contain code to function as a processor."
+          value: processor
+        - text: "Sink: If selected, the generated application will contain code to function as a consumer/sink."
+          value: sink             
     - label: Message Source Channel
       name: sourceChannel
       inputType: text
@@ -65,7 +57,8 @@ accelerator:
       description: Name of the source channel group.  Needed if the application functions as a processor.
       required: true 
       dependsOn: 
-        name: eventProcessRole    
+        name: applicationRole    
+        value: processor
     - label: Message Result Channel         
       name: resultChannel
       inputType: text
@@ -79,7 +72,8 @@ accelerator:
       description: Name of the result channel group.  Needed if the application functions as an event processor or sink.
       required: true    
       dependsOn: 
-        name: eventSinkRole    
+        name: applicationRole    
+        value: sink
     - label: Message Broker Name       
       name: msgBrokerName
       inputType: text
@@ -160,7 +154,7 @@ engine:
           - type: RewritePath
             regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate(?<untouchedpath>.*)"
             rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #untouchedpath"            
-      - condition: '#eventSourceRole'
+      - condition: "#applicationRole == 'source'"
         include: [ "**/FooSource.java"]                      
         chain:
           - type: ReplaceText
@@ -174,7 +168,7 @@ engine:
           - type: RewritePath
             regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/functions/FooSource.java"
             rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/functions/' + #objectModelClassName + 'Source.java'"  
-      - condition: '#eventProcessRole'
+      - condition: "#applicationRole == 'processor'"
         include: [ "**/FooProcessor.java"]                      
         chain:
           - type: ReplaceText
@@ -196,7 +190,7 @@ engine:
           - type: RewritePath
             regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)streamtemplate/functions/FooProcessor.java"
             rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/functions/' + #objectModelClassName + 'Processor.java'"  
-      - condition: '#eventSinkRole'
+      - condition: "#applicationRole == 'sink'"
         include: [ "**/FooSink.java"]                      
         chain:
           - type: ReplaceText
