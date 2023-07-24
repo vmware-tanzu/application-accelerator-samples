@@ -2,16 +2,16 @@
 
 #@ def buildFunctionDefinition():
 #@ definitions = ""
-#@ if data.values.eventSourceRole == True:
+#@ if data.values.applicationRole == "source":
 #@ definitions = "supply" + data.values.objectModelClassName 
 #@ end
-#@ if data.values.eventProcessRole == True:
+#@ if data.values.applicationRole == "processor":
 #@ if definitions != "":
 #@    definitions = definitions + ":"
 #@ end
 #@ definitions = definitions + "process" + data.values.objectModelClassName 
 #@ end
-#@ if data.values.eventSinkRole == True:
+#@ if data.values.applicationRole == "sink":
 #@ if definitions != "":
 #@    definitions = definitions + ":"
 #@ end
@@ -32,9 +32,21 @@ spring:
       definition: #@ buildFunctionDefinition()
     stream:
       defaultBinder: rabbit
+      function:
+        bindings:
+#@ if data.values.applicationRole == "sink":
+          storeFoo-in-0: input
+#@ end
+#@ if data.values.applicationRole == "processor":
+          processFoo-in-0: input
+          processFoo-out-0: output
+#@ end
+#@ if data.values.applicationRole == "source":   
+          supplyFoo-out-0: output
+#@ end
       bindings:
-#@ if data.values.eventSinkRole == True:
-        storeFoo-in-0: 
+#@ if data.values.applicationRole == "sink":
+        input: 
           destination: #@ data.values.resultChannel
           group: #@ data.values.resultChannelGroup
           consumer: 
@@ -42,18 +54,18 @@ spring:
             backOffInitialInterval: 15000
             backOffMaxInterval: 60000 
 #@ end
-#@ if data.values.eventProcessRole == True:
-        processFoo-in-0: 
+#@ if data.values.applicationRole == "processor":
+        input: 
           destination: #@ data.values.sourceChannel
           group: #@ data.values.sourceChannelGroup
           consumer: 
             maxAttempts: 4
             backOffInitialInterval: 15000
             backOffMaxInterval: 60000          
-        processFoo-out-0: 
+        output: 
           destination: #@ data.values.resultChannel
 #@ end 
-#@ if data.values.eventSourceRole == True:       
-        supplyFoo-out-0: 
+#@ if data.values.applicationRole == "source":       
+        output: 
           destination: #@ data.values.sourceChannel
 #@ end
