@@ -69,10 +69,10 @@ You can use this accelerator to generate a project for each roles.  An example w
 
 The streaming sample applications connect to a RabbitMQ broker for sending and receiving messages.  You will need to create a `ClassClaim` that matches the name of the 
 `Message Broker Name` option.  To create the `ClassClaim` as well as a RabbitMQ instance, run the following command updating the <NAME> placeholder with the name
-of the message broker and the <WORKLAOD_NAMESPACE> with the name of the namespace where the application will be deployed.
+of the message broker and the <WORKLOAD_NAMESPACE> with the name of the namespace where the application will be deployed.
 
 ```
-tanzu service  class-claim  create  <NAME>  --class rabbitmq-unmanaged -n <WORKLAOD_NAMESPACE>
+tanzu service  class-claim  create  <NAME>  --class rabbitmq-unmanaged -n <WORKLOAD_NAMESPACE>
 ```
 
 After the `ClassClaim` is created, you can build and deploy the each application by navigating to the root directory of the accelerator generated project and run the following 
