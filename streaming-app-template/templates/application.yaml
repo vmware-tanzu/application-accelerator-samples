@@ -69,3 +69,11 @@ spring:
         output: 
           destination: #@ data.values.sourceChannel
 #@ end
+
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+
+server.port: 8080
