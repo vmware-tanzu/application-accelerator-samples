@@ -175,7 +175,7 @@ engine:
           newGroupId: "'org.springframework.boot'"
           oldArtifactId: "'spring-boot-starter-parent'"
           newArtifactId: "'spring-boot-starter-parent'"
-          newVersion: "'3.0.7'"
+          newVersion: "'3.0.9'"
       - type: ReplaceText
         regex:
           pattern: "\\s+<snakeyaml.version>1.33</snakeyaml.version>"
@@ -186,11 +186,11 @@ engine:
       - type: ReplaceText
         regex:
           pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-          with: "'id(\"org.springframework.boot\") version \"3.0.7\"'"
+          with: "'id(\"org.springframework.boot\") version \"3.0.9\"'"
       - type: ReplaceText
         regex:
           pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
-          with: "'id(\"io.spring.dependency-management\") version \"1.1.0\"'"
+          with: "'id(\"io.spring.dependency-management\") version \"1.1.2\"'"
       - type: ReplaceText
         regex:
           pattern: "\\s*extra\\[\"snakeyaml.version\"\\] = \"1.33\""
@@ -209,7 +209,7 @@ engine:
           newGroupId: "'org.springframework.boot'"
           oldArtifactId: "'spring-boot-starter-parent'"
           newArtifactId: "'spring-boot-starter-parent'"
-          newVersion: "'3.1.0'"
+          newVersion: "'3.1.2'"
       - type: ReplaceText
         regex:
           pattern: "\\s+<snakeyaml.version>1.33</snakeyaml.version>"
@@ -220,11 +220,11 @@ engine:
       - type: ReplaceText
         regex:
           pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-          with: "'id(\"org.springframework.boot\") version \"3.1.0\"'"
+          with: "'id(\"org.springframework.boot\") version \"3.1.2\"'"
       - type: ReplaceText
         regex:
           pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
-          with: "'id(\"io.spring.dependency-management\") version \"1.1.0\"'"
+          with: "'id(\"io.spring.dependency-management\") version \"1.1.2\"'"
       - type: ReplaceText
         regex:
           pattern: "\\s*extra\\[\"snakeyaml.version\"\\] = \"1.33\""
