@@ -2,7 +2,7 @@ server.port: 0
 
 spring:
   application:
-    name: streaming-app-template
+    name: spring-streaming-app
 
   cloud: 
     function:

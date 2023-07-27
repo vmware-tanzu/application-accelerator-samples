@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: streaming-app-template
+  name: spring-streaming-app
   description: Accelerator generated streaming application
   tags:
     - app-accelerator
@@ -10,7 +10,7 @@ metadata:
     - streaming
     - tanzu
   annotations:
-    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=streaming-app-template'
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=spring-streaming-app'
 spec:
   type: service
   lifecycle: experimental

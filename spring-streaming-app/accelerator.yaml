@@ -112,9 +112,9 @@ engine:
               substitutions:
                 - text: "<groupId>com.example</groupId>"
                   with: "'<groupId>' + #groupId + '</groupId>'"
-                - text: "<groupId>streaming-app-template</groupId>"
+                - text: "<groupId>spring-streaming-app</groupId>"
                   with: "'<groupId>' + #projectName + '</groupId>'"     
-                - text: "streaming-app-template"
+                - text: "spring-streaming-app"
                   with: "#projectName"                                                     
         - include: [ "**/templates/application.yaml" ]          
           chain:
