@@ -20,6 +20,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <java.version>17</java.version>
 		<spring-cloud.version>2022.0.3</spring-cloud.version>
 		<snakeyaml.version>1.33</snakeyaml.version>
+		<okio-jvm.version>3.4.0</okio-jvm.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -30,12 +31,17 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.squareup.okio</groupId>
+				<artifactId>okio-jvm</artifactId>
+				<version>${okio-jvm.version}</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-kubernetes-client-config</artifactId>
+			<artifactId>spring-cloud-starter-kubernetes-fabric8-config</artifactId>
 		</dependency>	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
