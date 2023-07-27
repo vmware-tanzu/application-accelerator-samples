@@ -11,8 +11,6 @@ spec:
     - name: annotations
       value:
         autoscaling.knative.dev/minScale: "1"
-    - name: clusterBuilder
-      value: full
   build:
     env:
       - name: BP_NODE_RUN_SCRIPTS
