@@ -30,4 +30,4 @@ spec:
   owner: where-for-dinner-team
   system: where-for-dinner
   definition:
-    $text: https://where-for-dinner.perfect300rock.com/api/search/v3/api-docs/
+    $text: https://where-for-dinner.perfect300rock.com/api/search/v3/api-docs

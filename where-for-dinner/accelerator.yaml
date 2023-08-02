@@ -246,7 +246,13 @@ accelerator:
     name: ployglotWorkloads
     inputType: checkbox
     dataType: boolean
-    required: true          
+    required: true    
+  - name: nativeBuild
+    label: Support native GraalVM builds
+    description: "When checked, compatible SpringBoot workloads will be built into native images"
+    inputType: checkbox
+    dataType: boolean
+    defaultValue: false      
   imports:
     - name: tap-workload
     - name: build-wrapper-maven

@@ -3,6 +3,7 @@ package com.java.example.tanzu.wherefordinner.functions;
 import java.util.List;
 import java.util.function.Function;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ public class AvailabilitySink
 	protected List<Publisher> publishers;
 	
 	@Bean
+	@RegisterReflectionForBinding(Availability.class)
 	public Function<Flux<Availability>, Mono<Void>> notifyAvailability()
 	{
 		return avails -> avails.flatMap(avail -> 
