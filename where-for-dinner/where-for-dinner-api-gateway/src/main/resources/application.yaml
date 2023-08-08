@@ -1,14 +1,5 @@
 spring.cloud.kubernetes.enabled: false
 
-where-for-dinner:
-  namespace: ${spring.cloud.kubernetes.client.namespace}
-  ui:
-    uri: http://where-for-dinner-ui.${where-for-dinner.namespace}/
-  search:
-    uri: http://where-for-dinner-search.${where-for-dinner.namespace}/
-  availability:
-    uri: http://where-for-dinner-availability.${where-for-dinner.namespace}/
-
 spring:
   application:
     name: where-for-dinner-api-gateway
@@ -50,17 +41,26 @@ spring:
         predicates:
         - Path=/**
 
----
-spring:
-  config.activate.on-profile: local
-
-
-#Local profile forwards to local instances  
+#Default profile forwards to local instances.  Use for inner loop dev
 where-for-dinner:
-  namespace: workloads
   ui:
     uri: http://localhost:3000/   # default used by npm start
   search:
     uri: http://localhost:8081/
   availability:
     uri: http://localhost:8082/
+    
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+
+where-for-dinner:
+  namespace: ${spring.cloud.kubernetes.client.namespace}
+  ui:
+    uri: http://where-for-dinner-ui.${where-for-dinner.namespace}/
+  search:
+    uri: http://where-for-dinner-search.${where-for-dinner.namespace}/
+  availability:
+    uri: http://where-for-dinner-availability.${where-for-dinner.namespace}/

@@ -280,6 +280,7 @@ The accelerator contains the following configuration options:
 * **Workload URL :**  If TAP Spring Cloud Gateway is selected, this is the expected URL of the Where For Dinner application's UI web page.  
 **Note:**  If the TAP Spring Cloud Gateway option is selected, the default scheme for the Workload URI will be `http`.
 * **Alternate Workload Implementations :** If this box is checked, certain services will be built using alternative implementations written in different programming languages.
+* **Support native GraalVM builds :** If this box is checked, native images will be built for workloads that support this feature.
 
 **NOTE:** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.
 

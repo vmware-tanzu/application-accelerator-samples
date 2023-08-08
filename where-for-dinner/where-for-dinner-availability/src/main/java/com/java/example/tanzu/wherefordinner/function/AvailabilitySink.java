@@ -3,11 +3,13 @@ package com.java.example.tanzu.wherefordinner.function;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.java.example.tanzu.wherefordinner.model.Availability;
+import com.java.example.tanzu.wherefordinner.model.Availability.AvailabilityWindow;
 import com.java.example.tanzu.wherefordinner.model.Search;
 import com.java.example.tanzu.wherefordinner.repository.AvailabilityRepository;
 import com.java.example.tanzu.wherefordinner.repository.AvailabilityWindowRepository;
@@ -28,6 +30,7 @@ public class AvailabilitySink
 
 	
 	@Bean
+	@RegisterReflectionForBinding({Availability.class, AvailabilityWindow.class})
 	public Function<Flux<Availability>, Mono<Void>> processAvailability()
 	{
 		return avails -> avails.flatMap(avail -> 

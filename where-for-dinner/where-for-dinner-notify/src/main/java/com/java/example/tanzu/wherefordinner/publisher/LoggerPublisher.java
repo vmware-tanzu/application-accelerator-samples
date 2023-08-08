@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.java.example.tanzu.wherefordinner.model.Availability;
+import com.java.example.tanzu.wherefordinner.model.AvailabilityWindow;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -26,22 +27,22 @@ public class LoggerPublisher implements Publisher
 	@Override
 	public Mono<Void> publishAvailability(Availability avail) 
 	{
-		log.info("Publishing dining availability for {} from search name {}", avail.getDiningName(), avail.getSearchName());
+		log.info("Publishing dining availability for {} from search name {}", avail.diningName(), avail.searchName());
 		
-		if (avail.getAvailabilityWindows().isEmpty())
+		if (avail.availabilityWindows().isEmpty())
 			log.info("\tNo available dining times\r\n");
 		else
 		{
 			final var msgBuilder = new StringBuilder();
 			
 			int cnt = 1;
-			for (Availability.AvailabilityWindow window : avail.getAvailabilityWindows())
+			for (AvailabilityWindow window : avail.availabilityWindows())
 			{
 				final var formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault());
 				
 				
-				final var startTime = formatter.format(Date.from(Instant.ofEpochMilli(window.getStartTime())));
-				final var endTime = formatter.format(Date.from(Instant.ofEpochMilli(window.getEndTime())));
+				final var startTime = formatter.format(Date.from(Instant.ofEpochMilli(window.startTime())));
+				final var endTime = formatter.format(Date.from(Instant.ofEpochMilli(window.endTime())));
 				
 
 				

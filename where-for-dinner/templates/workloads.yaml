@@ -32,8 +32,7 @@
 #@ end     
 #@ end
 
-
-#@ def buildAppEnv(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf):
+#@ def buildSpringProfiles(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf):
 #@ profiles = ""
 #@ if addSecProf == True and data.values.enableSecurity == True:
 #@ profiles = "secure"
@@ -62,9 +61,32 @@
 #@ end
 #@ profiles = profiles + data.values.msgBrokerType
 #@ end
+#@ return profiles
+#@ end
+
+#@ def buildAppEnv(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf,addNativeParams):
+#@ profiles = buildSpringProfiles(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf)
 #@ if profiles != "":
   - name: spring_profiles_active
     value: #@ profiles
+#@ end
+#@ if addNativeParams == True and data.values.nativeBuild == True:
+  - name: MANAGEMENT_HEALTH_PROBES_ENABLED
+    value: "true"
+  - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ADD_ADDITIONAL_PATHS
+    value: "true"
+  - name: MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS
+    value: always
+  - name: MANAGEMENT_ENDPOINTS_WEB_BASE_PATH
+    value: /actuator
+  - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+    value: '*'
+  - name: MANAGEMENT_SERVER_PORT
+    value: "8081"
+  - name: SERVER_PORT
+    value: "8080"   
+  - name: ORG_SPRINGFRAMEWORK_CLOUD_BINDINGS_BOOT_ENABLE
+    value: "true"  
 #@ end
 #@ end
 
@@ -79,12 +101,48 @@
 #@ end
 
 
-#@ def buildBuildParams():
+#@ def buildMavenBuildProfiles():
+#@ buildProfiles = ""
+#@ if data.values.nativeBuild == True:
+#@ buildProfiles = "native"
+#@ end
+#@ if data.values.enableCloudEvents != True:
+#@ if buildProfiles != "":
+#@    buildProfiles = buildProfiles + ","
+#@ end
+#@ buildProfiles = buildProfiles + "streams"
+#@ end
+#@ return buildProfiles
+#@ end
+
+
+#@ def buildBuildParams(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf):
   - name: BP_JVM_VERSION
     value: "17" 
-#@ if data.values.enableCloudEvents == True:
-  - name: BP_MAVEN_BUILD_ARGUMENTS
-    value: '-P native -Dmaven.test.skip=true --no-transfer-progress package'
+  - name: BP_MAVEN_ACTIVE_PROFILES
+    value: #@ buildMavenBuildProfiles()
+#@ if data.values.nativeBuild == True:
+  - name: BP_NATIVE_IMAGE
+    value: "true"
+  - name: MANAGEMENT_HEALTH_PROBES_ENABLED
+    value: "true"
+  - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ADD_ADDITIONAL_PATHS
+    value: "true"
+  - name: MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS
+    value: always
+  - name: MANAGEMENT_ENDPOINTS_WEB_BASE_PATH
+    value: /actuator
+  - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+    value: '*'
+  - name: MANAGEMENT_SERVER_PORT
+    value: "8081"
+  - name: SERVER_PORT
+    value: "8080" 
+#@ profiles = buildSpringProfiles(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf)
+#@ if profiles != "":
+  - name: spring_profiles_active
+    value: #@ profiles
+#@ end    
 #@ end
 #@ end
 
@@ -116,7 +174,7 @@ metadata:
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
     apps.tanzu.vmware.com/has-tests: "true" 
 spec:
-  env: #@ buildAppEnv(True,False,False,False,False)
+  env: #@ buildAppEnv(True,False,False,False,False,False)
   params:
   - name: annotations
     value: 
@@ -156,7 +214,9 @@ metadata:
     apps.tanzu.vmware.com/has-tests: "true" 
     apis.apps.tanzu.vmware.com/register-api: "true"    
 spec:
-  env: #@ buildAppEnv(True,True,False,False,True)
+  env: #@ buildAppEnv(True,True,False,False,True,True)
+  build:
+     env: #@ buildBuildParams(True,True,False,False,True)
   params:
   - name: annotations
     value: 
@@ -178,11 +238,7 @@ spec:
       cpu: "100m"
     limits:         
       memory: "750M"
-      cpu: "1500m"         
-  build:
-    env:
-      - name: BP_JVM_VERSION
-        value: "17"    
+      cpu: "1500m"           
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -203,9 +259,9 @@ metadata:
     apps.tanzu.vmware.com/auto-configure-actuators: "true"  
     apps.tanzu.vmware.com/has-tests: "true"  
 spec:
-  env: #@ buildAppEnv(False,False,True,True,True)
+  env: #@ buildAppEnv(False,False,True,True,True,True)
   build:
-     env: #@ buildBuildParams()
+     env: #@ buildBuildParams(False,False,True,True,True)
   params: #@ buildParams()
   serviceClaims: #@ buildServiceClaimsBinding(False, True, False, True)
   resources:     
@@ -236,9 +292,9 @@ metadata:
     apps.tanzu.vmware.com/auto-configure-actuators: "true"   
     apps.tanzu.vmware.com/has-tests: "true" 
 spec:
-  env: #@ buildAppEnv(False,False,False,False,True)
+  env: #@ buildAppEnv(False,False,False,False,True,True)
   build:
-     env: #@ buildBuildParams()
+     env: #@ buildBuildParams(False,False,False,False,True)
   params: #@ buildParams()
   serviceClaims: #@ buildServiceClaimsBinding(False, True, False, False)
   resources:     
@@ -270,8 +326,8 @@ metadata:
     apis.apps.tanzu.vmware.com/register-api: "true"     
 spec:
   build:
-     env: #@ buildBuildParams()
-  env: #@ buildAppEnv(True,True,False,False,True)
+     env: #@ buildBuildParams(True,True,False,False,True)
+  env: #@ buildAppEnv(True,True,False,False,True,True)
   params:
   - name: annotations
     value: 
@@ -350,6 +406,9 @@ metadata:
     apps.tanzu.vmware.com/auto-configure-actuators: "true"  
     apps.tanzu.vmware.com/has-tests: "true"  
 spec:
+  build:
+     env: #@ buildBuildParams(False,False,False,False,False)
+  env: #@ buildAppEnv(False,False,False,False,False,True)
   params:
   - name: ports
     value:
@@ -362,11 +421,7 @@ spec:
       cpu: "100m"
     limits:         
       memory: "750M"
-      cpu: "1500m"         
-  build:
-    env:
-      - name: BP_JVM_VERSION
-        value: "17"        
+      cpu: "1500m"               
   source:
     git:
       url: <https URL for your generated project's Git repository>

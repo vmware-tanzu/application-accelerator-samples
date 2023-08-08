@@ -27,10 +27,11 @@ public class SearchProcessor
 	
 	public Flux<Availability> search(Flux<SearchCriteria> searches)
 	{
-		return searches.flatMap(crit ->
+
+		return searches.flatMap(crit -> 
 			{
-				log.info("Processing search for {}", crit.getName());
-				
+				log.info("Processing search for {}", crit.name());
+				log.debug("Processing search for {} using searcher class {}", crit.name(), searcher.getClass().toString());
 				return searcher.search(crit)
 					.flatMap(avail -> 
 					{
@@ -39,26 +40,33 @@ public class SearchProcessor
 						 * NOT return search results that have not changed.
 						 */
 						final var key = new StringBuilder("searchResult:")
-								.append(avail.getSearchName()).append(":").append(avail.getDiningName()).toString();
+								.append(avail.searchName()).append(":").append(avail.diningName()).toString();
 
+						
+						log.debug("Looking up search from cache class {}", cache.getClass().toString());
 						
 						return cache.getHashForKey(key)
 							.flatMap(value -> 
 							{
+								log.debug("Hash found from cache: \"{}\".", value);
+								log.debug("Generating hash from availability");
+								
 								final var hash = generateHash(avail);
 								
 								if (StringUtils.hasText(value))
 									if (hash.equals(value))
 										return Mono.empty();
 	
+								log.debug("Adding new availability {} to cache with hash {}", avail, hash);
+								
 								/*
 								 * Expire the entry after the search window has passed
 								 */
-								var expiration = Duration.ofMillis(Math.abs(crit.getEndTime() - System.currentTimeMillis()));
+								var expiration = Duration.ofMillis(Math.abs(crit.endTime() - System.currentTimeMillis()));
 								
 								return cache.setHashForKey(key, hash, expiration)
 										.then(Mono.just(avail));
-							});															
+							});														
 				});
 			});		
 	}
