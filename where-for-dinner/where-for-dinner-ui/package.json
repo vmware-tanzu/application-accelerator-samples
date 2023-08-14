@@ -12,11 +12,13 @@
     "react-collapsed": "^3.3.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.0",
+    "typescript": "^4.9.5",    
     "run-scripts": "^0.4.0",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "@svgr/webpack": "^6.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,5 +43,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "overrides": {
+    "@svgr/webpack": "$@svgr/webpack",
+    "json5": "2.2.2"
   }
 }
