@@ -60,7 +60,9 @@ engine:
     - name: updateBoot3
       expression: "#nativeBuild == true ? true : ( #springBootVersion == '2.7' ? false : true )"
     - name: javaVersion
-      expression: "#updateBoot3 == true ? '17' : #javaVersion"
+      expression: "#updateBoot3 == true ? '17' : ( #springBootVersion == '2.7' ? #javaVersion : '17' )"
+    - name: springBootVersion
+      expression: "( #updateBoot3 == true && #springBootVersion == '2.7' ) ? '3.1' : #springBootVersion"
   chain:
   - merge:
     - include: [ "**/*" ]
