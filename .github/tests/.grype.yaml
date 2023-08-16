@@ -16,3 +16,4 @@ ignore:
   - vulnerability: CVE-2023-34454 # this CVE can't be exploited by user provided data, needs specific code compiled
   - vulnerability: CVE-2023-34455 # this CVE can't be exploited by user provided data, needs specific code compiled
   - vulnerability: CVE-2023-38286 # this CVE can't be exploited, needs write access to env
+  - vulnerability: GHSA-xqr8-7jwr-rhp7 # Grype has an issue for this failure: https://github.com/anchore/grype/issues/1417
