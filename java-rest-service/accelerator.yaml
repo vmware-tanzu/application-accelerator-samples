@@ -67,18 +67,6 @@ accelerator:
       defaultValue: "Manage customer profiles"
       dependsOn:
         name: exposeOpenAPIEndpoint
-    - name: javaVersion
-      inputType: select
-      label: Java version to use
-      choices:
-        - value: "1.8"
-          text: Java 8
-        - value: "11"
-          text: Java 11
-        - value: "17"
-          text: Java 17
-      defaultValue: "11"
-      required: true
     - name: databaseName
       inputType: text
       defaultValue: "postgres-database"
@@ -116,6 +104,10 @@ accelerator:
       required: true
       dependsOn:
         name: enableAppConfigService
+  imports:
+    - name: asa-java-version
+      expose:
+        - name: javaVersion
 
 engine:
   let:
@@ -125,8 +117,6 @@ engine:
       expression: '#artifactId.toLowerCase()'
     - name: databaseResourceName
       expression: '#databaseName.toLowerCase()'
-    - name: workloadJavaVersion
-      expression: "#javaVersion == '1.8' ? '8' : #javaVersion"
   chain:
     # Maven is selected
     - condition: "#buildTool == 'maven'"
@@ -237,6 +227,13 @@ engine:
               propertyKey: "'spring.flyway.enabled'"
               newValue: "'true'"
     # end of the Flyway specific part
+
+    - merge:
+      - type: InvokeFragment
+        reference: asa-java-version
+      - include: [ "**" ]
+      onConflict: UseFirst
+
     - merge:
         - include: ['**']
           exclude: ['README.md']
@@ -249,7 +246,7 @@ engine:
                 - text: "app-name"
                   with: "#workloadResourceName"
                 - text: "java-version"
-                  with: "#workloadJavaVersion"
+                  with: "#javaVersion"
     # OpenAPI Endpoint Auto-registration
     - merge:
       - include: [ "**" ]
@@ -285,46 +282,6 @@ engine:
               - text: "rest-service-db"
                 with: "#workloadResourceName"
     # End Workload Resource name
-
-    # Java Version
-    - merge:
-      - include: [ "**" ]
-      # Maven
-      - include: [ "pom.xml" ]
-        chain:
-          - type: ReplaceText
-            regex:
-              pattern: "<java.version>.*<"
-              with: "'<java.version>' + #javaVersion + '<'"
-
-      # Gradle Kotlin DSL
-      - include: [ "build.gradle.kts" ]
-        chain:
-          - type: ReplaceText
-            regex:
-              pattern: "(?<unmodified>JavaVersion\\.VERSION_)(\\d+)"
-              with: "'${unmodified}' + #javaVersion.replace('.', '_')"
-
-      # workload.yaml
-      # This requires that BP_JVM_VERSION is already defined in the workload.yaml
-      - include: [ "config/workload.yaml" ]
-        chain:
-          - type: OpenRewriteRecipe
-            recipe: org.openrewrite.yaml.ChangeValue
-            options:
-              oldKeyPath: '"$.spec.build.env[?(@.name == ''BP_JVM_VERSION'')].value"'
-              value: "#workloadJavaVersion"
-
-      # *.yaml
-      # Targeting Pipeline definitions. Update versions of OpenJdk image.
-      - include: [ "config/*.yaml" ]
-        exclude: [ "config/workload.yaml" ]
-        chain:
-          - type: ReplaceText
-            regex:
-              pattern: "(?<unmodified>image: bellsoft/liberica-openjdk-\\w*:)(\\d+)"
-              with: "'${unmodified}' + #workloadJavaVersion"
-    # End Java Version
 
     # Postgres Database
     - merge:
