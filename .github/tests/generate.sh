@@ -21,6 +21,7 @@ echo SERVER_URL=$SERVER_URL
 ${CMD} ${PLUGIN} generate-from-local \
   --server-url $SERVER_URL \
   --output-dir /tmp/result \
+  --fragment-paths                         devcontainer=fragments/devcontainer \
   --fragment-paths                       app-sso-client=fragments/app-sso-client \
   --fragment-paths                         java-version=fragments/java-version \
   --fragment-paths                          live-update=fragments/live-update \
