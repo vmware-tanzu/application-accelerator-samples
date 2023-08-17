@@ -10,6 +10,7 @@ accelerator:
   - web
   - tanzu
   - devcontainer
+  - v3
   options:
   - name: buildTool
     label: Build Tool
@@ -252,5 +253,5 @@ engine:
 
   - type: InvokeFragment
     reference: devcontainer
-    
+
   - type: Provenance
