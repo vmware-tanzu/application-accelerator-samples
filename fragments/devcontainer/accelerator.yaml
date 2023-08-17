@@ -9,17 +9,16 @@ accelerator:
     defaultValue: false
 engine:
   condition: "#includeDevContainer"
-  merge:
-  - exclude: ["**/.devcontainer.json"]
-  - include: ["**/.devcontainer.json"]
+  let:
+    - name: devContainerJavaVersion
+      value: "#javaVersion == '1.8' ? '8' : #javaVersion"
+  in:
     merge:
-    - type: ReplaceText
-      condition: "#javaVersion == 1.8"
-      substitutions:
-      - text: '17'
-        with: '8'
-    - condition: "#javaVersion != 1.8"
-      type: ReplaceText
-      substitutions:
-      - text: '17'
-        with: "#javaVersion"
+    - exclude: ["**/.devcontainer.json"]
+    - include: ["**/.devcontainer.json"]
+      merge:
+      - type: ReplaceText
+        condition: "#javaVersion == '1.8'"
+        substitutions:
+        - text: '17'
+          with: '#devContainerJavaVersion'
