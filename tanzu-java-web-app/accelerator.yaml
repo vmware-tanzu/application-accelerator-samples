@@ -9,6 +9,7 @@ accelerator:
   - maven
   - web
   - tanzu
+  - devcontainer
   options:
   - name: buildTool
     label: Build Tool
