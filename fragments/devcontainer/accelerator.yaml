@@ -11,7 +11,7 @@ engine:
   condition: "#includeDevContainer"
   let:
     - name: devContainerJavaVersion
-      value: "#javaVersion == '1.8' ? '8' : #javaVersion"
+      expression: "#javaVersion == '1.8' ? '8' : #javaVersion"
   in:
     merge:
     - exclude: ["**/.devcontainer.json"]
