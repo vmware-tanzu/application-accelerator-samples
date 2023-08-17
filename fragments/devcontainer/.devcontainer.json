@@ -3,9 +3,7 @@
     "image":"projects.registry.vmware.com/tanzu-developer-containers/tanzu-devcontainer-java:latest",
     "features": {
         "ghcr.io/devcontainers/features/java:1": {
-            "version": "17", // <-- TODO: based on javaVersion selected in accelerator
-            "installGradle": false, // <-- TODO: choose one of maven/gradle based on what is selected in the project.
-            "installMaven": true    // <-- TODO: choose one of maven/gradle based on what is selected in the project.
+            "version": "17"
         },
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
     },
@@ -33,5 +31,5 @@
             ]
         }
     },
-    "remoteUser": "who"
+    "remoteUser": "root"
 }
