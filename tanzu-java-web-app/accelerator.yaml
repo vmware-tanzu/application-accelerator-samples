@@ -250,4 +250,7 @@ engine:
           with: "'HttpExchangeRepository'"
     onConflict: UseLast
 
+  - type: InvokeFragment
+    reference: devcontainer
+    
   - type: Provenance
