@@ -17,7 +17,6 @@ engine:
     - include: ["**/.devcontainer.json"]
       merge:
       - type: ReplaceText
-        condition: "#javaVersion == '1.8'"
         substitutions:
         - text: '17'
           with: '#devContainerJavaVersion'
