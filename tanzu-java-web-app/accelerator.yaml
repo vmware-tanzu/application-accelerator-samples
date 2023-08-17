@@ -54,6 +54,7 @@ accelerator:
   - name: tap-workload
   - name: build-wrapper-maven
   - name: build-wrapper-gradle
+  - name: devcontainer
 
 engine:
   let:

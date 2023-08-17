@@ -1,0 +1,12 @@
+accelerator:
+  displayName: Dev Container
+  description: Adds a `.devcontainer.json` file
+  options:
+  - name: includeDevContainer
+    inputType: checkbox
+    dataType: boolean
+    label: Include .devcontainer.json
+    defaultValue: false
+engine:
+  condition: "!#includeDevContainer"
+  exclude: [".devcontainer.json"]

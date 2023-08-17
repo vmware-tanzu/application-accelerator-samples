@@ -1,0 +1,37 @@
+{
+    "name": "tanzu-devcontainer",
+    "image":"projects.registry.vmware.com/tanzu-developer-containers/tanzu-devcontainer-java:latest",
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "17", // <-- TODO: based on javaVersion selected in accelerator
+            "installGradle": false, // <-- TODO: choose one of maven/gradle based on what is selected in the project.
+            "installMaven": true    // <-- TODO: choose one of maven/gradle based on what is selected in the project.
+        },
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    },
+    // Comment or delete mounts that do not apply to your environment
+    "mounts": [
+        // Mac OS/Linux
+        // "source=${localEnv:HOME}/.kube/,target=/root/.kube/,type=bind,consistency=cached", // To map local kubeconfig
+        // "source=${localEnv:HOME}/.config/gcloud,target=/root/.config/gcloud,type=bind,consistency=cached",  // To map gcloud login
+        // "source=${localEnv:HOME}/.config/pinniped,target=/root/.config/pinniped,type=bind,consistency=cached", // To map pinniped credentials
+        // "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached" // To map aws config
+        // For Windows
+        // "source=${localEnv:USERPROFILE}\\.kube\\,target=/root/.kube/,type=bind,consistency=cached",
+        // "source=${localEnv:USERPROFILE}\\.config\\pinniped,target=/root/.config/pinniped,type=bind,consistency=cached"
+    ],
+    "containerEnv": {
+        "JAVA_HOME": "/usr/lib/jvm/msopenjdk-current"
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "vmware.tanzu-dev-tools"
+            ]
+        }
+    },
+    "remoteUser": "who"
+}
