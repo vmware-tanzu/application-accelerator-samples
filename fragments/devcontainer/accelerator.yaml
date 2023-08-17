@@ -8,5 +8,11 @@ accelerator:
     label: Include .devcontainer.json
     defaultValue: false
 engine:
-  condition: "!#includeDevContainer"
-  exclude: [".devcontainer.json"]
+  condition: "#includeDevContainer"
+  merge:
+  - include: ["**"]
+  - type: ReplaceText
+    include: ["**/devcontainer.json"]
+    substitutions:
+      - text: '17'
+        with: "#javaVersion"
