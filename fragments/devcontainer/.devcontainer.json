@@ -4,8 +4,8 @@
     "features": {
         "ghcr.io/devcontainers/features/java:1": {
             "version": "17" // <-- based on javaVersion selected in accelerator
-            ,"installGradle": true // <-- based on buildType and wrapper choices in accelerator
-            ,"installMaven": true // <-- based on buildType and wrapper choices in accelerator
+            ,"installGradle": true // <-- based on buildTool and includeBuildToolWrapper choices in accelerator
+            ,"installMaven": true // <-- based on buildTool and includeBuildToolWrapper choices in accelerator
         },
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
         "ghcr.io/dhoeric/features/google-cloud-cli:1": {
