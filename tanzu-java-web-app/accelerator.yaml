@@ -10,7 +10,6 @@ accelerator:
   - web
   - tanzu
   - devcontainer
-  - v3
   options:
   - name: buildTool
     label: Build Tool
