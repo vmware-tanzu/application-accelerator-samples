@@ -3,23 +3,14 @@
     "image":"projects.registry.vmware.com/tanzu-developer-containers/tanzu-devcontainer-java:latest",
     "features": {
         "ghcr.io/devcontainers/features/java:1": {
-            "version": "17"
+            "version": "17" // <-- based on javaVersion selected in accelerator
+            ,"installGradle": true // <-- based on buildType and wrapper choices in accelerator
+            ,"installMaven": true // <-- based on buildType and wrapper choices in accelerator
         },
-        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
-    },
-    // Comment or delete mounts that do not apply to your environment
-    "mounts": [
-        // Mac OS/Linux
-        // "source=${localEnv:HOME}/.kube/,target=/root/.kube/,type=bind,consistency=cached", // To map local kubeconfig
-        // "source=${localEnv:HOME}/.config/gcloud,target=/root/.config/gcloud,type=bind,consistency=cached",  // To map gcloud login
-        // "source=${localEnv:HOME}/.config/pinniped,target=/root/.config/pinniped,type=bind,consistency=cached", // To map pinniped credentials
-        // "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached" // To map aws config
-        // For Windows
-        // "source=${localEnv:USERPROFILE}\\.kube\\,target=/root/.kube/,type=bind,consistency=cached",
-        // "source=${localEnv:USERPROFILE}\\.config\\pinniped,target=/root/.config/pinniped,type=bind,consistency=cached"
-    ],
-    "containerEnv": {
-        "JAVA_HOME": "/usr/lib/jvm/msopenjdk-current"
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+        "ghcr.io/dhoeric/features/google-cloud-cli:1": {
+            "INSTALL_GKEGCLOUDAUTH_PLUGIN": "true"
+        }
     },
     "customizations": {
         "vscode": {
