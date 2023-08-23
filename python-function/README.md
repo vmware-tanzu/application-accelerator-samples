@@ -1,5 +1,7 @@
 # Python Function
 
+>⚠️ Following Acceletaror is deprecated and will no longer be officially maintained by VMware for TAP 1.7 and up. Users should not use this accelerator anymore. If you want to use a function python accelerator we recommend using the [Python Web App](../python-web-app) accelerator and add the neccesary dependencies.
+
 This repo contains a simple Python Function that can be deployed as a TAP workload.
 
 This function utilizes the buildpacks provided by VMware's open-source [Function Buildpacks for Knative](https://github.com/vmware-tanzu/function-buildpacks-for-knative) project.
