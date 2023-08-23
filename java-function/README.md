@@ -1,5 +1,7 @@
 # Java Function
 
+>⚠️ Following Acceletaror is deprecated and will no longer be officially maintained by VMware for TAP 1.7 and up. Users should not use this accelerator anymore. If you want to use a function java accelerator we recommend using the [Spring Cloud Serverless](../spring-cloud-serverless) accelerator and add the Spring Cloud Function Dependency to the project.
+
 This repo contains a simple Java Function that can be deployed as a TAP workload.
 
 This function utilizes the buildpacks provided by VMware's open-source [Function Buildpacks for Knative](https://github.com/vmware-tanzu/function-buildpacks-for-knative) project.
