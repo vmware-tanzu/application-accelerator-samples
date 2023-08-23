@@ -189,17 +189,6 @@ spec:
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
 metadata:
-  name: java-function
-spec:
-  git:
-    ref:
-      branch: main
-    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: java-function
----
-apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
-kind: Accelerator
-metadata:
   name: java-rest-service
 spec:
   git:
@@ -240,28 +229,6 @@ spec:
       branch: main
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: node-express
----
-apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
-kind: Accelerator
-metadata:
-  name: node-function
-spec:
-  git:
-    ref:
-      branch: main
-    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: node-function
----
-apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
-kind: Accelerator
-metadata:
-  name: python-function
-spec:
-  git:
-    ref:
-      branch: main
-    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: python-function
 ---
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
