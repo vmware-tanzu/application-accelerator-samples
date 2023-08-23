@@ -1,6 +1,5 @@
 {
-    "name": "tanzu-devcontainer",
-    "image":"projects.registry.vmware.com/tanzu-developer-containers/tanzu-devcontainer-java:latest",
+    "image": "mcr.microsoft.com/devcontainers/base:jammy",
     "features": {
         "ghcr.io/devcontainers/features/java:1": {
             "version": "17" // <-- based on javaVersion selected in accelerator
@@ -10,17 +9,7 @@
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
         "ghcr.io/dhoeric/features/google-cloud-cli:1": {
             "INSTALL_GKEGCLOUDAUTH_PLUGIN": "true"
-        }
-    },
-    "customizations": {
-        "vscode": {
-            "settings": {},
-            // Add the IDs of extensions you want installed when the container is created.
-            "extensions": [
-                "vscjava.vscode-java-pack",
-                "vmware.tanzu-dev-tools"
-            ]
-        }
-    },
-    "remoteUser": "root"
+        },
+        "projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools": {}
+    }
 }
