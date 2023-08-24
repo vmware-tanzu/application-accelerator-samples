@@ -10,6 +10,9 @@
         "ghcr.io/dhoeric/features/google-cloud-cli:1": {
             "INSTALL_GKEGCLOUDAUTH_PLUGIN": "true"
         },
-        "projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools": {}
+        "projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools": {
+            "acceptEula": true, // <-- assumes you accepted Tanzu EULA (needed to run TAP)
+            "acceptCeip": false // <-- See https://www.vmware.com/solutions/trustvmware/ceip.html
+        }
     }
 }

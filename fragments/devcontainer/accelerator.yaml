@@ -17,7 +17,7 @@ engine:
     - name: installGradle
       expression: "!#includeBuildToolWrapper && #buildTool=='gradle'"
   merge:
-    - exclude: ["**/.devcontainer.json"]
+    - include: ["README-devcontainer.md"]
     - include: ["**/.devcontainer.json"]
       chain:
       - type: ReplaceText

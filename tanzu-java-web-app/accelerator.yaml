@@ -133,11 +133,12 @@ engine:
             with: "#artifactId"
         - type: RewritePath
           rewriteTo: "'README.md'"
-
   - merge:
     - include: [ "**" ]
     - type: InvokeFragment
       reference: java-version
+    - type: InvokeFragment
+      reference: devcontainer
     onConflict: UseLast
 
   # Maven build files
@@ -249,8 +250,5 @@ engine:
           pattern: "HttpTraceRepository"
           with: "'HttpExchangeRepository'"
     onConflict: UseLast
-
-  - type: InvokeFragment
-    reference: devcontainer
 
   - type: Provenance

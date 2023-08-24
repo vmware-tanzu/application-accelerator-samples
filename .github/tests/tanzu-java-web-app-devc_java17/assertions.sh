@@ -19,4 +19,12 @@ else
       exit 4
    fi
 fi
+if [ ! -f pom.xml ]; then
+   echo "No pom.xml file!"
+   exit 5
+fi
+if [ ! -f README-devcontainer.md ]; then
+   echo "No README-devcontainer.md file!"
+   exit 6
+fi
 popd
