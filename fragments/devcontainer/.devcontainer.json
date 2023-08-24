@@ -1,18 +1,20 @@
 {
     "image": "mcr.microsoft.com/devcontainers/base:jammy",
     "features": {
+        "projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools": {
+            "acceptEula": true, // <-- See https://www.vmware.com/vmware-general-terms.html
+            "acceptCeip": false // <-- See https://www.vmware.com/solutions/trustvmware/ceip.html
+        },
         "ghcr.io/devcontainers/features/java:1": {
             "version": "17" // <-- based on javaVersion selected in accelerator
             ,"installGradle": true // <-- based on buildTool and includeBuildToolWrapper choices in accelerator
             ,"installMaven": true // <-- based on buildTool and includeBuildToolWrapper choices in accelerator
         },
-        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+        "ghcr.io/devcontainers/features/aws-cli:1":{},
+        "ghcr.io/devcontainers/features/azure-cli:1":{},
         "ghcr.io/dhoeric/features/google-cloud-cli:1": {
             "INSTALL_GKEGCLOUDAUTH_PLUGIN": "true"
         },
-        "projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools": {
-            "acceptEula": true, // <-- assumes you accepted Tanzu EULA (needed to run TAP)
-            "acceptCeip": false // <-- See https://www.vmware.com/solutions/trustvmware/ceip.html
-        }
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
     }
 }
