@@ -12,7 +12,7 @@ and interact with your Tanzu cluster:
 - The [Tanzu Developer Tools](https://marketplace.visualstudio.com/items?itemName=vmware.tanzu-dev-tools) 
   extension for Vscode.
 
-Vscode provides support for `.devconainer.json`, but to use it you must install 
+Vscode provides support for `.devcontainer.json`, but to use it you must install 
 the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
 extension from Vscode marketplace.
 
@@ -54,7 +54,8 @@ Notice that in the `.devcontainer.json` you can find the following:
 ```
 
 This installs `tanzu` cli (amongst other things) into your devcontainer. To use the 
-tanzu cli you need to accept Eula and make a choice about CEIP participation.
+tanzu cli it [will prompt you](https://github.com/vmware-tanzu/tanzu-cli/blob/main/docs/quickstart/install.md#automatic-prompts-and-potential-mitigations) 
+to accept Eula and make a choice about CEIP participation.
 
 The options indicate that: 
 
