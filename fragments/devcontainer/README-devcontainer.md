@@ -8,7 +8,7 @@ and interact with your Tanzu cluster:
 - `kubectl` CLI
 - `tanzu` CLI
 - Java JDK
-- Common cloud-provide CLIs (Google, AWS and Azure)
+- Common cloud-provider CLIs (Google, AWS and Azure).
 - The [Tanzu Developer Tools](https://marketplace.visualstudio.com/items?itemName=vmware.tanzu-dev-tools) 
   extension for Vscode.
 
