@@ -53,11 +53,9 @@ Notice that in the `.devcontainer.json` you can find the following:
 }
 ```
 
-This installs `tanzu` cli (amongst other things) into your devcontainer. To use the 
-tanzu cli it [will prompt you](https://github.com/vmware-tanzu/tanzu-cli/blob/main/docs/quickstart/install.md#automatic-prompts-and-potential-mitigations) 
-to accept Eula and make a choice about CEIP participation.
-
-The options indicate that: 
+When building the devcontainer it installs `tanzu` cli. To 
+[avoid interactive prompts](https://github.com/vmware-tanzu/tanzu-cli/blob/main/docs/quickstart/install.md#automatic-prompts-and-potential-mitigations) 
+from breaking the installation process, some options have to be preselected:
 
 1. `"acceptEula": true` means you accept the EULA (https://www.vmware.com/vmware-general-terms.html). 
    We assume you must have accepted the EULA already since this project was created using an accelerator.
