@@ -5,6 +5,5 @@
     "numRabbitMQClusterNodes": 1,
     "dbType": "h2",
     "cacheType": "inmemCache",
-    "enableCloudEvents": false,
     "enableSecurity": false
 }

@@ -148,10 +148,9 @@ See the instructions [here](#software-catalog).
 
 ## Configuration Option Overview  
 
-Tanzu Application Platform supports various eventing options for deployments.  The two targeted for this application of the following:
+Tanzu Application Platform supports the following event streaming options for deployments of Where For Dinner:
 
 * Spring Cloud Streams
-* Knative eventing
 
 In addition, the Where for Dinner application has additional deployment options which consume additional services and/or provide additional functionality.  These include
 * H2 (In Memory) vs MySQL vs Postgres database options
@@ -159,7 +158,7 @@ In addition, the Where for Dinner application has additional deployment options 
 * Security enablement with AppSSO
 * Routing with TAP Spring Cloud Gateway
 
-The simplest configuration is to use Spring Cloud Streams; however, using Knative eventing provides for extended capabilities such as scale to zero and auto scaling.  In both options, a Spring Cloud Streams binding implementation is required for moving messages from the `where-for-dinner-search` application; RabbitMQ is the default binding provided.  Neither option requires a change in source code, however different runtime dependencies are configured at build time depending on which eventing implementation is desired.  
+The simplest configuration is to use Spring Cloud Streams.  A Spring Cloud Streams binding implementation is required for moving messages from the `where-for-dinner-search` application; RabbitMQ is the default binding provided.  
 
 For database configuration, the default H2 in memory database is the simplest option and requires no additional database services to be installed, however you will lose all database information with an application restart and can not scale past one instance.  The MySQL and Postgres options give you persistence and scalability, but require you to install a database operator and provision database instances.  
 
@@ -202,15 +201,7 @@ kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download
 
 If successfully installed, there will be an RabbitMQ cluster operator pod running in the `rabbitmq-system` namespace.
 
-##### RabbitMQ Topology Operator
 
-If you choose to use the Knative eventing deployment option, you will also need to deploy the RabbitMQ Topology Operator.  This operator allows for the declarative creation of resources like RabbitMQ exchanges, queues, and bindings.  The topology operator is a dependency of the Knative RabbitMQ source resource.  The RabbitMQ source acts as a bridge between messages emitted by the `where-for-dinner-search` application and the rest of the downstream services. 
-
-To install the RabbitMQ Topology operator, run the following command against your cluster. 
-
-```
-kubectl apply -f "https://github.com/rabbitmq/messaging-topology-operator/releases/latest/download/messaging-topology-operator-with-certmanager.yaml"
-```
 #### VMware Tanzu� RabbitMQ� for Kubernetes
 
 To install VMware Tanzu� RabbitMQ� for Kubernetes, refer to the installation instructions [here](https://docs.vmware.com/en/VMware-Tanzu-RabbitMQ-for-Kubernetes/1.3/tanzu-rmq/GUID-installation.html).
@@ -270,8 +261,6 @@ The accelerator contains the following configuration options:
 * **Dynamically Provision Cache:** If this box is checked, the accelerator will generate configuration that enables dynamically provisioning of the external caching option.  Dynamic provisioning will use the `ClusterInstanceClass` defined in the next option.
 * **Cache Cluster Instance Class:** If dynamic provisioning of the cache is selected, this is the name of the `ClusterInstanceClass` used to provision the cache.  The default `ClusterInstanceClass` name provisions a Redis instance that uses a Bitnami configuration.  You can change the default name to use any other defined `ClusterInstanceClass` that uses dynamic provisioning.
 * **Cache Instance Name:** The name of the caching resource that the micro-services will connect to (in not using the In Memory option).  This name will be propagated to the `workload.yaml` files in the resource claim section to indicate the names of the caching system that micro-services should connect to.
-* **Enable Cloud Events:** If this box is checked, the accelerator will generate a configuration yaml file in the `config/app-operator` directory that contains the resource definitions for the Knative eventing resources.  These include the RabbitMQ source as well as the broker and trigger configurations for routing events to downstream services.  This will also configure applicable services to remove the Spring Cloud Stream binding libraries from the build process.  **Note:** This option does not currenlty work with the dynamic message broker provisioning option. 
-* **Use RabbitMQ Knative Eventing Broker:** If this box is checked, the Knative broker will use a RabbitMQ broker implementation.
 * **Enable Security:** If this box is checked, the accelerator will configure the applications to use a `secure` profile that will require the UI application to authenticate users and for micro-services to require valid oAuth tokens with each request.  The accelerator will also generate a file named `appSSOInstance.yaml` in the `config/service-operator` directory that contains the configuration to create an AppSSO authorization server.  It will also generate a file named `clientRegistrationResourceClaim.yaml` in the `config/app-operator` directory that contains configuration for creating a ClientRegistration resource as well as the resource claims that the micro-services can use to create service bindings to AppSSO instance (via the ClientRegistration).
 * **AppSSO Instance Name:**  If security is enabled, the name of the AppSSO resource that the micro-services will connect to.  This name will also be propagated to the `workload.yaml` files in the resource claim section to indicate the names of the AppSOO resource that micro-services should connect to.  Lastly, this name will be used as the hostname part of the AppSSO URL.
 * **Create Default Dev Account:**  If this box is checked, a default development account will be created that can be used to authenticate with the AppSSO service.

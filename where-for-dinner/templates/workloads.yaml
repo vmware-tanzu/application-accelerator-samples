@@ -106,12 +106,10 @@
 #@ if data.values.nativeBuild == True:
 #@ buildProfiles = "native"
 #@ end
-#@ if data.values.enableCloudEvents != True:
 #@ if buildProfiles != "":
 #@    buildProfiles = buildProfiles + ","
 #@ end
 #@ buildProfiles = buildProfiles + "streams"
-#@ end
 #@ return buildProfiles
 #@ end
 
@@ -147,18 +145,11 @@
 #@ end
 
 #@ def buildParams():
-#@ if data.values.enableCloudEvents != True:
   - name: annotations
     value: 
       autoscaling.knative.dev/minScale: "1"
       autoscaling.knative.dev/target: "200"
       autoscaling.knative.dev/maxScale: "4"
-#@ else:
-  - name: annotations
-    value: 
-      autoscaling.knative.dev/target: "200"
-      autoscaling.knative.dev/maxScale: "4"
-#@ end
 #@ end
 
 #@ if data.values.gatewayType == 'ossscg':
