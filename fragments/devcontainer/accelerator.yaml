@@ -5,7 +5,7 @@ accelerator:
   - name: includeDevContainer
     inputType: checkbox
     dataType: boolean
-    label: Include .devcontainer.json
+    label: Include .devcontainer.json (alpha)
     defaultValue: false
 engine:
   condition: "#includeDevContainer"
