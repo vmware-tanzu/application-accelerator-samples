@@ -6,6 +6,7 @@ accelerator:
     inputType: checkbox
     dataType: boolean
     label: Include .devcontainer.json (alpha)
+    description: Include experimental support for "Visual Studio Code Dev Containers"
     defaultValue: false
 engine:
   condition: "#includeDevContainer"
