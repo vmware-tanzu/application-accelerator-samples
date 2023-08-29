@@ -1,7 +1,7 @@
 {
     "image": "mcr.microsoft.com/devcontainers/base:jammy",
     "features": {
-        "projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools": {
+        "projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools:0.1.0-alpha.1": {
             "acceptEula": true, // <-- See https://www.vmware.com/vmware-general-terms.html
             "acceptCeip": false // <-- See https://www.vmware.com/solutions/trustvmware/ceip.html
         },
