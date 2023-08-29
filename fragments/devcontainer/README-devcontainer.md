@@ -29,7 +29,7 @@ Tanzu kubernetes cluster. The way you do that exactly will vary depending on you
 for Google Cloud you might run a command similar to this:
 
 ```
-gcloud container clusters ${your_cluster_name} --region ${your_region} --project ${your_google_cloud_project_name}
+gcloud container clusters get-credentials ${your_cluster_name} --region ${your_region} --project ${your_google_cloud_project_name}
 ```
 
 Refer to the documentation of your specific cloud provider for detailed information on how to connect to a cluster.
