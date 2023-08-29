@@ -16,5 +16,8 @@
             "INSTALL_GKEGCLOUDAUTH_PLUGIN": "true"
         },
         "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    },
+    "otherPortsAttributes": {
+        "onAutoForward": "silent"
     }
 }
