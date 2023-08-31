@@ -12,9 +12,15 @@ and interact with your Tanzu cluster:
 - The [Tanzu Developer Tools](https://marketplace.visualstudio.com/items?itemName=vmware.tanzu-dev-tools) 
   extension for Vscode.
 
-Vscode provides support for `.devcontainer.json`, but to use it you must install 
-the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 
-extension from Vscode marketplace.
+## Pre-requisites:
+
+- Vscode Dev Containers extension: This can be installed from [Vscode marketplace](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+- Docker (or Rancher): You need a container runtime. On Linux and Mac, we have tested with Docker. On 
+  Windows, both Docker and Rancher have been tested.
+- AMD architecture: The current alpha release of tanzu devcontainer does not yet support
+  ARM (e.g. Apple M1 Silicon). 
+
+## Starting a Container:
 
 After installing the extension, open this project in Vscode and you will be prompted to 
 "Reopen in a Dev Container?". Accept the prompt and Vscode will restart. The first time it
