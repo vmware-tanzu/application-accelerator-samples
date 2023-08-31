@@ -9,6 +9,7 @@ accelerator:
   - maven
   - web
   - tanzu
+  - devcontainer
   options:
   - name: buildTool
     label: Build Tool
@@ -54,6 +55,7 @@ accelerator:
   - name: tap-workload
   - name: build-wrapper-maven
   - name: build-wrapper-gradle
+  - name: devcontainer
 
 engine:
   let:
@@ -131,11 +133,12 @@ engine:
             with: "#artifactId"
         - type: RewritePath
           rewriteTo: "'README.md'"
-
   - merge:
     - include: [ "**" ]
     - type: InvokeFragment
       reference: java-version
+    - type: InvokeFragment
+      reference: devcontainer
     onConflict: UseLast
 
   # Maven build files

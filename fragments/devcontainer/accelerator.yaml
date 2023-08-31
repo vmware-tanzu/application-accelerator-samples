@@ -1,0 +1,37 @@
+accelerator:
+  displayName: Dev Container
+  description: Adds a `.devcontainer.json` file
+  options:
+  - name: includeDevContainer
+    inputType: checkbox
+    dataType: boolean
+    label: Include .devcontainer.json (amd64 support only)
+    description: Experimental support for "Visual Studio Code Dev Containers".
+    defaultValue: false
+engine:
+  condition: "#includeDevContainer"
+  let:
+    - name: devContainerJavaVersion
+      expression: "#javaVersion == '1.8' ? '8' : #javaVersion"
+    - name: installMaven
+      expression: "!#includeBuildToolWrapper && #buildTool=='maven'"
+    - name: installGradle
+      expression: "!#includeBuildToolWrapper && #buildTool=='gradle'"
+  merge:
+    - include: ["README-devcontainer.md"]
+    - include: ["**/.devcontainer.json"]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: '17'
+          with: '#devContainerJavaVersion'
+      - type: ReplaceText
+        condition: "!#installMaven"
+        regex:
+          pattern: '.*installMaven.*\R?'
+          with: "''"
+      - type: ReplaceText
+        condition: "!#installGradle"
+        regex:
+          pattern: '.*installGradle.*\R?'
+          with: "''"

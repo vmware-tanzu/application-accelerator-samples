@@ -1,0 +1,6 @@
+{
+    "javaVersion": "17",
+    "includeDevContainer": true,
+    "buildTool": "maven",
+    "includeBuildToolWrapper": false
+}
