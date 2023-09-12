@@ -50,25 +50,6 @@ Extension for more details.
 
 ## Tanzu CLI EULA and other Legal Requirements
 
-Notice that in the `.devcontainer.json` you can find the following:
+When building the devcontainer it installs `tanzu` cli, in order to use the CLI and its plugins you will have to review and accept [VMware General Terms](https://www.vmware.com/vmware-general-terms.html) the first time you use the Tanzu Developer Tools devcontainer feature. 
 
-```
-"projects.registry.vmware.com/tanzu-developer-containers/features/vmware-tanzu-dev-tools": {
-   "acceptEula": true, // <-- See https://www.vmware.com/vmware-general-terms.html
-   "acceptCeip": false // <-- See https://www.vmware.com/solutions/trustvmware/ceip.html
-}
-```
-
-When building the devcontainer it installs `tanzu` cli. To 
-[avoid interactive prompts](https://github.com/vmware-tanzu/tanzu-cli/blob/main/docs/quickstart/install.md#automatic-prompts-and-potential-mitigations) 
-from breaking the installation process, some options have to be preselected:
-
-1. `"acceptEula": true` means you accept the EULA (https://www.vmware.com/vmware-general-terms.html). 
-   We assume you must have accepted the EULA already since this project was created using an accelerator.
-
-2. `"acceptCeip": false` means you did not agree to participate in 
-   [Tanzu CEIP Program](https://www.vmware.com/solutions/trustvmware/ceip.html).
-   The accelerator that generated this project has no way to know whether or not you have already 
-   opted in to this program. Therefore we have conservatively set it to `false` so as to avoid collecting
-   any data without your explicit permission. If you did want to participate in the program
-   you can change that value to `true` instead.
+Similarly the first time you use the devcontainer feature you will be asked to participate in [Tanzu CEIP Program](https://www.vmware.com/solutions/trustvmware/ceip.html) and your choice will be preserved the next time you use the environment.
