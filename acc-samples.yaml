@@ -1,0 +1,9 @@
+#@ load("@ytt:data", "data")
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: acc-samples
+spec:
+  targets:
+    #@ for/end zip in data.values.zips.rstrip("\0").split("\0"):
+    - #@ "zip:{}{}!/accelerator.yaml".format(data.values.server, zip.lstrip("."))
