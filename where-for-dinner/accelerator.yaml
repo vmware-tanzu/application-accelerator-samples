@@ -26,6 +26,17 @@ accelerator:
     inputType: text
     dataType: string
     required: true
+  - label: Workload Type
+    description: The application workload type.
+    defaultValue: web
+    name: workloadType
+    inputType: select
+    choices:
+    - value: web
+      text: Web
+    - value: server
+      text: Server  
+    required: true        
   - label: Gateway Type
     description: The Gateway Implementation to Use.
     defaultValue: ossscg
@@ -211,15 +222,12 @@ accelerator:
     dependsOn: 
       name: enableDefaultDevAccount
   - label: Workload URL
-    description: "The URL where the application is published; required when using TAP Spring Cloud Gateway.  Generally 'http<s>://where-for-dinner.<domain name>.  See README for more details."
+    description: "The URL where the application is published; only applicable when using TAP Spring Cloud Gateway or Server workload types.  Generally 'http<s>://where-for-dinner.<domain name>.  See README for more details."
     defaultValue: http://where-for-dinner.<UPDATE ME>
     name: appWorkloadURL
     inputType: text
     dataType: string
     required: true
-    dependsOn: 
-      name: gatewayType
-      value: tapscg  
   - label: Alternate Workload Implementations
     description: "When checked, certain workloads will use alternative implementations written in different programming languages demostrating polyglot capabilities"
     defaultValue: false
@@ -251,7 +259,7 @@ engine:
   - condition: "#gatewayType == 'ossscg'"
     include: ["**/where-for-dinner-api-gateway/**"]  
   - condition: "#gatewayType == 'tapscg'"
-    include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml", "**/templates/ingress.yaml"]   
+    include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml"]   
     chain:
     - type: YTT  
     - type: RewritePath
@@ -259,10 +267,14 @@ engine:
       rewriteTo: "'config/service-operator/scgInstance.yaml'"  
     - type: RewritePath
       regex: 'templates/scgRoutes.yaml'
-      rewriteTo: "'config/app-operator/scgRoutes.yaml'" 
+      rewriteTo: "'config/app-operator/scgRoutes.yaml'"    
+  - condition: "#gatewayType == 'tapscg' || #workloadType == 'server'"
+    include: ["**/templates/ingress.yaml"]     
+    chain:
+    - type: YTT   
     - type: RewritePath
       regex: 'templates/ingress.yaml'
-      rewriteTo: "'config/app-operator/ingress.yaml'"    
+      rewriteTo: "'config/app-operator/ingress.yaml'" 
   - include: ["**/templates/workloads.yaml"]
     chain:
     - type: YTT
