@@ -1,4 +1,6 @@
 accelerator:
+  displayName: Add PostgreSQL database dependency for C-sharp
+
   options:
     - name: databaseName
       inputType: text

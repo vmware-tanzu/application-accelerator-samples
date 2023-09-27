@@ -1,3 +1,6 @@
+acelerator:
+  displayName: Add h2 database dependency
+
 engine:
   merge:
     # Provide dependencies for integration testing and running locally

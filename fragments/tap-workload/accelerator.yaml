@@ -1,3 +1,6 @@
+accelerator:
+  displayName: Update Git repo URL in workload.yaml
+
 engine:
   let:
     - name: repoUrl

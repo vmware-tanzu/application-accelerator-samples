@@ -1,4 +1,6 @@
 accelerator:
+  displayName: Add MySQL database dependency for Java
+
   options:
     - name: databaseName
       inputType: text

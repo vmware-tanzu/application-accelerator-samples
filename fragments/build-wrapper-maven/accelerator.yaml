@@ -1,5 +1,5 @@
 accelerator:
-  displayName: Include build tool wrapper
+  displayName: Add Maven build tool wrapper
 
   options:
     - name: includeBuildToolWrapper
