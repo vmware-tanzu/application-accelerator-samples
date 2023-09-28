@@ -1,76 +1,33 @@
-accelerator:
-  displayName: Add AppSSO client
-
-  options:
-    - name: appssoOfferingName
-      description: To find the available AppSSO service offerings in your cluster, run `tanzu services classes list`.
-      inputType: text
-      label: AppSSO offering name
-
-engine:
-  merge:
-    - include: [ "**/workload.yaml" ]
-      chain:
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.yaml.MergeYaml
-          options:
-            key: "'$.spec'"
-            yaml: "'serviceClaims:\n  - name: ' + #workloadName + '\n    ref:\n      apiVersion: services.apps.tanzu.vmware.com/v1alpha1\n      kind: ClassClaim\n      name: ' + #workloadName "
-    - include: [ "README.md" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
-            with: |
-              '${existingContent}
-
-              > **_NOTE:_** Below you can find additional information concerning creation of AppSSO relevant resources. 
-
-              ## Resources needed for AppSSO integration
-
-              Please first familiarize yourself with basic concepts around using AppSSO to secure your workload on TAP following 
-              [AppSSO''s documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/app-sso-about.html)
-              .
-
-              This repository includes an integration to set up an authentication mechanism with AppSSO.
-
-              ## Getting Started
-
-              1. Discover your `AppSSO` service offerings
-
-                 ```bash
-                 tanzu services classes list
-                 ```
-
-                 If there isn''t one,
-
-                   - ask your service operator `OR`
-                   - [create your own `ClusterUnsafeTestLogin`](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/app-sso-reference-api-clusterunsafetestlogin.html)
-
-              2. Select the service offering you''d like to connect
-
-              4. Claim an instance from the offering
-
-                 ```bash
-                 tanzu services class-claims create <your-workload> \\
-                   --class <your-selected-appsso-offering> \\
-                   --parameter workloadRef.name=<your-workload> \\
-                   --parameter redirectPaths=''["/login/oauth2/code/<your-workload>"]''
-                 ```
-
-              5. Apply your workload
-
-                 ```bash
-                 tanzu apps workload apply \\
-                   --file config/workload.yaml \\
-                   --namespace <namespace> \\
-                   --yes \\
-                   --tail
-                 ```
-              '
-        - type: ReplaceText
-          substitutions:
-            - text: "<your-workload>"
-              with: "#workloadName"
-            - text: "<your-selected-appsso-offering>"
-              with: "#appssoOfferingName"
+apiVersion: entity.accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: app-sso-client
+  title: Add AppSSO client
+spec:
+  accelerator:
+    options:
+      - name: appssoOfferingName
+        description: To find the available AppSSO service offerings in your cluster, run `tanzu services classes list`.
+        inputType: text
+        label: AppSSO offering name
+  engine:
+    merge:
+      - include: ["**/workload.yaml"]
+        chain:
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.yaml.MergeYaml
+            options:
+              key: "'$.spec'"
+              yaml: "'serviceClaims:\n  - name: ' + #workloadName + '\n    ref:\n      apiVersion: services.apps.tanzu.vmware.com/v1alpha1\n      kind: ClassClaim\n      name: ' + #workloadName "
+      - include: ["README.md"]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<existingContent>[\\s\\S]*)(?<endOfFile>\n)"
+              with: "'${existingContent}\n\n> **_NOTE:_** Below you can find additional information concerning creation of AppSSO relevant resources. \n\n## Resources needed for AppSSO integration\n\nPlease first familiarize yourself with basic concepts around using AppSSO to secure your workload on TAP following \n[AppSSO''s documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/app-sso-about.html)\n.\n\nThis repository includes an integration to set up an authentication mechanism with AppSSO.\n\n## Getting Started\n\n1. Discover your `AppSSO` service offerings\n\n   ```bash\n   tanzu services classes list\n   ```\n\n   If there isn''t one,\n\n     - ask your service operator `OR`\n     - [create your own `ClusterUnsafeTestLogin`](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/app-sso-reference-api-clusterunsafetestlogin.html)\n\n2. Select the service offering you''d like to connect\n\n4. Claim an instance from the offering\n\n   ```bash\n   tanzu services class-claims create <your-workload> \\\\\n     --class <your-selected-appsso-offering> \\\\\n     --parameter workloadRef.name=<your-workload> \\\\\n     --parameter redirectPaths=''[\"/login/oauth2/code/<your-workload>\"]''\n   ```\n\n5. Apply your workload\n\n   ```bash\n   tanzu apps workload apply \\\\\n     --file config/workload.yaml \\\\\n     --namespace <namespace> \\\\\n     --yes \\\\\n     --tail\n   ```\n'\n"
+          - type: ReplaceText
+            substitutions:
+              - text: "<your-workload>"
+                with: "#workloadName"
+              - text: "<your-selected-appsso-offering>"
+                with: "#appssoOfferingName"

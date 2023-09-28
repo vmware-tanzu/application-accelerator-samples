@@ -1,14 +1,17 @@
-accelerator:
-  displayName: Add Gradle build tool wrapper
-
-  options:
-    - name: includeBuildToolWrapper
-      inputType: checkbox
-      label: Include Build Tool wrapper support
-      dataType: boolean
-      defaultValue: true
-
-engine:
-  merge:
-    - condition: "#includeBuildToolWrapper"
-      include: [ "gradlew*", "gradle/**" ]
+apiVersion: entity.accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: build-wrapper-gradle
+  title: Add Gradle build tool wrapper
+spec:
+  accelerator:
+    options:
+      - name: includeBuildToolWrapper
+        inputType: checkbox
+        label: Include Build Tool wrapper support
+        dataType: boolean
+        defaultValue: true
+  engine:
+    merge:
+      - condition: "#includeBuildToolWrapper"
+        include: ["gradlew*", "gradle/**"]

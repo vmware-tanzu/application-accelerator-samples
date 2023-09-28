@@ -1,26 +1,29 @@
-accelerator:
-  displayName: Add live update support
-
-  options:
-    - name: liveUpdateIDESupport
-      inputType: checkbox
-      label: Include TAP IDE Support for Java Workloads
-      dataType: boolean
-      defaultValue: true
-
-engine:
-  merge:
-    - condition: "#liveUpdateIDESupport"
-      include: ["Tiltfile"]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: my-project
-              with: "#artifactId"
-    - condition: "#liveUpdateIDESupport"
-      include: ["DEPLOYING.md"]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: my-project
-              with: "#artifactId"
+apiVersion: entity.accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: live-update
+  title: Add live update support
+spec:
+  accelerator:
+    options:
+      - name: liveUpdateIDESupport
+        inputType: checkbox
+        label: Include TAP IDE Support for Java Workloads
+        dataType: boolean
+        defaultValue: true
+  engine:
+    merge:
+      - condition: "#liveUpdateIDESupport"
+        include: ["Tiltfile"]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: my-project
+                with: "#artifactId"
+      - condition: "#liveUpdateIDESupport"
+        include: ["DEPLOYING.md"]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: my-project
+                with: "#artifactId"

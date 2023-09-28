@@ -1,26 +1,28 @@
-accelerator:
-  displayName: Add PostgreSQL database dependency for C-sharp
-
-  options:
-    - name: databaseName
-      inputType: text
-      defaultValue: "customer-database"
-      label: Database Instance Name
-      description: The name of the database instance this application will use
-      required: true
-
-engine:
-  let:
-    - name: databaseResourceName
-      expression: '#databaseName.toLowerCase()'
-  chain:
-    - merge:
-      - include: [ "**" ]
-        exclude: [ "config/workload.yaml", "DATABASE.md" ]
-
-      - include: [ "config/workload.yaml", "DATABASE.md" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "customer-database"
-                with: "#databaseResourceName"
+apiVersion: entity.accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: steeltoe-postgresql
+  title: Add PostgreSQL database dependency for C-sharp
+spec:
+  accelerator:
+    options:
+      - name: databaseName
+        inputType: text
+        defaultValue: "customer-database"
+        label: Database Instance Name
+        description: The name of the database instance this application will use
+        required: true
+  engine:
+    let:
+      - name: databaseResourceName
+        expression: '#databaseName.toLowerCase()'
+    chain:
+      - merge:
+          - include: ["**"]
+            exclude: ["config/workload.yaml", "DATABASE.md"]
+          - include: ["config/workload.yaml", "DATABASE.md"]
+            chain:
+              - type: ReplaceText
+                substitutions:
+                  - text: "customer-database"
+                    with: "#databaseResourceName"

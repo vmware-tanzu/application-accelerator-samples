@@ -1,0 +1,41 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: acc-samples
+spec:
+  targets:
+  - ./appsso-starter-java/accelerator.yaml
+  - ./react-frontend/accelerator.yaml
+  - ./fragments/spring-boot-postgresql/accelerator.yaml
+  - ./fragments/tap-workload/accelerator.yaml
+  - ./fragments/spring-boot-app-sso-auth-code-flow/accelerator.yaml
+  - ./fragments/spring-boot-database/accelerator.yaml
+  - ./fragments/testcontainers-mysql/accelerator.yaml
+  - ./fragments/testcontainers-postgresql/accelerator.yaml
+  - ./fragments/devcontainer/accelerator.yaml
+  - ./fragments/app-sso-client/accelerator.yaml
+  - ./fragments/live-update/accelerator.yaml
+  - ./fragments/tap-initialize/accelerator.yaml
+  - ./fragments/build-wrapper-gradle/accelerator.yaml
+  - ./fragments/java-version/accelerator.yaml
+  - ./fragments/steeltoe-postgresql/accelerator.yaml
+  - ./fragments/spring-boot-mysql/accelerator.yaml
+  - ./fragments/build-wrapper-maven/accelerator.yaml
+  - ./fragments/spring-boot-h2/accelerator.yaml
+  - ./angular-frontend/accelerator.yaml
+  - ./node-function/accelerator.yaml
+  - ./spring-streaming-app/accelerator.yaml
+  - ./demo-input-types/accelerator.yaml
+  - ./java-rest-service/accelerator.yaml
+  - ./csharp-weatherforecast/accelerator.yaml
+  - ./java-function/accelerator.yaml
+  - ./python-web-app/accelerator.yaml
+  - ./tanzu-java-web-app/accelerator.yaml
+  - ./spring-cloud-serverless/accelerator.yaml
+  - ./tap-initialize/accelerator.yaml
+  - ./python-function/accelerator.yaml
+  - ./csharp-rest-service/accelerator.yaml
+  - ./spring-smtp-gateway/accelerator.yaml
+  - ./node-express/accelerator.yaml
+  - ./where-for-dinner/accelerator.yaml
+  - ./java-server-side-ui/accelerator.yaml

@@ -1,57 +1,58 @@
-accelerator:
-  displayName: TAP initialize a project
-
-  options:
-    - name: gitRepository
-      inputType: text
-      label: Git Repository for the target project
-      description: The Git repository of the project where you will add the generated files
-      required: true
-
-    - name: gitBranch
-      inputType: text
-      label: Git Branch for the target project
-      defaultValue: main
-      description: The Git branch of the project where you will add the generated files
-      required: true
-
-    - name: includeHasTests
-      inputType: checkbox
-      label: "Include 'has-tests' label for Workloads"
-      dataType: boolean
-      defaultValue: false
-
-engine:
-  merge:
-    - include: [".tanzuignore"]
-    - include: ["config/workload.yaml"]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: "https://git.example.com/my-repo"
-              with: "#gitRepository"
-        - type: ReplaceText
-          substitutions:
-            - text: my-project
-              with: "#artifactId"
-        - type: ReplaceText
-          substitutions:
-            - text: main
-              with: "#gitBranch"
-        - type: ReplaceText
-          condition: "#includeHasTests"
-          substitutions:
-            - text: "  labels:"
-              with: "'  labels:\n    apps.tanzu.vmware.com/has-tests: \"true\"'"
-    - include: ["catalog/catalog-info.yaml"]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: my-project
-              with: "#artifactId"
-    - include: ["DEPLOYING.md"]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: my-project
-              with: "#artifactId"
+apiVersion: entity.accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: tap-initialize
+  title: TAP initialize a project
+spec:
+  accelerator:
+    options:
+      - name: gitRepository
+        inputType: text
+        label: Git Repository for the target project
+        description: The Git repository of the project where you will add the generated files
+        required: true
+      - name: gitBranch
+        inputType: text
+        label: Git Branch for the target project
+        defaultValue: main
+        description: The Git branch of the project where you will add the generated files
+        required: true
+      - name: includeHasTests
+        inputType: checkbox
+        label: "Include 'has-tests' label for Workloads"
+        dataType: boolean
+        defaultValue: false
+  engine:
+    merge:
+      - include: [".tanzuignore"]
+      - include: ["config/workload.yaml"]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "https://git.example.com/my-repo"
+                with: "#gitRepository"
+          - type: ReplaceText
+            substitutions:
+              - text: my-project
+                with: "#artifactId"
+          - type: ReplaceText
+            substitutions:
+              - text: main
+                with: "#gitBranch"
+          - type: ReplaceText
+            condition: "#includeHasTests"
+            substitutions:
+              - text: "  labels:"
+                with: "'  labels:\n    apps.tanzu.vmware.com/has-tests: \"true\"'"
+      - include: ["catalog/catalog-info.yaml"]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: my-project
+                with: "#artifactId"
+      - include: ["DEPLOYING.md"]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: my-project
+                with: "#artifactId"

@@ -1,19 +1,23 @@
-accelerator:
-  displayName: Update Git repo URL in workload.yaml
-
-engine:
-  let:
-    - name: repoUrl
-      expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString('https://' + #bsGitRepository).build(true)"
-  condition: "#bsGitRepository != null"
-  applyTo: [ "**/workload.yaml", "**/workload-native.yaml", "**/workloads.yaml" ]
-  chain:
-    - type: OpenRewriteRecipe
-      recipe: org.openrewrite.yaml.ChangeValue
-      options:
-        oldKeyPath: '"$.spec.source.git.url"'
-        value: "#repoUrl.scheme + '://' + #repoUrl.host + '/' + #repoUrl.queryParams['owner'][0] + '/' + #repoUrl.queryParams['repo'][0]"
-    - type: ReplaceText
-      regex:
-        pattern: "(?<beforeBranch>[\\s\\S]+)(?<branch>branch: [\\S]+)(?<rest>[\\S\\s]*)"
-        with: "'${beforeBranch}branch: ' + #bsGitBranch + '${rest}'"
+apiVersion: entity.accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: tap-workload
+  title: Update Git repo URL in workload.yaml
+spec:
+  accelerator: {}
+  engine:
+    let:
+      - name: repoUrl
+        expression: "T(org.springframework.web.util.UriComponentsBuilder).fromUriString('https://' + #bsGitRepository).build(true)"
+    condition: "#bsGitRepository != null"
+    applyTo: ["**/workload.yaml", "**/workload-native.yaml", "**/workloads.yaml"]
+    chain:
+      - type: OpenRewriteRecipe
+        recipe: org.openrewrite.yaml.ChangeValue
+        options:
+          oldKeyPath: '"$.spec.source.git.url"'
+          value: "#repoUrl.scheme + '://' + #repoUrl.host + '/' + #repoUrl.queryParams['owner'][0] + '/' + #repoUrl.queryParams['repo'][0]"
+      - type: ReplaceText
+        regex:
+          pattern: "(?<beforeBranch>[\\s\\S]+)(?<branch>branch: [\\S]+)(?<rest>[\\S\\s]*)"
+          with: "'${beforeBranch}branch: ' + #bsGitBranch + '${rest}'"

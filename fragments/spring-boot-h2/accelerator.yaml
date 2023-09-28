@@ -1,50 +1,53 @@
-accelerator:
-  displayName: Add h2 database dependency
+apiVersion: entity.accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Fragment
+metadata:
+  name: spring-boot-h2
+  title: Add h2 database dependency
+spec:
+  accelerator: {}
+  engine:
+    merge:
+      # Provide dependencies for integration testing and running locally
+      - include: ["pom.xml"]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.h2database</groupId>\\s*<artifactId>h2</artifactId>[\\s\\S]+</dependencies>))"
+              with: |
+                '${startOfDependencies}
+                        <dependency>
+                            <groupId>com.h2database</groupId>
+                            <artifactId>h2</artifactId>
+                            <scope>test</scope>
+                        </dependency>${existingDependencies}'
+      - include: ["build.gradle.kts"]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"com.h2database:h2[\\s\\S]+))"
+              with: |
+                '${startOfDependencies}
+                    testImplementation("com.h2database:h2")${existingDependencies}'
+      # Add Spring Datasource properties for running H2 during tests
+      - include: ["**/src/test/resources/application-test.properties"]
+        # End of Provide dependencies for integration testing and running locally
 
-engine:
-  merge:
-    # Provide dependencies for integration testing and running locally
-    - include: [ "pom.xml" ]
-      chain:
-      - type: ReplaceText
-        regex:
-          pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.h2database</groupId>\\s*<artifactId>h2</artifactId>[\\s\\S]+</dependencies>))"
-          with: |
-            '${startOfDependencies}
-                    <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <scope>test</scope>
-                    </dependency>${existingDependencies}'
-
-    - include: [ "build.gradle.kts" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"com.h2database:h2[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  testImplementation("com.h2database:h2")${existingDependencies}'
-    # End of Provide dependencies for integration testing and running locally
-
-    # Add Spring Datasource properties for running H2 during tests
-    - include: [ "**/src/test/resources/application-test.properties" ]
-      chain:
-        - merge:
-            - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
-          onConflict: FavorForeign
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.url'"
-            value: "'jdbc:h2:mem:testdb'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.datasource.driverClassName'"
-            value: "'org.h2.Driver'"
-        - type: OpenRewriteRecipe
-          recipe: org.openrewrite.properties.AddProperty
-          options:
-            property: "'spring.test.database.replace'"
-            value: "'NONE'"
+        chain:
+          - merge:
+              - type: ReplaceText # No-op to trick the engine into thinking there IS a merge
+            onConflict: FavorForeign
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.url'"
+              value: "'jdbc:h2:mem:testdb'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.datasource.driverClassName'"
+              value: "'org.h2.Driver'"
+          - type: OpenRewriteRecipe
+            recipe: org.openrewrite.properties.AddProperty
+            options:
+              property: "'spring.test.database.replace'"
+              value: "'NONE'"
