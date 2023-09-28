@@ -1,4 +1,6 @@
 accelerator:
+  displayName: Add Spring Boot AppSSO auth code flow
+
   options:
     - name: packageName
       inputType: text

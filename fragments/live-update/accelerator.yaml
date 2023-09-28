@@ -1,5 +1,5 @@
 accelerator:
-  displayName: TAP Initialize
+  displayName: Add live update support
 
   options:
     - name: liveUpdateIDESupport

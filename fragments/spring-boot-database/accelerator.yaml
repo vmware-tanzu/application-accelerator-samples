@@ -1,4 +1,5 @@
 accelerator:
+  displayName: Add Spring Boot database support
   options:
     - name: databaseType
       inputType: select

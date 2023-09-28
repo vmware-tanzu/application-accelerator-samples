@@ -1,6 +1,6 @@
 accelerator:
-  displayName: Dev Container
-  description: Adds a `.devcontainer.json` file
+  displayName: Add dev container
+
   options:
   - name: includeDevContainer
     inputType: checkbox

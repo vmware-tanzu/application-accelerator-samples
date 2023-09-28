@@ -1,5 +1,5 @@
 accelerator:
-  displayName: Include build tool wrapper
+  displayName: Add Gradle build tool wrapper
 
   options:
     - name: includeBuildToolWrapper

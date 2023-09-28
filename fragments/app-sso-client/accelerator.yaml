@@ -1,4 +1,6 @@
 accelerator:
+  displayName: Add AppSSO client
+
   options:
     - name: appssoOfferingName
       description: To find the available AppSSO service offerings in your cluster, run `tanzu services classes list`.

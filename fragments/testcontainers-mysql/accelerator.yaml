@@ -1,3 +1,6 @@
+accelerator:
+  displayName: Add MySQL testcontainer support for Spring Boot
+
 engine:
   merge:
 
