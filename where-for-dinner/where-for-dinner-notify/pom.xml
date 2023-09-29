@@ -76,6 +76,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.xerial.snappy</groupId>
+				<artifactId>snappy-java</artifactId>
+				<version>1.1.10.4</version>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
     <profiles>
