@@ -14,8 +14,8 @@ spec:
       value: "17"
     - name: BP_NATIVE_IMAGE
       value: "true"
-    - name: BP_MAVEN_ADDITIONAL_BUILD_ARGUMENTS
-      value: -Pnative
+    - name: BP_MAVEN_ACTIVE_PROFILES
+      value: native
     - name: MANAGEMENT_HEALTH_PROBES_ENABLED
       value: "true"
     - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ADD_ADDITIONAL_PATHS
