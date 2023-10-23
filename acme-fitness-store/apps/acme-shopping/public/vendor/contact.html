@@ -426,25 +426,5 @@
     <script src="vendor/owl.carousel/owl.carousel.min.js"></script>
     <!-- main script-->
     <script src="js/front.js"> </script>
-    <!-- to use on your website, generate your own Google Maps API key and paste it into the script src attribute below-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu5nZKbeK-WHQ70oqOWo-_4VmwOwKP9YQ"></script>
-    <script>
-      function initialize() {
-      var mapOptions = {
-      zoom: 15,
-      center: new google.maps.LatLng(49.1678136, 16.5671893),
-      mapTypeId: google.maps.MapTypeId.ROAD,
-      scrollwheel: false
-      }
-      var map = new google.maps.Map(document.getElementById('map'),
-      mapOptions);
-      var myLatLng = new google.maps.LatLng(49.1681989, 16.5650808);
-      var marker = new google.maps.Marker({
-      position: myLatLng,
-      map: map
-      });
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
   </body>
 </html>
