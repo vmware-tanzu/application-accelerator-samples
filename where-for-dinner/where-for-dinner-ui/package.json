@@ -46,6 +46,8 @@
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack",
-    "json5": "2.2.2"
+    "json5": "2.2.2",
+    "resolve-url-loader": "5.0.0",
+    "postcss": "8.4.31"    
   }
 }
