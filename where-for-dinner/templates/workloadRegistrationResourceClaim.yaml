@@ -12,3 +12,8 @@ spec:
     redirectPaths: ['/login/oauth2/code/sso']
     workloadRef:
       name: where-for-dinner
+    authorizationGrantTypes:
+    - authorization_code
+    - client_credentials
+    - refresh_token
+

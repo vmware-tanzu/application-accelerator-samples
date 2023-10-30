@@ -1,6 +1,5 @@
 #@ load("@ytt:data", "data")
 
-
 ---
 apiVersion: "tanzu.vmware.com/v1"
 kind: SpringCloudGateway
@@ -10,10 +9,15 @@ metadata:
 spec:
   service:
     type: ClusterIP
+
   api:
+#@ if data.values.useCuratedAPIs == False:  
     title: Where For Dinner API Gateway
     description: Where For Dinner APIs for creating searches and retrieving search results.
+#@ end    
     version: 1.0.0
+    groupId: where-for-dinner    
+    serverUrl: #@ data.values.appWorkloadURL
   env:
     - name: spring.cloud.gateway.httpclient.connect-timeout
       value: "90"

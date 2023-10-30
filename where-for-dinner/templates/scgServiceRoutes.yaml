@@ -4,51 +4,13 @@
 apiVersion: tanzu.vmware.com/v1
 kind: SpringCloudGatewayRouteConfig
 metadata:
-  name: ui-route-config
-  namespace: #@ data.values.workloadNamespace
-spec:
-  routes:
-  - predicates:
-    - Path=/**
-    - Method=GET
-    order: 1000
-    filters:
-    - StripPrefix=0
-    tags:
-    - ui
-#@ if data.values.enableSecurity == True:    
-  - predicates:
-    - Path=/diningsearch/**
-    - Method=GET
-    filters:
-    - StripPrefix=0  
-    ssoEnabled: true    
-    tags:
-    - ui-secure    
-#@ end
-  service:
-    uri: #@ 'http://where-for-dinner-ui.' + data.values.workloadNamespace
----
-apiVersion: "tanzu.vmware.com/v1"
-kind: SpringCloudGatewayMapping
-metadata:
-  name: ui-route-mapping
-  namespace: #@ data.values.workloadNamespace
-spec:
-  gatewayRef:
-    name: #@ data.values.gatewayName
-  routeConfigRef:
-    name: ui-route-config
----
-apiVersion: tanzu.vmware.com/v1
-kind: SpringCloudGatewayRouteConfig
-metadata:
   name: search-route-config
   namespace: #@ data.values.workloadNamespace
 spec:
   routes:
   - predicates:
     - Path=/api/search/**  
+    order: 1
     filters:
     - TokenRelay=
     - StripPrefix=0
@@ -81,6 +43,7 @@ spec:
   routes:
   - predicates:
     - Path=/api/availability/**  
+    order: 1
     filters:
     - StripPrefix=0
     - RewritePath=/api/availability(?<segment>/?.*), $\{segment}

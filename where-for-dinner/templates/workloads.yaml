@@ -36,6 +36,8 @@
 #@ profiles = ""
 #@ if addSecProf == True and data.values.enableSecurity == True:
 #@ profiles = "secure"
+#@ end
+#@ if addDBProf == True and data.values.dbType == "mysql":
 #@ if profiles != "":
 #@    profiles = profiles + ","
 #@ end
