@@ -34,5 +34,4 @@ spec:
     name: #@ data.values.dynamicDBClass
   parameters:
     storageGB: 1    
-    serviceNamespace: #@ data.values.serviceNamespace    
 #@ end

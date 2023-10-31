@@ -76,7 +76,7 @@ accelerator:
     - value: rabbitmq
       text: RabbitMQ
   - label: Dynamically Provision Message Broker
-    description: "If set to true, the message broker will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
+    description: "If set to true, the message broker will be dynamically provisioned."
     defaultValue: false
     name: dynamicMsgBroker
     inputType: checkbox
@@ -84,7 +84,7 @@ accelerator:
     required: true   
   - label: Message Broker Cluster Instance Class
     description: "The services toolkit ClusterInstanceClass used for dynamic provisioning of the message broker.  You can override this to use other out-of-the-box/custom classes."
-    defaultValue: msgbroker-crossplane-where-for-dinner
+    defaultValue: rabbitmq-unmanaged
     name: dynamicMsgBrokerClass
     inputType: text
     dataType: string
@@ -120,7 +120,7 @@ accelerator:
       text: H2 (In Memory DB)
     required: true
   - label: Dynamically Provision Database
-    description: "If set to true, the database will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
+    description: "If set to true, the database will be dynamically provisioned."
     defaultValue: false
     name: dynamicDatabase
     inputType: checkbox
@@ -131,7 +131,7 @@ accelerator:
       value: mysql   
   - label: Database Cluster Instance Class
     description: "The services toolkit ClusterInstanceClass used for dynamic provisioning of the database.  You can override this to use other out-of-the-box/custom classes."
-    defaultValue: db-crossplane-where-for-dinner
+    defaultValue: mysql-unmanaged
     name: dynamicDBClass
     inputType: text
     dataType: string
@@ -160,7 +160,7 @@ accelerator:
       text: Redis
     required: true
   - label: Dynamically Provision Cache
-    description: "If set to true, the cache will be dynamically provisioned.  Requires Crossplane and CSP packages to be installed."
+    description: "If set to true, the cache will be dynamically provisioned."
     defaultValue: false
     name: dynamicCache
     inputType: checkbox
@@ -171,7 +171,7 @@ accelerator:
       value: redisCache   
   - label: Cache Cluster Instance Class
     description: "The services toolkit ClusterInstanceClass used for dynamic provisioning of the cache.  You can override this to use other out-of-the-box/custom classes."
-    defaultValue: cache-crossplane-where-for-dinner
+    defaultValue: redis-unmanaged
     name: dynamicCacheClass
     inputType: text
     dataType: string
@@ -313,26 +313,14 @@ engine:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/rmqCluster.yaml'
-      rewriteTo: "'config/service-operator/rmqCluster.yaml'"   
-  - condition: "#msgBrokerType == 'rabbitmq' && #dynamicMsgBroker"
-    include: ["**/dynamicRabbitMQCluster.yaml"]
-    chain:
-    - type: RewritePath
-      regex: 'templates/dynamicRabbitMQCluster.yaml'
-      rewriteTo: "'config/service-operator/dynamicRabbitMQCluster.yaml'"         
+      rewriteTo: "'config/service-operator/rmqCluster.yaml'"          
   - condition: "#dbType == 'mysql' && !#dynamicDatabase"
     include: ["**/mysqlInstance.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/mysqlInstance.yaml'
-      rewriteTo: "'config/service-operator/mysqlInstance.yaml'"   
-  - condition: "#dbType == 'mysql' && #dynamicDatabase"
-    include: ["**/dynamicMySqlInstance.yaml"]
-    chain:
-    - type: RewritePath
-      regex: 'templates/dynamicMySqlInstance.yaml'
-      rewriteTo: "'config/service-operator/dynamicMySqlInstance.yaml'"         
+      rewriteTo: "'config/service-operator/mysqlInstance.yaml'"          
   - condition: "#msgBrokerType == 'rabbitmq'"
     include: ["**/rmqResourceClaim.yaml"]
     chain:
@@ -373,15 +361,7 @@ engine:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/redisInstance.yaml'
-      rewriteTo: "'config/service-operator/redisInstance.yaml'"  
-  - condition:
-      "#cacheType == 'redisCache' && #dynamicCache"
-    include: ["**/dynamicRedisInstance.yaml"]
-    chain:
-    - type: YTT  
-    - type: RewritePath
-      regex: 'templates/dynamicRedisInstance.yaml'
-      rewriteTo: "'config/service-operator/dynamicRedisInstance.yaml'"        
+      rewriteTo: "'config/service-operator/redisInstance.yaml'"    
   - condition:
       "#cacheType == 'redisCache'"
     include: ["**/redisResourceClaim.yaml"]
