@@ -6,6 +6,7 @@ accelerator:
       description: To find the available AppSSO service offerings in your cluster, run `tanzu services classes list`.
       inputType: text
       label: AppSSO offering name
+      required: true
 
 engine:
   merge:
