@@ -9,14 +9,11 @@ accelerator:
     - spring
     - java
   imports:
+    - name: app-sso-client
+      expose:
+        - name: appssoOfferingName
     - name: tap-workload
     - name: build-wrapper-gradle
-  options:
-    - name: appssoOfferingName
-      description: To find the available AppSSO service in your cluster, run `tanzu services classes list`.
-      inputType: text
-      label: AppSSO Offering name
-      required: true
 
 engine:
   chain:
