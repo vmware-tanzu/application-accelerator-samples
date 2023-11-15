@@ -15,7 +15,7 @@ stringData:
         <mirrors>
             <mirror>
                 <id>reposilite</id>
-                <name>Tanzu seal Internal Repo</name>
+                <name>Accelerator samples</name>
                 <url>(@= data.values.imported.git.host @)/vmware-tanzu/application-accelerator-samples</url>
                 <mirrorOf>*</mirrorOf>
             </mirror>
