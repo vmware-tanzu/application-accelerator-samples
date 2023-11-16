@@ -24,6 +24,7 @@ These instructions assume that you have a TAP 1.3.x or greater iterate cluster (
 * Tanzu Source Controller
 * Tanzu AppSSO (required if using the `Enable Security` option)
 * Tanzu Spring Cloud Gateway (required if using the `TAP Spring Cloud Gateway` option)
+* Helm Client (required if installing the RabbitMQ operator Helm Chart)
 
 ## Quick Start
 
@@ -33,6 +34,15 @@ This section provides a fast track installation of the "simplest" configuration 
 
 ```
 kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.14.0/cluster-operator.yml"
+```
+
+If your cluster has [Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/) enabled, the RabbitMQ operator above will not work.  As an
+alternative, you can install the RabbitMQ operator using Heml with the following commands:
+
+```
+kubectl create ns rabbitmq
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install rabbitmq bitnami/rabbitmq-cluster-operator -n rabbitmq
 ```
 
 * Navigate to your TAP GUI web page and Application Accelerator tab on the left of the screen.  Select the `Choose` button on the `Where for Dinner` Application
