@@ -36,8 +36,8 @@ This section provides a fast track installation of the "simplest" configuration 
 kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/download/v1.14.0/cluster-operator.yml"
 ```
 
-If your cluster has [Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/) enabled, the RabbitMQ operator above will not work.  As an
-alternative, you can install the RabbitMQ operator using Heml with the following commands:
+If your cluster has [Pod Security Admission](https://kubernetes.io/docs/concepts/security/pod-security-admission/) enabled, the RabbitMQ operator above will not work.
+As an alternative, you can install the RabbitMQ operator using Helm with the following commands:
 
 ```
 kubectl create ns rabbitmq
