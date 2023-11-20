@@ -16,9 +16,8 @@ for test_name in ${PATTERN}; do
   if [[ "$test_name" == *".sh"* || "$test_name" == "tanzu-accelerator-linux_amd64" ]]; then
     echo "** skipping $test_name **"
   else
-    echo "** TESTING $test_name **"
+    echo "** GENERATING $test_name **"
     ./generate.sh $test_name
-    ./run-test.sh $test_name
   fi
 done
 popd
