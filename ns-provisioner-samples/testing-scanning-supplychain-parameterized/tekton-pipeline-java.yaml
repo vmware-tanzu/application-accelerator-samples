@@ -29,16 +29,6 @@ spec:
         params:
           - name: source-url
           - name: source-revision
-        stepTemplate:
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsUser: 1000
-            runAsNonRoot: true
-            capabilities:
-              drop:
-                - ALL
-            seccompProfile:
-              type: RuntimeDefault
         steps:
           - name: test
             image: gradle
