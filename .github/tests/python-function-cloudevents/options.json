@@ -1,6 +1,0 @@
-{
-  "interfaceType": "cloudevents",
-
-  "functionName": "main",
-  "includeTap": true
-}
