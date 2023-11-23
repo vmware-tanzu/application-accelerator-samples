@@ -28,6 +28,17 @@ spec:
         params:
           - name: source-url
           - name: source-revision
+        #! Please remove the stepTemplate that adds the securityContext if you are using TAP 1.7.0 or above on Openshift distribution
+        stepTemplate:
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
         steps:
           - name: test
             image: gradle
