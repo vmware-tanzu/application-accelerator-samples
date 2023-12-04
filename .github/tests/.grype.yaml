@@ -18,3 +18,4 @@ ignore:
   - vulnerability: CVE-2023-38286 # this CVE can't be exploited, needs write access to env
   - vulnerability: GHSA-xqr8-7jwr-rhp7 # Grype has an issue for this failure: https://github.com/anchore/grype/issues/1417
   - vulnerability: GHSA-4wrc-f8pq-fpqp # Serialization of untrusted data is not an intended use case, will not fix - see CVE-2016-1000027
+  - vulnerability: GHSA-vmq6-5m68-f53m # We are not using logback receiver which is the component that is vulnerable
