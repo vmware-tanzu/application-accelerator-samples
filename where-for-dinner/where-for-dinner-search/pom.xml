@@ -17,7 +17,7 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
 		<revision>0.0.1-SNAPSHOT</revision>		
-		<spring-cloud-bindings.version>1.13.0</spring-cloud-bindings.version>
+		<spring-cloud-bindings.version>2.0.2</spring-cloud-bindings.version>
 		<snakeyaml.version>1.33</snakeyaml.version>
 		<springdoc.version>2.1.0</springdoc.version>
 	</properties>
@@ -154,10 +154,6 @@
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-						</exclude>
-						<exclude>
-							<groupId>org.springframework.cloud</groupId>
-							<artifactId>spring-cloud-bindings</artifactId>
 						</exclude>
 					</excludes>
 				</configuration>
