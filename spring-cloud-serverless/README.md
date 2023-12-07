@@ -24,7 +24,9 @@ It is defined in `src/main/java/com/example/helloapp/HelloAppApplication.java`
 
 ## Deployment
 
-This app can be deployed as a stand-alone web app, as a Tanzu Application Platform (TAP) workload resource or, as a Kubernetes Deployment and Service.
+This app can be deployed as a stand-alone web app, as a Tanzu Application
+Platform (TAP) workload resource, as a Tanzu Application Service (TAS) app, or
+as a Kubernetes Deployment and Service.
 
 ### Standalone app with embedded Tomcat server
 

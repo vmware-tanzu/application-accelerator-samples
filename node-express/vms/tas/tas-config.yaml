@@ -1,0 +1,8 @@
+---
+applications:
+- name: node-express
+  random-route: true
+  processes:
+  - type: web
+    instances: 1
+    memory: 256M

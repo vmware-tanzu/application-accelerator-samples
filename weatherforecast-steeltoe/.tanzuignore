@@ -1,0 +1,38 @@
+### Git ###
+.git/
+.github/
+.gitmodules
+**/.gitattributes
+**/.gitignore
+
+### DotNet ###
+bin/
+obj/
+publish/
+
+### STS/Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### VS Code ###
+.vscode/
+
+### Visual Studio ###
+.vs/
+
+### JetBrains ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Tilt ###
+Tiltfile
+
+### Accelerator ###
+accelerator-log.md 

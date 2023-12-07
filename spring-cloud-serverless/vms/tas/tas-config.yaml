@@ -1,0 +1,11 @@
+---
+applications:
+- name: hello-fun
+  random-route: true
+  env:
+    JBP_CONFIG_OPEN_JDK_JRE: "{ jre: { version: 17.+ }}"
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: "{enabled: false}"
+  processes:
+  - type: web
+    instances: 1
+    memory: 1024M

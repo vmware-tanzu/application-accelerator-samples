@@ -4,7 +4,7 @@ accelerator:
   options:
     - name: includeBuildToolWrapper
       inputType: checkbox
-      label: Include Build Tool wrapper support
+      label: Include Maven Wrapper build tool
       dataType: boolean
       defaultValue: true
 
