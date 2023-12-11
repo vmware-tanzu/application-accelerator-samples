@@ -1,0 +1,69 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: availability.default.tap.20231205012245.0.0
+spec:
+  refName: availability.default.tap
+  version: 20231205012245.0.0
+  releaseNotes: |
+    Release v20231205012245.0.0 of package availability.default.tap
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: reg.perfect300rock.com/tapdev/supply-chain/availability-workloads-bundle@sha256:493ef6c718e05833129e15081906ae7ef235be0035ce1de075cadecd55f813e9
+      template:
+      - ytt:
+          paths:
+          - .
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+      deploy:
+      - kapp: {}
+  valuesSchema:
+    openAPIv3:
+      type: object
+      additionalProperties: false
+      properties:
+        workload_name:
+          title: Workload name
+          type: string
+          default: ""
+        replicas:
+          title: Replicas
+          type: integer
+          default: 1
+        port:
+          title: Port
+          type: integer
+          default: 8080
+        hostname:
+          title: Hostname
+          type: string
+          default: ""
+        cluster_issuer:
+          title: Cluster Issuer
+          type: string
+          default: tap-ingress-selfsigned
+        http_route:
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            gateways:
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  protocol:
+                    type: string
+                    default: ""
+                  name:
+                    type: string
+                    default: ""
+              default:
+              - protocol: https
+                name: default-gateway

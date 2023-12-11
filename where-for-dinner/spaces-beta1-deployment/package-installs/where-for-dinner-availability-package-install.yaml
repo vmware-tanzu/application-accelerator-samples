@@ -1,0 +1,25 @@
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+ name: where-for-dinner-availability
+spec:
+ serviceAccountName: server-workload-installer  
+ packageRef:
+   refName: availability.default.tap # name of the Package
+   versionSelection:
+     constraints: '>=0.0.0'
+ values:
+ - secretRef:
+     name: where-for-dinner-availability-package-values # Secret created in previous step
+---
+apiVersion: v1
+kind: Secret
+metadata:
+ name: where-for-dinner-availability-package-values
+stringData:
+ values.yaml: |
+   ---
+   replicas: 1
+   hostname: ""
+   workload_name: where-for-dinner-availability

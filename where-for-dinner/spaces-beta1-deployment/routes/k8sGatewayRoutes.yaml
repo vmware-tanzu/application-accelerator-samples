@@ -1,0 +1,21 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: where-for-dinner-scg-route
+spec:
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: default-gateway
+    sectionName: http-where-for-dinner
+  rules:
+  - backendRefs:
+    - group: ""
+      kind: Service
+      name: spring-cloud-gateway
+      port: 80
+      weight: 1
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
