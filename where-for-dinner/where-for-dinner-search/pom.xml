@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.6</version>
+		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -15,10 +15,9 @@
 	<description>Demo</description>		
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.4</spring-cloud.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<revision>0.0.1-SNAPSHOT</revision>		
 		<spring-cloud-bindings.version>2.0.2</spring-cloud-bindings.version>
-		<snakeyaml.version>1.33</snakeyaml.version>
 		<springdoc.version>2.1.0</springdoc.version>
 	</properties>
 	<dependencyManagement>
@@ -29,12 +28,7 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>	
-			<dependency>
-				<groupId>org.xerial.snappy</groupId>
-				<artifactId>snappy-java</artifactId>
-				<version>1.1.10.4</version>
-			</dependency>				        		
+			</dependency>		        		
 		</dependencies>
 	</dependencyManagement>	
 	<dependencies>
@@ -42,11 +36,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>		
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-bindings</artifactId>
-            <version>${spring-cloud-bindings.version}</version>
-        </dependency>			
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bindings</artifactId>
+			<version>${spring-cloud-bindings.version}</version>
+		</dependency>			
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
@@ -56,26 +50,32 @@
 			<artifactId>spring-cloud-starter-function-webflux</artifactId>
 		</dependency>	
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>						
 		<dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-stream</artifactId>
-        </dependency>	
+			<groupId>org.springframework.cloud</groupId>
+  			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>	
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+			<exclusions>
+				<exclusion> 
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions> 			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-kafka</artifactId>
 		</dependency>							
-	    <dependency>
-	        <groupId>org.springdoc</groupId>
-	        <artifactId>springdoc-openapi-starter-webflux-api</artifactId>
-	        <version>${springdoc.version}</version>
-	    </dependency>		
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webflux-api</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -98,51 +98,51 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.testcontainers</groupId>
-		    <artifactId>r2dbc</artifactId>
-		    <scope>test</scope>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>r2dbc</artifactId>
+			<scope>test</scope>
 		</dependency> 		
 		<dependency>
-		    <groupId>org.testcontainers</groupId>
-		    <artifactId>rabbitmq</artifactId>
-		    <scope>test</scope>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>rabbitmq</artifactId>
+			<scope>test</scope>
 		</dependency>	
 		<dependency>
-		    <groupId>org.testcontainers</groupId>
-		    <artifactId>mariadb</artifactId>
-		    <scope>test</scope>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mariadb</artifactId>
+			<scope>test</scope>
 		</dependency>	
 		<dependency>
-		    <groupId>org.testcontainers</groupId>
-		    <artifactId>postgresql</artifactId>
-		    <scope>test</scope>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>test</scope>
 		</dependency>	
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <scope>test</scope>
-        </dependency>		
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<scope>test</scope>
+		</dependency>		
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>		
 		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			</dependency>	
+		<dependency>
+ 			<groupId>org.mariadb</groupId>
+			<artifactId>r2dbc-mariadb</artifactId>
 		</dependency>	
-        <dependency>
-            <groupId>org.mariadb</groupId>
-            <artifactId>r2dbc-mariadb</artifactId>
-        </dependency>	
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>r2dbc-postgresql</artifactId>
-        </dependency>	
-	    <dependency>
-	       <groupId>io.r2dbc</groupId>
-	       <artifactId>r2dbc-h2</artifactId>
-	    </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>r2dbc-postgresql</artifactId>
+		</dependency>	
+		<dependency>
+			<groupId>io.r2dbc</groupId>
+			<artifactId>r2dbc-h2</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -160,29 +160,29 @@
 			</plugin>
 		</plugins>
 	</build>
-    <profiles>
-       <profile>
-           <id>native</id>
-           <build>
-             <plugins>
-			   <plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<configuration>
-						<excludes>
-							<exclude>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok</artifactId>
-							</exclude>
-						</excludes>
-					</configuration>
-			   </plugin>           
-               <plugin>
-                    <groupId>org.graalvm.buildtools</groupId>
-                    <artifactId>native-maven-plugin</artifactId>
-               </plugin>
-            </plugins>
-           </build>   
-       </profile>
-     </profiles>
+	<profiles>
+		<profile>
+			<id>native</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</exclude>
+							</excludes>
+						</configuration>
+					</plugin>           
+					<plugin>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>   
+		</profile>
+	</profiles>
 </project>

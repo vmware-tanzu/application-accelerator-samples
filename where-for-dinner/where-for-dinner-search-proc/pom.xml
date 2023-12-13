@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.6</version>
+		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -15,7 +15,7 @@
 	<description>Where for Dinner search processor</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.4</spring-cloud.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<spring-cloud-bindings.version>2.0.2</spring-cloud-bindings.version>	
 	</properties>
 	<dependencies>
@@ -35,11 +35,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-function-webflux</artifactId>
 		</dependency>	
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-bindings</artifactId>
-            <version>${spring-cloud-bindings.version}</version>
-        </dependency>					
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bindings</artifactId>
+			<version>${spring-cloud-bindings.version}</version>
+		</dependency>					
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -56,9 +56,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.testcontainers</groupId>
-		    <artifactId>rabbitmq</artifactId>
-		    <scope>test</scope>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>rabbitmq</artifactId>
+			<scope>test</scope>
 		</dependency>					
 		<dependency>
 			<groupId>io.projectreactor</groupId>
@@ -74,59 +74,60 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.xerial.snappy</groupId>
-				<artifactId>snappy-java</artifactId>
-				<version>1.1.10.4</version>
-			</dependency>			
+			</dependency>		
 		</dependencies>
 	</dependencyManagement>
-    <profiles>
-       <profile>
-           <id>streams</id>
-           <activation>
-              <activeByDefault>true</activeByDefault>
-           </activation> 
-           <dependencies>
-			   <dependency>
-		            <groupId>org.springframework.cloud</groupId>
-		            <artifactId>spring-cloud-stream</artifactId>
-		       </dependency>	
-			   <dependency>
+	<profiles>
+		<profile>
+			<id>streams</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation> 
+			<dependencies>
+				<dependency>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-stream</artifactId>
+				 </dependency>	
+				<dependency>
 					<groupId>org.springframework.cloud</groupId>
 					<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-			   </dependency>	
-			   <dependency>
+					<exclusions>
+						<exclusion> 
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions> 			
+				</dependency>	
+				<dependency>
 					<groupId>org.springframework.cloud</groupId>
 					<artifactId>spring-cloud-stream-binder-kafka</artifactId>
-			   </dependency>		
-		   </dependencies>
-       </profile>
-       <profile>
-           <id>native</id>
-           <build>
-             <plugins>
-			   <plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<configuration>
-						<excludes>
-							<exclude>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok</artifactId>
-							</exclude>
-						</excludes>
-					</configuration>
-			   </plugin>           
-               <plugin>
-                    <groupId>org.graalvm.buildtools</groupId>
-                    <artifactId>native-maven-plugin</artifactId>
-               </plugin>
-            </plugins>
-           </build>   
-       </profile>
-    </profiles>
+				</dependency>		
+			</dependencies>
+		</profile>
+		<profile>
+			<id>native</id>
+			<build>
+ 				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</exclude>
+							</excludes>
+						</configuration>
+					</plugin>           
+					<plugin>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>   
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
