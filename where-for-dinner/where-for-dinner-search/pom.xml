@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.6</version>
+		<version>3.2.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -15,10 +15,9 @@
 	<description>Demo</description>		
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.4</spring-cloud.version>
+		<spring-cloud.version>2023.0.0</spring-cloud.version>
 		<revision>0.0.1-SNAPSHOT</revision>		
 		<spring-cloud-bindings.version>2.0.2</spring-cloud-bindings.version>
-		<snakeyaml.version>1.33</snakeyaml.version>
 		<springdoc.version>2.1.0</springdoc.version>
 	</properties>
 	<dependencyManagement>
@@ -29,12 +28,7 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>	
-			<dependency>
-				<groupId>org.xerial.snappy</groupId>
-				<artifactId>snappy-java</artifactId>
-				<version>1.1.10.4</version>
-			</dependency>				        		
+			</dependency>		        		
 		</dependencies>
 	</dependencyManagement>	
 	<dependencies>
@@ -66,6 +60,12 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+	       <exclusions>
+	         <exclusion> 
+	           <groupId>commons-logging</groupId>
+	           <artifactId>commons-logging</artifactId>
+	         </exclusion>
+	       </exclusions> 			
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
