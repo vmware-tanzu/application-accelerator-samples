@@ -11,7 +11,7 @@ spec:
     spec:
       fetch:
       - imgpkgBundle:
-          image: reg.perfect300rock.com/tapdev/supply-chain/search-proc-workloads-bundle@sha256:ef00d0830c71b21c6d17ba07550f493d238d0a2cbbdb9d598a31ea4b5a8a26c8
+          image: projects.registry.vmware.com/tanzu_application_platform/supply-chain/search-proc-workloads-bundle@sha256:ef00d0830c71b21c6d17ba07550f493d238d0a2cbbdb9d598a31ea4b5a8a26c8
       template:
       - ytt:
           paths:
