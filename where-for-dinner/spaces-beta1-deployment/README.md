@@ -1,4 +1,4 @@
-# northstar-space-demo (i.e. One Tanzu) Beta 1
+# Spaces - Beta 1 Sample App
 
 ## Spaces - Beta1
 
@@ -16,9 +16,10 @@ The configuration files for deploying Where For Dinner to your space can be obta
 Run the following commands:
 
 ```
-git clone https://github.com/gm2552/northstar-space-demo
-cd northstar-space-demo
-git checkout deliverables-beta1
+git clone https://github.com/vmware-tanzu/application-accelerator-samples
+cd application-accelerator-samples
+git checkout wfd-spaces-beta1
+cd where-for-dinner/spaces-beta1-deployment
 ```
 
 #### Create Services
@@ -81,7 +82,7 @@ The Where For Dinner deployment consists of the following resources:
 - Secret resources containing backing service credential/connection info 
 - Routing resources for Spring Cloud Gateway and Kubernetes Gateway APIs
 
-Deploy all the application’s resources by running the following command from the root of the northstar-space-demo directory.
+Deploy all the application’s resources by running the following command from the root of the `where-for-dinner/spaces-beta1-deployment` directory.
 
 ```
 kubectl apply -f . --recursive --validate=false
