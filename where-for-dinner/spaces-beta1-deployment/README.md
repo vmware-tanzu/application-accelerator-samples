@@ -54,6 +54,15 @@ Using your editor of choice, update the fields with <> placeholders in the servi
 and connection information for the RabbitMQ and MySQL instances.  You will need to base64 encode each secret/credential value before adding it to the serviceSecret.yaml 
 file; an easy way to base64 values is to use an online tool such as https://www.base64encode.org.
 
+#### Update Kubernetes Gateway Route
+
+Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
+addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
+followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
+
+In the `routes` directory you will see that you’ve “k8GatewayRoutes.yaml” file.  Modify k8sGatewayRoutes.yaml to replace the <hostname> with the hostname 
+that you would like your app to be available at and save it.
+
 
 #### Switch Context To New Space
 
@@ -70,7 +79,7 @@ The Where For Dinner deployment consists of the following resources:
 - Package and PackageInstall resources
 - Secret resources for configuring the PackageInstalls
 - Secret resources containing backing service credential/connection info 
-- Routing resources for Spring Cloud Gateway and K8s Gateway APIs
+- Routing resources for Spring Cloud Gateway and Kubernetes Gateway APIs
 
 Deploy all the application’s resources by running the following command from the root of the northstar-space-demo directory.
 
