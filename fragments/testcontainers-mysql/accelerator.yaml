@@ -14,7 +14,6 @@ engine:
                       <dependency>
                           <groupId>org.testcontainers</groupId>
                           <artifactId>mysql</artifactId>
-                          <version>1.18.1</version>
                           <scope>test</scope>
                       </dependency>${existingDependencies}'
 
@@ -25,7 +24,7 @@ engine:
             pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:mysql[\\s\\S]+))"
             with: |
               '${startOfDependencies}
-                  testImplementation("org.testcontainers:mysql:1.18.1")${existingDependencies}'
+                  testImplementation("org.testcontainers:mysql")${existingDependencies}'
 
     - include: [ "**/src/test/resources/application-test.properties" ]
       chain:
