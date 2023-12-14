@@ -7,6 +7,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/app-sso-client
 ---
@@ -18,6 +19,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/java-version
 ---
@@ -29,6 +31,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/live-update
 ---
@@ -40,6 +43,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/spring-boot-app-sso-auth-code-flow
 ---
@@ -51,6 +55,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/tap-initialize
 ---
@@ -62,6 +67,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/tap-workload
 ---
@@ -73,6 +79,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/spring-boot-database
 ---
@@ -84,6 +91,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/spring-boot-h2
 ---
@@ -95,6 +103,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/spring-boot-postgresql
 ---
@@ -106,6 +115,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/spring-boot-mysql
 ---
@@ -117,6 +127,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/testcontainers-postgresql
 ---
@@ -128,6 +139,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/testcontainers-mysql
 ---
@@ -139,6 +151,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/steeltoe-postgresql
 ---
@@ -150,6 +163,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/build-wrapper-gradle
 ---
@@ -161,19 +175,9 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: fragments/build-wrapper-maven
----
-apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
-kind: Fragment
-metadata:
-  name: devcontainer
-spec:
-  git:
-    ref:
-      branch: main
-    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: fragments/devcontainer
 ---
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
@@ -183,6 +187,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: appsso-starter-java
 ---
@@ -194,6 +199,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: where-for-dinner
 ---
@@ -205,6 +211,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: java-rest-service
 ---
@@ -216,6 +223,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: csharp-rest-service
 ---
@@ -227,6 +235,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: java-server-side-ui
 ---
@@ -238,6 +247,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: node-express
 ---
@@ -249,6 +259,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: spring-cloud-serverless
 ---
@@ -260,6 +271,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: spring-smtp-gateway
 ---
@@ -271,6 +283,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: spring-streaming-app
 ---
@@ -282,6 +295,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: tanzu-java-web-app
 ---
@@ -293,6 +307,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: tap-initialize
 ---
@@ -304,6 +319,7 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: csharp-weatherforecast
 ---
@@ -315,5 +331,18 @@ spec:
   git:
     ref:
       branch: main
+      tag: tap-1.7.0
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: angular-frontend
+---
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: react-frontend
+spec:
+  git:
+    ref:
+      branch: main
+      tag: tap-1.7.0
+    url: https://github.com/vmware-tanzu/application-accelerator-samples.git
+    subPath: react-frontend
