@@ -85,7 +85,6 @@ accelerator:
   - name: required
     label: Required Field
     inputType: text
-    display: true
     required: true
 
   - name: aSingleTask
