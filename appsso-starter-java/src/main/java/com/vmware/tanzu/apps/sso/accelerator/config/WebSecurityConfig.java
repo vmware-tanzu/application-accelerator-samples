@@ -38,6 +38,8 @@ public class WebSecurityConfig {
 						authorizeRequests
 								// Permit all public paths explicitly.
 								.requestMatchers("/", "/home", "/webjars/**", "/styles/**", "/images/**").permitAll()
+								// Permit liveness and readiness probes paths
+								.requestMatchers("/livez", "/readyz").permitAll()
 								// Require authentication for all others paths.
 								.anyRequest().authenticated()
 				)
