@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -31,9 +31,6 @@ public class WebSecurityConfig {
 	@DependsOn("issuerTrust")
 	SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository clientRegistrationRepository) throws Exception {
 		http
-				// Add an authentication check filter to enable auto-redirects if the user is already signed in,
-				// or if the user is attempting to navigate to protected paths.
-				.addFilterAfter(new AuthenticationCheckFilter(), UsernamePasswordAuthenticationFilter.class)
 				.authorizeHttpRequests(authorizeRequests ->
 						authorizeRequests
 								// Permit all public paths explicitly.
@@ -44,12 +41,17 @@ public class WebSecurityConfig {
 								.anyRequest().authenticated()
 				)
 				// After a successful logout, redirect to /home.
-				.logout((customizer) -> {
-					customizer.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
-					customizer.logoutSuccessUrl("/home");
+				.logout(logout -> {
+						logout.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
+						logout.logoutSuccessUrl("/home");
 				})
 				.oauth2Login(withDefaults())
-				.oauth2Client(withDefaults());
+				.oauth2Client(withDefaults())
+				.exceptionHandling(
+						// When the user is not logged in and is trying to access a private page,
+						// redirect to /home
+						exceptionHandling -> exceptionHandling.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/home"))
+				);
 		return http.build();
 	}
 
