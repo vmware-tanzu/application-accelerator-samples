@@ -12,8 +12,8 @@ This repository provides an example application used to set up an authentication
 
    If there isn't one,
 
-   - ask your service operator `OR`
-   - [create your own `ClusterUnsafeTestLogin`](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/app-sso-reference-api-clusterunsafetestlogin.html)
+    - ask your service operator `OR`
+    - [create your own `ClusterUnsafeTestLogin`](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/app-sso-reference-api-clusterunsafetestlogin.html)
 
 1. Select the service offering you'd like to connect
 
@@ -34,3 +34,8 @@ This repository provides an example application used to set up an authentication
 
 For reference, see
 [AppSSO's documentation](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/1.6/tap/app-sso-about.html)
+
+## Local development
+
+Run the application locally with the `local` profile. It leverages docker-compose, and you can log in using the
+[Dex identity provider](https://dexidp.io) with `admin@example.com` / `password`.
