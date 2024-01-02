@@ -1,14 +1,3 @@
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**
-!**/src/test/**
-bin/
-classes/
-target/
-*.log
-*.log.*
-
 ### STS ###
 .apt_generated
 .classpath
@@ -40,3 +29,6 @@ out/
 
 ### Visual Studio ###
 .vs/
+
+### Local Authoring ###
+accelerators/
