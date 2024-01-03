@@ -9,6 +9,6 @@ else
    if ! grep -q '"version": "8"' .devcontainer.json; then
       echo "Couldn't find Java version 8"
       exit 2
-   fi 
+   fi
 fi
 popd
