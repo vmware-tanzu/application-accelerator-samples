@@ -12,7 +12,9 @@ accelerator:
       text: Java 11
     - value: "17"
       text: Java 17
-    defaultValue: "11"
+    - value: "21"
+      text: Java 21
+    defaultValue: "17"
 
 engine:
   let:
