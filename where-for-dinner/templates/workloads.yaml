@@ -116,7 +116,7 @@
 
 #@ def buildBuildParams(addSecProf,addDBProf,addCacheProf,addCrawlerProf,addMsgBrokerProf):
   - name: BP_JVM_VERSION
-    value: "17" 
+    value: "21" 
   - name: BP_MAVEN_ACTIVE_PROFILES
     value: #@ buildMavenBuildProfiles()
 #@ if data.values.nativeBuild == True:
@@ -202,7 +202,7 @@ spec:
   build:
     env:
       - name: BP_JVM_VERSION
-        value: "17"   
+        value: "21"   
   source:
     git:
       url: <https URL for your generated project's Git repository>
