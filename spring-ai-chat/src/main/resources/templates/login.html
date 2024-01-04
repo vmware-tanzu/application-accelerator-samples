@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Spring AI Chat</title>
+    </head>
+
+    <body>
+        <h1>Login</h1>
+        <form method="POST" th:action="@{/login}">
+            <table>
+                <tr>
+                    <td>User:</td>
+                    <td><input type="text" name="username" /></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" name="password" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input name="submit" type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
