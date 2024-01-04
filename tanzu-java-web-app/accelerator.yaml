@@ -39,13 +39,11 @@ accelerator:
     choices:
       - value: "2.7"
         text: Spring Boot 2.7
-      - value: "3.0"
-        text: Spring Boot 3.0 (Requires Java 17)
-      - value: "3.1"
-        text: Spring Boot 3.1 (Requires Java 17)
-    defaultValue: "2.7"
+      - value: "3.2"
+        text: Spring Boot 3.2 (Requires Java 17 or 21)
+    defaultValue: "3.2"
   - name: nativeBuild
-    label: Support native GraalVM builds (Requires Spring Boot 3.0 or 3.1 and Java 17)
+    label: Support native GraalVM builds (Requires Spring Boot 3.2 and Java 17 or 21)
     inputType: checkbox
     dataType: boolean
     defaultValue: false
@@ -61,8 +59,10 @@ engine:
   let:
     - name: updateBoot3
       expression: "#nativeBuild == true ? true : ( #springBootVersion == '2.7' ? false : true )"
+    - name: nativeJavaVersion
+      expression: "#javaVersion == '17' ? '17' : ( #javaVersion == '21' ? '21' : '17' )"
     - name: javaVersion
-      expression: "#updateBoot3 == true ? '17' : ( #springBootVersion == '2.7' ? #javaVersion : '17' )"
+      expression: "#updateBoot3 == true ? #nativeJavaVersion : ( #springBootVersion == '2.7' ? #javaVersion : #nativeJavaVersion )"
     - name: springBootVersion
       expression: "( #updateBoot3 == true && #springBootVersion == '2.7' ) ? '3.1' : #springBootVersion"
   chain:
@@ -167,7 +167,7 @@ engine:
       reference: build-wrapper-gradle
     onConflict: UseLast
 
-  - condition: "#springBootVersion == '3.0'"
+  - condition: "#springBootVersion == '3.2'"
     merge:
     - include: [ "**" ]
     # Maven
@@ -180,7 +180,7 @@ engine:
           newGroupId: "'org.springframework.boot'"
           oldArtifactId: "'spring-boot-starter-parent'"
           newArtifactId: "'spring-boot-starter-parent'"
-          newVersion: "'3.0.13'"
+          newVersion: "'3.2.1'"
       - type: ReplaceText
         regex:
           pattern: "\\s+<snakeyaml.version>1.33</snakeyaml.version>"
@@ -191,41 +191,7 @@ engine:
       - type: ReplaceText
         regex:
           pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-          with: "'id(\"org.springframework.boot\") version \"3.0.13\"'"
-      - type: ReplaceText
-        regex:
-          pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
-          with: "'id(\"io.spring.dependency-management\") version \"1.1.4\"'"
-      - type: ReplaceText
-        regex:
-          pattern: "\\s*extra\\[\"snakeyaml.version\"\\] = \"1.33\""
-          with: "''"
-
-  - condition: "#springBootVersion == '3.1'"
-    merge:
-    - include: [ "**" ]
-    # Maven
-    - include: [ "pom.xml" ]
-      chain:
-      - type: OpenRewriteRecipe
-        recipe: org.openrewrite.maven.ChangeParentPom
-        options:
-          oldGroupId: "'org.springframework.boot'"
-          newGroupId: "'org.springframework.boot'"
-          oldArtifactId: "'spring-boot-starter-parent'"
-          newArtifactId: "'spring-boot-starter-parent'"
-          newVersion: "'3.1.6'"
-      - type: ReplaceText
-        regex:
-          pattern: "\\s+<snakeyaml.version>1.33</snakeyaml.version>"
-          with: "''"
-    # Gradle
-    - include: [ "build.gradle.kts" ]
-      chain:
-      - type: ReplaceText
-        regex:
-          pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-          with: "'id(\"org.springframework.boot\") version \"3.1.6\"'"
+          with: "'id(\"org.springframework.boot\") version \"3.2.1\"'"
       - type: ReplaceText
         regex:
           pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
