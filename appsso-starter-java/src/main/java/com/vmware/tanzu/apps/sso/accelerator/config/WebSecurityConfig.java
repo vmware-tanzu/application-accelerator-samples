@@ -41,24 +41,11 @@ public class WebSecurityConfig {
 				)
 				// After a successful logout, redirect to /home.
 				.logout(logout -> {
-						logout.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository));
 						logout.logoutSuccessUrl("/home");
 				})
 				.oauth2Login(withDefaults())
 				.oauth2Client(withDefaults());
 		return http.build();
-	}
-
-	// see: https://docs.spring.io/spring-security/reference/servlet/oauth2/login/advanced.html#oauth2login-advanced-oidc-logout
-	private LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
-		OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
-				new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-
-		// Sets the location that the End-User's User Agent will be redirected to
-		// after the logout has been performed at the Provider
-		oidcLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}");
-
-		return oidcLogoutSuccessHandler;
 	}
 
 }
