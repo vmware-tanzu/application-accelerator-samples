@@ -46,6 +46,10 @@ public class ConversationBufferMemory implements Memory {
 		messages.add(new AssistantMessage(outputs.get(promptOutputKey).toString()));
 	}
 
+	public void clear() {
+		messages.clear();
+	}
+
 	private String getBufferAsString() {
 		List<String> stringMessages = new ArrayList<>();
 		getMessages().forEach(message -> {
