@@ -11,4 +11,6 @@ public interface Memory {
 
     void save(Map<String, Object> inputs, Map<String, Object> outputs);
 
+    void clear();
+
 }

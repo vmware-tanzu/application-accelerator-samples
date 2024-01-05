@@ -36,11 +36,24 @@ accelerator:
       defaultValue: "gpt-3.5-turbo-1106"
       label: OpenAI Model
       required: true
+    - name: vectorStoreType
+      inputType: select
+      defaultValue: simple
+      label: Vector Store
+      required: true
+      choices:
+        - value: simple
+          text: Simple
+        - value: chromadb
+          text: ChromaDB
     - name: vectorStorePath
       inputType: text
       defaultValue: "/tmp/vectorstore.json"
       label: Vector Store Path
       required: true
+      dependsOn:
+        name: vectorStoreType
+        value: simple
   imports:
     - name: live-update
       expose:
@@ -54,7 +67,14 @@ engine:
       expression: '#packageName.replace(".", "/")'
     - name: workloadResourceName
       expression: '#artifactId.toLowerCase()'
+    - name: empty
+      expression:
+        "''"
   chain:
+    - condition: "#vectorStoreType != 'chromadb'"
+      exclude: [ "docker-compose.yaml", "**/ChromaVectorStoreConfig.java" ]
+    - condition: "#vectorStoreType != 'simple'"
+      exclude: [ "**/SimpleVectorStoreConfig.java" ]
     - merge:
       - include: [ "**" ]
         exclude: [ "pom.xml", "README.md" ]
@@ -68,6 +88,16 @@ engine:
             substitutions:
               - text: "<artifactId>ai-chat</artifactId>"
                 with: "'<artifactId>' + #artifactId + '</artifactId>'"
+          - condition: "#vectorStoreType != 'chromadb'"
+            type: ReplaceText
+            regex:
+              pattern: "<dependency>\\s*<groupId>org.springframework.boot</groupId>\\s*<artifactId>spring-boot-docker-compose</artifactId>\\s*</dependency>"
+              with: "#empty"
+          - condition: "#vectorStoreType != 'chromadb'"
+            type: ReplaceText
+            regex:
+              pattern: "<dependency>\\s*<groupId>org.springframework.ai</groupId>\\s*<artifactId>spring-ai-chroma-store</artifactId>\\s*<version>\\$\\{SPRING_AI_VERSION\\}</version>\\s*</dependency>"
+              with: "#empty"
       - include: [ "README.md" ]
         chain:
           - type: ReplaceText
@@ -88,6 +118,7 @@ engine:
                 with: "'spring.ai.openai.model=' + #openaiModel"
               - text: "app.vectorstore.path=/tmp/vectorstore.json"
                 with: "'app.vectorstore.path=' + #vectorStorePath"
+
     - merge:
       - type: InvokeFragment
         reference: live-update

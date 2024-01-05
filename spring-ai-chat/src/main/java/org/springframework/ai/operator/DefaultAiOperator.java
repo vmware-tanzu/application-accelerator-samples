@@ -135,9 +135,7 @@ public class DefaultAiOperator implements AiOperator {
 	@Override
 	public void clear() {
 		if (memory != null) {
-			// TODO : hackish for now because Memory interface doesn't provide a means of clearing itself
-			// ALSO : Doesn't actually work because the proxy can't be cast to ConversationBufferMemory
-			((org.springframework.ai.memory.ConversationBufferMemory) memory).getMessages().clear();
+			memory.clear();
 		}
 	}
 
