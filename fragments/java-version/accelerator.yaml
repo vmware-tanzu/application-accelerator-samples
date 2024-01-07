@@ -47,7 +47,7 @@ engine:
 
     # workload.yaml
     # This requires that BP_JVM_VERSION is already defined in the workload.yaml
-    - include: [ "config/workload.yaml" ]
+    - include: [ "config/workload.yaml", "config/workload-native.yaml" ]
       chain:
       - type: OpenRewriteRecipe
         recipe: org.openrewrite.yaml.ChangeValue
@@ -58,7 +58,7 @@ engine:
     # *.yaml
     # Targeting Pipeline definitions. Update versions of OpenJdk image.
     - include: [ "config/*.yaml" ]
-      exclude: [ "config/workload.yaml" ]
+      exclude: [ "config/workload*.yaml" ]
       chain:
         - type: ReplaceText
           regex:
