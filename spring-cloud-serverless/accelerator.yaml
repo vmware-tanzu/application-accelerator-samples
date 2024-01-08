@@ -11,6 +11,15 @@ accelerator:
 
   # options for the UI
   options:
+  - name: javaVersion
+    inputType: select
+    label: Java version to use
+    choices:
+    - value: "17"
+      text: Java 17
+    - value: "21"
+      text: Java 21
+    defaultValue: "17"
   - name: deploymentType
     inputType: select
     label: Deployment type
@@ -24,6 +33,7 @@ accelerator:
     defaultValue: workload
     required: true
   imports:
+  - name: java-version
   - name: tap-workload
   - name: build-wrapper-maven
 
@@ -37,6 +47,8 @@ engine:
       substitutions:
       - text: hello-fun
         with: "#artifactId"
+    - type: InvokeFragment
+      reference: java-version
   - include: [ "kubernetes/k8s/deployment.yaml", "kubernetes/k8s/service.yaml" ]
     condition: "#deploymentType == 'k8s-simple'"
     chain:
@@ -64,6 +76,8 @@ engine:
         with: "': ' + #artifactId"
     - type: RewritePath
       rewriteTo: "'config/' + #filename"
+    - type: InvokeFragment
+      reference: java-version
     - merge:
         - type: InvokeFragment
           reference: tap-workload
@@ -114,6 +128,7 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "'README.md'"
+
   - type: InvokeFragment
     reference: build-wrapper-maven
 
