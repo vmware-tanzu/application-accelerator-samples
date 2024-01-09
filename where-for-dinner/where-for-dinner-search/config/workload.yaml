@@ -32,7 +32,7 @@ spec:
   build:
     env:
       - name: BP_JVM_VERSION
-        value: "17"      
+        value: "21"      
   serviceClaims:
   - name: rmq
     ref:
