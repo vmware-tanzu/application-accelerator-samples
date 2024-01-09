@@ -31,4 +31,4 @@ out/
 .vs/
 
 ### Local Authoring ###
-accelerators/
+/accelerators
