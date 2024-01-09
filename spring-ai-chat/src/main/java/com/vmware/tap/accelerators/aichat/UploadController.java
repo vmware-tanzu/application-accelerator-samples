@@ -3,6 +3,7 @@ package com.vmware.tap.accelerators.aichat;
 import org.slf4j.Logger;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +47,9 @@ public class UploadController {
 
         TikaDocumentReader documentReader = new TikaDocumentReader(destinationFile.toUri().toString());
         List<Document> documents = documentReader.get();
-        vectorStore.add(documents);
+        List<Document> splitDocuments = new TokenTextSplitter().apply(documents);
+
+        vectorStore.add(splitDocuments);
 
         if (vectorStore instanceof SimpleVectorStore) {
             ((SimpleVectorStore) vectorStore).save(new File(vectorStorePath));
