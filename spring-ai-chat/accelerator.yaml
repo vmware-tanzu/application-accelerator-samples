@@ -26,15 +26,47 @@ accelerator:
       defaultValue: "com.example.aichat"
       label: Module root package
       required: true
+    - name: aiService
+      label: "AI Service"
+      inputType: select
+      dataType: string
+      display: true
+      required: true
+      defaultValue: "openAI"
+      choices:
+        - text: Azure AI Service
+          value: "azureOpenAI"
+        - text: Open AI
+          value: "openAI"
     - name: openaiApiKey
       inputType: text
       defaultValue: "${OPENAI_API_KEY}"
       label: OpenAI API Key
       required: true
+      dependsOn: 
+        name: aiService
+        value: openAI  
+    - name: azureaiApiKey
+      inputType: text
+      defaultValue: "${AZURE_AI_API_KEY}"
+      label: Azure AI API Key
+      required: true
+      dependsOn: 
+        name: aiService
+        value: azureOpenAI          
+    - name: azureAIEndpoint
+      label: Azure OpenAI Enpoint
+      description: The Azure AI endpoint URL
+      inputType: text
+      dataType: string
+      required: true
+      dependsOn: 
+        name: aiService
+        value: azureOpenAI             
     - name: openaiModel
       inputType: text
       defaultValue: "gpt-3.5-turbo-1106"
-      label: OpenAI Model
+      label: AI Model
       required: true
     - name: vectorStoreType
       inputType: select
@@ -74,7 +106,7 @@ engine:
     - condition: "#vectorStoreType != 'chromadb'"
       exclude: [ "docker-compose.yaml", "**/ChromaVectorStoreConfig.java" ]
     - condition: "#vectorStoreType != 'simple'"
-      exclude: [ "**/SimpleVectorStoreConfig.java" ]
+      exclude: [ "**/SimpleVectorStoreConfig.java" ]            
     - merge:
       - include: [ "**" ]
         exclude: [ "pom.xml", "README.md" ]
@@ -98,6 +130,11 @@ engine:
             regex:
               pattern: "<dependency>\\s*<groupId>org.springframework.ai</groupId>\\s*<artifactId>spring-ai-chroma-store</artifactId>\\s*<version>\\$\\{SPRING_AI_VERSION\\}</version>\\s*</dependency>"
               with: "#empty"
+          - condition: "#aiService == 'azureOpenAI'" 
+            type: ReplaceText
+            substitutions:
+              - text: "spring-ai-openai-spring-boot-starter"
+                with: "'spring-ai-azure-openai-spring-boot-starter'"                 
       - include: [ "README.md" ]
         chain:
           - type: ReplaceText
@@ -112,12 +149,27 @@ engine:
         chain:
           - type: ReplaceText
             substitutions:
+              - text: "app.vectorstore.path=/tmp/vectorstore.json"
+                with: "'app.vectorstore.path=' + #vectorStorePath"
+      - condition: "#aiService == 'openAI'"
+        include: [ "**/application.properties" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
               - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
                 with: "'spring.ai.openai.api-key=' + #openaiApiKey"
               - text: "spring.ai.openai.model=gpt-3.5-turbo-1106"
-                with: "'spring.ai.openai.model=' + #openaiModel"
-              - text: "app.vectorstore.path=/tmp/vectorstore.json"
-                with: "'app.vectorstore.path=' + #vectorStorePath"
+                with: "'spring.ai.openai.model=' + #openaiModel"                
+      - condition: "#aiService == 'azureOpenAI'"
+        include: [ "**/application.properties" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
+                with: "'spring.ai.azure.openai.api-key=' + #azureaiApiKey + '\nspring.ai.azure.openai.endpoint=' + #azureAIEndpoint"
+              - text: "spring.ai.openai.model=gpt-3.5-turbo-1106"
+                with: "'spring.ai.azure.openai.model=' + #openaiModel"                   
+
 
     - merge:
       - type: InvokeFragment
@@ -141,6 +193,8 @@ engine:
               rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #untouchedpath"
 
     - merge:
+        - type: InvokeFragment
+          reference: tap-workload    
         - include: [ "**" ]
         - type: InvokeFragment
           reference: build-wrapper-maven
