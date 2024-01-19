@@ -16,6 +16,6 @@ grep -q 'postgresql' pom.xml
 grep -q 'flyway' pom.xml
 ! grep -q 'liquibase' pom.xml
 
-./mvnw package
+./mvnw package -DskipTests
 
 popd

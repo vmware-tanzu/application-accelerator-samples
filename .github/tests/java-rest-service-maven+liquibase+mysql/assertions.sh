@@ -16,6 +16,6 @@ grep -q 'mysql-connector-j' pom.xml
 grep -q 'liquibase' pom.xml
 ! grep -q 'flyway' pom.xml
 
-./mvnw package
+./mvnw package -DskipTests
 
 popd

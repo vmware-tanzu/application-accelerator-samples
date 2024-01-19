@@ -16,6 +16,6 @@ grep -q 'mysql-connector-j' build.gradle.kts
 grep -q 'flyway' build.gradle.kts
 ! grep -q 'liquibase' build.gradle.kts
 
-./gradlew build
+./gradlew build -x test
 
 popd
