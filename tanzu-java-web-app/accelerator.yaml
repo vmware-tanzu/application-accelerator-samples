@@ -180,7 +180,7 @@ engine:
           newGroupId: "'org.springframework.boot'"
           oldArtifactId: "'spring-boot-starter-parent'"
           newArtifactId: "'spring-boot-starter-parent'"
-          newVersion: "'3.2.1'"
+          newVersion: "'3.2.2'"
       - type: ReplaceText
         regex:
           pattern: "\\s+<snakeyaml.version>1.33</snakeyaml.version>"
@@ -191,7 +191,7 @@ engine:
       - type: ReplaceText
         regex:
           pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-          with: "'id(\"org.springframework.boot\") version \"3.2.1\"'"
+          with: "'id(\"org.springframework.boot\") version \"3.2.2\"'"
       - type: ReplaceText
         regex:
           pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
