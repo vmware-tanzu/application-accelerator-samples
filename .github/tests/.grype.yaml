@@ -20,3 +20,4 @@ ignore:
   - vulnerability: GHSA-4wrc-f8pq-fpqp # Serialization of untrusted data is not an intended use case, will not fix - see CVE-2016-1000027
   - vulnerability: GHSA-vmq6-5m68-f53m # We are not using logback receiver which is the component that is vulnerable
   - vulnerability: GHSA-gm62-rw4g-vrc4 # We are not using logback receiver which is the component that is vulnerable
+  - vulnerability: GHSA-r4q3-7g4q-x89m # The java-server-side-ui accelerator uses versions of spring and spring-security that are not vulnerable
