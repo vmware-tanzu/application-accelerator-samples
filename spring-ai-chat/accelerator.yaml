@@ -65,7 +65,7 @@ accelerator:
         value: azureOpenAI             
     - name: openaiModel
       inputType: text
-      defaultValue: "gpt-3.5-turbo-1106"
+      defaultValue: "gpt-3.5-turbo"
       label: AI Model
       required: true
     - name: vectorStoreType
@@ -76,16 +76,32 @@ accelerator:
       choices:
         - value: simple
           text: Simple
-        - value: chromadb
-          text: ChromaDB
-    - name: vectorStorePath
+        - value: pgvector
+          text: PostgreSQL (pgvector)
+    - name: pgJdbcUrl
       inputType: text
-      defaultValue: "/tmp/vectorstore.json"
-      label: Vector Store Path
+      defaultValue: "jdbc:postgresql://localhost:5432/vector_store"
+      label: PostgreSQL JDBC URL
       required: true
       dependsOn:
         name: vectorStoreType
-        value: simple
+        value: pgvector
+    - name: pgUsername
+      inputType: text
+      defaultValue: "postgres"
+      label: PostgreSQL Username
+      required: true
+      dependsOn:
+          name: vectorStoreType
+          value: pgvector
+    - name: pgPassword
+      inputType: text
+      defaultValue: "postgres"
+      label: PostgreSQL Password
+      required: true
+      dependsOn:
+          name: vectorStoreType
+          value: pgvector
   imports:
     - name: live-update
       expose:
@@ -103,8 +119,6 @@ engine:
       expression:
         "''"
   chain:
-    - condition: "#vectorStoreType != 'chromadb'"
-      exclude: [ "docker-compose.yaml", "**/ChromaVectorStoreConfig.java" ]
     - condition: "#vectorStoreType != 'simple'"
       exclude: [ "**/SimpleVectorStoreConfig.java" ]            
     - merge:
@@ -120,15 +134,20 @@ engine:
             substitutions:
               - text: "<artifactId>ai-chat</artifactId>"
                 with: "'<artifactId>' + #artifactId + '</artifactId>'"
-          - condition: "#vectorStoreType != 'chromadb'"
+          - condition: "#vectorStoreType != 'pgvector'"
             type: ReplaceText
             regex:
-              pattern: "<dependency>\\s*<groupId>org.springframework.boot</groupId>\\s*<artifactId>spring-boot-docker-compose</artifactId>\\s*</dependency>"
+              pattern: "<dependency>\\s*<groupId>org.springframework.ai</groupId>\\s*<artifactId>spring-ai-pgvector-store</artifactId>\\s*<version>\\$\\{SPRING_AI_VERSION\\}</version>\\s*</dependency>"
               with: "#empty"
-          - condition: "#vectorStoreType != 'chromadb'"
+          - condition: "#vectorStoreType != 'pgvector'"
             type: ReplaceText
             regex:
-              pattern: "<dependency>\\s*<groupId>org.springframework.ai</groupId>\\s*<artifactId>spring-ai-chroma-store</artifactId>\\s*<version>\\$\\{SPRING_AI_VERSION\\}</version>\\s*</dependency>"
+              pattern: "<dependency>\\s*<groupId>org.springframework.boot</groupId>\\s*<artifactId>spring-boot-starter-jdbc</artifactId>\\s*</dependency>"
+              with: "#empty"
+          - condition: "#vectorStoreType != 'pgvector'"
+            type: ReplaceText
+            regex:
+              pattern: "<dependency>\\s*<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>\\s*<scope>runtime</scope>\\s*</dependency>"
               with: "#empty"
           - condition: "#aiService == 'azureOpenAI'" 
             type: ReplaceText
@@ -145,12 +164,6 @@ engine:
             regex:
               pattern: "--- StartMaven\\s|--- EndMaven\\s"
               with: "''"
-      - include: [ "**/application.properties" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "app.vectorstore.path=/tmp/vectorstore.json"
-                with: "'app.vectorstore.path=' + #vectorStorePath"
       - condition: "#aiService == 'openAI'"
         include: [ "**/application.properties" ]
         chain:
@@ -158,8 +171,8 @@ engine:
             substitutions:
               - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
                 with: "'spring.ai.openai.api-key=' + #openaiApiKey"
-              - text: "spring.ai.openai.model=gpt-3.5-turbo-1106"
-                with: "'spring.ai.openai.model=' + #openaiModel"                
+              - text: "spring.ai.openai.model=gpt-3.5-turbo"
+                with: "'spring.ai.openai.model=' + #openaiModel"
       - condition: "#aiService == 'azureOpenAI'"
         include: [ "**/application.properties" ]
         chain:
@@ -167,10 +180,15 @@ engine:
             substitutions:
               - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
                 with: "'spring.ai.azure.openai.api-key=' + #azureaiApiKey + '\nspring.ai.azure.openai.endpoint=' + #azureAIEndpoint"
-              - text: "spring.ai.openai.model=gpt-3.5-turbo-1106"
-                with: "'spring.ai.azure.openai.model=' + #openaiModel"                   
-
-
+              - text: "spring.ai.openai.model=gpt-3.5-turbo"
+                with: "'spring.ai.azure.openai.model=' + #openaiModel"
+      - condition: "#vectorStoreType != 'pgvector'"
+        include: [ "**/application.properties" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "spring.ai.vectorstore.pgvector.index-type=ivfflat"
+                with: "''"
     - merge:
       - type: InvokeFragment
         reference: live-update

@@ -1,8 +1,8 @@
 package org.springframework.ai.operator;
 
 import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.memory.Memory;
-import org.springframework.ai.prompt.PromptTemplate;
 import org.springframework.ai.vectorstore.VectorStore;
 
 public class DefaultAiOperatorBuilder implements AiOperator.Builder {

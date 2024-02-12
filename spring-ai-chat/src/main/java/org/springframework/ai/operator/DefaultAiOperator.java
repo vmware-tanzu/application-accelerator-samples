@@ -3,18 +3,17 @@ package org.springframework.ai.operator;
 import org.slf4j.Logger;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.ChatResponse;
+import org.springframework.ai.chat.metadata.Usage;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.memory.Memory;
-import org.springframework.ai.metadata.Usage;
-import org.springframework.ai.prompt.Prompt;
-import org.springframework.ai.prompt.PromptTemplate;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 public class DefaultAiOperator implements AiOperator {
 
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(DefaultAiOperator.class);
@@ -104,9 +103,9 @@ public class DefaultAiOperator implements AiOperator {
 		PromptTemplate promptTemplateCopy = new PromptTemplate(promptTemplate.getTemplate());
 		String prompt = promptTemplateCopy.render(resolvedParameters).trim();
 		LOG.debug("Submitting prompt: {}", prompt);
-		ChatResponse aiResponse = aiClient.generate(new Prompt(prompt));
+		ChatResponse aiResponse = aiClient.call(new Prompt(prompt));
 		logUsage(aiResponse);
-		String generationResponse = aiResponse.getGenerations().get(0).getContent();
+		String generationResponse = aiResponse.getResult().getOutput().getContent();
 
 		// post-process memory
 		postProcess(parameters, aiResponse);
@@ -115,7 +114,7 @@ public class DefaultAiOperator implements AiOperator {
 	}
 
 	private void logUsage(ChatResponse aiResponse) {
-		Usage usage = aiResponse.getGenerationMetadata().getUsage();
+		Usage usage = aiResponse.getMetadata().getUsage();
 		LOG.info("Usage: Prompt Tokens: {}; Generation Tokens: {}; Total Tokens: {}", usage.getPromptTokens(), usage.getGenerationTokens(), usage.getTotalTokens());
 	}
 
@@ -127,9 +126,9 @@ public class DefaultAiOperator implements AiOperator {
 				DefaultPromptTemplateStrings.STANDALONE_QUESTION_PROMPT);
 		String prompt = standalonePromptTemplate.render(resolvedParameters);
 		LOG.debug("Submitting standalone question prompt: {}", prompt);
-		ChatResponse aiResponse = aiClient.generate(new Prompt(prompt));
+		ChatResponse aiResponse = aiClient.call(new Prompt(prompt));
 		logUsage(aiResponse);
-		return aiResponse.getGenerations().get(0).getContent();
+		return aiResponse.getResult().getOutput().getContent();
 	}
 
 	@Override
@@ -149,7 +148,7 @@ public class DefaultAiOperator implements AiOperator {
 
 	private void postProcess(Map<String, Object> parameters, ChatResponse aiResponse) {
 		if (memory != null) {
-			memory.save(parameters, Map.of(historyParameterName, aiResponse.getGenerations().get(0).getContent()));
+			memory.save(parameters, Map.of(historyParameterName, aiResponse.getResult().getOutput().getContent()));
 		}
 	}
 

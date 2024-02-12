@@ -25,9 +25,6 @@ public class UploadController {
 
     private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(UploadController.class);
 
-    @Value("${app.vectorstore.path}")
-    private String vectorStorePath;
-
     private final VectorStore vectorStore;
 
     public UploadController(VectorStore vectorStore) {
@@ -50,10 +47,6 @@ public class UploadController {
         List<Document> splitDocuments = new TokenTextSplitter().apply(documents);
 
         vectorStore.add(splitDocuments);
-
-        if (vectorStore instanceof SimpleVectorStore) {
-            ((SimpleVectorStore) vectorStore).save(new File(vectorStorePath));
-        }
 
         return new UploadResponse(file.getOriginalFilename(), file.getContentType(), file.getSize());
     }
