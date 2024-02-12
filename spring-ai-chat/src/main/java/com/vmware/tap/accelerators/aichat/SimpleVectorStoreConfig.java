@@ -11,17 +11,9 @@ import java.io.File;
 @Configuration
 public class SimpleVectorStoreConfig {
 
-    @Value("${app.vectorstore.path}")
-    private String vectorStorePath;
-
     @Bean
     SimpleVectorStore simpleVectorStore(EmbeddingClient embeddingClient) {
-        SimpleVectorStore simpleVectorStore = new SimpleVectorStore(embeddingClient);
-        File vectorStoreFile = new File(vectorStorePath);
-        if (vectorStoreFile.exists()) {
-            simpleVectorStore.load(vectorStoreFile);
-        }
-        return simpleVectorStore;
+        return new SimpleVectorStore(embeddingClient);
     }
 
 }

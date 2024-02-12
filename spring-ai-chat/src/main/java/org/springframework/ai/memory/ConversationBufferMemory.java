@@ -1,9 +1,9 @@
 package org.springframework.ai.memory;
 
-import org.springframework.ai.prompt.messages.AssistantMessage;
-import org.springframework.ai.prompt.messages.Message;
-import org.springframework.ai.prompt.messages.MessageType;
-import org.springframework.ai.prompt.messages.UserMessage;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.MessageType;
+import org.springframework.ai.chat.messages.UserMessage;
 
 import java.util.ArrayList;
 import java.util.List;
