@@ -164,6 +164,15 @@ engine:
             regex:
               pattern: "--- StartMaven\\s|--- EndMaven\\s"
               with: "''"
+
+      - include: [ "config/workload.yaml" ]
+        chain:
+          - condition: "#vectorStoreType != 'pgvector'"
+            type: ReplaceText
+            regex:
+              pattern: "\\s\\sserviceClaims\\:\\n\\s*\\-\\s*name\\:\\s*vector-store\\n\\s*\\s*ref\\:\\n\\s*\\s*\\s*apiVersion\\:\\s*services.apps.tanzu.vmware.com/v1alpha1\\n\\s*\\s*\\s*kind\\:\\s*ResourceClaim\\n\\s*\\s*\\s*name\\:\\s*vector-store"
+              with: "#empty"
+
       - condition: "#aiService == 'openAI'"
         include: [ "**/application.properties" ]
         chain:
@@ -188,6 +197,8 @@ engine:
           - type: ReplaceText
             substitutions:
               - text: "spring.ai.vectorstore.pgvector.index-type=ivfflat"
+                with: "''"
+              - text: "spring.ai.vectorstore.pgvector.distance-type=euclidean_distance"
                 with: "''"
     - merge:
       - type: InvokeFragment
