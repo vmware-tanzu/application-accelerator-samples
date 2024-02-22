@@ -14,6 +14,7 @@ spring:
 
   sql.init.mode: ALWAYS
   sql.init.platform: h2
+  sql.init.continue-on-error: true 
   
   cloud: 
     function:

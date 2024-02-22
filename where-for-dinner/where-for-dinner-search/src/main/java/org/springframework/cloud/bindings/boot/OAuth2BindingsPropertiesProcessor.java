@@ -1,11 +1,10 @@
-package com.java.example.tanzu.wherefordinner.config;
+package org.springframework.cloud.bindings.boot;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.cloud.bindings.Binding;
 import org.springframework.cloud.bindings.Bindings;
-import org.springframework.cloud.bindings.boot.BindingsPropertiesProcessor;
 import org.springframework.core.env.Environment;
 
 public class OAuth2BindingsPropertiesProcessor implements BindingsPropertiesProcessor
