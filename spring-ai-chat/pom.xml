@@ -15,7 +15,7 @@
     <description>Spring AI Chat</description>
     <properties>
         <java.version>17</java.version>
-        <SPRING_AI_VERSION>0.8.0-SNAPSHOT</SPRING_AI_VERSION>
+        <SPRING_AI_VERSION>0.8.0</SPRING_AI_VERSION>
     </properties>
     <dependencies>
         <dependency>
@@ -88,11 +88,11 @@
 
     <repositories>
         <repository>
-            <id>spring-snapshot</id>
-            <name>Spring Snapshot Repository</name>
-            <url>https://repo.spring.io/snapshot</url>
+            <id>spring-milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>https://repo.spring.io/milestone</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
     </repositories>
