@@ -67,8 +67,11 @@ public class SearchProcessor
 								return cache.setHashForKey(key, hash, expiration)
 										.then(Mono.just(avail));
 							});														
-				});
-			});		
+				})
+			    .onErrorContinue(Exception.class,  (e, o) ->
+					log.error("Error processing search {}.  Aborting with error message: {}", crit.name(), e.getMessage(), e));
+			});
+
 	}
 	
 	protected String generateHash(Availability avail)

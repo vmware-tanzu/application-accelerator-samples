@@ -5,6 +5,9 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.ReactiveTransactionManager;
+import org.springframework.transaction.reactive.TransactionalOperator;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 @OpenAPIDefinition(
         info = @Info(
@@ -49,6 +53,8 @@ public class AvailabilityResource
 	
 	protected AvailabilityWindowRepository availWindowRepo;
 	
+	protected ReactiveTransactionManager txMgr;
+	
 	/*
 	 * Using setters for unit testing purposes
 	 */
@@ -62,6 +68,12 @@ public class AvailabilityResource
 	public void setAvailabilityWindowRepository(AvailabilityWindowRepository availWindowRepo)
 	{
 		this.availWindowRepo = availWindowRepo;
+	}
+	
+	@Autowired
+	public void setTxMgr(ReactiveTransactionManager txMgr)
+	{
+		this.txMgr = txMgr;
 	}
 	
 	protected String getPrincipalName(Principal oauth2User)
@@ -110,6 +122,8 @@ public class AvailabilityResource
 	
 	protected Flux<Availability> getAvailabilityFromFlux(Flux<com.java.example.tanzu.wherefordinner.entity.Availability> flux)
 	{
+		final var transactionalOperator = createTransactionOperator(true);
+		
 		return flux.flatMap(avail -> 
 		   {
 			   final var retAvail = new Availability();
@@ -123,6 +137,7 @@ public class AvailabilityResource
 			   retAvail.setReservationURL(avail.getReservationURL());
 			   
 			   return availWindowRepo.findByAvailabilityId(avail.getId())
+				  .as(transactionalOperator::transactional).contextWrite(Context.of("TYPE", "RO"))
 				  .switchIfEmpty(Mono.just(new com.java.example.tanzu.wherefordinner.entity.AvailabilityWindow(0L, 0L, 0L)))
 				  .map(win ->
 			      {
@@ -138,6 +153,7 @@ public class AvailabilityResource
 				     return retAvail;
 			      });
 		   })
+		   .as(transactionalOperator::transactional).contextWrite(Context.of("TYPE", "RO"))
 	 	   .onErrorResume(e -> { 
 	 	    	log.error("Error getting availability.", e);
 	 	    	return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -156,5 +172,12 @@ public class AvailabilityResource
 	public Mono<String> getAvailabilityAppVersion()
 	{
 		return Mono.just(appVersion);
+	}
+	
+	protected TransactionalOperator createTransactionOperator(boolean readOnly)
+	{
+		final var txDef = new DefaultTransactionDefinition();
+		txDef.setReadOnly(readOnly);
+		return TransactionalOperator.create(txMgr, txDef);
 	}
 }

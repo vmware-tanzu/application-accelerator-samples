@@ -7,6 +7,7 @@ import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.ReactiveTransactionManager;
 
 import com.java.example.tanzu.wherefordinner.model.Availability;
 import com.java.example.tanzu.wherefordinner.model.Availability.AvailabilityWindow;
@@ -28,14 +29,17 @@ public class AvailabilitySink
 	@Autowired
 	protected AvailabilityWindowRepository availWinRepo;
 
+	@Autowired
+	protected ReactiveTransactionManager txMgr;
 	
 	@Bean
 	@RegisterReflectionForBinding({Availability.class, AvailabilityWindow.class})
 	public Function<Flux<Availability>, Mono<Void>> processAvailability()
 	{
-		return avails -> avails.flatMap(avail -> 
+		return avails -> avails
+				.flatMap(avail -> 
 			{
-				log.info("Received availability for dining name {} in search {} for subject {}", avail.getDiningName(), avail.getSearchName(), avail.getRequestSubject());
+				log.info("Received availability for dining name {} in search {} for subject {}", avail.getDiningName(), avail.getSearchName(), avail.getRequestSubject());				
 				
 				// check to see if this is an update or a new entry
 				return availRepo.findBySearchNameAndDiningNameAndRequestSubject(avail.getSearchName(), avail.getDiningName(), avail.getRequestSubject())
@@ -52,14 +56,16 @@ public class AvailabilitySink
 						return saveAvail.flatMap(savedAvail ->
 						{
 							// delete any existing window entries and add new entries
-							return availWinRepo.deleteByAvailabilityId(savedAvail.getId())
+							return availWinRepo.deleteByAvailabilityId(savedAvail.getId())	
 							  .then(saveTimeWindows(avail, savedAvail));
 
 						});
 					
-					});
-				
-			}).then();
+					});					
+			})
+		    .onErrorContinue(Exception.class,  (e, o) ->
+				log.error("Error processing availability: {}", e.getMessage(), e))					
+			.then();
 	}
 	
 	@Bean
@@ -69,7 +75,7 @@ public class AvailabilitySink
 		{
 			log.info("Deleting availability in search name \'{}\' for subject \'{}\'", search.getName(), search.getRequestSubject());
 			
-			return availRepo.findBySearchNameAndRequestSubject(search.getName(), search.getRequestSubject())
+			return availRepo.findBySearchNameAndRequestSubject(search.getName(), search.getRequestSubject())	
 			.map(avail -> avail.getId())
 			.collectList()
 			.flatMap(availIds -> availRepo.deleteAllById(availIds).then(availWinRepo.deleteByAvailabilityIdIn(availIds)));
