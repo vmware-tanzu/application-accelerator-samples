@@ -31,4 +31,4 @@ assertFileExists ./$TESTNAME/${PROJNAME}/src/main/java/com/example/aichat/Simple
 
 
 rm -rf $TESTNAME
-# rm ${PROJNAME}.zip
+rm ${PROJNAME}.zip
