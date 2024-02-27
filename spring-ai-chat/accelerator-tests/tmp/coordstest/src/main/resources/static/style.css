@@ -1,0 +1,126 @@
+body {
+    background-color: white;
+    color: black;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+div#chatArea {
+    position:absolute;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    display: table;
+}
+
+div#header {
+    display: table-row;
+    height: 50px;
+}
+
+div.chatDiv {
+    display: table-row;
+    border: 1px solid green;
+}
+
+textarea#userInput {
+    /* position: absolute; */
+    max-height: 20vh;
+    height: 20vh;
+    width: 90%;
+    border: 2px solid forestgreen;
+    border-radius: 25px;
+    font-size: 20pt;
+    font-family:Arial, Helvetica, sans-serif;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-right: 100px;
+    resize: none;
+}
+
+textarea#userInput:focus {
+    outline: none;
+}
+
+div#transcript {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 10px;
+    margin-right:20px;
+    background-color: #f3f6fb;
+    max-height: 65vh;
+    height: 65vh;
+    border-radius: 25px;
+    font-size: 16pt;
+    overflow-y: scroll;
+}
+
+div.UserEntry {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div.AIEntry {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    border-radius: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+div.SystemEntry {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: lightgray;
+    border-radius: 20px;
+    margin-left: 50vw;
+    margin-right: 30px;
+}
+
+button {
+    background-color: #f3f6fb;
+    border: 2px solid forestgreen;
+    font-size: 20px;
+    border-radius: 25px;
+}
+
+div.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+div.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.closeModalSpan {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closeModalSpan:hover,
+.closeModalSpan:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

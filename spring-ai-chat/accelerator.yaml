@@ -99,7 +99,7 @@ engine:
       exclude: [ "**/SimpleVectorStoreConfig.java" ]            
     - merge:
       - include: [ "**" ]
-        exclude: [ "pom.xml", "README.md" ]
+        exclude: [ "pom.xml", "README.md", "accelerator-tests/**", "target/**", ".idea/**" ]
       - include: [ "pom.xml" ]
         chain:
           - type: ReplaceText
@@ -149,33 +149,32 @@ engine:
               pattern: "\\s\\sserviceClaims\\:\\n\\s*\\-\\s*name\\:\\s*vector-store\\n\\s*\\s*ref\\:\\n\\s*\\s*\\s*apiVersion\\:\\s*services.apps.tanzu.vmware.com/v1alpha1\\n\\s*\\s*\\s*kind\\:\\s*ResourceClaim\\n\\s*\\s*\\s*name\\:\\s*vector-store"
               with: "#empty"
 
-      - condition: "#aiService == 'openAI'"
-        include: [ "**/application.properties" ]
+      - include: [ "src/main/resources/application.properties" ]
         chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
-                with: "'spring.ai.openai.api-key=' + #openaiApiKey"
-              - text: "spring.ai.openai.model=gpt-3.5-turbo"
-                with: "'spring.ai.openai.model=' + #openaiModel"
-      - condition: "#aiService == 'azureOpenAI'"
-        include: [ "**/application.properties" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
-                with: "'spring.ai.azure.openai.api-key=' + #azureaiApiKey + '\nspring.ai.azure.openai.endpoint=' + #azureAIEndpoint"
-              - text: "spring.ai.openai.model=gpt-3.5-turbo"
-                with: "'spring.ai.azure.openai.model=' + #openaiModel"
-      - condition: "#vectorStoreType != 'pgvector'"
-        include: [ "**/application.properties" ]
-        chain:
-          - type: ReplaceText
-            substitutions:
-              - text: "spring.ai.vectorstore.pgvector.index-type=ivfflat"
-                with: "''"
-              - text: "spring.ai.vectorstore.pgvector.distance-type=euclidean_distance"
-                with: "''"
+        - condition: "#aiService == 'openAI'"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
+                  with: "'spring.ai.openai.api-key=' + #openaiApiKey"
+                - text: "spring.ai.openai.model=gpt-3.5-turbo"
+                  with: "'spring.ai.openai.model=' + #openaiModel"
+        - condition: "#aiService == 'azureOpenAI'"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
+                  with: "'spring.ai.azure.openai.api-key=' + #azureaiApiKey + '\nspring.ai.azure.openai.endpoint=' + #azureAIEndpoint"
+                - text: "spring.ai.openai.model=gpt-3.5-turbo"
+                  with: "'spring.ai.azure.openai.model=' + #openaiModel"
+        - condition: "#vectorStoreType != 'pgvector'"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "spring.ai.vectorstore.pgvector.index-type=ivfflat"
+                  with: "''"
+                - text: "spring.ai.vectorstore.pgvector.distance-type=euclidean_distance"
+                  with: "''"
     - merge:
       - type: InvokeFragment
         reference: live-update
