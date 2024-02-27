@@ -78,30 +78,6 @@ accelerator:
           text: Simple
         - value: pgvector
           text: PostgreSQL (pgvector)
-    - name: pgJdbcUrl
-      inputType: text
-      defaultValue: "jdbc:postgresql://localhost:5432/vector_store"
-      label: PostgreSQL JDBC URL
-      required: true
-      dependsOn:
-        name: vectorStoreType
-        value: pgvector
-    - name: pgUsername
-      inputType: text
-      defaultValue: "postgres"
-      label: PostgreSQL Username
-      required: true
-      dependsOn:
-          name: vectorStoreType
-          value: pgvector
-    - name: pgPassword
-      inputType: text
-      defaultValue: "postgres"
-      label: PostgreSQL Password
-      required: true
-      dependsOn:
-          name: vectorStoreType
-          value: pgvector
   imports:
     - name: live-update
       expose:
