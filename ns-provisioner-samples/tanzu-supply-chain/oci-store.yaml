@@ -1,0 +1,10 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oci-store
+stringData:
+  repository: #@ data.values.imported.tanzusupplychain.ocistore.repository
+  server: #@ data.values.imported.tanzusupplychain.ocistore.server
+type: Opaque
