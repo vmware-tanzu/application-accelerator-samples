@@ -8,6 +8,9 @@ echo "=== ${TESTNAME}:"
 
 tanzu accelerator generate --server-url http://localhost:8877 --options-file ./${TESTNAME}.json spring-ai-chat 1>/dev/null
 unzip -d $TESTNAME ${PROJNAME}.zip 1>/dev/null
+
+assertDirDoesntExist ./$TESTNAME/${PROJNAME}/accelerator-tests
+
 assertFileExists ./$TESTNAME/${PROJNAME}/src/main/resources/application.properties
 assertFileContains ./$TESTNAME/${PROJNAME}/src/main/resources/application.properties 'spring.ai.openai.api-key=myapikey'
 assertFileContains ./$TESTNAME/${PROJNAME}/src/main/resources/application.properties 'spring.ai.openai.model=gpt-4'
