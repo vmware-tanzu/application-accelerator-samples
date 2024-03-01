@@ -142,6 +142,12 @@ echo "<<base 64-encoded username>>" | base64 --decode
 echo "<<base 64-encoded password>>" | base64 --decode
 ```
 
+Create a port-forward from your local machine to the PostgreSQL service:
+
+```sh
+kubectl port-forward service/spring-ai-vector 5432:5432
+```
+
 Use `psql` to connect to the database:
 
 ```bash
@@ -168,6 +174,13 @@ Verify that the extension has been created:
 
 ```sql
 SELECT * FROM pg_extension;
+```
+
+Finally, create a resource claim to the database with the name "vector-store"
+(to match the name in `config/workload.yaml`):
+
+```yaml
+tanzu services resource-claims create vector-store --resource-api-version sql.tanzu.vmware.com/v1 --resource-kind Postgres --resource-namespace my-apps --resource-name spring-ai-vector
 ```
 
 ### Tanzu CLI
