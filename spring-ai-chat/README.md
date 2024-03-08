@@ -71,6 +71,15 @@ Kubernetes cluster that is provisioned with Tanzu Application Platform (https://
 > Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
 > annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
 
+### Create a secret for the AI API key
+
+The application requires an AI API key to be provided in a Secret resource.
+You can create the Secret using this command:
+
+```sh
+kubectl create secret generic ai-api --from-literal=api-key="<your-api-key>"
+```
+
 ### PostgreSQL/pgvector
 
 If you chose PostgreSQL/pgvector as your vector store, you'll need to create
