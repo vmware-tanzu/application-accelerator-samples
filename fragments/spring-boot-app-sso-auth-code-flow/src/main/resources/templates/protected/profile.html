@@ -9,9 +9,7 @@
 <h1 th:utext="${'Hello, ' + username +'!'}"></h1>
 <p>On this page you can put your protected information</p>
 
-<form th:name="${'logout-form'}" th:action="@{/logout}"
-      th:if="${#authorization.expression('isAuthenticated()')}"
-      method="post">
+<form th:name="${'logout-form'}" th:action="@{/logout}" method="post">
     <button type="submit" name="logout">Log out</button>
 </form>
 </body>

@@ -28,7 +28,7 @@ engine:
             pattern: "(?<existingContent>[\\S\\s]*)(?<closingTag></body>[\\S\\s]*)"
             with: |
               '${existingContent}<!-- Link to trigger AppSSO Auth Code Flow -->
-              <section class="mt-3"> 
+              <section class="mt-3 text-center">
                 <form th:action="@{/protected/profile}">
                   <button value="submit" class="btn btn-primary w-25 h-50 align-items-center">
                     Log in using AppSSO
@@ -39,15 +39,6 @@ engine:
 
     - include: [ "pom.xml" ]
       chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<artifactId>thymeleaf-extras-springsecurity5</artifactId>[\\s\\S]+</dependencies>))"
-            with: |
-              '${startOfDependencies}
-                      <dependency>
-                          <groupId>org.thymeleaf.extras</groupId>
-                          <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-                      </dependency>${existingDependencies}'
         - type: ReplaceText
           regex:
             pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<artifactId>spring-boot-starter-thymeleaf</artifactId>[\\s\\S]+</dependencies>))"
@@ -81,12 +72,6 @@ engine:
 
     - include: [ "build.gradle.kts" ]
       chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation(\"org.thymeleaf.extras:thymeleaf-extras-springsecurity5\")[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")${existingDependencies}'
         - type: ReplaceText
           regex:
             pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\(\"org.springframework.boot:spring-boot-starter-thymeleaf\"\\)[\\s\\S]+))"
