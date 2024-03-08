@@ -1,0 +1,206 @@
+accelerator:
+  displayName: Tanzu Spring AI RAG App
+  description: A Spring Boot web application using Spring AI to offer an interactive chat experience utilizing RAG
+    (Retrieval Augmented Generation) to enable a user to ask questions about their own documents.
+  iconUrl: data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KDTwhLS0gVXBsb2FkZWQgdG86IFNWRyBSZXBvLCB3d3cuc3ZncmVwby5jb20sIEdlbmVyYXRvcjogU1ZHIFJlcG8gTWl4ZXIgVG9vbHMgLS0+Cjxzdmcgd2lkdGg9IjgwMHB4IiBoZWlnaHQ9IjgwMHB4IiB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cg08ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgoNPHBhdGggZD0iTTAgMGgzMnYzMkgweiIvPgoNPHBhdGggZmlsbD0iIzcwQUQ1MSIgZD0iTTUuNDY2IDI3Ljk5M2MuNTg2LjQ3MyAxLjQ0Ni4zODUgMS45MTgtLjIwMi40NzUtLjU4NS4zODYtMS40NDUtLjItMS45Mi0uNTg1LS40NzQtMS40NDQtLjM4My0xLjkyLjIwMi0uNDUuNTU1LS4zOTIgMS4zNTYuMTE1IDEuODQ0bC0uMjY2LS4yMzRDMS45NzIgMjQuNzYyIDAgMjAuNTk3IDAgMTUuOTc4IDAgNy4xNjggNy4xNjggMCAxNS45OCAwYzQuNDggMCA4LjUzIDEuODU3IDExLjQzNSA0LjgzNi42Ni0uODk4IDEuMjMyLTEuOTAyIDEuNy0zLjAxNSAyLjAzNiA2LjExOCAzLjIzMyAxMS4yNiAyLjc5NSAxNS4zMS0uNTkyIDguMjc0LTcuNTA4IDE0LjgzLTE1LjkzIDE0LjgzLTMuOTEyIDAtNy40OTYtMS40MTYtMTAuMjc2LTMuNzU3bC0uMjM4LS4yMXptMjMuNTgtNC45ODJjNC4wMS01LjMzNiAxLjc3NS0xMy45NjUtLjA4NS0xOS40OC0xLjY1NyAzLjQ1My01LjczOCA2LjA5NC05LjI2MiA2LjkzLTMuMzAzLjc4OC02LjIyNi4xNDItOS4yODMgMS4zMTgtNi45NyAyLjY4LTYuODYgMTAuOTkyLTMuMDIgMTIuODYuMDAyIDAgLjIzLjEyNC4yMjcuMTIgMC0uMDAyIDUuNjQ0LTEuMTIyIDguNzY0LTIuMjc0IDQuNTYtMS42ODQgOS41NjYtNS44MzUgMTEuMjEzLTEwLjY1Ny0uODc3IDUuMDE1LTUuMTgyIDkuODQtOS41MDcgMTIuMDU2LTIuMzAyIDEuMTgyLTQuMDkyIDEuNDQ1LTcuODggMi43NTYtLjQ2NC4xNTgtLjgyOC4zMTQtLjgyOC4zMTQuOTYtLjE2IDEuOTE3LS4yMTIgMS45MTctLjIxMiA1LjM5My0uMjU1IDEzLjgwNyAxLjUxNiAxNy43NDUtMy43M3oiLz4KDTwvZz4KDTwvc3ZnPg==
+  tags:
+    - java
+    - spring
+    - web
+    - ai
+    - tanzu
+
+  options:
+    - name: artifactId
+      inputType: text
+      defaultValue: "spring-ai-chat"
+      label: Module artifact name
+      required: true
+    - name: groupId
+      inputType: text
+      defaultValue: "com.example"
+      label: Module group name
+      required: true
+    - name: packageName
+      inputType: text
+      defaultValue: "com.example.aichat"
+      label: Module root package
+      required: true
+    - name: aiService
+      label: "AI Service"
+      inputType: select
+      dataType: string
+      display: true
+      required: true
+      defaultValue: "openAI"
+      choices:
+        - text: Azure AI Service
+          value: "azureOpenAI"
+        - text: Open AI
+          value: "openAI"
+    - name: openaiApiKey
+      inputType: text
+      defaultValue: "${OPENAI_API_KEY}"
+      label: OpenAI API Key
+      required: true
+      dependsOn: 
+        name: aiService
+        value: openAI  
+    - name: azureaiApiKey
+      inputType: text
+      defaultValue: "${AZURE_AI_API_KEY}"
+      label: Azure AI API Key
+      required: true
+      dependsOn: 
+        name: aiService
+        value: azureOpenAI          
+    - name: azureAIEndpoint
+      label: Azure OpenAI Enpoint
+      description: The Azure AI endpoint URL
+      inputType: text
+      dataType: string
+      required: true
+      dependsOn: 
+        name: aiService
+        value: azureOpenAI             
+    - name: openaiModel
+      inputType: text
+      defaultValue: "gpt-3.5-turbo"
+      label: AI Model
+      required: true
+    - name: vectorStoreType
+      inputType: select
+      defaultValue: simple
+      label: Vector Store
+      required: true
+      choices:
+        - value: simple
+          text: Simple
+        - value: pgvector
+          text: PostgreSQL (pgvector)
+  imports:
+    - name: live-update
+      expose:
+        - name: liveUpdateIDESupport
+    - name: tap-workload
+    - name: build-wrapper-maven
+
+engine:
+  let:
+    - name: packageDirectory
+      expression: '#packageName.replace(".", "/")'
+    - name: workloadResourceName
+      expression: '#artifactId.toLowerCase()'
+    - name: empty
+      expression:
+        "''"
+  chain:
+    - condition: "#vectorStoreType != 'simple'"
+      exclude: [ "**/SimpleVectorStoreConfig.java" ]            
+    - merge:
+      - include: [ "**" ]
+        exclude: [ "pom.xml", "README.md", "accelerator-tests/**", "target/**", ".idea/**" ]
+      - include: [ "pom.xml" ]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "<groupId>com.vmware.tap.accelerators</groupId>"
+                with: "'<groupId>' + #groupId + '</groupId>'"
+          - type: ReplaceText
+            substitutions:
+              - text: "<artifactId>ai-chat</artifactId>"
+                with: "'<artifactId>' + #artifactId + '</artifactId>'"
+          - condition: "#vectorStoreType != 'pgvector'"
+            type: ReplaceText
+            regex:
+              pattern: "<dependency>\\s*<groupId>org.springframework.ai</groupId>\\s*<artifactId>spring-ai-pgvector-store</artifactId>\\s*<version>\\$\\{SPRING_AI_VERSION\\}</version>\\s*</dependency>"
+              with: "#empty"
+          - condition: "#vectorStoreType != 'pgvector'"
+            type: ReplaceText
+            regex:
+              pattern: "<dependency>\\s*<groupId>org.springframework.boot</groupId>\\s*<artifactId>spring-boot-starter-jdbc</artifactId>\\s*</dependency>"
+              with: "#empty"
+          - condition: "#vectorStoreType != 'pgvector'"
+            type: ReplaceText
+            regex:
+              pattern: "<dependency>\\s*<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>\\s*<scope>runtime</scope>\\s*</dependency>"
+              with: "#empty"
+          - condition: "#aiService == 'azureOpenAI'" 
+            type: ReplaceText
+            substitutions:
+              - text: "spring-ai-openai-spring-boot-starter"
+                with: "'spring-ai-azure-openai-spring-boot-starter'"                 
+      - include: [ "README.md" ]
+        chain:
+          - type: ReplaceText
+            regex:
+              pattern: "--- StartGradle[\\s\\S]+?--- EndGradle"
+              with: "''"
+          - type: ReplaceText
+            regex:
+              pattern: "--- StartMaven\\s|--- EndMaven\\s"
+              with: "''"
+
+      - include: [ "config/workload.yaml" ]
+        chain:
+          - condition: "#vectorStoreType != 'pgvector'"
+            type: ReplaceText
+            regex:
+              pattern: "\\s\\sserviceClaims\\:\\n\\s*\\-\\s*name\\:\\s*vector-store\\n\\s*\\s*ref\\:\\n\\s*\\s*\\s*apiVersion\\:\\s*services.apps.tanzu.vmware.com/v1alpha1\\n\\s*\\s*\\s*kind\\:\\s*ResourceClaim\\n\\s*\\s*\\s*name\\:\\s*vector-store"
+              with: "#empty"
+
+      - include: [ "src/main/resources/application.properties" ]
+        chain:
+        - condition: "#aiService == 'openAI'"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
+                  with: "'spring.ai.openai.api-key=' + #openaiApiKey"
+                - text: "spring.ai.openai.model=gpt-3.5-turbo"
+                  with: "'spring.ai.openai.model=' + #openaiModel"
+        - condition: "#aiService == 'azureOpenAI'"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
+                  with: "'spring.ai.azure.openai.api-key=' + #azureaiApiKey + '\nspring.ai.azure.openai.endpoint=' + #azureAIEndpoint"
+                - text: "spring.ai.openai.model=gpt-3.5-turbo"
+                  with: "'spring.ai.azure.openai.model=' + #openaiModel"
+        - condition: "#vectorStoreType != 'pgvector'"
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "spring.ai.vectorstore.pgvector.index-type=ivfflat"
+                  with: "''"
+                - text: "spring.ai.vectorstore.pgvector.distance-type=euclidean_distance"
+                  with: "''"
+    - merge:
+      - type: InvokeFragment
+        reference: live-update
+      - include: [ "**" ]
+        onConflict: UseFirst
+
+    - merge:
+        - exclude: [ "**/*.java" ]
+        - include: [ "**/*.java" ]
+          let:
+            - name: packageDirectory
+              expression: '#packageName.replace(".", "/")'
+          chain:
+            - type: ReplaceText
+              substitutions:
+                - text: "com.vmware.tap.accelerators.aichat"
+                  with: "#packageName"
+            - type: RewritePath
+              regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)aichat(?<untouchedpath>.*)"
+              rewriteTo: "'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #untouchedpath"
+
+    - merge:
+        - type: InvokeFragment
+          reference: tap-workload    
+        - include: [ "**" ]
+        - type: InvokeFragment
+          reference: build-wrapper-maven
+
+    - type: Provenance

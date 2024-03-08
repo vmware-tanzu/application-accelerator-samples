@@ -1,0 +1,7 @@
+{
+  "projectName": "explicitAzureOpenAi",
+  "aiService": "azureOpenAI",
+  "openaiModel": "gpt-4",
+  "azureaiApiKey": "myapikey",
+  "azureAIEndpoint": "https://azureendpoint"
+}
