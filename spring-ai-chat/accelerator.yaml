@@ -38,22 +38,6 @@ accelerator:
           value: "azureOpenAI"
         - text: Open AI
           value: "openAI"
-    - name: openaiApiKey
-      inputType: text
-      defaultValue: "${OPENAI_API_KEY}"
-      label: OpenAI API Key
-      required: true
-      dependsOn: 
-        name: aiService
-        value: openAI  
-    - name: azureaiApiKey
-      inputType: text
-      defaultValue: "${AZURE_AI_API_KEY}"
-      label: Azure AI API Key
-      required: true
-      dependsOn: 
-        name: aiService
-        value: azureOpenAI          
     - name: azureAIEndpoint
       label: Azure OpenAI Enpoint
       description: The Azure AI endpoint URL
@@ -155,16 +139,14 @@ engine:
           chain:
             - type: ReplaceText
               substitutions:
-                - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
-                  with: "'spring.ai.openai.api-key=' + #openaiApiKey"
                 - text: "spring.ai.openai.model=gpt-3.5-turbo"
                   with: "'spring.ai.openai.model=' + #openaiModel"
         - condition: "#aiService == 'azureOpenAI'"
           chain:
             - type: ReplaceText
               substitutions:
-                - text: "spring.ai.openai.api-key=${OPENAI_API_KEY}"
-                  with: "'spring.ai.azure.openai.api-key=' + #azureaiApiKey + '\nspring.ai.azure.openai.endpoint=' + #azureAIEndpoint"
+                - text: "spring.ai.openai.api-key=${AI_API_KEY}"
+                  with: "'spring.ai.azure.openai.api-key=${AI_API_KEY}' + '\nspring.ai.azure.openai.endpoint=' + #azureAIEndpoint"
                 - text: "spring.ai.openai.model=gpt-3.5-turbo"
                   with: "'spring.ai.azure.openai.model=' + #openaiModel"
         - condition: "#vectorStoreType != 'pgvector'"
