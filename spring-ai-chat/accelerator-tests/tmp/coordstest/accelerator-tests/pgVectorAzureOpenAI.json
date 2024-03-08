@@ -1,8 +1,0 @@
-{
-  "projectName": "pgVectorAzureOpenAI",
-  "aiService": "azureOpenAI",
-  "openaiModel": "gpt-4",
-  "azureaiApiKey": "myapikey",
-  "azureAIEndpoint": "https://azureendpoint",
-  "vectorStoreType": "pgvector"
-}

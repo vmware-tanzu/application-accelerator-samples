@@ -83,7 +83,7 @@ engine:
       exclude: [ "**/SimpleVectorStoreConfig.java" ]            
     - merge:
       - include: [ "**" ]
-        exclude: [ "pom.xml", "README.md", "accelerator-tests/**", "catalog/**", "config/**", ".idea/**" ]
+        exclude: [ "pom.xml", "README.md", "catalog/**", "config/**", ".idea/**" ]
       - include: [ "pom.xml" ]
         chain:
           - type: ReplaceText

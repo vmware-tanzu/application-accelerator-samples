@@ -5,7 +5,7 @@ source ../testFunctions.sh
 pushd $1
 
 assertFileExists ./src/main/resources/application.properties
-assertFileContains ./src/main/resources/application.properties 'spring.ai.azure.openai.api-key=myapikey'
+assertFileContains ./src/main/resources/application.properties 'spring.ai.azure.openai.api-key=${AI_API_KEY}'
 assertFileContains ./src/main/resources/application.properties 'spring.ai.azure.openai.model=gpt-4'
 assertFileContains ./src/main/resources/application.properties 'spring.ai.vectorstore.pgvector.index-type=ivfflat'
 assertFileContains ./src/main/resources/application.properties 'spring.ai.vectorstore.pgvector.distance-type=euclidean_distance'
