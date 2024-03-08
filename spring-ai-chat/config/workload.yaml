@@ -17,6 +17,12 @@ spec:
     env:
       - name: BP_JVM_VERSION
         value: "17"
+  env:
+    - name: AI_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: ai-api
+          key: api-key
   resources:     
     requests:         
       memory: "500M"
