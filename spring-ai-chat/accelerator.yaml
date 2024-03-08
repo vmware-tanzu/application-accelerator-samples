@@ -83,7 +83,7 @@ engine:
       exclude: [ "**/SimpleVectorStoreConfig.java" ]            
     - merge:
       - include: [ "**" ]
-        exclude: [ "pom.xml", "README.md", "accelerator-tests/**", "target/**", ".idea/**" ]
+        exclude: [ "pom.xml", "README.md", "accelerator-tests/**", "catalog/**", "config/**", ".idea/**" ]
       - include: [ "pom.xml" ]
         chain:
           - type: ReplaceText
@@ -127,11 +127,22 @@ engine:
 
       - include: [ "config/workload.yaml" ]
         chain:
+          - type: ReplaceText
+            substitutions:
+              - text: "spring-ai-chat"
+                with: "#workloadResourceName"
           - condition: "#vectorStoreType != 'pgvector'"
             type: ReplaceText
             regex:
               pattern: "\\s\\sserviceClaims\\:\\n\\s*\\-\\s*name\\:\\s*vector-store\\n\\s*\\s*ref\\:\\n\\s*\\s*\\s*apiVersion\\:\\s*services.apps.tanzu.vmware.com/v1alpha1\\n\\s*\\s*\\s*kind\\:\\s*ResourceClaim\\n\\s*\\s*\\s*name\\:\\s*vector-store"
               with: "#empty"
+
+      - include: [ "catalog/*.yaml" ]
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: "spring-ai-chat"
+            with: "#workloadResourceName"
 
       - include: [ "src/main/resources/application.properties" ]
         chain:

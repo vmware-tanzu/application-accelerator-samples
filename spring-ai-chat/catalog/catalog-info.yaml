@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: spring-ai-chat
+  description: Spring AI Chat Application
+  tags:
+    - app-accelerator
+    - java
+    - spring
+    - ai
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=spring-ai-chat'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: default-team
