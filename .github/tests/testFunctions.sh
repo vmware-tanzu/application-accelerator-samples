@@ -60,7 +60,7 @@ assertPomHasProjectCoordinates()
 assertPomHasDependency()
 {
   DEPTEST="//project/dependencies/dependency[groupId=\"$2\"][artifactId=\"$3\"]"
-  if ! [ ${#4} -eq "0" ]; then
+  if [ $# -gt 3 ]; then
     DEPTEST="$DEPTEST[version=\"$4\"]"
   fi
 
@@ -75,7 +75,7 @@ assertPomHasDependency()
 assertPomDoesntHaveDependency()
 {
   DEPTEST="//project/dependencies/dependency[groupId=\"$2\"][artifactId=\"$3\"]"
-  if ! [ ${#4} -eq "0" ]; then
+  if [ $# -gt 3 ]; then
     DEPTEST="$DEPTEST[version=\"$4\"]"
   fi
 
