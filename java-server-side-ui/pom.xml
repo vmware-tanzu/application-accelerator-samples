@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>3.2.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -18,9 +18,7 @@
     <description>no description yet</description>
 
     <properties>
-        <java.version>11</java.version>
-        <snakeyaml.version>1.33</snakeyaml.version>
-        <spring-security.version>5.8.10</spring-security.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
@@ -42,7 +40,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator-core</artifactId>
-            <version>0.52</version>
+            <version>0.56</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
