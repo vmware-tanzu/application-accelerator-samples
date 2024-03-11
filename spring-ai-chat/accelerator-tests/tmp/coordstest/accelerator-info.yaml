@@ -1,9 +1,0 @@
-id: 63b044ba-2342-4212-9327-b9a5446db5f7
-name: spring-ai-chat
-timestamp: 2024-02-27T21:29:04.598672Z
-source: TanzuCLI
-username: cwalls
-options:
-  artifactId: testcoords
-  groupId: com.test
-  projectName: coordstest

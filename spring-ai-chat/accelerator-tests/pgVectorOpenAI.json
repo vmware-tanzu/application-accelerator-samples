@@ -1,7 +1,0 @@
-{
-  "projectName": "pgVectorOpenAI",
-  "aiService": "openAI",
-  "openaiModel": "gpt-4",
-  "openaiApiKey": "myapikey",
-  "vectorStoreType": "pgvector"
-}

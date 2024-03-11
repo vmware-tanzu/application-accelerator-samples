@@ -44,6 +44,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+      - name: Install xpath script
+        run: sudo apt-get install -y libxml-xpath-perl
       - name: Wait for Engine Container
         uses: ifaxity/wait-on-action@v1
         with:
