@@ -107,6 +107,17 @@ Here is a cheat-sheet for installing in an existing TAP cluster that we have use
       .dockerconfigjson: e30K
     EOF
     ```
+    - If you want to use a different set of credentials then you could use these commands instead:
+        ```sh
+        tanzu secret registry add regsecret \
+          --username $TANZUNET_USERNAME \
+          --password $TANZUNET_PASSWORD \
+          --server registry.tanzu.vmware.com \
+          --yes \
+          --namespace data-services
+        kubectl patch serviceaccount -n data-services default \
+          -p '{"imagePullSecrets": [{"name": "regsecret"}]}'
+        ```
 1. Install the package repository using this command (adjust the registry part of the image if you relocated the image):
     ```sh
     tanzu package repository add tanzu-data-services-repository \
