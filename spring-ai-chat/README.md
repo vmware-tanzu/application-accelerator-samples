@@ -30,7 +30,7 @@ Spring Boot has its own integrated Web Server (Apache Tomcat (https://tomcat.apa
 Set the `AI_API_KEY` environment variable with the API key to be used by your app:
 
 ```sh
-export AI_API_KEY=<your-api-key>
+export AI_API_KEY='<your-api-key>'
 ```
 
 Launch application using default profile:
@@ -73,7 +73,7 @@ The application requires an AI API key to be provided in a Secret resource named
 You can create the Secret using this command:
 
 ```sh
-kubectl create secret generic ai-api --from-literal=api-key="<your-api-key>"
+kubectl create secret generic ai-api --from-literal=api-key='<your-api-key>'
 ```
 
 ### PostgreSQL/pgvector
@@ -107,7 +107,7 @@ Here is a cheat-sheet for installing in an existing TAP cluster that we have use
       .dockerconfigjson: e30K
     EOF
     ```
-1. Install the package repository using this command (adjust the registry part of the image of you relocated the image):
+1. Install the package repository using this command (adjust the registry part of the image if you relocated the image):
     ```sh
     tanzu package repository add tanzu-data-services-repository \
       --url registry.tanzu.vmware.com/packages-for-vmware-tanzu-data-services/tds-packages:1.13.0 \
