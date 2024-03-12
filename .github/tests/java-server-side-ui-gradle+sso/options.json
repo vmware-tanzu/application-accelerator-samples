@@ -7,5 +7,5 @@
   "artifactId": "server-side-ui-starter",
   "groupId": "com.example",
   "packageName": "com.example.serversideuistarter",
-  "javaVersion": "11"
+  "javaVersion": "17"
 }

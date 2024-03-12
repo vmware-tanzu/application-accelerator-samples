@@ -26,6 +26,15 @@ accelerator:
       defaultValue: "com.example.serversideuistarter"
       label: Application root package
       required: true
+    - name: javaVersion
+      inputType: select
+      label: Java version to use
+      choices:
+      - value: "17"
+        text: Java 17
+      - value: "21"
+        text: Java 21
+      defaultValue: "17"
     - name: buildTool
       inputType: select
       defaultValue: maven
