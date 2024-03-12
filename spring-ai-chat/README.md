@@ -100,23 +100,22 @@ Here is a cheat-sheet for installing in an existing TAP cluster that we have use
     metadata:
       annotations:
         secretgen.carvel.dev/image-pull-secret: ""
-      name: regsecret
+      name: registries-credentials
       namespace: data-services
     type: kubernetes.io/dockerconfigjson
     data:
       .dockerconfigjson: e30K
     EOF
     ```
-    - If you want to use a different set of credentials then you could use these commands instead:
+    - If you want to use a different set of credentials for TanzuNet, then you could use this command instead:
         ```sh
-        tanzu secret registry add regsecret \
+        tanzu secret registry add registries-credentials \
           --username $TANZUNET_USERNAME \
           --password $TANZUNET_PASSWORD \
           --server registry.tanzu.vmware.com \
-          --yes \
-          --namespace data-services
-        kubectl patch serviceaccount -n data-services default \
-          -p '{"imagePullSecrets": [{"name": "regsecret"}]}'
+          --namespace data-services \
+          --export-to-all-namespaces \
+          --yes
         ```
 1. Install the package repository using this command (adjust the registry part of the image if you relocated the image):
     ```sh
@@ -146,7 +145,7 @@ spec:
   highAvailability:
     enabled: false
   imagePullSecret:
-    name: regsecret
+    name: registries-credentials
 ```
 
 Once the `postgres.yaml` file is created you can apply it into your workload namespace using:
@@ -156,7 +155,13 @@ kubectl apply -n <workload-namespace> -f postgres.yaml
 ```
 > NOTE: replace `<workload-namespace>` with the name of the namespace for your apps
 
-Wait for the PostgreSQL instance to start up and then run the following series of commands to add the `vector` extension:
+Wait for the PostgreSQL instance to start up (status should go from `Created` to `Unavailable` to `Running`):
+
+```sh
+kubectl get postgres -w
+```
+
+Once the databse is runnig, then run the following series of commands to add the `vector` extension:
 
 1. Exec into the postgres pg-container pod container:
     ```sh
@@ -168,7 +173,7 @@ Wait for the PostgreSQL instance to start up and then run the following series o
     ```
 1. Connect to the database:
     ```sql
-    \connect spring-ai-vector;
+    \connect spring-ai-vector
     ```
 1. Check that the `vector` extensions is included in the available extensions:
     ```sql
