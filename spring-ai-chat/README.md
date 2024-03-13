@@ -1,7 +1,8 @@
 # Introduction spring-ai-chat
 
-The spring-ai-chat app provides you an out-of-the-box application setup to fast start development of a Web Application for a AI Chat based on [Spring AI](https://spring.io/projects/spring-ai).
+The spring-ai-chat app provides you an out-of-the-box application setup to fast start development of a Web Application for AI Chat based on [Spring AI](https://spring.io/projects/spring-ai).
 
+This web application is using Spring AI to offer an interactive chat experience utilizing RAG (Retrieval Augmented Generation) to enable a user to ask questions about their own uploaded documents.
 
 ## Prerequisites
 In order to further develop this application the following tools needs to be setup:
@@ -82,6 +83,8 @@ If you chose PostgreSQL/pgvector as your vector store, you'll need to create
 a PostgresSQL database instance before deploying the application.
 
 #### VMware Postgres Operator
+
+> NOTE: This step would typically be performed by a platform or service operator.
 
 You can use the VMware Postgres Operator with this app, just follow the the installation instructions from the [VMware Postgres Operator documentation](https://docs.vmware.com/en/VMware-SQL-with-Postgres-for-Kubernetes/2.3/vmware-postgres-k8s/GUID-install-operator.html).
 
