@@ -8,7 +8,7 @@ import { CustomerProfile } from "../../api/CustomerProfileDomain";
 const mockedUseFetchCustomerProfiles = useFetchCustomerProfiles as jest.Mock<any>;
 
 // Mock the module
-jest.mock("./fetchCustomerProfiles");
+vitest.mock("./fetchCustomerProfiles");
 
 describe("CustomerProfiles", () => {
 
@@ -17,7 +17,7 @@ describe("CustomerProfiles", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vitest.clearAllMocks();
   });
 
   it("given the data is loading it should render loading", () => {

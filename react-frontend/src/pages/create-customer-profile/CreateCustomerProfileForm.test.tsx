@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import CreateCustomerProfileForm from "./CreateCustomerProfileForm";
 import { CustomerProfile } from "../../api/CustomerProfileDomain";
 
-const onSubmitFunction = jest.fn()
+const onSubmitFunction = vitest.fn()
 
 describe("CreateCustomerProfileForm", () => {
 
@@ -23,7 +23,7 @@ describe("CreateCustomerProfileForm", () => {
   }
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vitest.clearAllMocks();
   });
 
   it("it should render the form", () => {
