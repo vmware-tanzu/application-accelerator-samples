@@ -1,0 +1,17 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGateway
+metadata:
+  name: #@ data.values.gatewayName
+  namespace: #@ data.values.workloadNamespace
+spec:
+  service:
+    type: ClusterIP
+  env:
+    - name: spring.cloud.gateway.httpclient.connect-timeout
+      value: "90"
+  sso:
+    secret: #@ data.values.appSSOName + "_UPDATE_ME"
+

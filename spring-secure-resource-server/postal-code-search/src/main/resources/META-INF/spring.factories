@@ -1,0 +1,2 @@
+org.springframework.cloud.bindings.boot.BindingsPropertiesProcessor=\
+  com.java.example.tanzu.postalsearch.config.OAuth2BindingsPropertiesProcessor

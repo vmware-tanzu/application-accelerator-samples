@@ -1,0 +1,70 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: postal-code-ui-route-config
+  namespace: #@ data.values.workloadNamespace  
+spec:
+  routes:
+  - predicates:
+    - Path=/**
+    - Method=GET
+    order: 1000
+    filters:
+    - StripPrefix=0
+    tags:
+    - ui
+  - predicates:
+    - Path=/postalSearch/**  
+    filters:
+    - StripPrefix=0  
+    ssoEnabled: true    
+    tags:
+    - ui-secure     
+  service:
+    name: postal-code-search-ui
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: postal-code-ui-route-mapping
+  namespace: #@ data.values.workloadNamespace  
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: postal-code-ui-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: postal-code-search-route-config
+  
+spec:
+  routes:
+  - predicates:
+    - Path=/api/search/**  
+    order: 1
+    filters:
+    - TokenRelay=
+    - StripPrefix=0
+    - RewritePath=/api/search(?<segment>/?.*), $\{segment}
+    - RemoveRequestHeader=Forwarded
+    tags:
+    - search-api 
+    tokenRelay: true   
+  service:
+    name: postal-code-search
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: postal-code-search-route-mapping
+  namespace: #@ data.values.workloadNamespace    
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: postal-code-search-route-config

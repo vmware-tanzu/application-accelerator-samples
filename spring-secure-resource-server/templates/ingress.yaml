@@ -1,0 +1,34 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:regexp", "regexp")
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: postal-codes-ingress
+  namespace: #@ data.values.workloadNamespace  
+spec:
+  virtualhost:
+    fqdn:  #@ regexp.replace("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?", data.values.appWorkloadURL, "$4")
+    tls:
+      secretName: postal-codes-cert   
+  routes:
+    - conditions:
+        - prefix: /
+      services:
+        - name: #@ data.values.gatewayName
+          port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: postal-codes-cert
+  namespace: #@ data.values.workloadNamespace
+spec:
+  commonName: #@ regexp.replace("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?", data.values.appWorkloadURL, "$4")
+  dnsNames:
+    -  #@ regexp.replace("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?", data.values.appWorkloadURL, "$4")
+  issuerRef:
+    name: #@ data.values.clusterIssuerName
+    kind: ClusterIssuer
+  secretName: postal-codes-cert 
