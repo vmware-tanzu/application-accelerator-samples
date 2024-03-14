@@ -1,0 +1,70 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+---
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: AuthServer
+metadata:
+  name: #@ data.values.appSSOName
+  namespace: #@ data.values.serviceNamespace
+  labels:
+    name: appsso-postal-codes
+    app: post-codes    
+  annotations:
+    sso.apps.tanzu.vmware.com/allow-client-namespaces: "*"
+    sso.apps.tanzu.vmware.com/allow-unsafe-identity-provider: ""
+    sso.apps.tanzu.vmware.com/allow-unsafe-issuer-uri: ""
+spec:
+  tls:
+    issuerRef:
+      name: #@ data.values.clusterIssuerName
+      kind: ClusterIssuer
+  tokenSignature:
+    signAndVerifyKeyRef:
+      name: #@ data.values.appSSOName +"-signing-key"
+  identityProviders:
+    - name: dev-users
+      internalUnsafe:
+        users:
+          - username: freemium
+            password: codes
+            roles:
+              - "FREEMIUM_USER"
+          - username: premium
+            password: codes
+            roles:
+              - "PREMIUM_USER"
+          - username: admin
+            password: codes
+            roles:
+              - "ADMIN"
+              - "PREMIUM_USER"              
+---
+apiVersion: secretgen.k14s.io/v1alpha1
+kind: RSAKey
+metadata:
+  name: #@ data.values.appSSOName + "-signing-key"
+  namespace: #@ data.values.serviceNamespace
+spec:
+  secretTemplate:
+    type: Opaque
+    stringData:
+      key.pem: $(privateKey)      
+      pub.pem: $(publicKey)
+      
+---
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterWorkloadRegistrationClass
+metadata:
+  name: workloadreg-postal-codes
+spec:
+  description:
+    short: "Postal Codes AppSSO Workload Registrations" 
+  base: 
+    metadata:  
+      annotations:
+        sso.apps.tanzu.vmware.com/template-unsafe-redirect-uris: ""
+    spec:
+      authServerSelector:
+        matchLabels:
+          name: #@ data.values.appSSOName
