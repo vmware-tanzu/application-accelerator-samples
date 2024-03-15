@@ -1,4 +1,4 @@
-package org.springframework.ai.operator;
+package com.vmware.tap.accelerators.aichat.operator;
 
 public interface DefaultPromptTemplateStrings {
 

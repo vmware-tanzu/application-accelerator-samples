@@ -1,7 +1,7 @@
-package org.springframework.ai.operator;
+package com.vmware.tap.accelerators.aichat.operator;
 
 import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.memory.Memory;
+import com.vmware.tap.accelerators.aichat.memory.Memory;
 import org.springframework.ai.vectorstore.VectorStore;
 
 import java.util.Map;

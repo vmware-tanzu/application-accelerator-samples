@@ -1,4 +1,4 @@
-package org.springframework.ai.memory;
+package com.vmware.tap.accelerators.aichat.memory;
 
 import java.util.List;
 import java.util.Map;

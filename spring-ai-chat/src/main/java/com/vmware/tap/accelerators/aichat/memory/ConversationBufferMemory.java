@@ -1,4 +1,4 @@
-package org.springframework.ai.memory;
+package com.vmware.tap.accelerators.aichat.memory;
 
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
