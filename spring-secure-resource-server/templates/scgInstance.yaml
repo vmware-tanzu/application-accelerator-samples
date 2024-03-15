@@ -14,4 +14,5 @@ spec:
       value: "90"
   sso:
     secret: #@ data.values.appSSOName + "_UPDATE_ME"
-
+    tls:
+      secretName: #@ data.values.appSSOName + '-ca-cert'

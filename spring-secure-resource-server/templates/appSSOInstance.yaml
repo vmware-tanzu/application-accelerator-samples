@@ -6,7 +6,7 @@ apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
 kind: AuthServer
 metadata:
   name: #@ data.values.appSSOName
-  namespace: #@ data.values.serviceNamespace
+  namespace: #@ data.values.workloadNamespace
   labels:
     name: appsso-postal-codes
     app: post-codes    
@@ -44,7 +44,7 @@ apiVersion: secretgen.k14s.io/v1alpha1
 kind: RSAKey
 metadata:
   name: #@ data.values.appSSOName + "-signing-key"
-  namespace: #@ data.values.serviceNamespace
+  namespace: #@ data.values.workloadNamespace  
 spec:
   secretTemplate:
     type: Opaque
@@ -68,3 +68,56 @@ spec:
       authServerSelector:
         matchLabels:
           name: #@ data.values.appSSOName
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: secret-template-sa
+  #@ data.values.workloadNamespace    
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-template-secret-reader
+  #@ data.values.workloadNamespace    
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secret-template-secret-reader
+  namespace: #@ data.values.workloadNamespace  
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: secret-template-secret-reader
+subjects:
+- kind: ServiceAccount
+  name: secret-template-sa
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretTemplate
+metadata:
+  name: #@ data.values.appSSOName + '-ca-cert'
+spec:
+  inputResources:
+    - name: ca-cert
+      ref:
+        apiVersion: v1
+        kind: Secret
+        name: #@ data.values.appSSOName + "-auth-server"
+  template:
+    data:
+      ca.pem: $(.ca-cert.data.ca\.crt)
+    stringData:
+      type: ca-certificates
+     
