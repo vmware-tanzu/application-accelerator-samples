@@ -4,6 +4,68 @@ body {
     font-family:Arial, Helvetica, sans-serif;
 }
 
+div.loader{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    visibility: hidden;
+}
+
+svg.circular{
+    animation: rotate 2s linear infinite;
+    height: 100px;
+    position: relative;
+    width: 100px;
+}
+
+circle.path {
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0;
+    stroke:#B6463A;
+    animation:
+            dash 1.5s ease-in-out infinite,
+            color 6s ease-in-out infinite
+;
+    stroke-linecap: round;
+}
+
+@keyframes rotate{
+    100%{
+        transform: rotate(360deg);
+    }
+}
+@keyframes dash{
+    0%{
+        stroke-dasharray: 1,200;
+        stroke-dashoffset: 0;
+    }
+    50%{
+        stroke-dasharray: 89,200;
+        stroke-dashoffset: -35;
+    }
+    100%{
+        stroke-dasharray: 89,200;
+        stroke-dashoffset: -124;
+    }
+}
+@keyframes color{
+    100%, 0%{
+        stroke: red;
+    }
+    40%{
+        stroke: blue;
+    }
+    66%{
+        stroke: green;
+    }
+    80%, 90%{
+        stroke: yellow;
+    }
+}
+
 
 div#chatArea {
     position:absolute;

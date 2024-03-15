@@ -13,32 +13,37 @@
 </head>
 
 <body>
-    <iframe name="hiddenUploadFrame" id="hiddenUploadFrame" style="display:none;"></iframe>
-    <div id="uploadModal" class="modal">
-        <div class="modal-content">
-            <span class="closeModalSpan">&times;</span>
-            <h2>Upload a file</h2>
-            <form id="uploadForm" method="post" th:action="@{/upload}" enctype="multipart/form-data" target="hiddenUploadFrame">
-                <input type="file" name="file" id="file" />
-                <input type="submit" value="Upload" name="submit" id="submit" />
-            </form>
+<iframe name="hiddenUploadFrame" id="hiddenUploadFrame" style="display:none;"></iframe>
+<div id="uploadModal" class="modal">
+    <div class="modal-content">
+        <span class="closeModalSpan">&times;</span>
+        <h2>Upload a file</h2>
+        <form id="uploadForm" method="post" th:action="@{/upload}" enctype="multipart/form-data" target="hiddenUploadFrame">
+            <input type="file" name="file" id="file" />
+            <input type="submit" value="Upload" name="submit" id="submit" />
+        </form>
+        <div class="loader" id="loader">
+            <svg class="circular">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10"></circle>
+            </svg>
         </div>
     </div>
-    <div id="chatArea">
-        <div id="header">
-            <h2>Spring AI Chat</h2>
-        </div>
-
-        <div id="transcript">
-
-        </div>
-
-        <div id="controls">
-            <button id="clearChat">Clear Chat</button> <button id="uploadFile">Upload File</button>
-        </div>
-
-        <textarea id="userInput" type="text" placeholder="How can I help?" rows="1"></textarea>
-        <button id="typedTextSubmit" name="typedTextSubmit">Submit</button>
+</div>
+<div id="chatArea">
+    <div id="header">
+        <h2>Spring AI Chat</h2>
     </div>
+
+    <div id="transcript">
+
+    </div>
+
+    <div id="controls">
+        <button id="clearChat">Clear Chat</button> <button id="uploadFile">Upload File</button>
+    </div>
+
+    <textarea id="userInput" type="text" placeholder="How can I help?" rows="1"></textarea>
+    <button id="typedTextSubmit" name="typedTextSubmit">Submit</button>
+</div>
 </body>
 </html>
