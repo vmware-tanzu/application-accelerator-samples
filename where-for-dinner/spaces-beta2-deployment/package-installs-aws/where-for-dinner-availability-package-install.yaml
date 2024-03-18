@@ -4,7 +4,7 @@ kind: PackageInstall
 metadata:
  name: where-for-dinner-availability
 spec:
- serviceAccountName: default
+ serviceAccountName: workload-installer
  packageRef:
    refName: availability.default.tap # name of the Package
    versionSelection:
