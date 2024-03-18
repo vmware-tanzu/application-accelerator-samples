@@ -61,32 +61,17 @@ After the broker has been created, click the broker name from the list of broker
 
 ### Update Service Credential Secrets
 
-Using your editor of choice, update the fields with <> placeholders in the serviceSecret.yaml file in the root of this repository with the credentials 
-and connection information for the RabbitMQ and MySQL instances.  You will need to base64 encode each secret/credential value before adding it to the serviceSecret.yaml 
+Using your editor of choice, update the fields with <> placeholders in the `aws/serviceSecret.yaml` file with the credentials 
+and connection information for the RabbitMQ and MySQL instances.  You will need to base64 encode each secret/credential value before adding it to the `serviceSecret.yaml `
 file; an easy way to base64 values is to use an online tool such as https://www.base64encode.org.
 
-## Create Bitnami Services
+## Bitnami Services
 
 
-Use these service creation steps if you have chosen to use Bitnami service.  You should only use this option if you are deploying the application
-into a space that has a single availability target.
+You should only use this option if you are deploying the application into a space that has a single availability target.
 
 This application configuration option of Where For Dinner utilizes the Bitnami MySQL and RabbitMQ on platform services and consumes credentials/connection via 
-`ClassClaims`.  The following commands will create on demand service instances which will be readily consumable by Where For Dinner.
-
-
-- Switch your kubernetes context to target your project/space by running the following commands:
-
-```
-tanzu project use <project name>
-tanzu space use <space name>
-```
-
-- Deploy the Bitnami services by running the following command from the root of the `where-for-dinner/spaces-beta2-deployment` directory:
-
-```
-kubectl apply -f bitnamiServices.yaml --validate=false
-```
+`ClassClaims`.  You will deploy the service instances in the `Deploy Where For Dinner Application and Configuration To Space` section using the `bitnamiServices.yaml` file.
 
 
 ## Update Kubernetes Gateway Route
@@ -95,8 +80,9 @@ Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable
 addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
 followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
 
-In the `routes` directory you will see the “k8GatewayRoutes.yaml” file.  Modify k8sGatewayRoutes.yaml to replace the <hostname> with the hostname 
-that you would like your app to be available at and save it.
+In the `<service deployment>/routes` directory you will see the “k8GatewayRoutes.yaml” file.  Modify k8sGatewayRoutes.yaml to replace the <hostname> with the hostname 
+that you would like your app to be available at and save it.  **NOTE** Make sure you updates the files under the `aws` or `bitnami` folders depending
+on your backing service deployment configuration.
 
 
 ## Switch Context To New Space
@@ -117,37 +103,21 @@ The Where For Dinner deployment consists of the following resources:
 - If using AWS services, secret resources containing backing service credential/connection info 
 - Routing resources for Spring Cloud Gateway and Kubernetes Gateway APIs
 
-All of the following commands below should be run from the root of the `where-for-dinner/spaces-beta2-deployment` directory.
+To deploy the application, run following command below from the root of the `where-for-dinner/spaces-beta2-deployment` directory depending on the backing 
+service configuration:
 
-- If you are using AWS services, install the services secret resources by running the following command:
-
-```
-kubectl apply -f serviceSecret.yaml --validate=false
-```
-
-- Install the application packages by running the following command:
-
-```
-kubectl apply -f ./packages --validate=false
-```
-
-
-Deploy the Where For Dinner application by running the appropriate commands depending on if you are using AWS or Bitnami services configuration:
 
 **AWS Deployment**
 
 ```
-kubectl apply -f ./package-installs-aws --validate=false
+kubectl apply -f ./aws --recursive
 ```
 
 **Bitnami Deployment**
 
 ```
-kubectl apply -f ./package-installs-bitnami --validate=false
+kubectl apply -f ./bitnami --recursive
 ```
 
-- Install the routing resources by running the following command:
-
-```
-kubectl apply -f ./routes --validate=false
-```
+**NOTE:** If using Bitnami services, the workloads may initially crash as the Bitnami services are being deployed.  They should successfully start once the 
+MySQL and RabbitMQ services are available.  

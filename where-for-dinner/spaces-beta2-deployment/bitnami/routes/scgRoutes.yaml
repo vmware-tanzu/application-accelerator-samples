@@ -1,0 +1,86 @@
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: ui-route-config
+spec:
+  routes:
+  - predicates:
+    - Path=/**
+    - Method=GET
+    order: 1000
+    filters:
+    - StripPrefix=0
+    tags:
+    - ui  
+  - predicates:
+    - Path=/diningsearch/**
+    - Method=GET
+    filters:
+    - StripPrefix=0  
+  service:
+    name: where-for-dinner-ui
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: ui-route-mapping
+spec:
+  gatewayRef:
+    name: spring-cloud-gateway
+  routeConfigRef:
+    name: ui-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: search-route-config
+spec:
+  routes:
+  - predicates:
+    - Path=/api/search/**  
+    filters:
+    - StripPrefix=0
+    - RewritePath=/api/search(?<segment>/?.*), $\{segment}
+    - RemoveRequestHeader=Forwarded
+    tags:
+    - search-api
+  service:
+    name: where-for-dinner-search
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: search-route-mapping
+spec:
+  gatewayRef:
+    name: spring-cloud-gateway
+  routeConfigRef:
+    name: search-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: availability-route-config
+spec:
+  routes:
+  - predicates:
+    - Path=/api/availability/**  
+    filters:
+    - StripPrefix=0
+    - RewritePath=/api/availability(?<segment>/?.*), $\{segment}
+    - RemoveRequestHeader=Forwarded
+    tags:
+    - search-api 
+  service:
+    name: availability
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: availability-route-mapping
+spec:
+  gatewayRef:
+    name: spring-cloud-gateway
+  routeConfigRef:
+    name: availability-route-config
