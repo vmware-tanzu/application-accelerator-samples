@@ -1,15 +1,15 @@
 # Spaces - Beta 2 Sample App
 
 This directory contains pre-built deliverable packages of the Where For DInner application that can be installed in a run `Space` 
-for the Beta2 release of Tanzu.  It can consume either AWS RDS and MQ services using direct secret references or Bitnami MySQL and 
-RabbitMQ using `ClassClaims`; If using AWS services, you will need deploy an RDS and Amazon MQ (RabbitMQ option) instance which 
-is publicly available for the application workloads to properly run.  It is also assumed that you have access to `Space` that has been 
+for the Spaces Beta 2 release.  It can consume either AWS RDS and MQ services using direct secret references or Bitnami MySQL and 
+RabbitMQ services using `ClassClaims`.  If using AWS services, you will need deploy RDS and Amazon MQ (RabbitMQ option) instances which 
+are publicly available in order for the application workloads to properly run.  It is also assumed that you have access to a `Space` that has been 
 configured with the proper traits.
 
 ## Obtain Where For Dinner Deployment Repository
 
-The configuration files for deploying Where For Dinner to your space can be obtained by cloning the following Git repository and switching to the beta2 branch.  
-Run the following commands:
+The configuration files for deploying Where For Dinner to your space can be obtained by cloning the following Git repository and switching to the 
+`wfd-spaces-beta2` branch.  Run the following commands:
 
 ```
 git clone https://github.com/vmware-tanzu/application-accelerator-samples
@@ -18,7 +18,7 @@ git checkout wfd-spaces-beta2
 cd where-for-dinner/spaces-beta2-deployment
 ```
 
-Follow the service creation steps for you service deploy option: AWS or Bitnami Services
+Follow the service creation steps for you desired service deployment option: AWS or Bitnami Services
 
 ## Create AWS Services
 
@@ -68,10 +68,11 @@ file; an easy way to base64 values is to use an online tool such as https://www.
 ## Create Bitnami Services
 
 
-Use these service creation steps if you have chosen to use Bitnami service.
+Use these service creation steps if you have chosen to use Bitnami service.  You should only use this option if you are deploying the application
+into a space that has a single availability target.
 
-This application configuration option of Where For Dinner utilizes the Bitnami MySQL and RabbitMQ on platform services and consumes credentials/connection via a 
-`ClassClaim`.  The following commands will create on demand service instances which will be readily consumable by Where For Dinner.
+This application configuration option of Where For Dinner utilizes the Bitnami MySQL and RabbitMQ on platform services and consumes credentials/connection via 
+`ClassClaims`.  The following commands will create on demand service instances which will be readily consumable by Where For Dinner.
 
 
 - Switch your kubernetes context to target your project/space by running the following commands:
@@ -94,7 +95,7 @@ Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable
 addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
 followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
 
-In the `routes` directory you will see that you’ve “k8GatewayRoutes.yaml” file.  Modify k8sGatewayRoutes.yaml to replace the <hostname> with the hostname 
+In the `routes` directory you will see the “k8GatewayRoutes.yaml” file.  Modify k8sGatewayRoutes.yaml to replace the <hostname> with the hostname 
 that you would like your app to be available at and save it.
 
 
@@ -116,7 +117,7 @@ The Where For Dinner deployment consists of the following resources:
 - If using AWS services, secret resources containing backing service credential/connection info 
 - Routing resources for Spring Cloud Gateway and Kubernetes Gateway APIs
 
-All of the following commands should be run from the root of the `where-for-dinner/spaces-beta2-deployment` directory.
+All of the following commands below should be run from the root of the `where-for-dinner/spaces-beta2-deployment` directory.
 
 - If you are using AWS services, install the services secret resources by running the following command:
 
