@@ -4,7 +4,7 @@ kind: PackageInstall
 metadata:
  name: where-for-dinner-crawler
 spec:
- serviceAccountName: server-workload-installer  
+ serviceAccountName: workload-installer 
  packageRef:
    refName: where-for-dinner-crawler.default.tap # name of the Package
    versionSelection:

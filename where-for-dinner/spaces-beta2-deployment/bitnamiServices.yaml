@@ -1,0 +1,22 @@
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: where-for-dinner-mysql
+  namespace: workloads
+spec:
+  classRef:
+    name: mysql-unmanaged
+  parameters:
+    storageGB: 1
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: where-for-dinner-rabbitmq
+  namespace: workloads
+spec:
+  classRef:
+    name: rabbitmq-unmanaged
+  parameters:
+    replicas: 1

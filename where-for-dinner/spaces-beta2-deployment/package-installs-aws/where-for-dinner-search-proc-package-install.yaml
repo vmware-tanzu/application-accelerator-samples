@@ -1,0 +1,25 @@
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+ name: where-for-dinner-search-proc
+spec:
+ serviceAccountName: workload-installer
+ packageRef:
+   refName: search-proc.default.tap # name of the Package
+   versionSelection:
+     constraints: '>=0.0.0'
+ values:
+ - secretRef:
+     name: where-for-dinner-search-proc-package-values # Secret created in previous step
+---
+apiVersion: v1
+kind: Secret
+metadata:
+ name: where-for-dinner-search-proc-package-values
+stringData:
+ values.yaml: |
+   ---
+   replicas: 1
+   hostname: ""
+   workload_name: where-for-dinner-search-proc
