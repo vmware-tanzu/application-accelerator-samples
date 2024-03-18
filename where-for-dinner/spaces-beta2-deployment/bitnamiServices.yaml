@@ -3,7 +3,6 @@ apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ClassClaim
 metadata:
   name: where-for-dinner-mysql
-  namespace: workloads
 spec:
   classRef:
     name: mysql-unmanaged
@@ -14,7 +13,6 @@ apiVersion: services.apps.tanzu.vmware.com/v1alpha1
 kind: ClassClaim
 metadata:
   name: where-for-dinner-rabbitmq
-  namespace: workloads
 spec:
   classRef:
     name: rabbitmq-unmanaged
