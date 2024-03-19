@@ -20,7 +20,7 @@ public class APIKeyAuthenticationConverter implements ServerAuthenticationConver
 	@Value("${api.key-header:X-API-Key}")
 	public String keyHeader;
 	
-	@Value("${api.key}")
+	@Value("${postal-codes.api.api-key}")
 	public String apiKey;
 	
 	

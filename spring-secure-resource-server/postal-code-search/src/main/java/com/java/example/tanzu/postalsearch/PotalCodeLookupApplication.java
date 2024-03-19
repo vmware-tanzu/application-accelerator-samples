@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProtectedGeolocApiApplication {
+public class PotalCodeLookupApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProtectedGeolocApiApplication.class, args);
+		SpringApplication.run(PotalCodeLookupApplication.class, args);
 	}
 
 }

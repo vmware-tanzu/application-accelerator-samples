@@ -27,7 +27,7 @@ public class PostalCodeImport {
 		    {
 		        final var values = line.split(COMMA_DELIMITER);
 		        
-		        final var insert = "insert into geoloc (postalCode, latitude, longitude, premium) values (?, ?, ?, ?)";
+		        final var insert = "insert into postalcodeloc (postalCode, latitude, longitude, premium) values (?, ?, ?, ?)";
 		        
 				try(PreparedStatement statement = context.getConnection().prepareStatement(insert))
 				{					
