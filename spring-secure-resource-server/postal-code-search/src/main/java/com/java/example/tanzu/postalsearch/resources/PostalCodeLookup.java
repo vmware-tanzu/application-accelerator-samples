@@ -1,6 +1,7 @@
 package com.java.example.tanzu.postalsearch.resources;
 
 import java.security.Principal;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,28 +13,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.java.example.tanzu.postalsearch.entity.GeoLoc;
-import com.java.example.tanzu.postalsearch.repository.GeoLocRepository;
+import com.java.example.tanzu.audit.model.AuditData;
+import com.java.example.tanzu.postalsearch.entity.PotalCodeLoc;
+import com.java.example.tanzu.postalsearch.repository.PostalCodeLocRepository;
 
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("geolookup")
-public class GeoLookup {
+public class PostalCodeLookup extends AuditedResource {
 
-	@Value("${postal-codes.roles.premium:ROLE_PREMIUM_USER}")
+	private final static String LOOKUP_SINGLE_POSTAL_CODE = "Lookup Single Postal Code";
+	
+	@Value("${postal-codes.api.roles.premium:ROLE_PREMIUM_USER}")
 	protected String premiumRole;
 	
 	@Autowired
-	protected GeoLocRepository repo;
+	protected PostalCodeLocRepository repo;
 	
 	@GetMapping
-	public Mono<GeoLoc> lookup(@AuthenticationPrincipal Principal principal, 
+	public Mono<PotalCodeLoc> lookup(@AuthenticationPrincipal Principal principal, 
 			@RequestParam(name="postalCode") String postalCode)
 	{
 		
 		return repo.findById(postalCode)
-			.filter(geoloc ->  (!geoloc.premium() || (geoloc.premium() && isPremiumUser(principal))));
+			.filter(geoloc ->  (!geoloc.premium() || (geoloc.premium() && isPremiumUser(principal))))
+			.doOnSuccess(s -> auditEvent(LOOKUP_SINGLE_POSTAL_CODE, principal.getName(), 
+					Collections.singletonList(new AuditData("Postal Code", postalCode)), EVENT_SUCCESS));
 	}
 	
 	
@@ -41,6 +47,7 @@ public class GeoLookup {
 	{
 		if (prin instanceof JwtAuthenticationToken)
 		{
+			
 			final JwtAuthenticationToken token = JwtAuthenticationToken.class.cast(prin);
 			
 			for (GrantedAuthority auth : token.getAuthorities())

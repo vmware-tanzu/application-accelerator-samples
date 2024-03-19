@@ -1,16 +1,13 @@
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
-  name: postal-code-search
+  name: postal-code-audit
   labels:
     apps.tanzu.vmware.com/workload-type: server
     apps.tanzu.vmware.com/has-tests: "true"
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
-    app.kubernetes.io/part-of: postal-code-search
-spec:
-  env:
-  - name: spring_profiles_active
-    value: oauth2   
+    app.kubernetes.io/part-of: postal-code-audit
+spec:  
   resources:     
     requests:         
       memory: "500M"

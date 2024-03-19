@@ -1,24 +1,30 @@
-
-server.port: 8081
+server.port: 8082
 
 spring:
+  application:
+    name: audit
+
   flyway:
     baseline-on-migrate: true
     enabled: true 
     locations: classpath:db/migration/{vendor}
     out-of-order: false
-    table: postalcodes-schema-version
+    table: audit-schema-version
     validate-on-migrate: false
-
+    
   cloud: 
     function:
-      definition: auditEvent    
+      definition: processAuditEvent
     stream:
       defaultBinder: rabbit
       bindings: 
-        auditEvent-out-0: 
+        processAuditEvent-in-0: 
           destination: postal-code-audit-events
-
+          group: postal-code-audit-events-group
+          consumer: 
+            maxAttempts: 4
+            backOffInitialInterval: 15000
+            
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -26,7 +32,7 @@ spring:
   r2dbc: 
     url: r2dbc:h2:mem:///testdb    
     username: sa
-          
+
 ---
 
 spring:
@@ -34,8 +40,8 @@ spring:
  
   r2dbc: 
     properties.sslMode: TRUST  
-    properties.tlsVersion: TLSv1.2   
-
+    properties.tlsVersion: TLSv1.2  
+    
 ---
 spring:
   config.activate.on-profile: local
@@ -46,5 +52,3 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://appsso-where-for-dinner.service-instances.perfect300rock.com  
-          
-api.key: 12345     

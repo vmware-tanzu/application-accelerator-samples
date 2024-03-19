@@ -16,14 +16,7 @@ accelerator:
     name: workloadNamespace
     inputType: text
     dataType: string
-    required: true
-  - label: Service Namespace
-    description:  The namespace where the AppSSO and Gateway services reside (or will reside once created).
-    defaultValue: service-instances
-    name: serviceNamespace
-    inputType: text
-    dataType: string
-    required: true    
+    required: true   
   - label: Cluster Issuer Name
     description:  The name of the Cluster Issuer that will be used to create TLS certificates for the AppSSO and Gateway service instances.
     defaultValue: tap-ingress-selfsigned
@@ -37,7 +30,26 @@ accelerator:
     name: gatewayName
     inputType: text
     dataType: string
-    required: true                          
+    required: true  
+  - label: Message Broker Service Name
+    description: The name of the message broker instance that will handle asynchronous messaging.
+    defaultValue: msgbroker-postal-codes
+    name: msgbrokerName
+    inputType: text
+    dataType: string
+    required: true      
+  - label: Enable Rate Limiting
+    description: "If checked, a rate limit will be placed on the postal code lookup API per user."
+    defaultValue: false
+    name: enableRateLimiting
+    inputType: checkbox
+    dataType: boolean
+    required: true
+  - name: rateLimit
+    label: Rate Limit
+    dataType: RateLimit
+    dependsOn: 
+      name: enableRateLimiting                         
   - label: AppSSO Instance Name
     description: "The name of the AppSSO instance that the application services will connect to."
     defaultValue: appsso-postal-codes
@@ -54,12 +66,42 @@ accelerator:
   imports:
     - name: tap-workload
     - name: build-wrapper-maven
+  types:
+    - name: RateLimit
+      struct:
+        - name: requestLimitMaxRequests
+          dataType: number
+          label: Rate Limit Max Requests
+          description: The maximum number of requests to be accepted during the time window.
+          defaultValue: 5
+          required: true  
+        - name: requestLimitTimeWindow
+          dataType: number
+          label: Rate Limit Time Window
+          description: The duration of the tine window.  Defaults to 1 second.
+          defaultValue: 1
+          required: true            
+        - name: requestLimitWindowUnits
+          label: Rate Limit Time Window Units
+          description: The units used to define the time window.
+          defaultValue: s
+          required: true  
+          inputType: select
+          choices:
+          - value: ms
+            text: Millseconds
+          - value: s
+            text: Seconds  
+          - value: m
+            text: Minutes
+          - value: h
+            text: Hours            
 
 engine:     
   merge:
   - exclude: 
       ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**"]
-  - include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml", "**/templates/ingress.yaml"]   
+  - include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml", "**/templates/ingress.yaml",  "**/templates/rmqClassClaim.yaml"]   
     chain:
     - type: YTT  
     - type: RewritePath
@@ -71,6 +113,9 @@ engine:
     - type: RewritePath
       regex: 'templates/ingress.yaml'
       rewriteTo: "'config/app-operator/ingress.yaml'" 
+    - type: RewritePath
+      regex: 'templates/rmqClassClaim.yaml'
+      rewriteTo: "'config/app-operator/rmqClassClaim.yaml'"       
   - include: ["**/templates/workloads.yaml"]
     chain:
     - type: YTT
@@ -89,11 +134,15 @@ engine:
       regex: 'templates/workloadRegistrationClassClaim.yaml'
       rewriteTo: "'config/app-operator/workloadRegistrationClassClaim.yaml'"   
   - type: InvokeFragment
-    reference: build-wrapper-maven
-  - include: ["README.md"]      
+    reference: build-wrapper-maven     
   - chain:
     - type: InvokeFragment
       reference: build-wrapper-maven
     - type: RewritePath
-      rewriteTo: "'postal-code-search/' + (#folder != null ? #folder : '') + #filename"  
+      rewriteTo: "'audit/' + (#folder != null ? #folder : '') + #filename"   
+  - chain:
+    - type: InvokeFragment
+      reference: build-wrapper-maven
+    - type: RewritePath
+      rewriteTo: "'postal-code-search/' + (#folder != null ? #folder : '') + #filename"               
   - type: Provenance
