@@ -38,7 +38,11 @@ spec:
             password: codes
             roles:
               - "ADMIN"
-              - "PREMIUM_USER"              
+              - "PREMIUM_USER"  
+          - username: security
+            password: officer
+            roles:
+              - "SECURITY_OFFICER"                             
 ---
 apiVersion: secretgen.k14s.io/v1alpha1
 kind: RSAKey
@@ -52,22 +56,6 @@ spec:
       key.pem: $(privateKey)      
       pub.pem: $(publicKey)
       
----
-apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
-kind: ClusterWorkloadRegistrationClass
-metadata:
-  name: workloadreg-postal-codes
-spec:
-  description:
-    short: "Postal Codes AppSSO Workload Registrations" 
-  base: 
-    metadata:  
-      annotations:
-        sso.apps.tanzu.vmware.com/template-unsafe-redirect-uris: ""
-    spec:
-      authServerSelector:
-        matchLabels:
-          name: #@ data.values.appSSOName
 ---
 apiVersion: v1
 kind: ServiceAccount

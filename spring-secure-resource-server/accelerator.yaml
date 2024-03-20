@@ -57,9 +57,9 @@ accelerator:
     inputType: text
     dataType: string
     required: true      
-  - label: Workload URL
-    description: "The URL where the application is published.  Generally 'https://postal-codes.<domain name>.  See README for more details."
-    name: appWorkloadURL
+  - label: Application Domain
+    description: "The domain name used to externally access the application."
+    name: appDomain
     inputType: text
     dataType: string
     required: true  
@@ -124,15 +124,15 @@ engine:
       rewriteTo: "'config/developer/workloads.yaml'"                  
     - type: InvokeFragment
       reference: tap-workload
-  - include: ["**/appSSOInstance.yaml", "**/workloadRegistrationClassClaim.yaml"]
+  - include: ["**/appSSOInstance.yaml", "**/workloadClientRegistration.yaml"]
     chain:
     - type: YTT  
     - type: RewritePath
       regex: 'templates/appSSOInstance.yaml'
       rewriteTo: "'config/service-operator/appSSOInstance.yaml'"  
     - type: RewritePath
-      regex: 'templates/workloadRegistrationClassClaim.yaml'
-      rewriteTo: "'config/app-operator/workloadRegistrationClassClaim.yaml'"   
+      regex: 'templates/workloadClientRegistration.yaml'
+      rewriteTo: "'config/app-operator/workloadClientRegistration.yaml'"   
   - type: InvokeFragment
     reference: build-wrapper-maven     
   - chain:
