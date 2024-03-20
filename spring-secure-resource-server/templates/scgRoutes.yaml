@@ -10,10 +10,11 @@ spec:
   routes:
   - predicates:
     - Path=/**
+    - Host=postal-code-search**.**
     - Method=GET
     order: 1000
     filters:
-    - StripPrefix=0
+    - StripPrefix=0     
     tags:
     - ui
   - predicates:
@@ -36,6 +37,43 @@ spec:
     name: #@ data.values.gatewayName
   routeConfigRef:
     name: postal-code-ui-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: postal-code-audit-ui-route-config
+  namespace: #@ data.values.workloadNamespace  
+spec:
+  routes:
+  - predicates:
+    - Path=/**
+    - Host=postal-code-audit**.**
+    - Method=GET
+    order: 1000
+    filters:
+    - StripPrefix=0  
+    tags:
+    - ui
+  - predicates:
+    - Path=/auditViewer/**  
+    filters:
+    - StripPrefix=0    
+    ssoEnabled: true    
+    tags:
+    - audit-ui-secure     
+  service:
+    name: postal-code-audit-ui
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: postal-code-audit-ui-route-mapping
+  namespace: #@ data.values.workloadNamespace  
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: postal-code-audit-ui-route-config    
 ---
 apiVersion: tanzu.vmware.com/v1
 kind: SpringCloudGatewayRouteConfig
@@ -71,7 +109,6 @@ spec:
     name: #@ data.values.gatewayName 
   routeConfigRef:
     name: postal-code-search-route-config
----
 ---
 apiVersion: tanzu.vmware.com/v1
 kind: SpringCloudGatewayRouteConfig

@@ -1,0 +1,28 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: ClientRegistration
+metadata:
+  name: #@ data.values.appSSOName
+  namespace: #@ data.values.workloadNamespace
+spec:
+  authServerSelector:
+    matchLabels:
+      name: #@ data.values.appSSOName
+  redirectURIs:
+    - #@ 'https://postal-code-search.' + data.values.appDomain + '/login/oauth2/code/sso'
+    - #@ 'http://postal-code-search.' + data.values.appDomain + '/login/oauth2/code/sso'
+    - #@ 'https://postal-code-audit.' + data.values.appDomain + '/login/oauth2/code/sso'
+    - #@ 'http://postal-code-audit.' + data.values.appDomain + '/login/oauth2/code/sso'  
+  scopes:
+    - name: openid
+    - name: email
+    - name: profile
+    - name: roles  
+  clientAuthenticationMethod: client_secret_basic
+  requireUserConsent: false      
+  authorizationGrantTypes:
+    - client_credentials
+    - authorization_code
+    - refresh_token
