@@ -135,6 +135,7 @@ engine:
       rewriteTo: "'config/app-operator/workloadClientRegistration.yaml'"   
   - type: InvokeFragment
     reference: build-wrapper-maven     
+  - include: ["README.md"]  
   - chain:
     - type: InvokeFragment
       reference: build-wrapper-maven

@@ -48,6 +48,10 @@ public class PostalCodeLookup extends AuditedResource {
 					Collections.singletonList(new AuditData("Postal Code", postalCode)), 
 					(s != null) ? EVENT_SUCCESS : EVENT_CODE_NOT_FOUND))
 	 	    .onErrorResume(e -> { 
+	 	    	
+	 	    	auditEvent(LOOKUP_SINGLE_POSTAL_CODE, principal.getName(), 
+						Collections.singletonList(new AuditData("Postal Code", postalCode)), EVENT_ERROR); 	    	
+	 	    	
 		    	log.error("Error performing postal code search.", e);
 		    	return Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 		    });
