@@ -65,4 +65,3 @@ The accelerator contains the following configuration options:
 * **Application Domain:** The DNS domain name that will be used for the application UI and services.
 
 **NOTE:** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.
-
