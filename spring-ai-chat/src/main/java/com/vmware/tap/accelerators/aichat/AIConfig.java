@@ -1,10 +1,10 @@
 package com.vmware.tap.accelerators.aichat;
 
 import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.memory.ConversationBufferMemory;
-import org.springframework.ai.memory.Memory;
-import org.springframework.ai.operator.AiOperator;
-import org.springframework.ai.operator.DefaultPromptTemplateStrings;
+import com.vmware.tap.accelerators.aichat.memory.ConversationBufferMemory;
+import com.vmware.tap.accelerators.aichat.memory.Memory;
+import com.vmware.tap.accelerators.aichat.operator.AiOperator;
+import com.vmware.tap.accelerators.aichat.operator.DefaultPromptTemplateStrings;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

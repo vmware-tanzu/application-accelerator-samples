@@ -1,4 +1,4 @@
-package org.springframework.ai.operator;
+package com.vmware.tap.accelerators.aichat.operator;
 
 import org.slf4j.Logger;
 import org.springframework.ai.chat.ChatClient;
@@ -7,7 +7,7 @@ import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.memory.Memory;
+import com.vmware.tap.accelerators.aichat.memory.Memory;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 

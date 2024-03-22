@@ -78,23 +78,21 @@ const initUIEvents = () => {
     closeModalSpan.addEventListener('click', () => {
         modal.style.display = "none";
     });
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
+    uploadForm.addEventListener('submit', () => {
+        var uploadForm = document.getElementById("uploadForm");
+        var filename = uploadForm.elements[0].value;
+        if (filename && filename.length > 0) {
+            var loader = document.getElementById("loader");
+            loader.style.visibility = "visible";
         }
     });
-    // uploadForm.addEventListener('submit', () => {
-    //     var uploadForm = document.getElementById("uploadForm");
-    //     // get the filename
-    //     filename = uploadForm.elements[0].value;
-    //     filename = filename.split("\\").pop();
-    //     console.log("filename = " + filename);
-    // });
     var hiddenUploadFrame = document.getElementById("hiddenUploadFrame");
     hiddenUploadFrame.addEventListener('load', () => {
         var hiddenUploadFrame = document.getElementById("hiddenUploadFrame");
         var json = JSON.parse(hiddenUploadFrame.contentDocument.body.innerText);
         var fileName = json.fileName;
+        var loader = document.getElementById("loader");
+        loader.style.visibility = "hidden";
         modal.style.display = "none";
         addToTranscript("System", "Uploaded file : " + fileName + " ("+ json.fileSize + " bytes)");
     });
