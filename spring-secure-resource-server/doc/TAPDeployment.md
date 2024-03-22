@@ -22,6 +22,9 @@ already create DNS entries for your application domain.
 * Download and unzip the generate accelerator file to you workstation.
 * Open a command shell and navigate to the root directory of the unzipped file from above.  Run the following commands to create all services, resources, and workloads:
 
+**NOTE:**  If you did not configure the accelerator to automatically create a Git repo for your project, you will need to manually commit the project to a 
+Git repo and update the `workload.yaml` file in the`./config/developer` directory with the appropriate Git repo URL and subPath locations for each workload.
+
 ```
 kubectl apply -f ./config/ --recursive
 ```
