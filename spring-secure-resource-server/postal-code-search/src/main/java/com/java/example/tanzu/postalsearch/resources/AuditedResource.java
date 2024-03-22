@@ -15,6 +15,8 @@ public abstract class AuditedResource {
 	
 	protected final static String EVENT_SUCCESS = "SUCCESS";
 
+	protected final static String EVENT_ERROR = "ERROR";
+	
 	protected final static String EVENT_CODE_NOT_FOUND = "CODE NOT FOUND";
 	
 	protected static final String STREAM_BRIDGE_AUDIT_OUTPUT_CHANNLE = "auditEvent-out-0";
