@@ -46,6 +46,7 @@ type Data = {
   noAuditEvents: boolean;
   validData: boolean;
   errorCondition: boolean;
+  errorMessage: String;
   fullDataResponse: AuditResponse;
 }
 
@@ -60,7 +61,8 @@ export default defineComponent({
       auditData: [],
       noAuditEvents: false,
       validData: false,
-      errorCondition: false,    
+      errorCondition: false, 
+      errorMessage: "Error occurred during search",
       fullDataResponse: <AuditResponse>{},
     };
   }, 
@@ -200,11 +202,17 @@ export default defineComponent({
             }
         })
         .catch(error => {
+
             this.auditData = [];
             this.noAuditEvents = false;
             this.validData = false;
             this.errorCondition = true;
             this.fullDataResponse = <AuditResponse>{};
+            if (error.response.status === 401 || error.response.status === 403)
+                 this.errorMessage = "Error occurred during search: Access Denied";
+            else
+                 this.errorMessage = "Error occurred during search: " + error.message;
+
         });   
     },
   },  
@@ -271,7 +279,7 @@ export default defineComponent({
         </label>
     </div>
     <h1 v-if="noAuditEvents">No events found for this time range</h1>    
-    <h1 v-if="errorCondition">Error occurred during search</h1>   
+    <h1 v-if="errorCondition">{{errorMessage}}</h1>   
     <form action="/scg-logout" method="GET" id="logoutForm">
         <input type="hidden" id="logout" name="redirect" value="/"/>
         <button>Logout</button>
