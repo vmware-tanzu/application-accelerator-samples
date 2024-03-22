@@ -45,6 +45,5 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://appsso-where-for-dinner.service-instances.perfect300rock.com  
-          
-api.key: 12345     
+          issuer-uri: ${POSTAL_CODE_ISS_URL}
+             

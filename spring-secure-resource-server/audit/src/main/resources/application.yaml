@@ -33,6 +33,10 @@ spring:
     url: r2dbc:h2:mem:///testdb    
     username: sa
 
+auidit:
+  api:
+    authorized-role: ROLE_SECURITY_OFFICER
+
 ---
 
 spring:
@@ -51,4 +55,4 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://appsso-where-for-dinner.service-instances.perfect300rock.com  
+          issuer-uri: ${POSTAL_CODE_ISS_URL}

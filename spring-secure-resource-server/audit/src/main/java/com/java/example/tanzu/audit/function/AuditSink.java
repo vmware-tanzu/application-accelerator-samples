@@ -3,6 +3,8 @@ package com.java.example.tanzu.audit.function;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,8 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class AuditSink {
 
+	protected final Logger log = LoggerFactory.getLogger(AuditSink.class);
+	
 	@Autowired
 	protected AuditEventRepository auditEventRepo;
 	
@@ -45,7 +49,7 @@ public class AuditSink {
 		    		});		    					
 			})
 		    .onErrorContinue(Exception.class,  (e, o) ->
-				System.out.println("Error processing audit event:" + e.getMessage()))					
+				log.error("Error processing audit event: {}", e.getMessage(), e))					
 			.then();
 	}
 	
