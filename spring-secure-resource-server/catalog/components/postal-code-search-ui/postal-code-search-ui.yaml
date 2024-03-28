@@ -10,7 +10,6 @@ spec:
   owner: postal-code-team
   system: postal-code
   dependsOn: 
-  dependsOn: 
     - resource:postal-code-db
     - resource:postal-code-messaging
     - resource:postal-code-sso
