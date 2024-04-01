@@ -25,8 +25,8 @@ spec:
   serviceClaims:
   - name: sso
     ref:
-      apiVersion: services.apps.tanzu.vmware.com/v1alpha1
-      kind: ClassClaim
+      apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+      kind: ClientRegistration
       name: appsso-postal-codes 
   - name: rmq
     ref:
