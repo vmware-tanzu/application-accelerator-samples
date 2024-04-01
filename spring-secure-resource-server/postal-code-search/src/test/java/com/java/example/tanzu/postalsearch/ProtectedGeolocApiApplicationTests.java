@@ -1,4 +1,4 @@
-package com.java.example.tanzu.geoloc;
+package com.java.example.tanzu.postalsearch;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
