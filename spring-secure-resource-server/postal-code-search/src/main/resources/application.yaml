@@ -38,7 +38,7 @@ spring:
 
 ---
 spring:
-  config.activate.on-profile: local
+  config.activate.on-profile: oauth2
 
 
   security:

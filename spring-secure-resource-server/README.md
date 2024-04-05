@@ -54,3 +54,38 @@ The postal code solution consists of the follwoing services/workload:
 It also includes a command line application that also allows searching for postal code geo location information.
 
 ![](doc/images/PostalCodeHighLevelArch.png)
+
+## Testing Spring Services Locally
+
+The `postal-code-search` service can be configured to use an authorization server; it can also run without it.  The audit service requires
+an authorization server which can be configured either by updating the `${POSTAL_CODE_ISS_URL}` parameter in the application.yaml file or by
+setting a `POSTAL_CODE_ISS_URL` environment variable with the value of an auth server issuer URL.  
+
+The `postal-code-search` service can be configured in a similar manner, however it requires that the `oauth2` profile be activated to turn on security.  
+The requirement to explicitly activate the `oauth` profile is due to future iterations of the service supporting other auth configurations such as
+using an API KEY vs oAuth.
+
+Examples:
+
+**Run The Audit Service**
+
+```
+export POSTAL_CODE_ISS_URL=http://myauthserver.com/
+cd audit
+mvn spring-boot:run
+```
+
+**Run The Search Service Without Auth**
+
+```
+cd postal-code-search
+mvn spring-boot:run
+```
+
+**Run The Search Service With Auth**
+
+```
+export POSTAL_CODE_ISS_URL=http://myauthserver.com/
+cd postal-code-search
+mvn spring-boot:run -Dspring-boot.run.profiles=oauth2
+```

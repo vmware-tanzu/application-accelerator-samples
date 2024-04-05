@@ -33,6 +33,12 @@ spring:
     url: r2dbc:h2:mem:///testdb    
     username: sa
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${POSTAL_CODE_ISS_URL}
+
 auidit:
   api:
     authorized-role: ROLE_SECURITY_OFFICER
@@ -46,13 +52,3 @@ spring:
     properties.sslMode: TRUST  
     properties.tlsVersion: TLSv1.2  
     
----
-spring:
-  config.activate.on-profile: local
-
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${POSTAL_CODE_ISS_URL}
