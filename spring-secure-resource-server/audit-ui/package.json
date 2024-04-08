@@ -26,6 +26,6 @@
     "vue-tsc": "^2.0.6"      
   },
   "devDependencies": {
-    "vite": "^5.1.5"
+    "vite": "^5.2.6"
   }
 }
