@@ -8,7 +8,6 @@ accelerator:
   - web
   - security
   - educational
-
   options:
   - label: Workload Namespace
     description:  The namespace where the application services will be deployed.
@@ -16,28 +15,28 @@ accelerator:
     name: workloadNamespace
     inputType: text
     dataType: string
-    required: true   
+    required: true 
   - label: Cluster Issuer Name
     description:  The name of the Cluster Issuer that will be used to create TLS certificates for the AppSSO and Gateway service instances.
     defaultValue: tap-ingress-selfsigned
     name: clusterIssuerName
     inputType: text
     dataType: string
-    required: true         
+    required: true
   - label: Gateway Service Name
     description: The name of gateway instance that will route requests.
     defaultValue: gateway-postal-codes
     name: gatewayName
     inputType: text
     dataType: string
-    required: true  
+    required: true
   - label: Message Broker Service Name
     description: The name of the message broker instance that will handle asynchronous messaging.
     defaultValue: msgbroker-postal-codes
     name: msgbrokerName
     inputType: text
     dataType: string
-    required: true      
+    required: true
   - label: Enable Rate Limiting
     description: "If checked, a rate limit will be placed on the postal code lookup API per user."
     defaultValue: false
@@ -48,21 +47,21 @@ accelerator:
   - name: rateLimit
     label: Rate Limit
     dataType: RateLimit
-    dependsOn: 
-      name: enableRateLimiting                         
+    dependsOn:
+      name: enableRateLimiting
   - label: AppSSO Instance Name
     description: "The name of the AppSSO instance that the application services will connect to."
     defaultValue: appsso-postal-codes
     name: appSSOName
     inputType: text
     dataType: string
-    required: true      
+    required: true
   - label: Application Domain
     description: "The domain name used to externally access the application."
     name: appDomain
     inputType: text
     dataType: string
-    required: true  
+    required: true
   imports:
     - name: tap-workload
     - name: build-wrapper-maven
@@ -74,76 +73,75 @@ accelerator:
           label: Rate Limit Max Requests
           description: The maximum number of requests to be accepted during the time window.
           defaultValue: 5
-          required: true  
+          required: true
         - name: requestLimitTimeWindow
           dataType: number
           label: Rate Limit Time Window
           description: The duration of the tine window.  Defaults to 1 second.
           defaultValue: 1
-          required: true            
+          required: true
         - name: requestLimitWindowUnits
           label: Rate Limit Time Window Units
           description: The units used to define the time window.
           defaultValue: s
-          required: true  
+          required: true
           inputType: select
           choices:
           - value: ms
             text: Millseconds
           - value: s
-            text: Seconds  
+            text: Seconds
           - value: m
             text: Minutes
           - value: h
-            text: Hours            
-
-engine:     
+            text: Hours
+engine:
   merge:
-  - exclude: 
+  - exclude:
       ["**/templates/**", "**/icons/**", "**/.git/**", "**/deployment/**"]
-  - include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml", "**/templates/ingress.yaml",  "**/templates/rmqClassClaim.yaml"]   
+  - include: ["**/templates/scgInstance.yaml", "**/templates/scgRoutes.yaml", "**/templates/ingress.yaml",  "**/templates/rmqClassClaim.yaml"]
     chain:
-    - type: YTT  
+    - type: YTT
     - type: RewritePath
       regex: 'templates/scgInstance.yaml'
-      rewriteTo: "'config/service-operator/scgInstance.yaml'"  
+      rewriteTo: "'config/service-operator/scgInstance.yaml'"
     - type: RewritePath
       regex: 'templates/scgRoutes.yaml'
-      rewriteTo: "'config/app-operator/scgRoutes.yaml'"  
+      rewriteTo: "'config/app-operator/scgRoutes.yaml'"
     - type: RewritePath
       regex: 'templates/ingress.yaml'
-      rewriteTo: "'config/app-operator/ingress.yaml'" 
+      rewriteTo: "'config/app-operator/ingress.yaml'"
     - type: RewritePath
       regex: 'templates/rmqClassClaim.yaml'
-      rewriteTo: "'config/app-operator/rmqClassClaim.yaml'"       
+      rewriteTo: "'config/app-operator/rmqClassClaim.yaml'"
   - include: ["**/templates/workloads.yaml"]
     chain:
     - type: YTT
     - type: RewritePath
       regex: 'templates/workloads.yaml'
-      rewriteTo: "'config/developer/workloads.yaml'"                  
+      rewriteTo: "'config/developer/workloads.yaml'"
     - type: InvokeFragment
       reference: tap-workload
   - include: ["**/appSSOInstance.yaml", "**/workloadClientRegistration.yaml"]
     chain:
-    - type: YTT  
+    - type: YTT
     - type: RewritePath
       regex: 'templates/appSSOInstance.yaml'
-      rewriteTo: "'config/service-operator/appSSOInstance.yaml'"  
+      rewriteTo: "'config/service-operator/appSSOInstance.yaml'"
     - type: RewritePath
       regex: 'templates/workloadClientRegistration.yaml'
-      rewriteTo: "'config/app-operator/workloadClientRegistration.yaml'"   
+      rewriteTo: "'config/app-operator/workloadClientRegistration.yaml'"
   - type: InvokeFragment
-    reference: build-wrapper-maven     
-  - include: ["README.md"]  
+    reference: build-wrapper-maven
+  - include: ["README.md"]
   - chain:
     - type: InvokeFragment
       reference: build-wrapper-maven
     - type: RewritePath
-      rewriteTo: "'audit/' + (#folder != null ? #folder : '') + #filename"   
+      rewriteTo: "'audit/' + (#folder != null ? #folder : '') + #filename"
   - chain:
     - type: InvokeFragment
       reference: build-wrapper-maven
     - type: RewritePath
-      rewriteTo: "'postal-code-search/' + (#folder != null ? #folder : '') + #filename"               
+      rewriteTo: "'postal-code-search/' + (#folder != null ? #folder : '') + #filename"
   - type: Provenance

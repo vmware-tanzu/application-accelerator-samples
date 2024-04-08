@@ -9,14 +9,14 @@ metadata:
     apps.tanzu.vmware.com/has-tests: "true"
     apps.tanzu.vmware.com/workload-type: server
   name: postal-code-audit-ui
-  namespace: #@ data.values.workloadNamespace    
+  namespace: #@ data.values.workloadNamespace
 spec:
   build:
     env:
     - name: BP_NODE_RUN_SCRIPTS
       value: build
     - name: BP_WEB_SERVER_ROOT
-      value: dist           
+      value: dist
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -28,28 +28,28 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   name: postal-code-audit
-  namespace: #@ data.values.workloadNamespace  
+  namespace: #@ data.values.workloadNamespace
   labels:
     apps.tanzu.vmware.com/workload-type: server
     apps.tanzu.vmware.com/has-tests: "true"
     apps.tanzu.vmware.com/auto-configure-actuators: "true"
     app.kubernetes.io/part-of: postal-code-audit
 spec:
-  resources:     
-    requests:         
+  resources:
+    requests:
       memory: "500M"
       cpu: "100m"
-    limits:         
+    limits:
       memory: "750M"
-      cpu: "1500m"         
+      cpu: "1500m"
   build:
     env:
       - name: BP_JVM_VERSION
-        value: "21"      
+        value: "21"
   serviceClaims:
   - name: sso
     ref:
-      apiVersion: sso.apps.tanzu.vmware.com/v1alpha1 
+      apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
       kind: ClientRegistration
       name:  #@ data.values.appSSOName
   - name: rmq
@@ -61,7 +61,7 @@ spec:
     ref:
       apiVersion: v1
       kind: Secret
-      name: #@ data.values.appSSOName + '-ca-cert'   
+      name: #@ data.values.appSSOName + '-ca-cert'
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -73,7 +73,7 @@ apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
   name: postal-code-search
-  namespace: #@ data.values.workloadNamespace  
+  namespace: #@ data.values.workloadNamespace
   labels:
     apps.tanzu.vmware.com/workload-type: server
     apps.tanzu.vmware.com/has-tests: "true"
@@ -83,17 +83,17 @@ spec:
   env:
   - name: spring_profiles_active
     value: oauth2
-  resources:     
-    requests:         
+  resources:
+    requests:
       memory: "500M"
       cpu: "100m"
-    limits:         
+    limits:
       memory: "750M"
-      cpu: "1500m"         
+      cpu: "1500m"
   build:
     env:
       - name: BP_JVM_VERSION
-        value: "21"      
+        value: "21"
   serviceClaims:
   - name: sso
     ref:
@@ -104,12 +104,12 @@ spec:
     ref:
       apiVersion: services.apps.tanzu.vmware.com/v1alpha1
       kind: ClassClaim
-      name:  #@ data.values.msgbrokerName      
+      name:  #@ data.values.msgbrokerName
   - name: cacert
     ref:
       apiVersion: v1
       kind: Secret
-      name: #@ data.values.appSSOName + '-ca-cert'   
+      name: #@ data.values.appSSOName + '-ca-cert'
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -125,14 +125,14 @@ metadata:
     apps.tanzu.vmware.com/has-tests: "true"
     apps.tanzu.vmware.com/workload-type: server
   name: postal-code-search-ui
-  namespace: #@ data.values.workloadNamespace  
+  namespace: #@ data.values.workloadNamespace
 spec:
   build:
     env:
     - name: BP_NODE_RUN_SCRIPTS
       value: build
     - name: BP_WEB_SERVER_ROOT
-      value: dist           
+      value: dist
   source:
     git:
       url: <https URL for your generated project's Git repository>

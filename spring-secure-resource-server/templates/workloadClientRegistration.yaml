@@ -14,14 +14,14 @@ spec:
     - #@ 'https://postal-code-search.' + data.values.appDomain + '/login/oauth2/code/sso'
     - #@ 'http://postal-code-search.' + data.values.appDomain + '/login/oauth2/code/sso'
     - #@ 'https://postal-code-audit.' + data.values.appDomain + '/login/oauth2/code/sso'
-    - #@ 'http://postal-code-audit.' + data.values.appDomain + '/login/oauth2/code/sso'  
+    - #@ 'http://postal-code-audit.' + data.values.appDomain + '/login/oauth2/code/sso'
   scopes:
     - name: openid
     - name: email
     - name: profile
-    - name: roles  
+    - name: roles
   clientAuthenticationMethod: client_secret_basic
-  requireUserConsent: false      
+  requireUserConsent: false
   authorizationGrantTypes:
     - client_credentials
     - authorization_code

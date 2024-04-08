@@ -6,12 +6,12 @@ apiVersion: projectcontour.io/v1
 kind: HTTPProxy
 metadata:
   name: postal-codes-search-ingress
-  namespace: #@ data.values.workloadNamespace  
+  namespace: #@ data.values.workloadNamespace 
 spec:
   virtualhost:
     fqdn:  #@ "postal-code-search." + data.values.appDomain
     tls:
-      secretName: postal-codes-search-cert   
+      secretName: postal-codes-search-cert
   routes:
     - conditions:
         - prefix: /
@@ -31,18 +31,18 @@ spec:
   issuerRef:
     name: #@ data.values.clusterIssuerName
     kind: ClusterIssuer
-  secretName: postal-codes-search-cert 
+  secretName: postal-codes-search-cert
 ---
 apiVersion: projectcontour.io/v1
 kind: HTTPProxy
 metadata:
   name: postal-codes-audit-ingress
-  namespace: #@ data.values.workloadNamespace  
+  namespace: #@ data.values.workloadNamespace
 spec:
   virtualhost:
     fqdn:  #@ "postal-code-audit." + data.values.appDomain
     tls:
-      secretName: postal-codes-audit-cert   
+      secretName: postal-codes-audit-cert
   routes:
     - conditions:
         - prefix: /
@@ -53,7 +53,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: postal-codes-audit-cert  
+  name: postal-codes-audit-cert
   namespace: #@ data.values.workloadNamespace
 spec:
   commonName: #@ "postal-code-audit." + data.values.appDomain
@@ -62,4 +62,4 @@ spec:
   issuerRef:
     name: #@ data.values.clusterIssuerName
     kind: ClusterIssuer
-  secretName: postal-codes-audit-cert  
+  secretName: postal-codes-audit-cert

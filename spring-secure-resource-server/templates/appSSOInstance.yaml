@@ -8,7 +8,7 @@ metadata:
   name: #@ data.values.appSSOName
   namespace: #@ data.values.workloadNamespace
   labels:
-    name: appsso-postal-codes
+    name: #@ data.values.appSSOName
     app: post-codes    
   annotations:
     sso.apps.tanzu.vmware.com/allow-client-namespaces: "*"
@@ -38,7 +38,7 @@ spec:
             password: codes
             roles:
               - "ADMIN"
-              - "PREMIUM_USER"  
+              - "PREMIUM_USER"
           - username: security
             password: officer
             roles:
@@ -48,12 +48,12 @@ apiVersion: secretgen.k14s.io/v1alpha1
 kind: RSAKey
 metadata:
   name: #@ data.values.appSSOName + "-signing-key"
-  namespace: #@ data.values.workloadNamespace  
+  namespace: #@ data.values.workloadNamespace
 spec:
   secretTemplate:
     type: Opaque
     stringData:
-      key.pem: $(privateKey)      
+      key.pem: $(privateKey)
       pub.pem: $(publicKey)
       
 ---
@@ -61,13 +61,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: secret-template-sa
-  #@ data.values.workloadNamespace    
+  #@ data.values.workloadNamespace
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: secret-template-secret-reader
-  #@ data.values.workloadNamespace    
+  #@ data.values.workloadNamespace
 rules:
 - apiGroups:
   - ""
@@ -83,7 +83,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: secret-template-secret-reader
-  namespace: #@ data.values.workloadNamespace  
+  namespace: #@ data.values.workloadNamespace
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
