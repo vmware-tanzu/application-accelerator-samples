@@ -133,7 +133,6 @@ engine:
       rewriteTo: "'config/app-operator/workloadClientRegistration.yaml'"
   - type: InvokeFragment
     reference: build-wrapper-maven
-  - include: ["README.md"]
   - chain:
     - type: InvokeFragment
       reference: build-wrapper-maven
@@ -144,4 +143,9 @@ engine:
       reference: build-wrapper-maven
     - type: RewritePath
       rewriteTo: "'postal-code-search/' + (#folder != null ? #folder : '') + #filename"
+  - include: ["**/config/**"]
+    chain:
+    - type: InvokeFragment
+      reference: tap-workload
+  - include: ["README.md"]
   - type: Provenance
