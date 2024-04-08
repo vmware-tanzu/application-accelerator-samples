@@ -1,0 +1,8 @@
+{
+    "clusterIssuerName": "tap-ingress-selfsigned",
+    "gatewayName": "gateway-postal-codes",
+    "msgbrokerName": "msgbroker-postal-codes",
+    "enableRateLimiting": false,
+    "appSSOName": "appsso-postal-codes",
+    "appDomain": "example.com"  
+}

@@ -1,0 +1,148 @@
+@import './base.css';
+
+#app {
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+}
+
+.landing  {
+  display: flex;
+}
+
+.welcomeContent
+{
+  background: white;
+  font-family: "Helvetica Neue", Helvetica, Arial;
+  position: relative;
+  color: #666666;
+  border-radius: 10px;
+  margin: 0 auto; 
+  padding-bottom: 20px;
+}
+
+ button
+{
+    width: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none;
+        background: -moz-linear-gradient(
+        top,
+        #b9c5dd 0%,
+        #a4b0cb);
+    background: #3399cc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #737b8d;
+    -moz-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    -webkit-box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 5px 5px rgba(000,000,000,0.1),
+        inset 0px 1px 0px rgba(255,255,255,0.5);
+    text-shadow:
+        0px 1px 3px rgba(000,000,000,0.3),
+        0px 0px 0px rgba(255,255,255,0);
+    display: table;
+    position: static;
+    clear: both;
+}
+
+.audit-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.audit-table  thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+.audit-table  th,
+.audit-table  td {
+    padding: 12px 15px;
+}
+
+.audit-table  tbody tr {
+  border-bottom: 1px solid #dddddd;
+  background-color: #ffffff;
+  color: #000
+}
+
+.audit-table  tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.audit-table  tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+#searchContainer label 
+{
+	font-weight: bold;	
+    width:170px;
+    display:inline-block;
+    margin-top: 10px;
+}
+
+#pageInfo {
+  display: flex;
+}
+
+.tableFooter {
+  display: flex;
+}
+
+.dropdown {
+  width: 40px;
+}
+
+.tableFooter button {
+  width: 30px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: 0 0;
+  color: #1f3a56;
+  cursor: pointer;
+}

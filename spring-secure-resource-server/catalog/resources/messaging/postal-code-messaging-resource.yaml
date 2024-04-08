@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: postal-code-messaging
+  description: Postal Code application async messaging
+spec:
+  type: message-broker
+  owner: postal-code-team
+  system: postal-code

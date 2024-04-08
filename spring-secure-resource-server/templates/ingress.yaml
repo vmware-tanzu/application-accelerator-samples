@@ -1,0 +1,65 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:regexp", "regexp")
+
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: postal-codes-search-ingress
+  namespace: #@ data.values.workloadNamespace 
+spec:
+  virtualhost:
+    fqdn:  #@ "postal-code-search." + data.values.appDomain
+    tls:
+      secretName: postal-codes-search-cert
+  routes:
+    - conditions:
+        - prefix: /
+      services:
+        - name: #@ data.values.gatewayName
+          port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: postal-code-search-cert
+  namespace: #@ data.values.workloadNamespace
+spec:
+  commonName: #@ "postal-code-search." + data.values.appDomain
+  dnsNames:
+    -  #@ "postal-code-search." + data.values.appDomain
+  issuerRef:
+    name: #@ data.values.clusterIssuerName
+    kind: ClusterIssuer
+  secretName: postal-codes-search-cert
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: postal-codes-audit-ingress
+  namespace: #@ data.values.workloadNamespace
+spec:
+  virtualhost:
+    fqdn:  #@ "postal-code-audit." + data.values.appDomain
+    tls:
+      secretName: postal-codes-audit-cert
+  routes:
+    - conditions:
+        - prefix: /
+      services:
+        - name: #@ data.values.gatewayName
+          port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: postal-codes-audit-cert
+  namespace: #@ data.values.workloadNamespace
+spec:
+  commonName: #@ "postal-code-audit." + data.values.appDomain
+  dnsNames:
+    -  #@ "postal-code-audit." + data.values.appDomain
+  issuerRef:
+    name: #@ data.values.clusterIssuerName
+    kind: ClusterIssuer
+  secretName: postal-codes-audit-cert

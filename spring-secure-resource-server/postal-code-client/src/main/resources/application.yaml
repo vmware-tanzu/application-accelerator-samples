@@ -1,0 +1,19 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          postal-code-client:
+            provider: postal-code-provider
+            client-id: ${POSTAL_CODE_CLIENT_ID}
+            client-secret: ${POSTAL_CODE_CLIENT_SECRET}
+            client-authentication-method: client_secret_basic
+            authorization-grant-type: client_credentials
+        provider:
+          postal-code-provider:
+            token-uri: ${POSTAL_CODE_TOKEN_URL}
+
+postal-code:
+  search:
+    service:
+      identifier: ${POSTAL_CODE_SERVICE_URL}

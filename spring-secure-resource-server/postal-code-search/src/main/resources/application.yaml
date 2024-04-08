@@ -1,0 +1,49 @@
+
+server.port: 8081
+
+spring:
+  flyway:
+    baseline-on-migrate: true
+    enabled: true 
+    locations: classpath:db/migration/{vendor}
+    out-of-order: false
+    table: postalcodes-schema-version
+    validate-on-migrate: false
+
+  cloud: 
+    function:
+      definition: auditEvent    
+    stream:
+      defaultBinder: rabbit
+      bindings: 
+        auditEvent-out-0: 
+          destination: postal-code-audit-events
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    
+  r2dbc: 
+    url: r2dbc:h2:mem:///testdb    
+    username: sa
+          
+---
+
+spring:
+  config.activate.on-profile: mysql
+ 
+  r2dbc: 
+    properties.sslMode: TRUST  
+    properties.tlsVersion: TLSv1.2   
+
+---
+spring:
+  config.activate.on-profile: oauth2
+
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${POSTAL_CODE_ISS_URL}
+             

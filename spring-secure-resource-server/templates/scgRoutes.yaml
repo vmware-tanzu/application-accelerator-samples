@@ -1,0 +1,141 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: postal-code-ui-route-config
+  namespace: #@ data.values.workloadNamespace
+spec:
+  routes:
+  - predicates:
+    - Path=/**
+    - Host=postal-code-search**.**
+    - Method=GET
+    order: 1000
+    filters:
+    - StripPrefix=0
+    tags:
+    - ui
+  - predicates:
+    - Path=/postalSearch/**
+    filters:
+    - StripPrefix=0
+    ssoEnabled: true
+    tags:
+    - ui-secure
+  service:
+    name: postal-code-search-ui
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: postal-code-ui-route-mapping
+  namespace: #@ data.values.workloadNamespace
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: postal-code-ui-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: postal-code-audit-ui-route-config
+  namespace: #@ data.values.workloadNamespace
+spec:
+  routes:
+  - predicates:
+    - Path=/**
+    - Host=postal-code-audit**.**
+    - Method=GET
+    order: 1000
+    filters:
+    - StripPrefix=0
+    tags:
+    - ui
+  - predicates:
+    - Path=/auditViewer/**
+    filters:
+    - StripPrefix=0
+    ssoEnabled: true
+    tags:
+    - audit-ui-secure
+  service:
+    name: postal-code-audit-ui
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: postal-code-audit-ui-route-mapping
+  namespace: #@ data.values.workloadNamespace
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: postal-code-audit-ui-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: postal-code-search-route-config
+spec:
+  routes:
+  - predicates:
+    - Path=/api/search/**
+    order: 1
+    filters:
+    - TokenRelay=
+    - StripPrefix=0
+    - RewritePath=/api/search(?<segment>/?.*), $\{segment}
+    - RemoveRequestHeader=Forwarded
+#@ if data.values.enableRateLimiting == True:
+    - #@ 'RateLimit=' + str(data.values.rateLimit.requestLimitMaxRequests) + ',' + str(data.values.rateLimit.requestLimitTimeWindow) + str(data.values.rateLimit.requestLimitWindowUnits) + ',{claim:sub}'
+#@ end
+    tags:
+    - search-api
+    tokenRelay: true
+  service:
+    name: postal-code-search
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: postal-code-search-route-mapping
+  namespace: #@ data.values.workloadNamespace
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: postal-code-search-route-config
+---
+apiVersion: tanzu.vmware.com/v1
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: postal-code-audit-route-config
+spec:
+  routes:
+  - predicates:
+    - Path=/api/audit/**
+    order: 1
+    filters:
+    - TokenRelay=
+    - StripPrefix=0
+    - RewritePath=/api/audit(?<segment>/?.*), $\{segment}
+    - RemoveRequestHeader=Forwarded
+    tags:
+    - audit-api
+    tokenRelay: true
+  service:
+    name: postal-code-audit
+---
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: postal-code-audit-route-mapping
+  namespace: #@ data.values.workloadNamespace
+spec:
+  gatewayRef:
+    name: #@ data.values.gatewayName
+  routeConfigRef:
+    name: postal-code-audit-route-config

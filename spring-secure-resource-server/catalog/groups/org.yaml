@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: postal-code-team
+  description: The postal-code app team
+spec:
+  type: team
+  profile:
+    displayName: Postal Code dev team
+    email: postal-code@example.com
+  children: []

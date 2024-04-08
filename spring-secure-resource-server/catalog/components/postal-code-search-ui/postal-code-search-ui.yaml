@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: postal-code-search-ui
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=postal-code-search-uiy"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: postal-code-team
+  system: postal-code
+  dependsOn: 
+    - resource:postal-code-db
+    - resource:postal-code-messaging
+    - resource:postal-code-sso
+    - resource:postal-code-gateway
+    - component:postal-code-search

@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: postal-code-gateway
+  description: Postal code application gateway
+spec:
+  type: gateway
+  owner: postal-code-team
+  system: postal-code

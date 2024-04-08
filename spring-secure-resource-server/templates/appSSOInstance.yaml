@@ -1,0 +1,111 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+---
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: AuthServer
+metadata:
+  name: #@ data.values.appSSOName
+  namespace: #@ data.values.workloadNamespace
+  labels:
+    name: #@ data.values.appSSOName
+    app: post-codes    
+  annotations:
+    sso.apps.tanzu.vmware.com/allow-client-namespaces: "*"
+    sso.apps.tanzu.vmware.com/allow-unsafe-identity-provider: ""
+    sso.apps.tanzu.vmware.com/allow-unsafe-issuer-uri: ""
+spec:
+  tls:
+    issuerRef:
+      name: #@ data.values.clusterIssuerName
+      kind: ClusterIssuer
+  tokenSignature:
+    signAndVerifyKeyRef:
+      name: #@ data.values.appSSOName +"-signing-key"
+  identityProviders:
+    - name: dev-users
+      internalUnsafe:
+        users:
+          - username: freemium
+            password: codes
+            roles:
+              - "FREEMIUM_USER"
+          - username: premium
+            password: codes
+            roles:
+              - "PREMIUM_USER"
+          - username: admin
+            password: codes
+            roles:
+              - "ADMIN"
+              - "PREMIUM_USER"
+          - username: security
+            password: officer
+            roles:
+              - "SECURITY_OFFICER"                             
+---
+apiVersion: secretgen.k14s.io/v1alpha1
+kind: RSAKey
+metadata:
+  name: #@ data.values.appSSOName + "-signing-key"
+  namespace: #@ data.values.workloadNamespace
+spec:
+  secretTemplate:
+    type: Opaque
+    stringData:
+      key.pem: $(privateKey)
+      pub.pem: $(publicKey)
+      
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: secret-template-sa
+  #@ data.values.workloadNamespace
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-template-secret-reader
+  #@ data.values.workloadNamespace
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secret-template-secret-reader
+  namespace: #@ data.values.workloadNamespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: secret-template-secret-reader
+subjects:
+- kind: ServiceAccount
+  name: secret-template-sa
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretTemplate
+metadata:
+  name: #@ data.values.appSSOName + '-ca-cert'
+spec:
+  inputResources:
+    - name: ca-cert
+      ref:
+        apiVersion: v1
+        kind: Secret
+        name: #@ data.values.appSSOName + "-auth-server"
+  template:
+    data:
+      ca.pem: $(.ca-cert.data.ca\.crt)
+    stringData:
+      type: ca-certificates
+     

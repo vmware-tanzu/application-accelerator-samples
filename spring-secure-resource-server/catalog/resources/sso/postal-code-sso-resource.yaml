@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: postal-code-sso
+  description: Postal Code application single signon
+spec:
+  type: sso
+  owner: postal-code-team
+  system: postal-code
