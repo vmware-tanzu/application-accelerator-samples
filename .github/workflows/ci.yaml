@@ -5,6 +5,7 @@ on:
 
 jobs:
   list-tests:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,8 +31,6 @@ jobs:
           password: ${{secrets.TANZUNET_PASS}}
         ports:
           - 8888:8080
-
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
