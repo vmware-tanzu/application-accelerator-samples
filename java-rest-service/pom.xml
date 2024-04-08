@@ -62,6 +62,13 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
 
+        <!-- Observability support -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

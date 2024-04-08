@@ -21,6 +21,9 @@ dependencies {
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:bootstrap:5.2.0")
 
+    // Observability support
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

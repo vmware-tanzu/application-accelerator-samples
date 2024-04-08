@@ -47,6 +47,13 @@
             <version>5.2.0</version>
         </dependency>
 
+        <!-- Observability support -->
+            <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

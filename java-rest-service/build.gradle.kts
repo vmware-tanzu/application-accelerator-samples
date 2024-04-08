@@ -29,6 +29,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.liquibase:liquibase-core")
 
+    // Observability support
+    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+
     // Test
     testImplementation ("org.springframework.boot:spring-boot-starter-test")
 }
