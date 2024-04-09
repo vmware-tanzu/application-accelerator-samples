@@ -1,21 +1,21 @@
-# Spaces - Beta 2 Sample App
+# Spaces - Beta 3 Sample App
 
 This directory contains pre-built deliverable packages of the Where For DInner application that can be installed in a run `Space` 
-for the Spaces Beta 2 release.  It can consume either AWS RDS and MQ services using direct secret references or Bitnami MySQL and 
-RabbitMQ services using `ClassClaims`.  If using AWS services, you will need deploy RDS and Amazon MQ (RabbitMQ option) instances which 
+for the Spaces Beta 3 release.  It can consume either AWS RDS and MQ services using direct secret references or Bitnami MySQL and 
+RabbitMQ services.  If using AWS services, you will need deploy RDS and Amazon MQ (RabbitMQ option) instances which 
 are publicly available in order for the application workloads to properly run.  It is also assumed that you have access to a `Space` that has been 
 configured with the proper traits.
 
 ## Obtain Where For Dinner Deployment Repository
 
 The configuration files for deploying Where For Dinner to your space can be obtained by cloning the following Git repository and switching to the 
-`wfd-spaces-beta2` branch.  Run the following commands:
+`wfd-spaces-beta3` branch.  Run the following commands:
 
 ```
 git clone https://github.com/vmware-tanzu/application-accelerator-samples
 cd application-accelerator-samples
-git checkout wfd-spaces-beta2
-cd where-for-dinner/spaces-beta2-deployment
+git checkout wfd-spaces-beta3
+cd where-for-dinner/spaces-beta3-deployment
 ```
 
 Follow the service creation steps for you desired service deployment option: AWS or Bitnami Services
@@ -56,7 +56,8 @@ To create a RabbitMQ instance:
 - You should also select `Private access` for `Access type`.  
 - After providing all settings, click `Next` then `Create broker`; it may take up to 20 minutes for the broker to be provisioned.
 
-After the broker has been created, click the broker name from the list of brokers and scroll down to the `Connections` sections.  Note the AMQP endpoint as this will be used in the addresses field in  the secret located in the file *serviceSecret.yaml*.
+After the broker has been created, click the broker name from the list of brokers and scroll down to the `Connections` sections.  Note the AMQP endpoint 
+as this will be used in the addresses field in  the secret located in the file *serviceSecret.yaml*.
 
 
 ### Update Service Credential Secrets
@@ -71,7 +72,8 @@ file; an easy way to base64 values is to use an online tool such as https://www.
 You should only use this option if you are deploying the application into a space that has a single availability target.
 
 This application configuration option of Where For Dinner utilizes the Bitnami MySQL and RabbitMQ on platform services and consumes credentials/connection via 
-`ClassClaims`.  You will deploy the service instances in the `Deploy Where For Dinner Application and Configuration To Space` section using the `bitnamiServices.yaml` file.
+a Kubernetes Service Binding compliant resource.  You will deploy the service instances in the `Deploy Where For Dinner Application and Configuration To Space` 
+section using the `bitnamiServices.yaml` file.
 
 
 ## Update Kubernetes Gateway Route
@@ -103,7 +105,7 @@ The Where For Dinner deployment consists of the following resources:
 - If using AWS services, secret resources containing backing service credential/connection info 
 - Routing resources for Spring Cloud Gateway and Kubernetes Gateway APIs
 
-To deploy the application, run following command below from the root of the `where-for-dinner/spaces-beta2-deployment` directory depending on the backing 
+To deploy the application, run following command below from the root of the `where-for-dinner/spaces-beta3-deployment` directory depending on the backing 
 service configuration:
 
 

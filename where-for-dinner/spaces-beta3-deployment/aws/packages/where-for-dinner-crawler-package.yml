@@ -1,17 +1,17 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: availability.default.tap.20231205012245.0.0
+  name: where-for-dinner-crawler.default.tap.20240408152452.0.0
 spec:
-  refName: availability.default.tap
-  version: 20231205012245.0.0
+  refName: where-for-dinner-crawler.default.tap
+  version: 20240408152452.0.0
   releaseNotes: |
-    Release v20231205012245.0.0 of package availability.default.tap
+    Release v20240408152452.0.0 of package where-for-dinner-crawler.default.tap
   template:
     spec:
       fetch:
       - imgpkgBundle:
-          image: projects.registry.vmware.com/tanzu_application_platform/supply-chain/availability-workloads-bundle@sha256:493ef6c718e05833129e15081906ae7ef235be0035ce1de075cadecd55f813e9
+          image: reg.perfect300rock.com/tapdev/supply-chain/where-for-dinner-crawler-workloads-bundle@sha256:7ea15108003296e17cf71b48f2ba810bf3504f4289672bacc298ec2e84b3a676
       template:
       - ytt:
           paths:

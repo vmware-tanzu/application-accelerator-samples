@@ -1,17 +1,17 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: search-proc.default.tap.20231205011658.0.0
+  name: availability.default.tap.20240408150313.0.0
 spec:
-  refName: search-proc.default.tap
-  version: 20231205011658.0.0
+  refName: availability.default.tap
+  version: 20240408150313.0.0
   releaseNotes: |
-    Release v20231205011658.0.0 of package search-proc.default.tap
+    Release v20240408150313.0.0 of package availability.default.tap
   template:
     spec:
       fetch:
       - imgpkgBundle:
-          image: projects.registry.vmware.com/tanzu_application_platform/supply-chain/search-proc-workloads-bundle@sha256:ef00d0830c71b21c6d17ba07550f493d238d0a2cbbdb9d598a31ea4b5a8a26c8
+          image: reg.perfect300rock.com/tapdev/supply-chain/availability-workloads-bundle@sha256:a9184ad88ec549d765736b095cdecdea151064294ae89d8c1f0e7edf2a2ff72a
       template:
       - ytt:
           paths:

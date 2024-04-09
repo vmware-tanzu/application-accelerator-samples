@@ -1,17 +1,17 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: where-for-dinner-search.default.tap.20231205011645.0.0
+  name: where-for-dinner-search.default.tap.20240408152958.0.0
 spec:
   refName: where-for-dinner-search.default.tap
-  version: 20231205011645.0.0
+  version: 20240408152958.0.0
   releaseNotes: |
-    Release v20231205011645.0.0 of package where-for-dinner-search.default.tap
+    Release v20240408152958.0.0 of package where-for-dinner-search.default.tap
   template:
     spec:
       fetch:
       - imgpkgBundle:
-          image: projects.registry.vmware.com/tanzu_application_platform/supply-chain/where-for-dinner-search-workloads-bundle@sha256:391b4eeb9877828cc40bd99a13901bc0400a254428cecdfaa92974ed07aaff19
+          image: reg.perfect300rock.com/tapdev/supply-chain/where-for-dinner-search-workloads-bundle@sha256:4597d3075955f84e3098f000cf1a6e8b308a2ff8e1539dd51b98f4f4ef390fe9
       template:
       - ytt:
           paths:

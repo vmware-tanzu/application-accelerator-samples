@@ -1,17 +1,17 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: where-for-dinner-crawler.default.tap.20231205011717.0.0
+  name: where-for-dinner-notify.default.tap.20240408151130.0.0
 spec:
-  refName: where-for-dinner-crawler.default.tap
-  version: 20231205011717.0.0
+  refName: where-for-dinner-notify.default.tap
+  version: 20240408151130.0.0
   releaseNotes: |
-    Release v20231205011717.0.0 of package where-for-dinner-crawler.default.tap
+    Release v20240408151130.0.0 of package where-for-dinner-notify.default.tap
   template:
     spec:
       fetch:
       - imgpkgBundle:
-          image: projects.registry.vmware.com/tanzu_application_platform/supply-chain/where-for-dinner-crawler-workloads-bundle@sha256:b8ff74964941d1eb60a9129fbaca85fe22dd92f4a14ed387f4148b2de9156ee3
+          image: reg.perfect300rock.com/tapdev/supply-chain/where-for-dinner-notify-workloads-bundle@sha256:c6e8221c1f9a789564c2b93ce4061e711f91a14b565d53edd53ee74d05faf490
       template:
       - ytt:
           paths:

@@ -3,9 +3,6 @@ apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
 metadata:
  name: where-for-dinner-search
- annotations:
-    ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: rmq-service-overlay 
-    ext.packaging.carvel.dev/ytt-paths-from-secret-name.1: mysql-service-overlay     
 spec:
  serviceAccountName: workload-installer
  packageRef:
