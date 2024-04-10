@@ -36,7 +36,7 @@ spec:
     apiVersion: services.tanzu.vmware.com/v1alpha1
     kind: PreProvisionedService
     name: where-for-dinner-mysql
-    bindingConnector: read-write
+    connectorName: read-write
   alias: db
 ---
 apiVersion: services.tanzu.vmware.com/v1alpha1
@@ -52,7 +52,7 @@ spec:
     apiVersion: services.tanzu.vmware.com/v1alpha1
     kind: PreProvisionedService
     name: where-for-dinner-mysql
-    bindingConnector: read-write
+    connectorName: read-write
   alias: db
 ---
 apiVersion: services.tanzu.vmware.com/v1alpha1
@@ -68,7 +68,7 @@ spec:
     apiVersion: services.tanzu.vmware.com/v1alpha1
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
-    bindingConnector: read-write
+    connectorName: read-write
   alias: rmq
 ---
 apiVersion: services.tanzu.vmware.com/v1alpha1
@@ -84,7 +84,7 @@ spec:
     apiVersion: services.tanzu.vmware.com/v1alpha1
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
-    bindingConnector: read-write
+    connectorName: read-write
   alias: rmq
 ---
 apiVersion: services.tanzu.vmware.com/v1alpha1
@@ -100,7 +100,7 @@ spec:
     apiVersion: services.tanzu.vmware.com/v1alpha1
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
-    bindingConnector: read-write
+    connectorName: read-write
   alias: rmq
 ---
 apiVersion: services.tanzu.vmware.com/v1alpha1
@@ -116,5 +116,5 @@ spec:
     apiVersion: services.tanzu.vmware.com/v1alpha1
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
-    bindingConnector: read-write
+    connectorName: read-write
   alias: rmq
