@@ -1,6 +1,5 @@
 {
     "buildTool": "maven",
     "nativeBuild": true,
-    "springBootVersion" : "3.2",
     "javaVersion": "17"
 }

@@ -1,6 +1,6 @@
 plugins {
-    id("org.springframework.boot") version "2.7.18"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("org.springframework.boot") version "3.2.4"
+    id("io.spring.dependency-management") version "1.1.4"
     id("org.graalvm.buildtools.native") version "0.9.28"
     id("java")
 }
@@ -8,8 +8,6 @@ plugins {
 group = "com.vmware.tap.accelerators"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
-
-extra["snakeyaml.version"] = "1.33"
 
 springBoot {
 	buildInfo()

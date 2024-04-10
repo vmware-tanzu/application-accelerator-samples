@@ -1,8 +1,7 @@
 {
     "projectName": "was-renamed-to-this",
     "nativeBuild": false,
-    "springBootVersion" : "3.2",
-    "javaVersion": "11",
+    "javaVersion": "17",
     "buildTool": "gradle",
     "ide": "vscode",
     "includeBuildToolWrapper": true
