@@ -11,7 +11,7 @@ spec:
     spec:
       fetch:
       - imgpkgBundle:
-          image: reg.perfect300rock.com/tapdev/supply-chain/where-for-dinner-crawler-workloads-bundle@sha256:7ea15108003296e17cf71b48f2ba810bf3504f4289672bacc298ec2e84b3a676
+          image: projects.registry.vmware.com/tanzu_application_platform/supply-chain/where-for-dinner-crawler-workloads-bundle@sha256:7ea15108003296e17cf71b48f2ba810bf3504f4289672bacc298ec2e84b3a676
       template:
       - ytt:
           paths:
