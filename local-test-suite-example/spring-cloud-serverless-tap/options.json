@@ -1,0 +1,6 @@
+{
+  "projectName" : "spring-cloud-serverless",
+  "javaVersion" : "17",
+  "deploymentType" : "workload",
+  "includeBuildToolWrapper" : true
+}
