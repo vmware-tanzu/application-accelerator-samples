@@ -11,6 +11,15 @@ accelerator:
   - tanzu
   - devcontainer
   options:
+  - name: javaVersion
+    inputType: select
+    label: Java version to use
+    choices:
+    - value: "17"
+      text: Java 17
+    - value: "21"
+      text: Java 21
+    defaultValue: "17"
   - name: buildTool
     label: Build Tool
     inputType: select
@@ -33,17 +42,8 @@ accelerator:
       - value: vscode
         text: Visual Studio Code
     defaultValue: intellij
-  - name: springBootVersion
-    label: Spring Boot version
-    inputType: select
-    choices:
-      - value: "2.7"
-        text: Spring Boot 2.7
-      - value: "3.2"
-        text: Spring Boot 3.2 (Requires Java 17 or 21)
-    defaultValue: "3.2"
   - name: nativeBuild
-    label: Support native GraalVM builds (Requires Spring Boot 3.2 and Java 17 or 21)
+    label: Support native GraalVM builds
     inputType: checkbox
     dataType: boolean
     defaultValue: false
@@ -56,19 +56,10 @@ accelerator:
   - name: devcontainer
 
 engine:
-  let:
-    - name: updateBoot3
-      expression: "#nativeBuild == true ? true : ( #springBootVersion == '2.7' ? false : true )"
-    - name: nativeJavaVersion
-      expression: "#javaVersion == '17' ? '17' : ( #javaVersion == '21' ? '21' : '17' )"
-    - name: javaVersion
-      expression: "#updateBoot3 == true ? #nativeJavaVersion : ( #springBootVersion == '2.7' ? #javaVersion : #nativeJavaVersion )"
-    - name: springBootVersion
-      expression: "( #updateBoot3 == true && #springBootVersion == '2.7' ) ? '3.1' : #springBootVersion"
   chain:
   - merge:
     - include: [ "**/*" ]
-      exclude: [ "config/*.yaml", "Tiltfile*", "README*.md", "grype.yaml", "catalog/*.yaml", ".github/workflows/**" ]
+      exclude: [ "config/*.yaml", "Tiltfile*", "README*.md", "grype.yaml", "catalog/*.yaml" ]
     - include: [ "Tiltfile*" ]
       chain:
       - type: ReplaceText
@@ -165,56 +156,6 @@ engine:
             with: "#projectName"
     - type: InvokeFragment
       reference: build-wrapper-gradle
-    onConflict: UseLast
-
-  - condition: "#springBootVersion == '3.2'"
-    merge:
-    - include: [ "**" ]
-    # Maven
-    - include: [ "pom.xml" ]
-      chain:
-      - type: OpenRewriteRecipe
-        recipe: org.openrewrite.maven.ChangeParentPom
-        options:
-          oldGroupId: "'org.springframework.boot'"
-          newGroupId: "'org.springframework.boot'"
-          oldArtifactId: "'spring-boot-starter-parent'"
-          newArtifactId: "'spring-boot-starter-parent'"
-          newVersion: "'3.2.4'"
-      - type: ReplaceText
-        regex:
-          pattern: "\\s+<snakeyaml.version>1.33</snakeyaml.version>"
-          with: "''"
-    # Gradle
-    - include: [ "build.gradle.kts" ]
-      chain:
-      - type: ReplaceText
-        regex:
-          pattern: "id\\(\"org\\.springframework\\.boot\"\\) version .*"
-          with: "'id(\"org.springframework.boot\") version \"3.2.4\"'"
-      - type: ReplaceText
-        regex:
-          pattern: "id\\(\"io.spring.dependency-management\"\\) version .*"
-          with: "'id(\"io.spring.dependency-management\") version \"1.1.4\"'"
-      - type: ReplaceText
-        regex:
-          pattern: "\\s*extra\\[\"snakeyaml.version\"\\] = \"1.33\""
-          with: "''"
-
-  - condition: "#updateBoot3"
-    merge:
-    - include: [ "**" ]
-    # HttpTraceRepository to HttpExchangeRepository
-    - include: [ "**/*.java" ]
-      chain:
-      - type: ReplaceText
-        regex:
-          pattern: "import org\\.springframework\\.boot\\.actuate\\.trace\\.http"
-          with: "'import org.springframework.boot.actuate.web.exchanges'"
-      - type: ReplaceText
-        regex:
-          pattern: "HttpTraceRepository"
-          with: "'HttpExchangeRepository'"
     onConflict: UseLast
 
   - type: Provenance

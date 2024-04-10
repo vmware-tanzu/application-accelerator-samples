@@ -1,5 +1,0 @@
-{
-    "javaVersion": "11",
-    "springBootVersion" : "2.7",
-    "includeDevContainer": true
-}
