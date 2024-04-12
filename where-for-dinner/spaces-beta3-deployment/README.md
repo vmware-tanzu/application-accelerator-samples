@@ -3,8 +3,11 @@
 This directory contains pre-built deliverable packages of the Where For DInner application that can be installed in a run `Space` 
 for the Spaces Beta 3 release.  It can consume either AWS RDS and MQ services using direct secret references or Bitnami MySQL and 
 RabbitMQ services.  If using AWS services, you will need deploy RDS and Amazon MQ (RabbitMQ option) instances which 
-are publicly available in order for the application workloads to properly run.  It is also assumed that you have access to a `Space` that has been 
-configured with the proper traits.
+are publicly available in order for the application workloads to properly run.  If using Bitnami services, you can either deploy
+and bind services using yaml (using `Bitnami` sub directory) or use the services CLI flow (using `servicescli` sub directory) 
+
+
+It is also assumed that you have access to a `Space` that has been configured with the proper traits.
 
 ## Obtain Where For Dinner Deployment Repository
 
@@ -73,7 +76,7 @@ You should only use this option if you are deploying the application into a spac
 
 This application configuration option of Where For Dinner utilizes the Bitnami MySQL and RabbitMQ on platform services and consumes credentials/connection via 
 a Kubernetes Service Binding compliant resource.  You will deploy the service instances in the `Deploy Where For Dinner Application and Configuration To Space` 
-section using the `bitnamiServices.yaml` file.
+section using either the `bitnamiServices.yaml` file or using services CLI commands.
 
 
 ## Update Kubernetes Gateway Route
@@ -115,10 +118,81 @@ service configuration:
 kubectl apply -f ./aws --recursive
 ```
 
-**Bitnami Deployment**
+**Bitnami Deployment (No Servies CLI)**
 
 ```
 kubectl apply -f ./bitnami --recursive
+```
+
+**Bitnami Deployment (Services CLI)**
+
+This flow deploys the workloads first and then creates and binds services to the workloads using `tanzu services` CLI commands.
+
+```
+kubectl apply -f ./bitnami --recursive
+```
+
+List service instances in the space.  There will likely be 0 instances.
+
+```
+tanzu services instance list
+```
+
+List the available service instance types.
+
+```
+tanzu services type list
+```
+
+Create a Bitnami MySql and RabbitMQ instance.
+
+```
+tanzu services instance create MySQLInstance/where-for-dinner-mysql
+tanzu services instance create RabbitmqCluster/where-for-dinner-rabbitmq
+```
+
+List service instances in the space and verify they have been created.
+
+```
+tanzu services instance list
+```
+
+Display information about the MySQL and RabbitMQ Instances.
+
+```
+tanzu services instance get MySQLInstance/where-for-dinner-mysql
+tanzu services instance get RabbitmqCluster/where-for-dinner-rabbitmq
+```
+
+Bind the services to the workloads.
+
+```
+tanzu services instance bind MySQLInstance/where-for-dinner-mysql Deployment/availability --as db
+tanzu services instance bind MySQLInstance/where-for-dinner-mysql Deployment/where-for-dinner-search --as db
+tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/availability --as rmq
+tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/where-for-dinner-search --as rmq
+tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/search-proc --as rmq
+tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/where-for-dinner-notify --as rmq
+```
+
+When the services are no longer needed, you can unbind them and delete them from the space.
+
+```
+tanzu services instance unbind MySQLInstance/where-for-dinner-mysql Deployment/availability --alias db
+tanzu services instance unbind MySQLInstance/where-for-dinner-mysql Deployment/where-for-dinner-search --alias db
+tanzu services instance unbind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/availability --alias rmq
+tanzu services instance unbind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/where-for-dinner-search --alias rmq
+tanzu services instance unbind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/search-proc --alias rmq
+tanzu services instance unbind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/where-for-dinner-notify --alias rmq
+
+tanzu services instance delete MySQLInstance/where-for-dinner-mysql
+tanzu services instance delete RabbitmqCluster/where-for-dinner-rabbitmq
+```
+
+Verify the service instances were deleted.
+
+```
+tanzu services instance list
 ```
 
 **NOTE:** If using Bitnami services, the workloads may initially crash as the Bitnami services are being deployed.  They should successfully start once the 
