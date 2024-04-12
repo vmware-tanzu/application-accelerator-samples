@@ -129,7 +129,7 @@ kubectl apply -f ./bitnami --recursive
 This flow deploys the workloads first and then creates and binds services to the workloads using `tanzu services` CLI commands.
 
 ```
-kubectl apply -f ./bitnami --recursive
+kubectl apply -f ./servicescli --recursive
 ```
 
 List service instances in the space.  There will likely be 0 instances.
