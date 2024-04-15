@@ -117,6 +117,18 @@ A few things to mention here:
 
 ## Running the test suite
 
+We need to change to the directory with the test suite scripts. For this example that is the `local-test-suite-example` in the cloned `vmware-tanzu/application-accelerator-samples` Git repo. Adjust the directory based on your clone location:
+
+```sh
+cd ~/workspace/vmware-tanzu/application-accelerator-samples/local-test-suite-example
+```
+
+Then, we simply run the `run-test-suite.sh` script:
+
+```sh
+./run-test-suite.sh
+```
+
 This example has three scripts that are used to drive the test suite runs.
 
 1. `run-test-suite.sh` is the top level script that orchestrates the run
