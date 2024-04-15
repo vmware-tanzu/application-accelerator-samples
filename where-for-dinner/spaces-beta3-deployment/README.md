@@ -157,13 +157,6 @@ List service instances in the space and verify they have been created.
 tanzu services instance list
 ```
 
-Display information about the MySQL and RabbitMQ Instances.
-
-```
-tanzu services instance get MySQLInstance/where-for-dinner-mysql
-tanzu services instance get RabbitmqCluster/where-for-dinner-rabbitmq
-```
-
 Bind the services to the workloads.
 
 ```
@@ -173,6 +166,13 @@ tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deploymen
 tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/where-for-dinner-search --as rmq
 tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/search-proc --as rmq
 tanzu services instance bind RabbitmqCluster/where-for-dinner-rabbitmq Deployment/where-for-dinner-notify --as rmq
+```
+
+Display information about the MySQL and RabbitMQ Instances and ensure that they are bound to the applications.
+
+```
+tanzu services instance get MySQLInstance/where-for-dinner-mysql
+tanzu services instance get RabbitmqCluster/where-for-dinner-rabbitmq
 ```
 
 When the services are no longer needed, you can unbind them and delete them from the space.
