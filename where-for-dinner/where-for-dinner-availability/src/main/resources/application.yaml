@@ -117,6 +117,8 @@ spring:
 
 spring:
   config.activate.on-profile: eureka
+
+  cloud.refresh.enabled: false
   
 eureka:
   client:
