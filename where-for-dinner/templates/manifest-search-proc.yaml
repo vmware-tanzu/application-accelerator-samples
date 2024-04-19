@@ -1,0 +1,35 @@
+#@ load("@ytt:data", "data")
+
+#@ def buildSpringProfiles():
+#@ profiles = "eureka,crawler"
+#@ if data.values.cacheType == "redisCache":
+#@ profiles = profiles + ",redis"
+#@ end
+#@ return profiles
+#@ end
+
+---
+applications:
+- name: where-for-dinner-search-proc
+  instances: 1
+  buildpack: java_buildpack_offline
+  path: target/where-for-dinner-search-proc-0.0.1-SNAPSHOT.jar
+  timeout: 180
+  env: 
+    spring.profiles.active:  #@ buildSpringProfiles()
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'  
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ }}'
+  services:
+    - #@ data.values.msgbrokerName
+#@ if data.values.cacheType == "redisCache":
+    - #@ data.values.springCloudServices.cacheName
+#@ end
+#@ if data.values.enableSpringCloudServices == True and data.values.springCloudServices.enableSpringCloudConfig == True:
+    - #@ data.values.springCloudServices.configServer.configServiceName
+#@ end
+#@ if data.values.enableSpringCloudServices == True and data.values.springCloudServices.enableRegistryService == True:
+    - #@ data.values.springCloudServices.registryName
+#@ else:
+    - registry-where-for-dinner
+#@ end
+  no-route: true

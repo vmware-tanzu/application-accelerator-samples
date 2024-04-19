@@ -1,0 +1,13 @@
+---
+applications:
+- name: where-for-dinner
+  instances: 1
+  buildpack: java_buildpack_offline
+  path: target/where-for-dinner-api-gateway-0.0.1-SNAPSHOT.jar
+  timeout: 180
+  env: 
+    spring.profiles.active: eureka
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'  
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ }}'
+  services:
+    - wfd-eureka
