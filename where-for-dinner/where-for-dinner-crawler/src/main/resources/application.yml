@@ -4,6 +4,13 @@ spring:
   application:
     name: where-for-dinner-crawler
 
+  config:
+    import: 'optional:configserver:'
+
+eureka:
+  client:
+    enabled: false
+
 where-for-dinner:
   randomsearcher:
     establishments:
@@ -91,3 +98,12 @@ where-for-dinner:
       region: MO
       postalCode: 64112
       reservationURL: 'https://www.konagrill.com/reservations'
+      
+---
+
+spring:
+  config.activate.on-profile: eureka
+  
+eureka:
+  client:
+    enabled: true

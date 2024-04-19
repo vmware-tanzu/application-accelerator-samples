@@ -12,6 +12,9 @@ spring:
   application:
     name: where-for-dinner-availability
 
+  config:
+    import: 'optional:configserver:'
+
   sql.init.mode: ALWAYS
   sql.init.platform: h2
   sql.init.continue-on-error: true 
@@ -38,7 +41,11 @@ spring:
 
   r2dbc: 
     url: r2dbc:h2:mem:///testdb
-            
+
+eureka:
+  client:
+    enabled: false
+        
 springdoc:
   packages-to-scan: com.java.example.tanzu.wherefordinner.resources
   show-spring-cloud-functions: false
@@ -105,4 +112,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://testservice.placeholder.com/test
-          
+
+---
+
+spring:
+  config.activate.on-profile: eureka
+  
+eureka:
+  client:
+    enabled: true

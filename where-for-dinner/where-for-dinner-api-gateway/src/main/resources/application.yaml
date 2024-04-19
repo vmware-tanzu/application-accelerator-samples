@@ -49,7 +49,28 @@ where-for-dinner:
     uri: http://localhost:8081/
   availability:
     uri: http://localhost:8082/
-    
+
+eureka:
+  client:
+    enabled: false
+
+---
+
+spring:
+  config.activate.on-profile: eureka
+  
+eureka:
+  client:
+    enabled: true
+
+where-for-dinner:
+  ui:
+    uri: lb://where-for-dinner-ui/
+  search:
+    uri: lb://where-for-dinner-search/
+  availability:
+    uri: lb://where-for-dinner-availability/
+
 ---
 spring:
   config:

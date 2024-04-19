@@ -7,6 +7,9 @@ spring:
   application:
     name: where-for-dinner-search-proc
 
+  config:
+    import: 'optional:configserver:'
+
   cloud: 
     function:
       definition: processSearch
@@ -24,6 +27,10 @@ spring:
           destination: where-for-dinner-search-result
 
 server.port: 8083
+
+eureka:
+  client:
+    enabled: false
       
 where-for-dinner:
 
@@ -163,3 +170,12 @@ management:
   health:
     rabbit:
       enabled: false
+      
+---
+
+spring:
+  config.activate.on-profile: eureka
+  
+eureka:
+  client:
+    enabled: true

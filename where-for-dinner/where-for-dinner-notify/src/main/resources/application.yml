@@ -9,6 +9,9 @@ spring:
   application:
     name: where-for-dinner-notify
 
+  config:
+    import: 'optional:configserver:'
+
   cloud: 
     function:
       definition: notifyAvailability  

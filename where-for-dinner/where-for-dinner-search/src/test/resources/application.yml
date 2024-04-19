@@ -5,6 +5,9 @@ where-for-dinner:
 spring: 
   sql.init.platform: h2
   sql.init.mode: ALWAYS 
+
+  config:
+    import: 'optional:configserver:'
   
   cloud: 
     stream:
@@ -16,6 +19,11 @@ spring:
       bindings: 
         submittedSearches-out-0: 
           destination: where-for-dinner-search-criteria
+          
+eureka:
+  client:
+    enabled: false
+
 ---
 
 spring:
