@@ -25,7 +25,8 @@ spring:
             maxAttempts: 4
             backOffInitialInterval: 15000
             backOffMaxInterval: 60000 
-            
+
+    refresh.enabled: false            
 ---
 
 spring:

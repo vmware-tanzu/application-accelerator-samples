@@ -26,6 +26,8 @@ spring:
         processSearch-out-0: 
           destination: where-for-dinner-search-result
 
+    refresh.enabled: false
+
 server.port: 8083
 
 eureka:
@@ -175,8 +177,6 @@ management:
 
 spring:
   config.activate.on-profile: eureka
-
-  cloud.refresh.enabled: false
   
 eureka:
   client:

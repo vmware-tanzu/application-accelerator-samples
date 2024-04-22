@@ -7,6 +7,8 @@ spring:
   config:
     import: 'optional:configserver:'
 
+  cloud.refresh.enabled: false
+
 eureka:
   client:
     enabled: false
@@ -103,8 +105,6 @@ where-for-dinner:
 
 spring:
   config.activate.on-profile: eureka
-
-  cloud.refresh.enabled: false
   
 eureka:
   client:

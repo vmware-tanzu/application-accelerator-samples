@@ -39,6 +39,8 @@ spring:
             backOffInitialInterval: 15000
             backOffMaxInterval: 60000             
 
+    refresh.enabled: false
+
   r2dbc: 
     url: r2dbc:h2:mem:///testdb
 
@@ -117,8 +119,6 @@ spring:
 
 spring:
   config.activate.on-profile: eureka
-
-  cloud.refresh.enabled: false
   
 eureka:
   client:

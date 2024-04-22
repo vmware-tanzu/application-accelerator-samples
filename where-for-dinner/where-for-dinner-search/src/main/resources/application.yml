@@ -35,6 +35,8 @@ spring:
         deletedSearches-out-0: 
           destination: where-for-dinner-search-deletion
 
+    refresh.enabled: false
+
   r2dbc: 
     url: r2dbc:h2:mem:///testdb
 
@@ -114,8 +116,6 @@ spring:
 
 spring:
   config.activate.on-profile: eureka
-
-  cloud.refresh.enabled: false
   
 eureka:
   client:
