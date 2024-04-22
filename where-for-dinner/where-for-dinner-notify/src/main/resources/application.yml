@@ -26,7 +26,12 @@ spring:
             backOffInitialInterval: 15000
             backOffMaxInterval: 60000 
 
-    refresh.enabled: false            
+    refresh.enabled: false   
+
+eureka:
+  client:
+    enabled: false
+
 ---
 
 spring:
@@ -60,3 +65,14 @@ management:
   health:
     rabbit:
       enabled: false
+      
+---
+
+spring:
+  config.activate.on-profile: eureka
+  
+eureka:
+  client:
+    enabled: true
+
+          
