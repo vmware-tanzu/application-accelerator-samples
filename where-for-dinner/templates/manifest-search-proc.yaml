@@ -22,7 +22,7 @@ applications:
   services:
     - #@ data.values.msgbrokerName
 #@ if data.values.cacheType == "redisCache":
-    - #@ data.values.springCloudServices.cacheName
+    - #@ data.values.cacheName
 #@ end
 #@ if data.values.enableSpringCloudServices == True and data.values.springCloudServices.enableSpringCloudConfig == True:
     - #@ data.values.springCloudServices.configServer.configServiceName

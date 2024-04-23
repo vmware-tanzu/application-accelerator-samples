@@ -27,6 +27,7 @@ spring:
           destination: where-for-dinner-search-result
 
     refresh.enabled: false
+    loadbalancer.enabled: false
 
 server.port: 8083
 
@@ -177,6 +178,9 @@ management:
 
 spring:
   config.activate.on-profile: eureka
+  
+  cloud.loadbalancer.enabled: true
+  
   
 eureka:
   client:
