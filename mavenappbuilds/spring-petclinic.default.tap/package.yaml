@@ -1,0 +1,128 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: spring-petclinic.default.tap.20240423171207.0.0
+spec:
+  refName: spring-petclinic.default.tap
+  version: 20240423171207.0.0
+  releaseNotes: |
+    Release v20240423171207.0.0 of package spring-petclinic.default.tap
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: us-east4-docker.pkg.dev/adhol-playground/supplychain/workload/spring-petclinic-bundle@sha256:ea335d5fef2ed156d836bd456715c12fbdbec47e2beaf882f670fe3b9412dff4
+      template:
+      - ytt:
+          paths:
+          - .
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+      deploy:
+      - kapp: {}
+  valuesSchema:
+    openAPIv3:
+      type: object
+      additionalProperties: false
+      properties:
+        workload_name:
+          type: string
+          description: Used to generate resource names for HttpRoute and Ingress objects.
+          default: spring-petclinic
+        replicas:
+          type: integer
+          nullable: true
+          description: Overrides the default Deployment.spec.replicas set by the Supply Chain.
+          default: null
+        strategy:
+          nullable: true
+          description: Overrides the default Deployment.spec.strategy set by the Supply Chain.
+          default: null
+        livenessProbe:
+          nullable: true
+          description: Overrides the default Deployment.spec.containers[0].livenessProbe set by the Supply Chain.
+          default: null
+        readinessProbe:
+          nullable: true
+          description: Overrides the default Deployment.spec.containers[0].readinessProbe set by the Supply Chain.
+          default: null
+        resources:
+          nullable: true
+          description: Overrides the default Deployment.spec.containers[0].resources set by the Supply Chain.
+          default: null
+        env:
+          type: array
+          description: Merges with the default Deployment.spec.containers[0].env set by the Supply Chain. If there is a conflict, the value set here will be used.
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+                default: ""
+              value:
+                type: string
+                default: ""
+          default: []
+        securityContext:
+          nullable: true
+          description: Overrides the default Deployment.spec.containers[0].securityContext set by the Supply Chain.
+          default: null
+        port:
+          type: integer
+          description: Sets the Port for the backend referenced by the Ingress or HttpRoute object.
+          default: 8080
+        hostname:
+          type: string
+          description: Sets the Host for the Ingress object (class=contour). If unset, no Ingress will be created.
+          default: ""
+        cluster_issuer:
+          type: string
+          description: Sets the CertManager ClusterIssuer for the Ingress object.
+          default: tap-ingress-selfsigned
+        http_route:
+          type: object
+          additionalProperties: false
+          nullable: true
+          description: Sets the ParentRefs for the HttpRoute object. If set to null, no HttpRoute will be created.
+          properties:
+            gateways:
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  protocol:
+                    type: string
+                    default: ""
+                  name:
+                    type: string
+                    default: ""
+              default:
+              - protocol: https
+                name: default-gateway
+        service:
+          title: Service
+          type: object
+          additionalProperties: false
+          nullable: true
+          properties:
+            ports:
+              title: Overrides the default Service.spec.ports set by the Supply Chain.
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  name:
+                    type: string
+                    default: http
+                  port:
+                    type: integer
+                    default: 8080
+                  targetPort:
+                    type: integer
+                    default: 8080
+              default: []
