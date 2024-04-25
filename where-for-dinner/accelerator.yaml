@@ -326,21 +326,13 @@ accelerator:
           inputType: text
           dataType: string
           required: false 
-        - label: Configuration Repository Username (optional)
-          description: If required for a private repository, the username of the Git repository.
-          name: configRepoUsername
+        - label: Configuration Repository Secret Name (optional)
+          description: If required for a private repository, the name of the secret that holds the Git repo auth credentials.  The secret is created outside of the accelerator; see deployment README for instructions.
+          name: configRepoSecretName
           defaultValue: ""
           inputType: text
           dataType: string
           required: false
-        - label: Configuration Repository Password (optional)
-          description: If required for a private repository, the password of the Git repository.
-          name: configRepoPassword
-          defaultValue: ""
-          inputType: text
-          dataType: string
-          required: false
-
 engine:
   let:
     - name: secureProfile
