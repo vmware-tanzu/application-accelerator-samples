@@ -68,7 +68,7 @@ kubectl apply -f ./config/app-operator/
 kubectl apply -f ./config/developer/
 ```
 
-**NOTE:**  If you have chosen AppSSO as well as TAP Spring Cloud gateway as configuration options, it is likely that the Gateway component will fail to 
+**NOTE: APP SSO:**  If you have chosen AppSSO as well as TAP Spring Cloud gateway as configuration options, it is likely that the Gateway component will fail to 
 deploy due to the AppSSO secret needing to be updated.  If this occurs, you will need to retrieve the secret from the `WorkloadRegistration` object, update the secret in the `./config/servie-operator/scgInstance.yaml` file, and rerun the `kubectl apply -f ./config/service-operator/` command (you will need to execute these steps after applying configuration in the `./config/app-operator` directory).  To retrieve the secret name from the `WorkloadRegistration` object, run the following commands (these assume the application is deployed into a namespace named `workloads` and the AppSSO instance is named `appsso-where-for-dinner`)
 
 To retrieve the `WorkloadRegistration` object, run the following command.
@@ -80,6 +80,13 @@ You should get something similar to the following: `appsso-where-for-dinner-fjqz
 
 ```
 kb get workloadreg appsso-where-for-dinner-fjqz4 -n workloads -o jsonpath='{.status.binding.name}'  
+```
+
+**NOTE: Spring Cloud Config Service:** If you have chosen to use Spring Cloud Config server and have configured it to use a secret for authentication, 
+you will need to create the secret using the following command updating the placeholders for configured secret name, services namespace, and username/password.
+
+```
+kubectl create secret generic <GIT SECRET NAME> --from-literal='username=<USERNAME>' --from-literal='password=<PASSWORD>' -n service <SERVICE NAMESPACE>
 ```
 
 

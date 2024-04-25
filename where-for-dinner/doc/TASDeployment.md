@@ -27,6 +27,8 @@ This section assumes you have already installed the application accelerator usin
 * Open a command shell and navigate to the root directory of the unzipped file from above.  Run the following commands to create the necessary services replacing
 <plan> with the appropriate plan name.
 
+**NOTE** If you need to find the plan names, run `cf marketplace`.
+
 ```
 cf create-service p.rabbitmq <plan> msgbroker-where-for-dinner
 cf create-service p.service-registry <plan> registry-where-for-dinner
