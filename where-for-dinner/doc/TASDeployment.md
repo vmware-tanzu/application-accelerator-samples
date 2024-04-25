@@ -69,9 +69,9 @@ cf push
 ```
 cf bind-service where-for-dinner-search gateway-where-for-dinner -c '{ "routes": [ { "path": "/api/search/**", "order": 1, "filters": [ "StripPrefix=0", "RewritePath=/api/search(?<segment>/?.*), $\\{segment}", "RemoveRequestHeader=Forwarded" ] } ]  }'
 
-cf bind-service where-for-dinner-search gateway-where-for-dinner -c '{ "routes": [ { "path": "/api/availability/**", "order": 1, "filters": [ "StripPrefix=0", "RewritePath=/api/availability(?<segment>/?.*), $\\{segment}", "RemoveRequestHeader=Forwarded" ] } ]  }'
+cf bind-service where-for-dinner-availability gateway-where-for-dinner -c '{ "routes": [ { "path": "/api/availability/**", "order": 1, "filters": [ "StripPrefix=0", "RewritePath=/api/availability(?<segment>/?.*), $\\{segment}", "RemoveRequestHeader=Forwarded" ] } ]  }'
 
-cf bind-service where-for-dinner-search gateway-where-for-dinner -c '{ "routes": [ { "path": "/**", "order": 1000, "filters": [ "StripPrefix=0" ] } ]  }'
+cf bind-service where-for-dinner-ui gateway-where-for-dinner -c '{ "routes": [ { "path": "/**", "order": 1000, "filters": [ "StripPrefix=0" ] } ]  }'
 ```
 
 **Verify Application Build and Deployment**
