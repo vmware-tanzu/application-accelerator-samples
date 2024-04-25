@@ -3,9 +3,9 @@ kind: HTTPRoute
 metadata:
   name: where-for-dinner-scg-route
   annotations:
-   healthcheck.gslb.tanzu.vmware.com/service: where-for-dinner-ui
-   healthcheck.gslb.tanzu.vmware.com/path: /health
-   healthcheck.gslb.tanzu.vmware.com/port: "8080"
+   healthcheck.gslb.tanzu.vmware.com/service: spring-cloud-gateway
+   healthcheck.gslb.tanzu.vmware.com/path: /diningsearch/health
+   healthcheck.gslb.tanzu.vmware.com/port: "80"
 spec:
   parentRefs:
   - group: gateway.networking.k8s.io
