@@ -24,11 +24,15 @@ These instructions assume that you have a TAP 1.3.x or greater iterate cluster (
 * Tanzu Source Controller
 * Tanzu AppSSO (required if using the `Enable Security` option)
 * Tanzu Spring Cloud Gateway (required if using the `TAP Spring Cloud Gateway` option)
+* Tanzu Service Registry (required if using the `Enable Registry Service` option)
+* Tanzu Config Server (required if using the `Enable Spring Cloud Config` option)
 * Helm Client (required if installing the RabbitMQ operator Helm Chart)
 
 ## Quick Start
 
-This section provides a fast track installation of the "simplest" configuration of the Hungry application using the application accelerator and the instructions immediately below.  A more thorough description of the configuration and installation scenarios are describes in subsequent sections of this page.  This section assumes you have already installed the application accelerator using the instructions at the top of the page.
+This section provides a fast track installation of the "simplest" configuration of the Where For Dinenr application using the application accelerator and the 
+instructions immediately below.  A more thorough description of the configuration and installation scenarios are describes in subsequent sections of this page. 
+ This section assumes you have already installed the application accelerator using the instructions at the top of the page.
 
 * Install Rabbit MQ operator:
 
@@ -280,8 +284,18 @@ also be used to create the RouteConfig and RouteMapping resources for the gatewa
 * **Dev Account Password:** The plain text password of the default dev account in the AppSSO instance.
 * **Workload URL :**  If TAP Spring Cloud Gateway is selected, this is the expected URL of the Where For Dinner application's UI web page.  
 **Note:**  If the TAP Spring Cloud Gateway option is selected, the default scheme for the Workload URI will be `http`.
-* **Alternate Workload Implementations :** If this box is checked, certain services will be built using alternative implementations written in different programming languages.
-* **Support native GraalVM builds :** If this box is checked, native images will be built for workloads that support this feature.
+* **Alternate Workload Implementations:** If this box is checked, certain services will be built using alternative implementations written in different programming languages.
+* **Support native GraalVM builds:** If this box is checked, native images will be built for workloads that support this feature.
+* **Configure Spring Cloud Services:** If this box is checked, you will the option of enabling various spring cloud services such as service registry and config server.
+* **Enable Registry Service:** If this box is checked, this will enable the registry service for service to service lookups.
+* **Registry Service Name:** The name of the registry resource that the micro-services will connect to.
+* **Enable Spring Cloud Config:** If this box is checked, this will enable the config service for consuming external configuration from a Git source.
+* **Config Service Name:** The name of the config resource that the micro-services will connect to.
+* **Configuration Repository URL:** The URL of the Git repository where configuration data is stored.
+* **Configuration Repository Default Label:** The branch/label of the Git repository where configuration will be accessed.
+* **Configuration Repository Path:** The path within the Git repository where configuration can be found.  The default (empty) will use the root of the repository.
+* **Configuration Repository Username:** If the Git repository requires authentication, the username to access the repository.
+* **Configuration Repository Password:** If the Git repository requires authentication, the password to access the repository.
 
 **NOTE:** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.
 

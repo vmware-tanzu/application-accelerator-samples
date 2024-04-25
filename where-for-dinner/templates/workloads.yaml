@@ -280,11 +280,18 @@ metadata:
     apps.tanzu.vmware.com/has-tests: "true"  
     apps.tanzu.vmware.com/carvel-package-workflow: "true"    
 spec:
+#@ if data.values.ployglotWorkloads == True:
+  env: #@ buildAppEnv(False,False,True,True,True,True,False)
+  build:
+     env: #@ buildBuildParams(False,False,True,True,True,False)
+  serviceClaims: #@ buildServiceClaimsBinding(False, True, False, True, False, True)
+#@ else:
   env: #@ buildAppEnv(False,False,True,True,True,True,True)
   build:
      env: #@ buildBuildParams(False,False,True,True,True,True)
-  params: #@ buildParams(False, False)
   serviceClaims: #@ buildServiceClaimsBinding(False, True, False, True, True, True)
+#@ end
+  params: #@ buildParams(False, False)
   resources:     
     requests:         
       memory: "500M"
