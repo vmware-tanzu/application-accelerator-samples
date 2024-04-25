@@ -18,7 +18,8 @@
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
 		<spring-cloud-bindings.version>2.0.3</spring-cloud-bindings.version>		
 		<cfenv.version>3.1.5</cfenv.version>	
-		<spring-cloud-services.version>4.1.1</spring-cloud-services.version>	
+		<spring-cloud-services.version>4.1.1</spring-cloud-services.version>
+		<xstream.version>1.4.20</xstream.version>		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -97,6 +98,11 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>	
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>${xstream.version}</version>
 			</dependency>			
 		</dependencies>
 	</dependencyManagement>

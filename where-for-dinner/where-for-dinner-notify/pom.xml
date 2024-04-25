@@ -19,6 +19,7 @@
 		<spring-cloud-bindings.version>2.0.3</spring-cloud-bindings.version>
 		<cfenv.version>3.1.5</cfenv.version>	
 		<spring-cloud-services.version>4.1.1</spring-cloud-services.version>	
+		<xstream.version>1.4.20</xstream.version>	
 	</properties>
 	<dependencies>
 		<dependency>
@@ -111,6 +112,11 @@
 				<groupId>org.xerial.snappy</groupId>
 				<artifactId>snappy-java</artifactId>
 				<version>1.1.10.4</version>
+			</dependency>	
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>${xstream.version}</version>
 			</dependency>			
 		</dependencies>
 	</dependencyManagement>
