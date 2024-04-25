@@ -1,5 +1,4 @@
 #@ load("@ytt:data", "data")
-#@ load("@ytt:base64", "base64")
 
 ---
 apiVersion: config-server.spring.tanzu.vmware.com/v1alpha1
@@ -22,23 +21,10 @@ spec:
       paths: 
       - #@ data.values.springCloudServices.configServer.configRepoPath
 #@ end
-#@ if data.values.springCloudServices.configServer.configRepoUsername != "" and data.values.springCloudServices.configServer.configRepoPassword:
+#@ if data.values.springCloudServices.configServer.configRepoSecretName != "":
       basicAuth:
         secretRef: 
-          name:  #@ data.values.springCloudServices.configServer.configServiceName + "-git-basic-auth"
-#@ end
-
-#@ if data.values.springCloudServices.configServer.configRepoUsername != "" and data.values.springCloudServices.configServer.configRepoPassword:
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: #@ data.values.springCloudServices.configServer.configServiceName + "-git-basic-auth"
-  namespace: #@ data.values.serviceNamespace
-type: Opaque
-data:
-  username: #@ base64.encode(data.values.springCloudServices.configServer.configRepoUsername)
-  password: #@ base64.encode(data.values.springCloudServices.configServer.configRepoPassword)
+          name:  #@ data.values.springCloudServices.configServer.configRepoSecretName
 #@ end
 
 ---
