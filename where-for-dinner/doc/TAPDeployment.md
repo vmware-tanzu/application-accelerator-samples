@@ -301,8 +301,7 @@ also be used to create the RouteConfig and RouteMapping resources for the gatewa
 * **Configuration Repository URL:** The URL of the Git repository where configuration data is stored.
 * **Configuration Repository Default Label:** The branch/label of the Git repository where configuration will be accessed.
 * **Configuration Repository Path:** The path within the Git repository where configuration can be found.  The default (empty) will use the root of the repository.
-* **Configuration Repository Username:** If the Git repository requires authentication, the username to access the repository.
-* **Configuration Repository Password:** If the Git repository requires authentication, the password to access the repository.
+* **Configuration Repository Secret Name:** If the Git repository requires authentication, the name of the secret that holds the auth credentials  See the note in the quick start at the top of this document for instructions on creating the secret.
 
 **NOTE:** The default workload namespace is `workloads` and NOT `default`.  Make sure the workload namespace you choose is setup to build and run workloads.
 
