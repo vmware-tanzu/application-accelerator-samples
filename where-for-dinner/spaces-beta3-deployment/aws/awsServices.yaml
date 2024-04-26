@@ -1,5 +1,5 @@
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
+apiVersion: services.tanzu.vmware.com/v1
 kind: PreProvisionedService
 metadata:
   name: where-for-dinner-mysql
@@ -11,7 +11,7 @@ spec:
     secretRef: 
       name: where-for-dinner-mysql
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
+apiVersion: services.tanzu.vmware.com/v1
 kind: PreProvisionedService
 metadata:
   name: where-for-dinner-rabbitmq
@@ -23,97 +23,97 @@ spec:
     secretRef: 
       name: where-for-dinner-rabbitmq
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
-kind: ServiceInstanceBinding
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
 metadata:
   name: where-for-dinner-availability-mysql
 spec:
   targetRef:
-    apiVersion: apps/v1
+    apiGroup: apps
     kind: Deployment
     name: availability
-  serviceInstanceRef:
-    apiVersion: services.tanzu.vmware.com/v1alpha1
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
     kind: PreProvisionedService
     name: where-for-dinner-mysql
     connectorName: read-write
   alias: db
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
-kind: ServiceInstanceBinding
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
 metadata:
   name: where-for-dinner-search-mysql
 spec:
   targetRef:
-    apiVersion: apps/v1
+    apiGroup: apps
     kind: Deployment
     name: where-for-dinner-search
-  serviceInstanceRef:
-    apiVersion: services.tanzu.vmware.com/v1alpha1
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
     kind: PreProvisionedService
     name: where-for-dinner-mysql
     connectorName: read-write
   alias: db
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
-kind: ServiceInstanceBinding
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
 metadata:
   name: where-for-dinner-availability-rabbitmq
 spec:
   targetRef:
-    apiVersion: apps/v1
+    apiGroup: apps
     kind: Deployment
     name: availability
-  serviceInstanceRef:
-    apiVersion: services.tanzu.vmware.com/v1alpha1
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
     connectorName: read-write
   alias: rmq
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
-kind: ServiceInstanceBinding
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
 metadata:
   name: where-for-dinner-search-rabbitmq
 spec:
   targetRef:
-    apiVersion: apps/v1
+    apiGroup: apps
     kind: Deployment
     name: where-for-dinner-search
-  serviceInstanceRef:
-    apiVersion: services.tanzu.vmware.com/v1alpha1
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
     connectorName: read-write
   alias: rmq
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
-kind: ServiceInstanceBinding
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
 metadata:
   name: where-for-dinner-search-proc-rabbitmq
 spec:
   targetRef:
-    apiVersion: apps/v1
+    apiGroup: apps
     kind: Deployment
     name: search-proc
-  serviceInstanceRef:
-    apiVersion: services.tanzu.vmware.com/v1alpha1
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
     connectorName: read-write
   alias: rmq
 ---
-apiVersion: services.tanzu.vmware.com/v1alpha1
-kind: ServiceInstanceBinding
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
 metadata:
   name: where-for-dinner-notify-rabbitmq
 spec:
   targetRef:
-    apiVersion: apps/v1
+    apiGroup: apps
     kind: Deployment
     name: where-for-dinner-notify
-  serviceInstanceRef:
-    apiVersion: services.tanzu.vmware.com/v1alpha1
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
     kind: PreProvisionedService
     name: where-for-dinner-rabbitmq
     connectorName: read-write
