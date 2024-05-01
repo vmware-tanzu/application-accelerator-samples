@@ -9,6 +9,9 @@ spring:
   application:
     name: where-for-dinner-notify
 
+  config:
+    import: 'optional:configserver:'
+
   cloud: 
     function:
       definition: notifyAvailability  
@@ -22,7 +25,13 @@ spring:
             maxAttempts: 4
             backOffInitialInterval: 15000
             backOffMaxInterval: 60000 
-            
+
+    refresh.enabled: false   
+
+eureka:
+  client:
+    enabled: false
+
 ---
 
 spring:
@@ -56,3 +65,14 @@ management:
   health:
     rabbit:
       enabled: false
+      
+---
+
+spring:
+  config.activate.on-profile: eureka
+  
+eureka:
+  client:
+    enabled: true
+
+          

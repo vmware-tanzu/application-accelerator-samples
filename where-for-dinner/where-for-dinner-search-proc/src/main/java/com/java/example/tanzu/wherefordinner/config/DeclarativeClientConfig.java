@@ -1,6 +1,8 @@
 package com.java.example.tanzu.wherefordinner.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -12,16 +14,24 @@ import com.java.example.tanzu.wherefordinner.exchange.CrawlerClient;
 
 @Profile("crawler")
 @Configuration
+@LoadBalancerClient(value = "where-for-dinner-crawler")
 public class DeclarativeClientConfig 
 {
-	@Value("${where-for-dinner.crawler.service.identifier:where-for-dinner-crawler}")
+	@Value("${where-for-dinner.crawler.service.identifier:http://where-for-dinner-crawler}")
 	protected String crawlerServiceIdentifier;
 	
+	@LoadBalanced
 	@Bean
-	public CrawlerClient getCralwerClient()
+	public WebClient.Builder webClientBuilder() 
 	{
-		final var client = WebClient.builder().baseUrl(crawlerServiceIdentifier).build();
-		final var factory = HttpServiceProxyFactory.builder(WebClientAdapter.forClient(client)).build();
+	    return WebClient.builder();
+	 }
+	
+	@Bean
+	public CrawlerClient getCralwerClient(WebClient.Builder builder)
+	{
+		final var client = builder.baseUrl(crawlerServiceIdentifier).build();
+		final var factory = HttpServiceProxyFactory.builderFor(WebClientAdapter.create(client)).build();
 
 		return factory.createClient(CrawlerClient.class);
 	}

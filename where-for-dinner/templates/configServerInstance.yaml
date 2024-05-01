@@ -1,0 +1,55 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: config-server.spring.tanzu.vmware.com/v1alpha1
+kind: ConfigServer
+metadata:
+  name: #@ data.values.springCloudServices.configServer.configServiceName
+  namespace: #@ data.values.serviceNamespace
+  labels:
+    services.apps.tanzu.vmware.com/class: #@ data.values.springCloudServices.configServer.configServiceName
+spec:
+  backends:
+  - git:
+      uri: #@ data.values.springCloudServices.configServer.configRepoURL
+#@ if data.values.springCloudServices.configServer.configRepoLabel != "":
+      defaultLabel: #@ data.values.springCloudServices.configServer.configRepoLabel
+#@ else:
+      defaultLabel: main
+#@ end
+#@ if data.values.springCloudServices.configServer.configRepoPath != "":
+      paths: 
+      - #@ data.values.springCloudServices.configServer.configRepoPath
+#@ end
+#@ if data.values.springCloudServices.configServer.configRepoSecretName != "":
+      basicAuth:
+        secretRef: 
+          name:  #@ data.values.springCloudServices.configServer.configRepoSecretName
+#@ end
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: config-server-app-operator-reader
+  labels:
+    servicebinding.io/controller: "true"
+rules:
+- apiGroups: ["config-server.spring.tanzu.vmware.com"]
+  resources: ["configservers"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterInstanceClass
+metadata:
+  name: #@ data.values.springCloudServices.configServer.configServiceName
+spec:
+  description:
+    short: Where For Dinner Config Server Instances
+  pool:
+    group: config-server.spring.tanzu.vmware.com
+    kind: ConfigServer  
+    labelSelector:
+      matchLabels:
+        services.apps.tanzu.vmware.com/class: #@ data.values.springCloudServices.configServer.configServiceName
+

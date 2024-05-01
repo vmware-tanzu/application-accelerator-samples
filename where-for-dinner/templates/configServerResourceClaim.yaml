@@ -1,0 +1,22 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ResourceClaimPolicy
+metadata:
+  name: where-for-dinner-config-server-cross-namespace
+  namespace: #@ data.values.serviceNamespace
+spec:
+  consumingNamespaces:
+  - '*'
+  subject:
+    group: config-server.spring.tanzu.vmware.com
+    kind: ConfigServer
+---
+apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+kind: ClassClaim
+metadata:
+  name: #@ data.values.springCloudServices.configServer.configServiceName
+  namespace: #@ data.values.workloadNamespace
+spec:
+  classRef:
+    name: #@ data.values.springCloudServices.configServer.configServiceName

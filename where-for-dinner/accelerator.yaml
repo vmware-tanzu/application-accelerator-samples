@@ -250,11 +250,89 @@ accelerator:
     description: "When checked, compatible SpringBoot workloads will be built into native images"
     inputType: checkbox
     dataType: boolean
-    defaultValue: false      
+    defaultValue: false
+  - label: Configure Spring Cloud Services
+    description: "When checked, configures Spring Cloud Config and registry services."
+    defaultValue: false
+    name: enableSpringCloudServices
+    inputType: checkbox
+    dataType: boolean
+    required: false   
+  - label: Spring Cloud Services
+    name: springCloudServices
+    dataType: SpringCloudServices 
+    dependsOn:
+      name: enableSpringCloudServices      
   imports:
     - name: tap-workload
     - name: build-wrapper-maven
-
+  types:
+    - name: SpringCloudServices
+      struct:
+        - name: enableRegistryService
+          dataType: boolean
+          inputType: checkbox          
+          label: Enable Registry Service
+          description: When checked, a registry service will be deployed and consumed by certain workloads.
+          defaultValue: false
+          required: true
+        - label: Registry Service Name
+          description: The name of the registry service that application services will connect to.
+          defaultValue: registry-where-for-dinner
+          name: registryName
+          inputType: text
+          dataType: string
+          required: true
+          dependsOn: 
+            name: enableRegistryService         
+        - name: enableSpringCloudConfig
+          dataType: boolean
+          inputType: checkbox          
+          label: Enable Spring Cloud Config
+          description: When checked, a spring cloud config server instance will be configured, deployed, and consumed by Spring workloads.
+          defaultValue: false
+          required: true
+        - name: configServer
+          label: Spring Cloud Config
+          dataType: SpringCloudConfig
+          dependsOn:
+            name: enableSpringCloudConfig
+    - name: SpringCloudConfig
+      struct:
+        - label: Config Service Name
+          description: The name of the config service that application services will connect to.
+          defaultValue: config-where-for-dinner
+          name: configServiceName
+          inputType: text
+          dataType: string
+          required: true
+        - label: Configuration Repository URL
+          description: The URL of the Git repository that contains the configuration data.
+          name: configRepoURL
+          inputType: text
+          dataType: string
+          required: true
+        - label: Configuration Repository Default Label
+          description: The default label/branch of the Git repository.
+          defaultValue: main
+          name: configRepoLabel
+          inputType: text
+          dataType: string
+          required: false
+        - label: Configuration Repository Path (optional)
+          description: The specific path withing the Git repository where configuration files can be found.  Defaults to the root of the repository.
+          name: configRepoPath
+          defaultValue: ""
+          inputType: text
+          dataType: string
+          required: false 
+        - label: Configuration Repository Secret Name (optional)
+          description: If required for a private repository, the name of the secret that holds the Git repo auth credentials.  The secret is created outside of the accelerator; see deployment README for instructions.
+          name: configRepoSecretName
+          defaultValue: ""
+          inputType: text
+          dataType: string
+          required: false
 engine:
   let:
     - name: secureProfile
@@ -370,6 +448,28 @@ engine:
     - type: RewritePath
       regex: 'templates/redisResourceClaim.yaml'
       rewriteTo: "'config/app-operator/redisResourceClaim.yaml'"  
+  - condition:
+      "#enableSpringCloudServices && #springCloudServices['enableRegistryService']"
+    include: ["**/templates/registryServiceInstance.yaml", "**/templates/registryServiceResourceClaim.yaml"]
+    chain:
+    - type: YTT  
+    - type: RewritePath
+      regex: 'templates/registryServiceInstance.yaml'
+      rewriteTo: "'config/service-operator/registryServiceInstance.yaml'"  
+    - type: RewritePath
+      regex: 'templates/registryServiceResourceClaim.yaml'
+      rewriteTo: "'config/app-operator/registryServiceResourceClaim.yaml'"
+  - condition:
+      "#enableSpringCloudServices && #springCloudServices['enableSpringCloudConfig']"
+    include: ["**/templates/configServerInstance.yaml", "**/templates/configServerResourceClaim.yaml"]
+    chain:
+    - type: YTT  
+    - type: RewritePath
+      regex: 'templates/configServerInstance.yaml'
+      rewriteTo: "'config/service-operator/configServerInstance.yaml'"
+    - type: RewritePath
+      regex: 'templates/configServerResourceClaim.yaml'
+      rewriteTo: "'config/app-operator/configServerResourceClaim.yaml'"
   - type: InvokeFragment
     reference: build-wrapper-maven
   - include: ["README.md"]      
@@ -410,5 +510,30 @@ engine:
     - type: ReplaceText
       substitutions:
         - text: "<module>./where-for-dinner-api-gateway</module>"
-          with: "#empty"                   
+          with: "#empty"
+  - condition: "#gatewayType == 'ossscg'"
+    include: ["**/templates/manifest-api-gateway.yaml"]  
+    chain:
+    - type: YTT  
+    - type: RewritePath
+      regex: 'templates/manifest-api-gateway.yaml'
+      rewriteTo: "'where-for-dinner-api-gateway/manifest.yaml'" 
+  - include: ["**/templates/manifest-availability.yaml", "**/templates/manifest-crawler.yaml", "**/templates/manifest-notify.yaml", "**/templates/manifest-search.yaml", "**/templates/manifest-search-proc.yaml"]
+    chain:
+    - type: YTT
+    - type: RewritePath
+      regex: 'templates/manifest-availability.yaml'
+      rewriteTo: "'where-for-dinner-availability/manifest.yaml'"
+    - type: RewritePath
+      regex: 'templates/manifest-crawler.yaml'
+      rewriteTo: "'where-for-dinner-crawler/manifest.yaml'"     
+    - type: RewritePath
+      regex: 'templates/manifest-notify.yaml'
+      rewriteTo: "'where-for-dinner-notify/manifest.yaml'"     
+    - type: RewritePath
+      regex: 'templates/manifest-search.yaml'
+      rewriteTo: "'where-for-dinner-search/manifest.yaml'"
+    - type: RewritePath
+      regex: 'templates/manifest-search-proc.yaml'
+      rewriteTo: "'where-for-dinner-search-proc/manifest.yaml'"                
   - type: Provenance

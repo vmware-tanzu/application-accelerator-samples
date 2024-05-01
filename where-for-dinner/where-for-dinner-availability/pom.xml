@@ -15,9 +15,12 @@
 	<description>Where For Dinner service for storing and retriving establishment reservation openings.</description>
 	<properties>
 		<java.version>21</java.version>
-		<spring-cloud.version>2023.0.0</spring-cloud.version>
-		<spring-cloud-bindings.version>2.0.2</spring-cloud-bindings.version>		
+		<spring-cloud.version>2023.0.1</spring-cloud.version>
+		<spring-cloud-bindings.version>2.0.3</spring-cloud-bindings.version>		
 		<springdoc.version>2.1.0</springdoc.version>	
+		<cfenv.version>3.1.5</cfenv.version>	
+		<spring-cloud-services.version>4.1.1</spring-cloud-services.version>
+		<xstream.version>1.4.20</xstream.version>				
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,6 +54,29 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>	
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.pivotal.spring.cloud</groupId>
+			<artifactId>spring-cloud-services-starter-config-client</artifactId>
+			<version>${spring-cloud-services.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>io.pivotal.spring.cloud</groupId>
+			<artifactId>spring-cloud-services-starter-service-registry</artifactId>
+			<version>${spring-cloud-services.version}</version>
+		</dependency>			
+		<dependency>
+			<groupId>io.pivotal.cfenv</groupId>
+			<artifactId>java-cfenv-boot</artifactId>
+			<version>${cfenv.version}</version>
 		</dependency>	
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -138,6 +164,11 @@
 				<groupId>org.xerial.snappy</groupId>
 				<artifactId>snappy-java</artifactId>
 				<version>1.1.10.4</version>
+			</dependency>	
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>${xstream.version}</version>
 			</dependency>			
 		</dependencies>
 	</dependencyManagement>

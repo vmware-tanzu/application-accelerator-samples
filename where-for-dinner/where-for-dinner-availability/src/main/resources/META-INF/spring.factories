@@ -1,3 +1,7 @@
 org.springframework.cloud.bindings.boot.BindingsPropertiesProcessor=\
   org.springframework.cloud.bindings.boot.OAuth2BindingsPropertiesProcessor, \
   org.springframework.cloud.bindings.boot.PostgreSqlReadBindingsPropertiesProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  io.pivotal.cfenv.spring.boot.CfR2DBCDataSourceEnvironmentPostProcessor
+org.springframework.context.ApplicationListener=\
+  io.pivotal.cfenv.spring.boot.CfR2DBCDataSourceEnvironmentPostProcessor

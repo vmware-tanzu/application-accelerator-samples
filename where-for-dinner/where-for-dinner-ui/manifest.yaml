@@ -1,0 +1,7 @@
+applications:
+- name: where-for-dinner-ui
+  instances: 1
+  buildpack: staticfile_buildpack
+  path: build/
+  memory: 256M
+  timeout: 180

@@ -7,6 +7,9 @@ spring:
   application:
     name: where-for-dinner-search-proc
 
+  config:
+    import: 'optional:configserver:'
+
   cloud: 
     function:
       definition: processSearch
@@ -23,7 +26,14 @@ spring:
         processSearch-out-0: 
           destination: where-for-dinner-search-result
 
+    refresh.enabled: false
+    loadbalancer.enabled: false
+
 server.port: 8083
+
+eureka:
+  client:
+    enabled: false
       
 where-for-dinner:
 
@@ -163,3 +173,15 @@ management:
   health:
     rabbit:
       enabled: false
+      
+---
+
+spring:
+  config.activate.on-profile: eureka
+  
+  cloud.loadbalancer.enabled: true
+  
+  
+eureka:
+  client:
+    enabled: true
