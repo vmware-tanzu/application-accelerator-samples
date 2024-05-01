@@ -12,7 +12,7 @@ spec:
   params:
   - name: ports
     value:
-    - port: 80
+    - port: 8080
       containerPort: 8080
       name: http      
   resources:     

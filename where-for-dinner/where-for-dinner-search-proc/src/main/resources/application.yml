@@ -37,6 +37,10 @@ eureka:
       
 where-for-dinner:
 
+  crawler:
+    service:
+      identifier: 'http://where-for-dinner-crawler:8080'
+
   randomsearcher:
     establishments:
     - diningName: Bristol
@@ -180,7 +184,12 @@ spring:
   config.activate.on-profile: eureka
   
   cloud.loadbalancer.enabled: true
-  
+
+where-for-dinner:
+
+  crawler:
+    service:
+      identifier: 'http://where-for-dinner-crawler'  
   
 eureka:
   client:
