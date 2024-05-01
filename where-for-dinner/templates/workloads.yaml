@@ -258,7 +258,7 @@ spec:
       cpu: "100m"
     limits:         
       memory: "750M"
-      cpu: "1500m"           
+      cpu: "2500m"           
   source:
     git:
       url: <https URL for your generated project's Git repository>
@@ -366,7 +366,7 @@ spec:
       cpu: "100m"
     limits:         
       memory: "750M"
-      cpu: "1.5"          
+      cpu: "2.5"          
   source:
     git:
       url: <https URL for your generated project's Git repository>
