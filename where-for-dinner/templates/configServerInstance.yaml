@@ -9,6 +9,8 @@ metadata:
   labels:
     services.apps.tanzu.vmware.com/class: #@ data.values.springCloudServices.configServer.configServiceName
 spec:
+  tls:
+    activated: true
   backends:
   - git:
       uri: #@ data.values.springCloudServices.configServer.configRepoURL
