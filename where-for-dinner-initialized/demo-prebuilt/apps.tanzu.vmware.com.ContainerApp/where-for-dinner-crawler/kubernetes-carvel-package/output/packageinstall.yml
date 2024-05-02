@@ -1,0 +1,18 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  creationTimestamp: null
+  name: where-for-dinner-crawler
+spec:
+  packageRef:
+    refName: where-for-dinner-crawler.apps.local
+    versionSelection:
+      constraints: 20240502.0.811150000
+  serviceAccountName: carvel-package-installer
+  values:
+  - secretRef:
+      name: where-for-dinner-crawler-values
+status:
+  conditions: null
+  friendlyDescription: ""
+  observedGeneration: 0

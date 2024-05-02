@@ -1,0 +1,44 @@
+where-for-dinner:
+  searchEvent:
+    period: 120000
+    
+spring: 
+  sql.init.platform: h2
+  sql.init.mode: ALWAYS 
+
+  config:
+    import: 'optional:configserver:'
+  
+  cloud: 
+    stream:
+      defaultBinder: rabbit
+      poller:
+        fixed-delay: ${where-for-dinner.searchEvent.period} 
+      function:
+        definition: submittedSearches
+      bindings: 
+        submittedSearches-out-0: 
+          destination: where-for-dinner-search-criteria
+          
+eureka:
+  client:
+    enabled: false
+
+---
+
+spring:
+  config.activate.on-profile: mysql
+  
+  sql.init.platform: mysql
+  
+  r2dbc: 
+    #Default properties to work with MariaDB driver
+    properties.sslMode: TRUST  
+    properties.tlsVersion: TLSv1.2
+    
+---
+
+spring:
+  config.activate.on-profile: postgres
+  
+  sql.init.platform: postgresql

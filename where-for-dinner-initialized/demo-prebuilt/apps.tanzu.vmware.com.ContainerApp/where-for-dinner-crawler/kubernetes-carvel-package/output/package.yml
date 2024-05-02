@@ -1,0 +1,28 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: where-for-dinner-crawler.apps.local.20240502.0.811150000
+spec:
+  refName: where-for-dinner-crawler.apps.local
+  releasedAt: "2024-05-02T18:51:24Z"
+  template:
+    spec:
+      deploy:
+      - kapp:
+          rawOptions:
+          - --wait=false
+      fetch:
+      - imgpkgBundle:
+          image: reg.perfect300rock.com/tapdev/where-for-dinner-crawler@sha256:a983e93c1260d5d01d8014f5b7974a88992786d2487f0326cd156e9648d74235
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+  valuesSchema:
+    openAPIv3: null
+  version: 20240502.0.811150000

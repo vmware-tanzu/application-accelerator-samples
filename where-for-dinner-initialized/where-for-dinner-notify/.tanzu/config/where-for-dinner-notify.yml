@@ -1,0 +1,19 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  creationTimestamp: null
+  name: where-for-dinner-notify
+spec:
+  acceptedServiceBindings:
+  - name: rmq
+    types:
+    - rabbitmq
+  build:
+    buildpacks: {}
+    nonSecretEnv:
+    - name: BP_JVM_VERSION
+      value: "21"
+    path: ../..
+  ports:
+  - name: main
+    port: 8080

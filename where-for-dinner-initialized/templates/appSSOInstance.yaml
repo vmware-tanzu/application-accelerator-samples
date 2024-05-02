@@ -1,0 +1,65 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+#@ load("@ytt:regexp", "regexp")
+    
+#@ def buildIdentityProviders():
+#@ if data.values.enableDefaultDevAccount == True:
+    - name: dev-users
+      internalUnsafe:
+        users:
+          - username: #@ data.values.devDefaultAccountUsername
+            password: #@ data.values.devDefaultAccountPassword
+            roles:
+              - "patron"
+#@ end            
+#@ end
+
+---
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: AuthServer
+metadata:
+  name: #@ data.values.appSSOName
+  namespace: #@ data.values.serviceNamespace
+  labels:
+    name: #@ data.values.appSSOName
+    app: where-for-dinner    
+  annotations:
+    sso.apps.tanzu.vmware.com/allow-client-namespaces: "*"
+    sso.apps.tanzu.vmware.com/allow-unsafe-identity-provider: ""
+    sso.apps.tanzu.vmware.com/allow-unsafe-issuer-uri: ""
+spec:
+  tls: 
+    deactivated: true
+  tokenSignature:
+    signAndVerifyKeyRef:
+      name: #@ data.values.appSSOName +"-signing-key"
+  identityProviders: #@ buildIdentityProviders()
+---
+apiVersion: secretgen.k14s.io/v1alpha1
+kind: RSAKey
+metadata:
+  name: #@ data.values.appSSOName + "-signing-key"
+  namespace: #@ data.values.serviceNamespace
+spec:
+  secretTemplate:
+    type: Opaque
+    stringData:
+      key.pem: $(privateKey)      
+      pub.pem: $(publicKey)
+      
+---
+apiVersion: sso.apps.tanzu.vmware.com/v1alpha1
+kind: ClusterWorkloadRegistrationClass
+metadata:
+  name: workloadreg-where-for-dinner
+spec:
+  description:
+    short: "Where For Dinner AppSSO Workload Registrations" 
+  base: 
+    metadata:  
+      annotations:
+        sso.apps.tanzu.vmware.com/template-unsafe-redirect-uris: ""
+    spec:
+      authServerSelector:
+        matchLabels:
+          name: #@ data.values.appSSOName

@@ -1,0 +1,51 @@
+{
+ "SPDXID": "SPDXRef-DOCUMENT",
+ "creationInfo": {
+  "created": "0001-01-01T00:00:00Z",
+  "creators": [
+   "Organization: Anchore, Inc",
+   "Tool: syft-"
+  ],
+  "licenseListVersion": "3.16"
+ },
+ "dataLicense": "CC0-1.0",
+ "documentNamespace": "https://paketo.io/packit/dir/layers/paketo-buildpacks_nginx/nginx-a7d26c85-8be8-5ef9-8440-4c659186c9c5",
+ "name": "/layers/paketo-buildpacks_nginx/nginx",
+ "packages": [
+  {
+   "SPDXID": "SPDXRef-Package--Nginx-Server-221cf52b5258e37a",
+   "copyrightText": "NOASSERTION",
+   "downloadLocation": "NOASSERTION",
+   "externalRefs": [
+    {
+     "referenceCategory": "SECURITY",
+     "referenceLocator": "cpe:2.3:a:nginx:nginx:1.25.4:*:*:*:*:*:*:*",
+     "referenceType": "cpe23Type"
+    },
+    {
+     "referenceCategory": "PACKAGE_MANAGER",
+     "referenceLocator": "pkg:generic/nginx@1.25.4?checksum=760729901acbaa517996e681ee6ea259032985e37c2768beef80df3a877deed9\u0026download_url=https://nginx.org/download/nginx-1.25.4.tar.gz",
+     "referenceType": "purl"
+    }
+   ],
+   "filesAnalyzed": false,
+   "licenseConcluded": "BSD-2-Clause",
+   "licenseDeclared": "BSD-2-Clause",
+   "licenseInfoFromFiles": null,
+   "name": "Nginx Server",
+   "packageVerificationCode": {
+    "packageVerificationCodeValue": ""
+   },
+   "sourceInfo": "acquired package info from the following paths: ",
+   "versionInfo": "1.25.4"
+  }
+ ],
+ "relationships": [
+  {
+   "relatedSpdxElement": "SPDXRef-DOCUMENT",
+   "relationshipType": "DESCRIBES",
+   "spdxElementId": "SPDXRef-DOCUMENT"
+  }
+ ],
+ "spdxVersion": "SPDX-2.2"
+}

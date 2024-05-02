@@ -1,0 +1,22 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  creationTimestamp: null
+  name: where-for-dinner-search-proc
+spec:
+  acceptedServiceBindings:
+  - name: rmq
+    types:
+    - rabbitmq
+  build:
+    buildpacks: {}
+    nonSecretEnv:
+    - name: BP_JVM_VERSION
+      value: "21"
+    path: ../..
+  nonSecretEnv:
+  - name: spring_profiles_active
+    value: crawler
+  ports:
+  - name: main
+    port: 8080

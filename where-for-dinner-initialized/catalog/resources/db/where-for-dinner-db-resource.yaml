@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: where-for-dinner-db
+  description: Where for Dinner application database
+spec:
+  type: database
+  owner: where-for-dinner-team
+  system: where-for-dinner

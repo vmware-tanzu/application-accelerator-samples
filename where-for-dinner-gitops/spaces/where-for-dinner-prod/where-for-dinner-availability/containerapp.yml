@@ -1,0 +1,73 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  annotations:
+    containerapp.apps.tanzu.vmware.com/class: kubernetes
+  creationTimestamp: null
+  name: where-for-dinner-availability
+spec:
+  acceptedServiceBindings:
+  - name: db
+    types:
+    - mysql
+  - name: rmq
+    types:
+    - rabbitmq
+  content:
+    packageRefName: where-for-dinner-availability.apps.local.20240502.0.29860000
+    packageVersion: 20240502.0.29860000
+  image: reg.perfect300rock.com/tapdev/where-for-dinner-availability@sha256:8cb600e62d84fb9169d313bb0ca9b342e7fb6cd4ae9acca4305f3a9fbb606504
+  nonSecretEnv:
+  - name: spring_profiles_active
+    value: mysql
+  - name: JAVA_TOOL_OPTIONS
+    value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
+      -Dserver.port=8080
+  ports:
+  - name: main
+    port: 8080
+  probes:
+    liveness:
+      httpGet:
+        path: /livez
+        port: 8080
+        scheme: HTTP
+    readiness:
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+    startup:
+      failureThreshold: 120
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 1
+      periodSeconds: 1
+  relatedRefs:
+  - for: kubernetes.list-replicas
+    kind: Pod
+    labelSelector: containerapp.apps.tanzu.vmware.com/app-name=where-for-dinner-availability
+  - apiGroup: apps
+    for: kubernetes.service-binding-target
+    kind: Deployment
+    name: where-for-dinner-availability
+  - for: kubernetes.service-target
+    kind: Service
+    name: where-for-dinner-availability
+  - for: kubernetes.scale-replicas
+    keyPath: .data.'values\.yml'->[yaml].replicas
+    kind: Secret
+    name: where-for-dinner-availability
+  - for: kubernetes.scale-resources
+    keyPath: .data.'values\.yml'->[yaml].resources
+    kind: Secret
+    name: where-for-dinner-availability
+  - for: kubernetes.set-secret-env
+    keyPath: .data.'values\.yml'->[yaml].secretEnv
+    kind: Secret
+    name: where-for-dinner-availability
+  resources:
+    cpu: 300m
+    memory: 1Gi

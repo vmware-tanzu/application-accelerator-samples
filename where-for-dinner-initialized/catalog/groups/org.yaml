@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: where-for-dinner-team
+  description: The where-for-dinner app team
+spec:
+  type: team
+  profile:
+    displayName: Where for Dinner dev team
+    email: where-for-dinner@example.com
+  children: []
+    

@@ -1,2 +1,0 @@
-org.springframework.cloud.bindings.boot.BindingsPropertiesProcessor=\
-  com.java.example.tanzu.audit.config.OAuth2BindingsPropertiesProcessor

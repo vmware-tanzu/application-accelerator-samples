@@ -1,0 +1,34 @@
+#@ load("@ytt:data", "data")
+
+---
+apiVersion: apis.apps.tanzu.vmware.com/v1alpha1
+kind: CuratedAPIDescriptor
+metadata:
+  name: where-for-dinner-curated-api               
+  annotations:
+    "apis.apps.tanzu.vmware.com/route-provider": "spring-cloud-gateway"  
+spec:
+  type: openapi         
+  title: Where For Dinner API Gateway              
+  description: Where For Dinner APIs for creating searches and retrieving search results. 
+  groupId: where-for-dinner             
+  version: 1.0.0             
+  apiDescriptors:
+    - name: where-for-dinner-search           
+      namespace: workloads
+      pathPrefix: /api/search    
+#@ if data.values.enableSecurity == True:          
+      routeConfig:
+        ssoEnabled: true
+        tokenRelay: true
+#@ end        
+    - name: where-for-dinner-availability            
+      namespace: workloads
+      pathPrefix: /api/availability 
+#@ if data.values.enableSecurity == True:    
+      routeConfig:
+        ssoEnabled: true
+        tokenRelay: true
+#@ end
+
+

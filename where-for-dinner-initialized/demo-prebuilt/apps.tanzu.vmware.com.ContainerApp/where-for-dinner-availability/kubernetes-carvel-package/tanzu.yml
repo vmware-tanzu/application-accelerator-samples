@@ -1,0 +1,6 @@
+apiVersion: config.tanzu.vmware.com/v1
+configuration:
+  plain:
+    paths:
+    - output/
+kind: TanzuConfig

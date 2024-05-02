@@ -1,0 +1,104 @@
+---
+apiVersion: bitnami.database.tanzu.vmware.com/v1alpha1
+kind: MySQLInstance
+metadata:
+  name: where-for-dinner-mysql
+spec:
+  storageGB: 1
+---
+apiVersion: bitnami.messaging.tanzu.vmware.com/v1alpha1
+kind: RabbitmqCluster
+metadata:
+  name: where-for-dinner-rabbitmq
+spec:
+  replicas: 1
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-availability-mysql
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-availability
+  serviceRef:
+    apiGroup: bitnami.database.tanzu.vmware.com
+    kind: MySQLInstance
+    name: where-for-dinner-mysql
+  alias: db
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-search-mysql
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-search
+  serviceRef:
+    apiGroup: bitnami.database.tanzu.vmware.com
+    kind: MySQLInstance
+    name: where-for-dinner-mysql
+  alias: db
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-availability-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-availability
+  serviceRef:
+    apiGroup: bitnami.messaging.tanzu.vmware.com
+    kind: RabbitmqCluster
+    name: where-for-dinner-rabbitmq
+  alias: rmq
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-search-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-search
+  serviceRef:
+    apiGroup: bitnami.messaging.tanzu.vmware.com
+    kind: RabbitmqCluster
+    name: where-for-dinner-rabbitmq
+  alias: rmq
+---
+apiVersion: services.tanzu.vmware.com/v1 
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-search-proc-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-search-proc
+  serviceRef:
+    apiGroup: bitnami.messaging.tanzu.vmware.com
+    kind: RabbitmqCluster
+    name: where-for-dinner-rabbitmq
+  alias: rmq
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-notify-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-notify
+  serviceRef:
+    apiGroup: bitnami.messaging.tanzu.vmware.com
+    kind: RabbitmqCluster
+    name: where-for-dinner-rabbitmq
+  alias: rmq

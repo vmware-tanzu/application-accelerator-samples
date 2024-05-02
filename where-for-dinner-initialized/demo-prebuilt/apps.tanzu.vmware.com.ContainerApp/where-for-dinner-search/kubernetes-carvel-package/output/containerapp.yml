@@ -1,0 +1,73 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  annotations:
+    containerapp.apps.tanzu.vmware.com/class: kubernetes
+  creationTimestamp: null
+  name: where-for-dinner-search
+spec:
+  acceptedServiceBindings:
+  - name: db
+    types:
+    - mysql
+  - name: rmq
+    types:
+    - rabbitmq
+  content:
+    packageRefName: where-for-dinner-search.apps.local.20240502.0.164704000
+    packageVersion: 20240502.0.164704000
+  image: reg.perfect300rock.com/tapdev/where-for-dinner-search@sha256:f8c3bb0f7e5ebefb2c4eaed04088c00ae097845c9bf85cd9d0343cd7cd8b11bc
+  nonSecretEnv:
+  - name: spring_profiles_active
+    value: mysql
+  - name: JAVA_TOOL_OPTIONS
+    value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
+      -Dserver.port=8080
+  ports:
+  - name: main
+    port: 8080
+  probes:
+    liveness:
+      httpGet:
+        path: /livez
+        port: 8080
+        scheme: HTTP
+    readiness:
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+    startup:
+      failureThreshold: 120
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 1
+      periodSeconds: 1
+  relatedRefs:
+  - for: kubernetes.list-replicas
+    kind: Pod
+    labelSelector: containerapp.apps.tanzu.vmware.com/app-name=where-for-dinner-search
+  - apiGroup: apps
+    for: kubernetes.service-binding-target
+    kind: Deployment
+    name: where-for-dinner-search
+  - for: kubernetes.service-target
+    kind: Service
+    name: where-for-dinner-search
+  - for: kubernetes.scale-replicas
+    keyPath: .data.'values\.yml'->[yaml].replicas
+    kind: Secret
+    name: where-for-dinner-search
+  - for: kubernetes.scale-resources
+    keyPath: .data.'values\.yml'->[yaml].resources
+    kind: Secret
+    name: where-for-dinner-search
+  - for: kubernetes.set-secret-env
+    keyPath: .data.'values\.yml'->[yaml].secretEnv
+    kind: Secret
+    name: where-for-dinner-search
+  resources:
+    cpu: 300m
+    memory: 1Gi

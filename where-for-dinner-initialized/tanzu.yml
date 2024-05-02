@@ -1,0 +1,13 @@
+apiVersion: config.tanzu.vmware.com/v1
+kind: TanzuConfig
+children:
+- where-for-dinner-search
+- where-for-dinner-availability
+- where-for-dinner-crawler
+- where-for-dinner-notify
+- where-for-dinner-search-proc
+- where-for-dinner-ui
+configuration:
+  dev:
+    paths:
+    - .tanzu/config/

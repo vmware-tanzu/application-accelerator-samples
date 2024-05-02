@@ -1,7 +1,0 @@
-apiVersion: backstage.io/v1alpha1
-kind: System
-metadata:
-  name: postal-code
-  description: Postal Code Application
-spec:
-  owner: postal-code-team

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
+    <groupId>com.example</groupId>    
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>where-for-dinner-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>where-for-dinner-parent</name>
+    <description>'Where for Dinner' dining search application.</description>
+    <modules>
+        <module>./where-for-dinner-api-gateway</module>
+        <module>./where-for-dinner-search</module>
+        <module>./where-for-dinner-search-proc</module>
+        <module>./where-for-dinner-notify</module>
+        <module>./where-for-dinner-availability</module>
+        <module>./where-for-dinner-crawler</module>
+  </modules>	 
+</project>

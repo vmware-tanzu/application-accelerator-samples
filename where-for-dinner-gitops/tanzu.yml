@@ -1,0 +1,5 @@
+apiVersion: config.tanzu.vmware.com/v1
+kind: TanzuConfig
+configuration:
+  projectRoot:
+    uuid: "e7880ae3-1973-48a6-9a4a-c73422c6a93b"  # UPDATE UUID to match target Project's UUID

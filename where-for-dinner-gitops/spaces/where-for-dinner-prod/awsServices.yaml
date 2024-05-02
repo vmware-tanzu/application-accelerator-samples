@@ -1,0 +1,120 @@
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: PreProvisionedService
+metadata:
+  name: where-for-dinner-mysql
+spec:
+  bindingConnectors:
+  - name: read-write
+    description: Read-write MySQL available in all availability targets
+    type: mysql
+    secretRef: 
+      name: where-for-dinner-mysql
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: PreProvisionedService
+metadata:
+  name: where-for-dinner-rabbitmq
+spec:
+  bindingConnectors:
+  - name: read-write
+    description: Read-write message broker available in all availability targets
+    type: rabbitmq
+    secretRef: 
+      name: where-for-dinner-rabbitmq
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-availability-mysql
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-availability
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
+    kind: PreProvisionedService
+    name: where-for-dinner-mysql
+    connectorName: read-write
+  alias: db
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-search-mysql
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-search
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
+    kind: PreProvisionedService
+    name: where-for-dinner-mysql
+    connectorName: read-write
+  alias: db
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-availability-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-availability
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
+    kind: PreProvisionedService
+    name: where-for-dinner-rabbitmq
+    connectorName: read-write
+  alias: rmq
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-search-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-search
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
+    kind: PreProvisionedService
+    name: where-for-dinner-rabbitmq
+    connectorName: read-write
+  alias: rmq
+---
+apiVersion: services.tanzu.vmware.com/v1 
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-search-proc-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-search-proc
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
+    kind: PreProvisionedService
+    name: where-for-dinner-rabbitmq
+    connectorName: read-write
+  alias: rmq
+---
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+  name: where-for-dinner-notify-rabbitmq
+spec:
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: where-for-dinner-notify
+  serviceRef:
+    apiGroup: services.tanzu.vmware.com
+    kind: PreProvisionedService
+    name: where-for-dinner-rabbitmq
+    connectorName: read-write
+  alias: rmq

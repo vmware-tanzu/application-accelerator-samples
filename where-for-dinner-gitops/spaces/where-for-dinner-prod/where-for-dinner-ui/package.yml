@@ -1,0 +1,28 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: where-for-dinner-ui.apps.local.20240502.0.268809000
+spec:
+  refName: where-for-dinner-ui.apps.local
+  releasedAt: "2024-05-02T15:02:19Z"
+  template:
+    spec:
+      deploy:
+      - kapp:
+          rawOptions:
+          - --wait=false
+      fetch:
+      - imgpkgBundle:
+          image: reg.perfect300rock.com/tapdev/where-for-dinner-ui@sha256:432d8c0d84fab528c8f345f2a2adb823ad46fe9a58aca7eb3e259c10c82c9429
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+  valuesSchema:
+    openAPIv3: null
+  version: 20240502.0.268809000
