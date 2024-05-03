@@ -49,6 +49,10 @@ engine {
     Include({"**"})
     // Update the java version
     + InvokeFragment("java-version")
+  }
+  UniquePath(strategy: UseLast)
+  {
+    Include({"**"})
     // Update workload.yaml files with Git repo if created
     + InvokeFragment("tap-workload")
   }
