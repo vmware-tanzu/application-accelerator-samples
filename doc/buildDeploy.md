@@ -70,12 +70,20 @@ addressable address is controlled by the `spec.parentRefs.sectionName` of the `H
 followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
 
 Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to replace the `<hostname>` placeholder with the hostname that you would like your app to be available at and save it.  
-**NOTE** Make sure you updates the files under the appropriate `space` folders.
 
 
 ## Build and Deploy Workloads
 
 There are a couple of varations to the build and deploy flow.  You can either break the build and deploy into two parts, or combine them into a single command.
+
+
+### Build and Deploy as One Command
+
+To build and then deploy as a single command, run the following:
+
+```
+tanzu deploy
+```
 
 ### Build and Deploy as Separate Commands
 
@@ -85,12 +93,4 @@ build the workloads, output the artifacts to a directly named `build`, and then 
 ```
 tanzu build --output-dir build
 tanzu deploy --from-build build
-```
-
-### Build and Deploy as One Command
-
-To build and then deploy as a single command, run the following:
-
-```
-tanzu deploy --from-build=$(tanzu build)
 ```
