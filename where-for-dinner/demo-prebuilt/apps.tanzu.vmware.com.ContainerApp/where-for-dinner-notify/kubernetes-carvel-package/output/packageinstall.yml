@@ -7,7 +7,7 @@ spec:
   packageRef:
     refName: where-for-dinner-notify.apps.local
     versionSelection:
-      constraints: 20240502.0.858190000
+      constraints: 20240506.0.915239000
   serviceAccountName: carvel-package-installer
   values:
   - secretRef:

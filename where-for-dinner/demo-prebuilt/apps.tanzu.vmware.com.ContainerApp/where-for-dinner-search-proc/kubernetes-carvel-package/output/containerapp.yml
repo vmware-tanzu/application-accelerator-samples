@@ -11,8 +11,12 @@ spec:
     types:
     - rabbitmq
   content:
-    packageRefName: where-for-dinner-search-proc.apps.local.20240502.0.614830000
-    packageVersion: 20240502.0.614830000
+    buildTimestamp: "2024-05-06T11:22:00Z"
+    gitCommit: 86e82ff53259d32951a7d6660c0afd0ce6640365
+    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    packageRefName: where-for-dinner-search-proc.apps.local
+    packageVersion: 20240506.0.682016000
+    summary: git:86e82ff @ 2024-05-06T11:22:00Z
   image: reg.perfect300rock.com/tapdev/where-for-dinner-search-proc@sha256:5603ccf1ed180e6b733e801a3c3d96acbc83ceaab24bdf4a757877532792cdfa
   nonSecretEnv:
   - name: spring_profiles_active

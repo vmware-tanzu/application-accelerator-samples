@@ -2,10 +2,10 @@ apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: where-for-dinner-availability.apps.local.20240502.0.206794000
+  name: where-for-dinner-availability.apps.local.20240506.0.370879000
 spec:
   refName: where-for-dinner-availability.apps.local
-  releasedAt: "2024-05-02T18:51:52Z"
+  releasedAt: "2024-05-06T11:19:41Z"
   template:
     spec:
       deploy:
@@ -14,7 +14,7 @@ spec:
           - --wait=false
       fetch:
       - imgpkgBundle:
-          image: reg.perfect300rock.com/tapdev/where-for-dinner-availability@sha256:000bb07202b22857a4901bd0bcc6b6f413b7ededb0f896ad0332061fc6860117
+          image: reg.perfect300rock.com/tapdev/where-for-dinner-availability@sha256:f6d1e0a405468271699ceb0b6c27ba72de065adcd5cc4db6d80218b0566f0d7c
       template:
       - ytt:
           paths:
@@ -25,4 +25,4 @@ spec:
           - '-'
   valuesSchema:
     openAPIv3: null
-  version: 20240502.0.206794000
+  version: 20240506.0.370879000
