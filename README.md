@@ -8,7 +8,9 @@ however, future flows may include the provisioning of a `Space` as part of the d
 The following flows are currently supported by this repository:
 
 * Initialize (TBD): Walks through the process of initializing the application and workloads with build and deployment configuration.
-* [Build/Deploy](doc/buildDeploy.md): Builds and deploys the application from an initialed set of workloads.
+* [Build/Deploy](doc/buildDeploy.md): Builds and deploys the application from an initialed set of workloads including service configuration.
+* [Build/Deploy, Services CLI](doc/buildDeployServiceCLI.md): Builds and deploys the application from an initialed set of workloads, but use the services CLI to 
+create and bind services
 * [Deploy Pre-built](doc/preBuilt.md): Deploys the application from a set pre-built outputs.  
 * [GitOps](doc/gitOps.md): Deploys the application to various `Spaces` from a GitOps folder structure.
 
