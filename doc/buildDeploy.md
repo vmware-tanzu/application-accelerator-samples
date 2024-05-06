@@ -40,21 +40,11 @@ tanzu space use <space name>
 
 ## Configure Build Plan
 
-Before you can build the application, you need to configure your build plan as well as the container registry where images will be moved to.
-Your space may already have a build plan configured in which case you just use that build plan (using the UCP option).  If you space does not
-contain a build plan, one has been provided for you in this repository.
-
-To use the the UCP provided build plan, configure it using the following command.  Note that you will need to provide your registry location.  Also note that
-`{name}` is actually part of the registry URL that you will provide.  Eg: `reg.perfect300rock.com/tapdev/{name}`
+Before you can build the application, you need to configure your container registry where images will be moved to.
+Configure it using the following command.  Note that `{name}` is actually part of the registry URL that you will provide.  Eg: `reg.perfect300rock.com/tapdev/{name}`
 
 ```
-tanzu build config --build-plan-source-type=ucp --containerapp-registry <some-registry.io/some-project/>/{name}
-```
-
-If you Space does not have a build plan defined, you can the build plan provided in this repository by running the following command:
-
-```
-tanzu build config --build-plan-source-type=file --build-plan-source=platform-config.yaml --containerapp-registry <some-registry.io/some-project/>/{name}
+tanzu build config --containerapp-registry <some-registry.io/some-project/>/{name}
 ```
 
 If you are not already logged into you container registry, login using the following command (assuming you are using docker):
