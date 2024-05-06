@@ -11,7 +11,7 @@ spec:
   - group: gateway.networking.k8s.io
     kind: Gateway
     name: default-gateway
-    sectionName: http-where-for-dinner-t3
+    sectionName: http-<hostname>
   rules:
   - backendRefs:
     - group: ""
