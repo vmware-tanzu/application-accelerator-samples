@@ -26,14 +26,12 @@ git checkout wfd-spaces-ga
 cd where-for-dinner
 ```
 
-## Login and Set Context/Project/Space
+## Login and Set Project and Space
 
-If you are not already in context of your development space, login into the tanzu platform and set the appropriate context, project, and space
-using the following commands:
+If you are not already in context of your development space, login into the Tanzu platform and set the appropriate project and space using the following commands:
 
 ```
 tanzu login
-tznzu context use <context name>
 tanzu project use <project name>
 tanzu space use <space name>
 ```
@@ -54,6 +52,8 @@ docker login <some-registry.io>
 ```
 
 ## Update the HTTPRoute
+
+Note: This step is optional. Configuration is preset to use `http-where-for-dinner` hostname.
 
 Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
 addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
@@ -77,7 +77,7 @@ tanzu deploy
 
 ### Build and Deploy as Separate Commands
 
-When breaking the build and deploy into separate commands, it may be easier to specify the location of the build's out put artifacts.  Run the following commands to
+When breaking the build and deploy into separate commands, it may be easier to specify the location of the build's output artifacts.  Run the following commands to
 build the workloads, output the artifacts to a directly named `build`, and then deploy the workloads from the `build` output directory:
 
 ```
