@@ -22,7 +22,7 @@ Clone the application repository by running following commands:
 git clone https://github.com/vmware-tanzu/application-accelerator-samples
 cd application-accelerator-samples
 git checkout wfd-spaces-ga
-cd where-for-dinner
+cd where-for-dinner-services-cli
 ```
 
 ## Login and Set Context/Project/Space
