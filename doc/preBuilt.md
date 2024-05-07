@@ -33,19 +33,19 @@ If you are not already in context of your development space, login into the Tanz
 
 ```
 tanzu login
-tanzu project use <project name>
-tanzu space use <space name>
+tanzu project use
+tanzu space use
 ```
 
-## Optional: Update the HTTPRoute
+## Optional: Configure Domain
 
-Note: This step is optional. Configuration is preset to use `http-where-for-dinner` hostname.
-
-Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
+> This step is optional. Configuration is preset to use `where-for-dinner` hostname.
+> 
+> Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
 addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
 followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
-
-Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to replace the `<hostname>` placeholder with the hostname that you would like your app to be available at and save it.  
+> 
+> Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to with the hostname that you would like your app to be available at and save it.
 
 ## Deploy The Workloads
 

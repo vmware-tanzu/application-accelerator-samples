@@ -2,7 +2,7 @@
 
 This flow is from the perspective of the developer and assumes that the application's repository has already been initialized with build and deployment
 configuration.  Configuration includes not only the `ContainerApp` but additional dependent configuration such as Spring Cloud Gateway routes and mappings, 
-and an HTTPRoute, however service instances are created and bound using the services CLI. The intention is to build the application and deploy it into a development space as
+and an HTTPRoute, however services are created and bound using the services CLI. The intention is to build the application and deploy it into a development space as
 well as exercise the services CLI flows.  
 The high level flow consists of the following steps:
 
@@ -31,13 +31,13 @@ If you are not already in context of your development space, login into the Tanz
 
 ```
 tanzu login
-tanzu project use <project name>
-tanzu space use <space name>
+tanzu project use
+tanzu space use
 ```
 
-## Configure Build Plan
+## Configure Registry
 
-Before you can build the application, you need to configure your container registry where images will be moved to.
+Before you can build the application, you need to configure your container registry where images will be pushed.
 Configure it using the following command.  Note that `{name}` is actually part of the registry URL that you will provide.  Eg: `reg.perfect300rock.com/tapdev/{name}`
 
 ```
@@ -50,14 +50,15 @@ If you are not already logged into you container registry, login using the follo
 docker login <some-registry.io>
 ```
 
-## Update the HTTPRoute
+## Optional: Configure Domain
 
-Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
+> This step is optional. Configuration is preset to use `where-for-dinner` hostname.
+> 
+> Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
 addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
 followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
-
-Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to replace the `<hostname>` placeholder with the hostname that you would like your app to be available at and save it.  
-
+> 
+> Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to with the hostname that you would like your app to be available at and save it.
 
 ## Build and Deploy Workloads
 
@@ -87,13 +88,13 @@ tanzu deploy --from-build build
 To create and bind services, run the following commands below.
 
 
-List service instances in the space.  There will likely be 0 instances.
+List services in the space.  There will likely be 0 instances.
 
 ```
 tanzu services list
 ```
 
-List the available service instance types.
+List the available service types.
 
 ```
 tanzu services type list
@@ -106,7 +107,7 @@ tanzu services create MySQLInstance/where-for-dinner-mysql
 tanzu services create RabbitmqCluster/where-for-dinner-rabbitmq
 ```
 
-List service instances in the space and verify they have been created.
+List services in the space and verify they have been created.
 
 ```
 tanzu services list
@@ -144,7 +145,7 @@ tanzu services delete MySQLInstance/where-for-dinner-mysql
 tanzu services delete RabbitmqCluster/where-for-dinner-rabbitmq
 ```
 
-Verify the service instances were deleted.
+Verify the services were deleted.
 
 ```
 tanzu services list

@@ -32,13 +32,13 @@ If you are not already in context of your development space, login into the Tanz
 
 ```
 tanzu login
-tanzu project use <project name>
-tanzu space use <space name>
+tanzu project use
+tanzu space use
 ```
 
-## Configure Build Plan
+## Configure Registry
 
-Before you can build the application, you need to configure your container registry where images will be moved to.
+Before you can build the application, you need to configure your container registry where images will be pushed.
 Configure it using the following command.  Note that `{name}` is actually part of the registry URL that you will provide.  Eg: `reg.perfect300rock.com/tapdev/{name}`
 
 ```
@@ -51,21 +51,19 @@ If you are not already logged into you container registry, login using the follo
 docker login <some-registry.io>
 ```
 
-## Update the HTTPRoute
+## Optional: Configure Domain
 
-Note: This step is optional. Configuration is preset to use `http-where-for-dinner` hostname.
-
-Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
+> This step is optional. Configuration is preset to use `where-for-dinner` hostname.
+> 
+> Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
 addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
 followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
-
-Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to replace the `<hostname>` placeholder with the hostname that you would like your app to be available at and save it.  
-
+> 
+> Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to with the hostname that you would like your app to be available at and save it.
 
 ## Build and Deploy Workloads
 
 There are a couple of varations to the build and deploy flow.  You can either break the build and deploy into two parts, or combine them into a single command.
-
 
 ### Build and Deploy as One Command
 
