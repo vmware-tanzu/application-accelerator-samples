@@ -1,11 +1,11 @@
 # Pre Built Deployment Flow
 
-This flow is essentially the back half of the build and deploy flow.  It assumes that the application has already been pre-build
+This flow is essentially the back half of the build and deploy flow.  It assumes that the application has already been pre-built
 with the build's output artifacts already existing in an output directory and then simply deploys the application from that output directory.
 This flow is likely not a common flow in a real development environment, but is useful for quickly deploying the application from the
 source code repository.  
 
-This `where-for-dinner` directory contains a `demo-prebuilt` directory that consists of the build outputs from a previously run build process.
+This `where-for-dinner` directory contains a `demo-prebuilt` directory that consists of the build outputs from a previously run "tanzu build" process.
 Similar to the build and deploy flow, this flow also uses Bitnami services.
 
 The high level flow consists of the following steps:
@@ -22,24 +22,24 @@ Clone the application repository by running following commands:
 
 ```
 git clone https://github.com/vmware-tanzu/application-accelerator-samples
-cd application-accelerator-samples
+cd application-accelerator-samples/
 git checkout wfd-spaces-ga
-cd where-for-dinner
+cd where-for-dinner/
 ```
 
-## Login and Set Context/Project/Space
+## Login and Set Project and Space
 
-If you are not already in context of your development space, login into the tanzu platform and set the appropriate context, project, and space
-using the following commands:
+If you are not already in context of your development space, login into the Tanzu platform and set the appropriate project and space using the following commands:
 
 ```
 tanzu login
-tznzu context use <context name>
 tanzu project use <project name>
 tanzu space use <space name>
 ```
 
-## Update the HTTPRoute
+## Optional: Update the HTTPRoute
+
+Note: This step is optional. Configuration is preset to use `http-where-for-dinner` hostname.
 
 Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
 addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
@@ -49,7 +49,7 @@ Modify the `.tanzu/config/k8sGatewayRoutes.yaml` file to replace the `<hostname>
 
 ## Deploy The Workloads
 
-To build and then deploy as a single command, run the following:
+To deploy as a single command (referencing pre-built ContainerApps), run the following:
 
 ```
 tanzu deploy --from-build demo-prebuilt

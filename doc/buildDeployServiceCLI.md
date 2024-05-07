@@ -25,14 +25,12 @@ git checkout wfd-spaces-ga
 cd where-for-dinner-services-cli
 ```
 
-## Login and Set Context/Project/Space
+## Login and Set Project and Space
 
-If you are not already in context of your development space, login into the tanzu platform and set the appropriate context, project, and space
-using the following commands:
+If you are not already in context of your development space, login into the Tanzu platform and set the appropriate project and space using the following commands:
 
 ```
 tanzu login
-tznzu context use <context name>
 tanzu project use <project name>
 tanzu space use <space name>
 ```
