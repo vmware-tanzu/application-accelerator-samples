@@ -1,19 +1,19 @@
 # GitOps Flow
 
 This flow is from the perspective of an application operator of similar role that is responsible for deploying the application
-into downstream run `Spaces`.  The `where-for-dinner-gitops` directory is similar to a the structure a GitOps repository that contains
+into downstream `Spaces` (e.g. staging/production/...).  The `where-for-dinner-gitops` directory is similar to a the structure a GitOps repository that contains
 all configuration necessary to deploy the application into downstream `Space`.  The following is a breakdown of the folder structure.
 
 ```
-- tanzu.yaml <---- Root tanzu file that contains the UUID of the `project` that the application will be deployed to
-|
-|-  spaces/  <---- Directory that contains a set of directories of all spaces where the application can be deployed to
+.
+|- tanzu.yaml <---- Root tanzu file that contains the UUID of the `project` that the spaces are in
+|- spaces/  <---- Directory that contains a set of directories of all spaces where the application can be deployed to
     |
     |- where-for-dinner-integration/  <---- Directory that contains deployment configuration for the `where-for-dinner-integration` space
     |  |- bitnamiServices.yaml        <---- Set of files that contain configuration for the integration space
     |  |- k8sGatewayRoutes.yaml
     |  |- scgRoutes.yaml
-    |  |- where-for-dinner-availability/ <---- PackageInstall, ContainerApp, Package , and values file for the `where-for-dinner-availability` workload
+    |  |- where-for-dinner-availability/ <---- ContainerApp and other configuration resource for the `where-for-dinner-availability` workload
     |  |  |- containerapp.yaml
     |  |  |- package.yaml
     |  |  |- packaginstall.yaml
@@ -37,8 +37,8 @@ The high level flow consists of the following steps:
 
 * Clone repository
 * Login to tanzu platform
-* Set/use the appropriate context, project, and space
-* Deploy to development space
+* Set/use the appropriate project and space
+* Deploy to spaces
 
 ## Clone Repository
 
@@ -51,16 +51,14 @@ git checkout wfd-spaces-ga
 cd where-for-dinner-gitops
 ```
 
-## Login and Set Context/Project/Space
+## Login and Set Project
 
-If you are not already in context of your development space, login into the tanzu platform and set the appropriate context, project, and space
+If you are not already logged-in into the tanzu platform and set the appropriate project
 using the following commands:
 
 ```
 tanzu login
-tznzu context use <context name>
-tanzu project use <project name>
-tanzu space use <space name>
+tanzu project use
 ```
 
 ## Deploy The Workloads
@@ -69,11 +67,11 @@ This repository contains space folders named `where-for-dinner-integration` and 
 already provisioned.  If you wish to deploy to a different space name, you can either rename the directory and copy and paste it to a folder with a different
 name.
 
-The `integration` and `prod` spaces are effectively the same configuration with the exception of the data services they use.  The `integration` space uses
-Bitnami services whilst the `prod` space uses off platform services such as AWS services.  The following sections include instructions needed for deploying
+The `where-for-dinner-integration` and `where-for-dinner-prod` spaces are effectively the same configuration with the exception of the data services they use.  The `where-for-dinner-integration` space uses
+Bitnami services whilst the `where-for-dinner-prod` space uses off platform services such as AWS services.  The following sections include instructions needed for deploying
 either Bitnami based services or external services.
 
-### Set the UUID and Update the HTTPRoute
+### Set the Project UUID
 
 You will first need to set the UUID of your project in the `tanzu.yaml` file in the root of the `where-for-dinner-gitops` directory.  You can obtain the UUID by running
 the following command:
@@ -81,13 +79,6 @@ the following command:
 ```
 tanzu project list --wide
 ```
-
-Where For Dinner uses an `HTTPRoute` resource to create an externally resolvable and accessible endpoint on the internet.  The hostname portion of the externally 
-addressable address is controlled by the `spec.parentRefs.sectionName` of the `HTTPRoute` resource.  The sectionName field's value is prefixed with `http-` and then 
-followed by the desired hostname.  For example, a value of `http-where-for-dinner` would result in a hostname of `where-for-dinner`.
-
-Modify the `k8sGatewayRoutes.yaml` file to replace the `<hostname>` placeholder with the hostname that you would like your app to be available at and save it.  
-**NOTE** Make sure you updates the files under the appropriate `space` folders.
 
 ### Deploy To Integration Space
 
@@ -100,7 +91,7 @@ tanzu deploy
 
 ### Deploy To Prod Space
 
-The `where-for-dinner-integration` space configuration uses external services and requires the `serviceSecret.yaml` file to be updated with credentials of external
+The `where-for-dinner-prod` space configuration uses external services and requires the `serviceSecrets.example` file to be updated with credentials of external
 services such as AWS services.  The following steps will walk you through standing up RDS and RabbitMQ instances on AWS.
 
 #### Create MySQL RDS Instance
@@ -118,7 +109,7 @@ To create a MySQL instance:
 - Click "Create database.
 
 After the database has been created and is available, click on the writer instance of your database from the list of databases clusters and scroll down to the 
-`Connectivity & security` section.  Note the endpoint as this will be used as the host field in the secret located in the file `serviceSecret.yaml`.
+`Connectivity & security` section.  Note the endpoint as this will be used as the host field in the secret located in the file `serviceSecrets.example`.
 
 #### Create RabbitMQ Cluster
 
@@ -131,12 +122,12 @@ To create a RabbitMQ instance:
 - After providing all settings, click `Next` then `Create broker`; it may take up to 20 minutes for the broker to be provisioned.
 
 After the broker has been created, click the broker name from the list of brokers and scroll down to the `Connections` sections.  Note the AMQP endpoint 
-as this will be used in the addresses field in the secret located in the file `serviceSecret.yaml`.
+as this will be used in the addresses field in the secret located in the file `serviceSecrets.example`.
 
 #### Update Service Credential Secrets
 
-Using your editor of choice, update the fields with <> placeholders in the `serviceSecret.yaml` file with the credentials 
-and connection information for the RabbitMQ and MySQL instances.  You will need to base64 encode each secret/credential value before adding it to the `serviceSecret.yaml `
+Using your editor of choice, update the fields with <> placeholders in the `serviceSecrets.example` file with the credentials 
+and connection information for the RabbitMQ and MySQL instances.  You will need to base64 encode each secret/credential value before adding it to the `serviceSecrets.example `
 file; an easy way to base64 values is to use an online tool such as https://www.base64encode.org.
 
 #### Deploy Workloads
@@ -145,5 +136,10 @@ Deploy the application by running the following commands:
 
 ```
 cd spaces/where-for-dinner-prod
+
+# One off deploy of your secrets (they would only be kept on cluster -- not in the Git repository)
+tanzu deploy --only serviceSecrets.example
+
+# Deploy all other configuration
 tanzu deploy
 ```
