@@ -71,9 +71,9 @@ spec:
     - RewritePath=/api/availability(?<segment>/?.*), $\{segment}
     - RemoveRequestHeader=Forwarded
     tags:
-    - search-api 
+    - availability-api 
   service:
-    name: availability
+    name: where-for-dinner-availability
 ---
 apiVersion: "tanzu.vmware.com/v1"
 kind: SpringCloudGatewayMapping
