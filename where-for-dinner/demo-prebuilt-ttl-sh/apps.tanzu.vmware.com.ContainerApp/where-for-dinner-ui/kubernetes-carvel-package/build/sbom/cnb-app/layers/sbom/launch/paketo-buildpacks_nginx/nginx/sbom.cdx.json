@@ -1,0 +1,36 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "cpe": "cpe:2.3:a:nginx:nginx:1.25.4:*:*:*:*:*:*:*",
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-2-Clause"
+          }
+        }
+      ],
+      "name": "Nginx Server",
+      "purl": "pkg:generic/nginx@1.25.4?checksum=760729901acbaa517996e681ee6ea259032985e37c2768beef80df3a877deed9\u0026download_url=https://nginx.org/download/nginx-1.25.4.tar.gz",
+      "type": "library",
+      "version": "1.25.4"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "bom-ref": "1ee6cacc0d43048a",
+      "name": "/layers/paketo-buildpacks_nginx/nginx",
+      "type": "file",
+      "version": ""
+    },
+    "tools": [
+      {
+        "name": "syft",
+        "vendor": "anchore",
+        "version": "[not provided]"
+      }
+    ]
+  },
+  "specVersion": "1.3",
+  "version": 1
+}

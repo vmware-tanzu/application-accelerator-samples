@@ -1,0 +1,72 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  annotations:
+    containerapp.apps.tanzu.vmware.com/class: kubernetes
+  creationTimestamp: null
+  name: where-for-dinner-notify
+spec:
+  acceptedServiceBindings:
+  - name: rmq
+    types:
+    - rabbitmq
+  content:
+    buildTimestamp: "2024-05-08T18:16:01Z"
+    gitCommit: d05e219000b79a30a96dfbcded4807a4729cd429
+    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    packageRefName: where-for-dinner-notify.apps.local
+    summary: git:d05e219 @ 2024-05-08T18:16:01Z
+    version: 20240508.1816.1580
+  image: ttl.sh/where-for-dinner-notify:20240508.1816.1580@sha256:676ec0526aa433ae4a9b3918f74e26831c24dbe52a825b60bc7771b8d18e67e9
+  nonSecretEnv:
+  - name: JAVA_TOOL_OPTIONS
+    value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
+      -Dserver.port=8080
+  ports:
+  - name: main
+    port: 8080
+  probes:
+    liveness:
+      httpGet:
+        path: /livez
+        port: 8080
+        scheme: HTTP
+    readiness:
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+    startup:
+      failureThreshold: 120
+      httpGet:
+        path: /readyz
+        port: 8080
+        scheme: HTTP
+      initialDelaySeconds: 1
+      periodSeconds: 1
+  relatedRefs:
+  - for: kubernetes.list-replicas
+    kind: Pod
+    labelSelector: containerapp.apps.tanzu.vmware.com/app-name=where-for-dinner-notify
+  - apiGroup: apps
+    for: kubernetes.service-binding-target
+    kind: Deployment
+    name: where-for-dinner-notify
+  - for: kubernetes.service-target
+    kind: Service
+    name: where-for-dinner-notify
+  - for: kubernetes.scale-replicas
+    keyPath: .data.'values\.yml'->[yaml].replicas
+    kind: Secret
+    name: where-for-dinner-notify
+  - for: kubernetes.scale-resources
+    keyPath: .data.'values\.yml'->[yaml].resources
+    kind: Secret
+    name: where-for-dinner-notify
+  - for: kubernetes.set-secret-env
+    keyPath: .data.'values\.yml'->[yaml].secretEnv
+    kind: Secret
+    name: where-for-dinner-notify
+  resources:
+    cpu: 300m
+    memory: 1Gi

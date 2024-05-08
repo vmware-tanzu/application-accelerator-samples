@@ -1,0 +1,28 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: where-for-dinner-notify.apps.local.20240508.1816.1580
+spec:
+  refName: where-for-dinner-notify.apps.local
+  releasedAt: "2024-05-08T18:26:01Z"
+  template:
+    spec:
+      deploy:
+      - kapp:
+          rawOptions:
+          - --wait=false
+      fetch:
+      - imgpkgBundle:
+          image: ttl.sh/where-for-dinner-notify@sha256:3133593a6bf8ca127349cf33cab6566ead2564015290412ba3a2973f810ae8f6
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - .imgpkg/images.yml
+          - '-'
+  valuesSchema:
+    openAPIv3: null
+  version: 20240508.1816.1580

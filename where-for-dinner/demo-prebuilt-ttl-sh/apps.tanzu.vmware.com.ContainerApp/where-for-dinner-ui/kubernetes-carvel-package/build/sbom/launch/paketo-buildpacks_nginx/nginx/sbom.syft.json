@@ -1,0 +1,34 @@
+{
+ "artifacts": [
+  {
+   "id": "221cf52b5258e37a",
+   "name": "Nginx Server",
+   "version": "1.25.4",
+   "type": "",
+   "foundBy": "",
+   "locations": null,
+   "licenses": [
+    "BSD-2-Clause"
+   ],
+   "language": "",
+   "cpes": [
+    "cpe:2.3:a:nginx:nginx:1.25.4:*:*:*:*:*:*:*"
+   ],
+   "purl": "pkg:generic/nginx@1.25.4?checksum=760729901acbaa517996e681ee6ea259032985e37c2768beef80df3a877deed9&download_url=https://nginx.org/download/nginx-1.25.4.tar.gz"
+  }
+ ],
+ "artifactRelationships": [],
+ "source": {
+  "type": "directory",
+  "target": "/layers/paketo-buildpacks_nginx/nginx"
+ },
+ "distro": {},
+ "descriptor": {
+  "name": "",
+  "version": ""
+ },
+ "schema": {
+  "version": "3.0.1",
+  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-3.0.1.json"
+ }
+}
