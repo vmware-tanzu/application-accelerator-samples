@@ -14,13 +14,13 @@ spec:
     types:
     - rabbitmq
   content:
-    buildTimestamp: "2024-05-08T18:16:01Z"
-    gitCommit: d05e219000b79a30a96dfbcded4807a4729cd429
+    buildTimestamp: "2024-05-09T20:28:57Z"
+    gitCommit: 07634dc283c82dddeea78dfc55903ed4488bb6b1
     gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
     packageRefName: where-for-dinner-search.apps.local
-    summary: git:d05e219 @ 2024-05-08T18:16:01Z
-    version: 20240508.1816.1580
-  image: ttl.sh/where-for-dinner-search:20240508.1816.1580@sha256:f8c3bb0f7e5ebefb2c4eaed04088c00ae097845c9bf85cd9d0343cd7cd8b11bc
+    summary: git:07634dc @ 2024-05-09T20:28:57Z
+    version: 20240509.2028.57173
+  image: ttl.sh/where-for-dinner-search:20240509.2028.57173@sha256:a9bdd25148168fa2d53150bd3e9e6527cff30765159a62fa9ecc25e498b0035b
   nonSecretEnv:
   - name: spring_profiles_active
     value: mysql

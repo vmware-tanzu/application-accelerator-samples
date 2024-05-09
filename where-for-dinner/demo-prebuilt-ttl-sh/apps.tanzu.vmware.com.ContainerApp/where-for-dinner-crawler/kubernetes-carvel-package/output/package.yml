@@ -2,10 +2,10 @@ apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: where-for-dinner-crawler.apps.local.20240508.1816.1580
+  name: where-for-dinner-crawler.apps.local.20240509.2028.57173
 spec:
   refName: where-for-dinner-crawler.apps.local
-  releasedAt: "2024-05-08T18:22:54Z"
+  releasedAt: "2024-05-09T20:33:26Z"
   template:
     spec:
       deploy:
@@ -14,7 +14,7 @@ spec:
           - --wait=false
       fetch:
       - imgpkgBundle:
-          image: ttl.sh/where-for-dinner-crawler@sha256:8235b142f9a44b63465aa1446f02cb54191d008f49603427ff4ee2b34601dcdf
+          image: ttl.sh/where-for-dinner-crawler@sha256:59fd772c4f7b1b79470bc050064532d30e2fbc518967328a377cc79c191721e9
       template:
       - ytt:
           paths:
@@ -25,4 +25,4 @@ spec:
           - '-'
   valuesSchema:
     openAPIv3: null
-  version: 20240508.1816.1580
+  version: 20240509.2028.57173
