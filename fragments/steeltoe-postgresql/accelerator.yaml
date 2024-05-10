@@ -16,7 +16,7 @@ engine:
   chain:
     - merge:
       - include: [ "**" ]
-        exclude: [ "config/workload.yaml", "DATABASE.md" ]
+        exclude: [ "config/workload.yaml", "DATABASE.md", "README.md" ]
 
       - include: [ "config/workload.yaml", "DATABASE.md" ]
         chain:
