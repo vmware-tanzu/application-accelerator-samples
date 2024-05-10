@@ -7,9 +7,13 @@ metadata:
   name: where-for-dinner-ui
 spec:
   content:
-    packageRefName: where-for-dinner-ui.apps.local.20240502.0.268809000
-    packageVersion: 20240502.0.268809000
-  image: reg.perfect300rock.com/tapdev/where-for-dinner-ui@sha256:0d8e5c8edb94619e2ba72562b9581ecc690be5293778f8cd45200c93fbe9dfe0
+    buildTimestamp: "2024-05-10T12:34:21Z"
+    gitCommit: f4672daae9afc4fd0bfb068abc089dcf4721db44-dirty
+    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    packageRefName: where-for-dinner-ui.apps.local
+    summary: git:f4672da @ 2024-05-10T12:34:21Z
+    version: 20240510.1234.21994
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-ui@sha256:dac68a6ee1cfef2fcfe598d6949df78268f8c3b4835058360e3c22315c34e2e5
   ports:
   - name: main
     port: 8080

@@ -7,9 +7,13 @@ metadata:
   name: where-for-dinner-crawler
 spec:
   content:
-    packageRefName: where-for-dinner-crawler.apps.local.20240502.0.449959000
-    packageVersion: 20240502.0.449959000
-  image: reg.perfect300rock.com/tapdev/where-for-dinner-crawler@sha256:4753465c835660509a52f14acf08ad809cb383d7c0dc3239e65a5410c9eec711
+    buildTimestamp: "2024-05-10T12:34:21Z"
+    gitCommit: f4672daae9afc4fd0bfb068abc089dcf4721db44-dirty
+    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    packageRefName: where-for-dinner-crawler.apps.local
+    summary: git:f4672da @ 2024-05-10T12:34:21Z
+    version: 20240510.1234.21994
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-crawler@sha256:85cd45991d2319dac4f81df06f1baf4fad30b779cac6377e548e5a5c41db3752
   nonSecretEnv:
   - name: JAVA_TOOL_OPTIONS
     value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
