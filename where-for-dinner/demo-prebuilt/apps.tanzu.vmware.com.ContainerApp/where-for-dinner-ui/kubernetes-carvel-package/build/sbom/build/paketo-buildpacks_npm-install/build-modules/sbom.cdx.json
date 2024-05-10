@@ -36032,13 +36032,6 @@
     },
     {
       "cpe": "cpe:2.3:a:fsevents:fsevents:2.3.2:*:*:*:*:*:*:*",
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
-          }
-        }
-      ],
       "name": "fsevents",
       "properties": [
         {

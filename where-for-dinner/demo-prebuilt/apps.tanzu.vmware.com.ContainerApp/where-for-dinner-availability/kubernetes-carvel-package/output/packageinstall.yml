@@ -7,7 +7,7 @@ spec:
   packageRef:
     refName: where-for-dinner-availability.apps.local
     versionSelection:
-      constraints: 20240506.0.370879000
+      constraints: 20240510.1234.21994
   serviceAccountName: carvel-package-installer
   values:
   - secretRef:

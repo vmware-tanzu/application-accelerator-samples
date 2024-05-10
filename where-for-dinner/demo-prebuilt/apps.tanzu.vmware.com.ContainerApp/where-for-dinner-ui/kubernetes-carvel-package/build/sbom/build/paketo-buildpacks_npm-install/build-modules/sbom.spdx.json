@@ -9,7 +9,7 @@
   "licenseListVersion": "3.16"
  },
  "dataLicense": "CC0-1.0",
- "documentNamespace": "https://paketo.io/packit/dir/workspace-ff32f99a-d81c-5640-b244-b28c1c20a960",
+ "documentNamespace": "https://paketo.io/packit/dir/workspace-31c7151a-4013-56d7-bdcf-03b7f07d10a2",
  "name": "/workspace",
  "packages": [
   {
@@ -34546,7 +34546,7 @@
    "versionInfo": "1.0.0"
   },
   {
-   "SPDXID": "SPDXRef-Package-npm-fsevents-1d771b16c0465288",
+   "SPDXID": "SPDXRef-Package-npm-fsevents-263de3280e2c2635",
    "copyrightText": "NOASSERTION",
    "downloadLocation": "NOASSERTION",
    "externalRefs": [
@@ -34562,8 +34562,8 @@
     }
    ],
    "filesAnalyzed": false,
-   "licenseConcluded": "MIT",
-   "licenseDeclared": "MIT",
+   "licenseConcluded": "NONE",
+   "licenseDeclared": "NONE",
    "licenseInfoFromFiles": null,
    "name": "fsevents",
    "packageVerificationCode": {

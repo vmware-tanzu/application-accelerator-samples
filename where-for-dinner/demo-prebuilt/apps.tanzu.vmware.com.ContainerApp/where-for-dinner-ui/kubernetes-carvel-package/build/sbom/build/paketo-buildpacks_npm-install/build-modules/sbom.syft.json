@@ -20104,7 +20104,7 @@
    }
   },
   {
-   "id": "1d771b16c0465288",
+   "id": "263de3280e2c2635",
    "name": "fsevents",
    "version": "2.3.2",
    "type": "npm",
@@ -20117,9 +20117,7 @@
      }
     }
    ],
-   "licenses": [
-    "MIT"
-   ],
+   "licenses": [],
    "language": "javascript",
    "cpes": [
     "cpe:2.3:a:fsevents:fsevents:2.3.2:*:*:*:*:*:*:*"

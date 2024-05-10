@@ -11,13 +11,13 @@ spec:
     types:
     - rabbitmq
   content:
-    buildTimestamp: "2024-05-06T11:20:30Z"
-    gitCommit: 86e82ff53259d32951a7d6660c0afd0ce6640365
+    buildTimestamp: "2024-05-10T12:34:21Z"
+    gitCommit: f4672daae9afc4fd0bfb068abc089dcf4721db44-dirty
     gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
     packageRefName: where-for-dinner-notify.apps.local
-    packageVersion: 20240506.0.915239000
-    summary: git:86e82ff @ 2024-05-06T11:20:30Z
-  image: reg.perfect300rock.com/tapdev/where-for-dinner-notify@sha256:676ec0526aa433ae4a9b3918f74e26831c24dbe52a825b60bc7771b8d18e67e9
+    summary: git:f4672da @ 2024-05-10T12:34:21Z
+    version: 20240510.1234.21994
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-notify@sha256:e3685b3f4626682d5a66eaed48e969e890176d3f508c19f3ec965e38ae27280e
   nonSecretEnv:
   - name: JAVA_TOOL_OPTIONS
     value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
