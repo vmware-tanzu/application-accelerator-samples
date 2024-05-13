@@ -17,13 +17,15 @@ accelerator:
     - name: backendService
       inputType: text
       defaultValue: "customer-profile-backend.namespace"
-      label: Hostname of the backend services app. If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
+      label: Hostname of the backend services app
+      description: If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
       required: true
     - name: useSingleSignOn
       dataType: boolean
       inputType: checkbox
       defaultValue: false
-      label: Single Sign-on. If this is checked, 'authority', 'clientId', and 'scope' are required fields, and can easily be changed later.
+      label: Use Single Sign-on
+      description: If this is checked, 'authority', 'clientId', and 'scope' are required fields, and can easily be changed later.
     - name: authority
       label: Authority Url
       description: The url of your single sign-on `AuthServer`. If you are unsure, you can see what the `AuthServers` available in your cluster are by running `kubectl get authserver -A` in your Kubernetes cluster and choose the url for the Authserver you want to connect to.
