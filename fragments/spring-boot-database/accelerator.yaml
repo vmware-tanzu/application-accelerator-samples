@@ -22,7 +22,7 @@ accelerator:
           text: Liquibase (https://docs.liquibase.com/)
     - name: databaseIntegrationTestType
       inputType: select
-      label: Use testcontainers or in-memory database for integration testing
+      label: Type of database integration testing
       description: "In order to test database interaction you can choose between testcontainers (https://www.testcontainers.org/) or in-memory database (H2). Preferable use testcontainers as that is providing the target database technology."
       choices:
         - value: "testcontainers"
