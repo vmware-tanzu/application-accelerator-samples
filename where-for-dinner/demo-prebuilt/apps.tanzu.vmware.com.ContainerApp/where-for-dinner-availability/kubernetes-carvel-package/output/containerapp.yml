@@ -14,13 +14,13 @@ spec:
     types:
     - rabbitmq
   content:
-    buildTimestamp: "2024-05-10T12:34:21Z"
-    gitCommit: f4672daae9afc4fd0bfb068abc089dcf4721db44-dirty
-    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    buildTimestamp: "2024-05-27T13:53:13Z"
+    gitCommit: a00a6fb6a59d02fca35153dde40b982601f47b9a-dirty
+    gitURL: github.com/msrinivasssa/application-accelerator-samples.git
     packageRefName: where-for-dinner-availability.apps.local
-    summary: git:f4672da @ 2024-05-10T12:34:21Z
-    version: 20240510.1234.21994
-  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-availability@sha256:ef987df8998f7b992604b1ccf70520da2d34dd099aac429a72aaee23baed8c17
+    summary: git:a00a6fb @ 2024-05-27T13:53:13Z
+    version: 20240527.1353.13536
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-availability@sha256:66d3eca62dc3ea0a3e86c9a46da50f7df7334e359118ac496719597605df2780
   nonSecretEnv:
   - name: spring_profiles_active
     value: mysql
@@ -61,17 +61,28 @@ spec:
     kind: Service
     name: where-for-dinner-availability
   - for: kubernetes.scale-replicas
-    keyPath: .data.'values\.yml'->[yaml].replicas
+    keyPath: .data['values.yml']->[yaml].replicas
     kind: Secret
     name: where-for-dinner-availability
   - for: kubernetes.scale-resources
-    keyPath: .data.'values\.yml'->[yaml].resources
+    keyPath: .data['values.yml']->[yaml].resources
     kind: Secret
     name: where-for-dinner-availability
   - for: kubernetes.set-secret-env
-    keyPath: .data.'values\.yml'->[yaml].secretEnv
+    keyPath: .data['values.yml']->[yaml].secretEnv
     kind: Secret
     name: where-for-dinner-availability
+  - apiGroup: packaging.carvel.dev
+    for: kubernetes.delete
+    kind: PackageInstall
+    name: where-for-dinner-availability
+  - apiGroup: data.packaging.carvel.dev
+    for: kubernetes.delete
+    kind: Package
+    name: where-for-dinner-availability.apps.local.20240527.1353.13536
+  - for: kubernetes.delete
+    kind: Secret
+    name: where-for-dinner-availability-values
   resources:
     cpu: 300m
     memory: 1Gi

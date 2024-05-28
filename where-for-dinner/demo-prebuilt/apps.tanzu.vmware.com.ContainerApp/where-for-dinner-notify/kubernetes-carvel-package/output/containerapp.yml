@@ -11,13 +11,13 @@ spec:
     types:
     - rabbitmq
   content:
-    buildTimestamp: "2024-05-10T12:34:21Z"
-    gitCommit: f4672daae9afc4fd0bfb068abc089dcf4721db44-dirty
-    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    buildTimestamp: "2024-05-27T13:53:13Z"
+    gitCommit: a00a6fb6a59d02fca35153dde40b982601f47b9a-dirty
+    gitURL: github.com/msrinivasssa/application-accelerator-samples.git
     packageRefName: where-for-dinner-notify.apps.local
-    summary: git:f4672da @ 2024-05-10T12:34:21Z
-    version: 20240510.1234.21994
-  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-notify@sha256:e3685b3f4626682d5a66eaed48e969e890176d3f508c19f3ec965e38ae27280e
+    summary: git:a00a6fb @ 2024-05-27T13:53:13Z
+    version: 20240527.1353.13536
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-notify@sha256:7051b064d72bfe1c0e1a6f51b79f9a123e687ea7e04e544e625a634c98f016cd
   nonSecretEnv:
   - name: JAVA_TOOL_OPTIONS
     value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
@@ -56,17 +56,28 @@ spec:
     kind: Service
     name: where-for-dinner-notify
   - for: kubernetes.scale-replicas
-    keyPath: .data.'values\.yml'->[yaml].replicas
+    keyPath: .data['values.yml']->[yaml].replicas
     kind: Secret
     name: where-for-dinner-notify
   - for: kubernetes.scale-resources
-    keyPath: .data.'values\.yml'->[yaml].resources
+    keyPath: .data['values.yml']->[yaml].resources
     kind: Secret
     name: where-for-dinner-notify
   - for: kubernetes.set-secret-env
-    keyPath: .data.'values\.yml'->[yaml].secretEnv
+    keyPath: .data['values.yml']->[yaml].secretEnv
     kind: Secret
     name: where-for-dinner-notify
+  - apiGroup: packaging.carvel.dev
+    for: kubernetes.delete
+    kind: PackageInstall
+    name: where-for-dinner-notify
+  - apiGroup: data.packaging.carvel.dev
+    for: kubernetes.delete
+    kind: Package
+    name: where-for-dinner-notify.apps.local.20240527.1353.13536
+  - for: kubernetes.delete
+    kind: Secret
+    name: where-for-dinner-notify-values
   resources:
     cpu: 300m
     memory: 1Gi
