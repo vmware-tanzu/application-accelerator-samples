@@ -9,7 +9,7 @@ spec:
   content:
     buildTimestamp: "2024-05-29T16:09:24Z"
     gitCommit: a00a6fb6a59d02fca35153dde40b982601f47b9a
-    gitURL: github.com/msrinivasssa/application-accelerator-samples.git
+    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
     packageRefName: where-for-dinner-crawler.apps.local
     summary: git:a00a6fb @ 2024-05-29T16:09:24Z
     version: 20240529.1609.24381
