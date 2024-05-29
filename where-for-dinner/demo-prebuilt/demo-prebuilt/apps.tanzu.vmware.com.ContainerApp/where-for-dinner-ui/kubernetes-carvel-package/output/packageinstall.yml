@@ -1,0 +1,18 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  creationTimestamp: null
+  name: where-for-dinner-ui
+spec:
+  packageRef:
+    refName: where-for-dinner-ui.apps.local
+    versionSelection:
+      constraints: 20240529.1609.24381
+  serviceAccountName: carvel-package-installer
+  values:
+  - secretRef:
+      name: where-for-dinner-ui-values
+status:
+  conditions: null
+  friendlyDescription: ""
+  observedGeneration: 0
