@@ -1,0 +1,56 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  annotations:
+    containerapp.apps.tanzu.vmware.com/class: kubernetes
+  creationTimestamp: null
+  name: where-for-dinner-ui
+spec:
+  content:
+    buildTimestamp: "2024-05-29T16:09:24Z"
+    gitCommit: a00a6fb6a59d02fca35153dde40b982601f47b9a
+    gitURL: github.com/msrinivasssa/application-accelerator-samples.git
+    packageRefName: where-for-dinner-ui.apps.local
+    summary: git:a00a6fb @ 2024-05-29T16:09:24Z
+    version: 20240529.1609.24381
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-ui@sha256:fce845e4f5c0a71cd4668fc076db06a382343af34918e67edba93a049b787fb3
+  ports:
+  - name: main
+    port: 8080
+  relatedRefs:
+  - for: kubernetes.list-replicas
+    kind: Pod
+    labelSelector: containerapp.apps.tanzu.vmware.com/app-name=where-for-dinner-ui
+  - apiGroup: apps
+    for: kubernetes.service-binding-target
+    kind: Deployment
+    name: where-for-dinner-ui
+  - for: kubernetes.service-target
+    kind: Service
+    name: where-for-dinner-ui
+  - for: kubernetes.scale-replicas
+    keyPath: .data['values.yml']->[yaml].replicas
+    kind: Secret
+    name: where-for-dinner-ui-values
+  - for: kubernetes.scale-resources
+    keyPath: .data['values.yml']->[yaml].resources
+    kind: Secret
+    name: where-for-dinner-ui-values
+  - for: kubernetes.set-secret-env
+    keyPath: .data['values.yml']->[yaml].secretEnv
+    kind: Secret
+    name: where-for-dinner-ui-values
+  - apiGroup: packaging.carvel.dev
+    for: kubernetes.delete
+    kind: PackageInstall
+    name: where-for-dinner-ui
+  - apiGroup: data.packaging.carvel.dev
+    for: kubernetes.delete
+    kind: Package
+    name: where-for-dinner-ui.apps.local.20240529.1609.24381
+  - for: kubernetes.delete
+    kind: Secret
+    name: where-for-dinner-ui-values
+  resources:
+    cpu: 300m
+    memory: 1Gi
