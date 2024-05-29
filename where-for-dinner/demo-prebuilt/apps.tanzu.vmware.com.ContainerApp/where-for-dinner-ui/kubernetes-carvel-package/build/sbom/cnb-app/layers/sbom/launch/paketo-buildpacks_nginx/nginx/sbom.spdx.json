@@ -9,22 +9,22 @@
   "licenseListVersion": "3.16"
  },
  "dataLicense": "CC0-1.0",
- "documentNamespace": "https://paketo.io/packit/dir/layers/paketo-buildpacks_nginx/nginx-a7d26c85-8be8-5ef9-8440-4c659186c9c5",
+ "documentNamespace": "https://paketo.io/packit/dir/layers/paketo-buildpacks_nginx/nginx-bd29671d-4221-519b-8600-86256b70fad2",
  "name": "/layers/paketo-buildpacks_nginx/nginx",
  "packages": [
   {
-   "SPDXID": "SPDXRef-Package--Nginx-Server-221cf52b5258e37a",
+   "SPDXID": "SPDXRef-Package--Nginx-Server-fd39a1a0b8689903",
    "copyrightText": "NOASSERTION",
    "downloadLocation": "NOASSERTION",
    "externalRefs": [
     {
      "referenceCategory": "SECURITY",
-     "referenceLocator": "cpe:2.3:a:nginx:nginx:1.25.4:*:*:*:*:*:*:*",
+     "referenceLocator": "cpe:2.3:a:nginx:nginx:1.25.5:*:*:*:*:*:*:*",
      "referenceType": "cpe23Type"
     },
     {
      "referenceCategory": "PACKAGE_MANAGER",
-     "referenceLocator": "pkg:generic/nginx@1.25.4?checksum=760729901acbaa517996e681ee6ea259032985e37c2768beef80df3a877deed9\u0026download_url=https://nginx.org/download/nginx-1.25.4.tar.gz",
+     "referenceLocator": "pkg:generic/nginx@1.25.5?checksum=2fe2294f8af4144e7e842eaea884182a84ee7970e11046ba98194400902bbec0\u0026download_url=https://nginx.org/download/nginx-1.25.5.tar.gz",
      "referenceType": "purl"
     }
    ],
@@ -37,7 +37,7 @@
     "packageVerificationCodeValue": ""
    },
    "sourceInfo": "acquired package info from the following paths: ",
-   "versionInfo": "1.25.4"
+   "versionInfo": "1.25.5"
   }
  ],
  "relationships": [
