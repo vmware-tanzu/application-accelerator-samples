@@ -1,7 +1,7 @@
 
 plugins {
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version "3.3.0"
+    id("io.spring.dependency-management") version "1.1.5"
     id("java")
 }
 
@@ -19,7 +19,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.webjars:webjars-locator-core")
-    implementation("org.webjars:bootstrap:5.2.0")
+    implementation("org.webjars:bootstrap:5.3.3")
 
     // Observability support
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
