@@ -11,13 +11,13 @@ spec:
     types:
     - rabbitmq
   content:
-    buildTimestamp: "2024-05-10T12:34:21Z"
-    gitCommit: f4672daae9afc4fd0bfb068abc089dcf4721db44-dirty
+    buildTimestamp: "2024-05-29T16:09:24Z"
+    gitCommit: a00a6fb6a59d02fca35153dde40b982601f47b9a
     gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
     packageRefName: where-for-dinner-search-proc.apps.local
-    summary: git:f4672da @ 2024-05-10T12:34:21Z
-    version: 20240510.1234.21994
-  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-search-proc@sha256:d10424c478e5cdac1a364e0e49edc98ecc41e57178d5fa99c717fa247d686936
+    summary: git:a00a6fb @ 2024-05-29T16:09:24Z
+    version: 20240529.1609.24381
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-search-proc@sha256:bf04973aa125268b5243373003cabc69842afdbd2083f30f68a117b9e1f15992
   nonSecretEnv:
   - name: spring_profiles_active
     value: crawler
@@ -58,17 +58,28 @@ spec:
     kind: Service
     name: where-for-dinner-search-proc
   - for: kubernetes.scale-replicas
-    keyPath: .data.'values\.yml'->[yaml].replicas
+    keyPath: .data['values.yml']->[yaml].replicas
     kind: Secret
-    name: where-for-dinner-search-proc
+    name: where-for-dinner-search-proc-values
   - for: kubernetes.scale-resources
-    keyPath: .data.'values\.yml'->[yaml].resources
+    keyPath: .data['values.yml']->[yaml].resources
     kind: Secret
-    name: where-for-dinner-search-proc
+    name: where-for-dinner-search-proc-values
   - for: kubernetes.set-secret-env
-    keyPath: .data.'values\.yml'->[yaml].secretEnv
+    keyPath: .data['values.yml']->[yaml].secretEnv
     kind: Secret
+    name: where-for-dinner-search-proc-values
+  - apiGroup: packaging.carvel.dev
+    for: kubernetes.delete
+    kind: PackageInstall
     name: where-for-dinner-search-proc
+  - apiGroup: data.packaging.carvel.dev
+    for: kubernetes.delete
+    kind: Package
+    name: where-for-dinner-search-proc.apps.local.20240529.1609.24381
+  - for: kubernetes.delete
+    kind: Secret
+    name: where-for-dinner-search-proc-values
   resources:
     cpu: 300m
     memory: 1Gi

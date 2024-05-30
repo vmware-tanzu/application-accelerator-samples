@@ -7,13 +7,13 @@ metadata:
   name: where-for-dinner-crawler
 spec:
   content:
-    buildTimestamp: "2024-05-10T12:34:21Z"
-    gitCommit: f4672daae9afc4fd0bfb068abc089dcf4721db44-dirty
+    buildTimestamp: "2024-05-29T16:09:24Z"
+    gitCommit: a00a6fb6a59d02fca35153dde40b982601f47b9a
     gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
     packageRefName: where-for-dinner-crawler.apps.local
-    summary: git:f4672da @ 2024-05-10T12:34:21Z
-    version: 20240510.1234.21994
-  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-crawler@sha256:85cd45991d2319dac4f81df06f1baf4fad30b779cac6377e548e5a5c41db3752
+    summary: git:a00a6fb @ 2024-05-29T16:09:24Z
+    version: 20240529.1609.24381
+  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-crawler@sha256:9527e30d5884aa7654dda637fe1101debbb89038a46d95a1682e81dd54dab951
   nonSecretEnv:
   - name: JAVA_TOOL_OPTIONS
     value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
@@ -52,17 +52,28 @@ spec:
     kind: Service
     name: where-for-dinner-crawler
   - for: kubernetes.scale-replicas
-    keyPath: .data.'values\.yml'->[yaml].replicas
+    keyPath: .data['values.yml']->[yaml].replicas
     kind: Secret
-    name: where-for-dinner-crawler
+    name: where-for-dinner-crawler-values
   - for: kubernetes.scale-resources
-    keyPath: .data.'values\.yml'->[yaml].resources
+    keyPath: .data['values.yml']->[yaml].resources
     kind: Secret
-    name: where-for-dinner-crawler
+    name: where-for-dinner-crawler-values
   - for: kubernetes.set-secret-env
-    keyPath: .data.'values\.yml'->[yaml].secretEnv
+    keyPath: .data['values.yml']->[yaml].secretEnv
     kind: Secret
+    name: where-for-dinner-crawler-values
+  - apiGroup: packaging.carvel.dev
+    for: kubernetes.delete
+    kind: PackageInstall
     name: where-for-dinner-crawler
+  - apiGroup: data.packaging.carvel.dev
+    for: kubernetes.delete
+    kind: Package
+    name: where-for-dinner-crawler.apps.local.20240529.1609.24381
+  - for: kubernetes.delete
+    kind: Secret
+    name: where-for-dinner-crawler-values
   resources:
     cpu: 300m
     memory: 1Gi

@@ -1,8 +1,0 @@
-apiVersion: v1
-data:
-  values.yml: cmVzb3VyY2VzOgogIGNwdTogMzAwbQogIG1lbW9yeTogMUdpCg==
-kind: Secret
-metadata:
-  creationTimestamp: null
-  name: where-for-dinner-ui-values
-type: Opaque
