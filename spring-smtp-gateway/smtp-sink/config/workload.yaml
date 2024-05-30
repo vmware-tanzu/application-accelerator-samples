@@ -20,7 +20,7 @@ spec:
   build:
     env:
       - name: BP_JVM_VERSION
-        value: "17"   
+        value: "21"   
   source:
     git:
       url: <https URL for your generated project's Git repository>
