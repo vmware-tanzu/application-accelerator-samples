@@ -35,9 +35,11 @@ spec:
       url: <https URL for your generated project's Git repository>
       ref:
         branch: main
+#IF(#vectorStoreType == 'pgvector')
   serviceClaims:
     - name: vector-store
       ref:
         apiVersion: services.apps.tanzu.vmware.com/v1alpha1
         kind: ResourceClaim
         name: vector-store
+#ENDIF
