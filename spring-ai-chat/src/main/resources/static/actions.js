@@ -54,14 +54,6 @@ const submitTypedText = (event) => {
 const initUIEvents = () => {
     let t = document.querySelector('#typedTextSubmit');
     t.addEventListener('click', submitTypedText);
-    let c = document.querySelector('#clearChat');
-    c.addEventListener('click', () => {
-        document.querySelector('#transcript').innerHTML = '';
-        // but also invoke the clear chat endpoint
-        fetch("/chat/clear", {method: "POST"})
-            .then(res => res.json())
-            .then(res => console.log(res));
-    });
     var textarea = document.querySelector('textarea#userInput');
     textarea.addEventListener('keydown', e => {
         if (e.key === "Enter" && !e.shiftKey) {
