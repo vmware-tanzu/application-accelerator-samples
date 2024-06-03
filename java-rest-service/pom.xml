@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
+        <version>3.3.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -19,7 +19,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <springdoc.version>2.1.0</springdoc.version>
+        <springdoc.version>2.5.0</springdoc.version>
     </properties>
 
     <dependencies>
@@ -46,21 +46,75 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
             <version>${springdoc.version}</version>
         </dependency>
 
+        <!-- Database -->
+        <!-- #IF(#databaseType == 'postgres') -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- #ENDIF -->
+        <!-- #IF(#databaseType == 'mysql') -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- #ENDIF -->
+        <!-- #IF(#databaseIntegrationTestType == 'in-memory') -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- #ENDIF -->
+
         <!-- Infrastructure -->
+        <!-- #IF(#databaseMigrationTool == 'flyway') -->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
+        <!-- #ENDIF -->
+        <!-- #IF(#databaseMigrationTool == 'flyway' && #databaseType == 'postgres') -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+        <!-- #ENDIF -->
+        <!-- #IF(#databaseMigrationTool == 'flyway' && #databaseType == 'mysql') -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+        </dependency>
+        <!-- #ENDIF -->
+        <!-- #IF(#databaseMigrationTool == 'liquibase') -->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
+        <!-- #ENDIF -->
+        <!-- #IF(#databaseIntegrationTestType == 'testcontainers' && #databaseType == 'postgres') -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- #ENDIF -->
+        <!-- #IF(#databaseIntegrationTestType == 'testcontainers' && #databaseType == 'mysql') -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- #ENDIF -->
 
         <!-- Observability support -->
         <dependency>

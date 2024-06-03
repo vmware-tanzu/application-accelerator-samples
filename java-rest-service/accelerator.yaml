@@ -122,14 +122,7 @@ engine:
                   with: "'<groupId>' + #groupId + '</groupId>'"
         - include: [ "README.md" ]
           chain:
-            - type: ReplaceText
-              regex:
-                pattern: "--- StartGradle[\\s\\S]+?--- EndGradle"
-                with: "''"
-            - type: ReplaceText
-              regex:
-                pattern: "--- StartMaven\\s|--- EndMaven\\s"
-                with: "''"
+            - type: TextPreprocessor
     # end of the Maven specific part
 
     # Gradle is selected
@@ -146,14 +139,7 @@ engine:
                   with: "'group = \"' + #groupId + '\"'"
         - include: [ "README.md" ]
           chain:
-            - type: ReplaceText
-              regex:
-                pattern: "--- StartMaven[\\s\\S]+?--- EndMaven"
-                with: "''"
-            - type: ReplaceText
-              regex:
-                pattern: "--- StartGradle\\s|--- EndGradle\\s"
-                with: "''"
+            - type: TextPreprocessor
     # end of the Gradle specific part
 
     # OpenAPI Endpoint Auto-registration

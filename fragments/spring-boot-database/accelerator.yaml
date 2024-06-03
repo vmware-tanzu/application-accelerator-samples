@@ -38,40 +38,14 @@ accelerator:
 engine:
   chain:
   - merge:
+    - include: [ "pom.xml", "build.gradle.kts" ]
+      chain:
+        - type: TextPreprocessor
 
     # Flyway is selected
     - condition: "#databaseMigrationTool == 'flyway'"
       merge:
         - include: [ "src/main/resources/db/migration/**" ]
-        - include: [ "pom.xml" ]
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "<dependency>\\s+<groupId>org\\.liquibase</groupId>\\s+<artifactId>liquibase-core</artifactId>\\s+</dependency>\\s+"
-                with: "''"
-            - type: ReplaceText
-              condition: "#databaseType == 'mysql'"
-              regex:
-                pattern: "(?<startOfFlywayDependency><dependency>[\\s]*<groupId>org.flywaydb</groupId>\\s*<artifactId>flyway-core</artifactId>[\\s]*</dependency>)(?<theRestOfPom>[\\s\\S]*)"
-                with: |
-                  '${startOfFlywayDependency}
-                          <dependency>
-                              <groupId>org.flywaydb</groupId>
-                              <artifactId>flyway-mysql</artifactId>
-                          </dependency>${theRestOfPom}'
-        - include: [ "build.gradle.kts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "    implementation(\"org.liquibase:liquibase-core\")"
-                  with: "''"
-            - type: ReplaceText
-              condition: "#databaseType == 'mysql'"
-              regex:
-                pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
-                with: |
-                  '${startOfFlywayDependency}
-                      implementation("org.flywaydb:flyway-mysql")${theRestOfBuild}'
         - include: [ "**/application.properties" ]
           chain:
             - type: OpenRewriteRecipe
@@ -85,18 +59,6 @@ engine:
     - condition: "#databaseMigrationTool == 'liquibase'"
       merge:
         - include: [ "src/main/resources/db/changelog/**" ]
-        - include: [ "pom.xml" ]
-          chain:
-            - type: ReplaceText
-              regex:
-                pattern: "<dependency>\\s+<groupId>org\\.flywaydb</groupId>\\s+<artifactId>flyway-core</artifactId>\\s+</dependency>\\s+"
-                with: "''"
-        - include: [ "build.gradle.kts" ]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: "    implementation(\"org.flywaydb:flyway-core\")"
-                  with: "''"
         - include: [ "**/application.properties" ]
           chain:
             - type: OpenRewriteRecipe

@@ -17,26 +17,4 @@ engine:
       - include: [ "**" ]
         exclude: [ "docker-compose.yaml", "**/workload.yaml", "pom.xml", "build.gradle.kts", "README.md" ]
 
-      - include: [ "pom.xml" ]
-        chain:
-          - type: ReplaceText
-            regex:
-              pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.postgresql</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
-              with: |
-                '${startOfDependencies}
-                        <dependency>
-                            <groupId>org.postgresql</groupId>
-                            <artifactId>postgresql</artifactId>
-                            <scope>runtime</scope>
-                        </dependency>${existingDependencies}'
-
-      - include: [ "build.gradle.kts" ]
-        chain:
-          - type: ReplaceText
-            regex:
-              pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"org.postgresql:postgresql[\\s\\S]+))"
-              with: |
-                '${startOfDependencies}
-                    runtimeOnly("org.postgresql:postgresql")${existingDependencies}'
-
       - include: [ "docker-compose.yaml" ]

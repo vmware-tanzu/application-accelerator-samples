@@ -3,29 +3,6 @@ accelerator:
 
 engine:
   merge:
-
-    - include: [ "pom.xml" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>org.testcontainers</groupId>\\s*<artifactId>postgresql</artifactId>[\\s\\S]+</dependencies>))"
-            with: |
-              '${startOfDependencies}
-                      <dependency>
-                          <groupId>org.testcontainers</groupId>
-                          <artifactId>postgresql</artifactId>
-                          <scope>test</scope>
-                      </dependency>${existingDependencies}'
-
-    - include: [ "build.gradle.kts" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+testImplementation\\s*\\(\"org.testcontainers:postgresql[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  testImplementation("org.testcontainers:postgresql")${existingDependencies}'
-
     - include: [ "**/src/test/resources/application-test.properties" ]
       chain:
         - merge:

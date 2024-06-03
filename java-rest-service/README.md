@@ -28,16 +28,16 @@ In order to further develop this application the following tools needs to be set
 
 In order to compile the production code:
 
---- StartMaven
+#IF(#buildTool == 'maven')
 ```bash
 ./mvnw clean compile
 ```
---- EndMaven
---- StartGradle
+#ENDIF
+#IF(#buildTool == 'gradle')
 ```bash
 ./gradlew clean compileJava
 ```
---- EndGradle
+#ENDIF
 
 ## Database
 
@@ -47,16 +47,16 @@ You will need a local database running, see [DATABASE.md](DATABASE.md#local).
 
 After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
 
---- StartMaven
+#IF(#buildTool == 'maven')
 ```bash
 ./mvnw verify
 ```
---- EndMaven
---- StartGradle
+#ENDIF
+#IF(#buildTool == 'gradle')
 ```bash
 ./gradlew compileTestJava build
 ```
---- EndGradle
+#ENDIF
 
 ## Start and interact
 
@@ -64,16 +64,17 @@ Spring Boot has its own integrated Web Server (Apache Tomcat (https://tomcat.apa
 to start the application a database instance should be running.
 
 Launch application using a `docker-compose` database instance:
---- StartMaven
+
+#IF(#buildTool == 'maven')
 ```bash
 ./mvnw spring-boot:run
 ```
---- EndMaven
---- StartGradle
+#ENDIF
+#IF(#buildTool == 'gradle')
 ```bash
 ./gradlew bootRun
 ```
---- EndGradle
+#ENDIF
 
 ### OpenApi Definition
 

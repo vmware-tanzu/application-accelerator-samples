@@ -3,30 +3,6 @@ accelerator:
 
 engine:
   merge:
-    # Provide dependencies for integration testing and running locally
-    - include: [ "pom.xml" ]
-      chain:
-      - type: ReplaceText
-        regex:
-          pattern: "(?<startOfDependencies><dependencies>)(?<existingDependencies>(?![\\s\\S]+<groupId>com.h2database</groupId>\\s*<artifactId>h2</artifactId>[\\s\\S]+</dependencies>))"
-          with: |
-            '${startOfDependencies}
-                    <dependency>
-                        <groupId>com.h2database</groupId>
-                        <artifactId>h2</artifactId>
-                        <scope>test</scope>
-                    </dependency>${existingDependencies}'
-
-    - include: [ "build.gradle.kts" ]
-      chain:
-        - type: ReplaceText
-          regex:
-            pattern: "(?<startOfDependencies>dependencies \\{)(?<existingDependencies>(?![\\s\\S]+implementation\\s*\\(\"com.h2database:h2[\\s\\S]+))"
-            with: |
-              '${startOfDependencies}
-                  testImplementation("com.h2database:h2")${existingDependencies}'
-    # End of Provide dependencies for integration testing and running locally
-
     # Add Spring Datasource properties for running H2 during tests
     - include: [ "**/src/test/resources/application-test.properties" ]
       chain:
