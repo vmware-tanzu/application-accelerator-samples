@@ -1,7 +1,7 @@
 
 plugins {
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version "3.3.0"
+    id("io.spring.dependency-management") version "1.1.5"
     id("java")
 }
 
@@ -9,7 +9,7 @@ group = "com.vmware.tap.accelerators"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-val springdocVersion = "2.1.0"
+val springdocVersion = "2.5.0"
 
 repositories {
     mavenCentral()

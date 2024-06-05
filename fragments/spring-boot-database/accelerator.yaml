@@ -59,6 +59,16 @@ engine:
                               <groupId>org.flywaydb</groupId>
                               <artifactId>flyway-mysql</artifactId>
                           </dependency>${theRestOfPom}'
+            - type: ReplaceText
+              condition: "#databaseType == 'postgres'"
+              regex:
+                pattern: "(?<startOfFlywayDependency><dependency>[\\s]*<groupId>org.flywaydb</groupId>\\s*<artifactId>flyway-core</artifactId>[\\s]*</dependency>)(?<theRestOfPom>[\\s\\S]*)"
+                with: |
+                  '${startOfFlywayDependency}
+                          <dependency>
+                              <groupId>org.flywaydb</groupId>
+                              <artifactId>flyway-database-postgresql</artifactId>
+                          </dependency>${theRestOfPom}'
         - include: [ "build.gradle.kts" ]
           chain:
             - type: ReplaceText
@@ -72,6 +82,13 @@ engine:
                 with: |
                   '${startOfFlywayDependency}
                       implementation("org.flywaydb:flyway-mysql")${theRestOfBuild}'
+            - type: ReplaceText
+              condition: "#databaseType == 'postgres'"
+              regex:
+                pattern: "(?<startOfFlywayDependency>[\\s\\S]+implementation\\s*\\(\"org.flywaydb:flyway-core[\\s\\S]*?\\))(?<theRestOfBuild>[\\s\\S]*)"
+                with: |
+                  '${startOfFlywayDependency}
+                      implementation("org.flywaydb:flyway-database-postgresql")${theRestOfBuild}'
         - include: [ "**/application.properties" ]
           chain:
             - type: OpenRewriteRecipe
