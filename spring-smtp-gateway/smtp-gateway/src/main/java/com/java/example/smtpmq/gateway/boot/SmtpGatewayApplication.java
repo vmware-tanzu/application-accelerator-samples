@@ -20,7 +20,6 @@ public class SmtpGatewayApplication implements CommandLineRunner
 	public static void main(String[] args) 
 	{
 		new SpringApplicationBuilder(SmtpGatewayApplication.class)
-                .web(WebApplicationType.NONE)
                 .run(args);		
     }	
 	
