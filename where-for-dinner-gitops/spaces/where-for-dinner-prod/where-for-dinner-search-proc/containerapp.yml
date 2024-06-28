@@ -14,7 +14,7 @@ spec:
   content:
     buildTimestamp: "2024-06-28T06:58:25Z"
     gitCommit: 0a0e1e48befd723c0b186a505ab1b81b082c45ff
-    gitURL: github.com/ipillai91/application-accelerator-samples.git
+    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
     packageRefName: where-for-dinner-search-proc.apps.local
     summary: git:0a0e1e4 @ 2024-06-28T06:58:25Z
     version: 20240628.658.25322

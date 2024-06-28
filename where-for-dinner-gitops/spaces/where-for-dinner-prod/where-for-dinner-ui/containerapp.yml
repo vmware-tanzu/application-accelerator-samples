@@ -10,7 +10,7 @@ spec:
   content:
     buildTimestamp: "2024-06-28T07:17:07Z"
     gitCommit: 0a0e1e48befd723c0b186a505ab1b81b082c45ff-dirty
-    gitURL: github.com/ipillai91/application-accelerator-samples.git
+    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
     packageRefName: where-for-dinner-ui.apps.local
     summary: git:0a0e1e4 @ 2024-06-28T07:17:07Z
     version: 20240628.717.7290
