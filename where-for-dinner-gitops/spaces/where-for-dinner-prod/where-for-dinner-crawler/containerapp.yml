@@ -2,18 +2,19 @@ apiVersion: apps.tanzu.vmware.com/v1
 kind: ContainerApp
 metadata:
   annotations:
+    apps.tanzu.vmware.com/promotable: ""
+    apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-crawler
     containerapp.apps.tanzu.vmware.com/class: kubernetes
-  creationTimestamp: null
   name: where-for-dinner-crawler
 spec:
   content:
-    buildTimestamp: "2024-05-29T16:09:24Z"
-    gitCommit: a00a6fb6a59d02fca35153dde40b982601f47b9a
-    gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    buildTimestamp: "2024-06-28T06:58:25Z"
+    gitCommit: 0a0e1e48befd723c0b186a505ab1b81b082c45ff
+    gitURL: github.com/ipillai91/application-accelerator-samples.git
     packageRefName: where-for-dinner-crawler.apps.local
-    summary: git:a00a6fb @ 2024-05-29T16:09:24Z
-    version: 20240529.1609.24381
-  image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-crawler@sha256:9527e30d5884aa7654dda637fe1101debbb89038a46d95a1682e81dd54dab951
+    summary: git:0a0e1e4 @ 2024-06-28T06:58:25Z
+    version: 20240628.658.25322
+  image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:48d6af4bb78cf8934e9092ba5f51907fef1359cc0c60b822634710a25c4a9003
   nonSecretEnv:
   - name: JAVA_TOOL_OPTIONS
     value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
@@ -70,8 +71,12 @@ spec:
   - apiGroup: data.packaging.carvel.dev
     for: kubernetes.delete
     kind: Package
-    name: where-for-dinner-crawler.apps.local.20240529.1609.24381
+    name: where-for-dinner-crawler.apps.local.20240628.658.25322
   - for: kubernetes.delete
+    kind: Secret
+    name: where-for-dinner-crawler-values
+  - for: kubernetes.set-content-hash
+    keyPath: .data['values.yml']->[yaml].contentHash
     kind: Secret
     name: where-for-dinner-crawler-values
   resources:

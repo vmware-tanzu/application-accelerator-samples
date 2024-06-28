@@ -1,11 +1,14 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
+  annotations:
+    apps.tanzu.vmware.com/promotable: ""
+    apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-ui
   creationTimestamp: null
-  name: where-for-dinner-ui.apps.local.20240529.1609.24381
+  name: where-for-dinner-ui.apps.local.20240628.717.7290
 spec:
   refName: where-for-dinner-ui.apps.local
-  releasedAt: "2024-05-29T16:13:35Z"
+  releasedAt: "2024-06-28T07:19:25Z"
   template:
     spec:
       deploy:
@@ -14,7 +17,7 @@ spec:
           - --wait=false
       fetch:
       - imgpkgBundle:
-          image: projects.registry.vmware.com/tanzu_application_platform/where-for-dinner/where-for-dinner-ui@sha256:486933b1ac6175df4fe861fd4e5698fc0915f40770d70e1646081fee96c5b4eb
+          image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:b02c251f65a6b415a64f7d1e7660c380069f912813e5f1ea0c55257af1aa47c4
       template:
       - ytt:
           paths:
@@ -25,4 +28,4 @@ spec:
           - '-'
   valuesSchema:
     openAPIv3: null
-  version: 20240529.1609.24381
+  version: 20240628.717.7290
