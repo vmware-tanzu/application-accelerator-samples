@@ -1,13 +1,16 @@
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
 metadata:
+  annotations:
+    apps.tanzu.vmware.com/promotable: ""
+    apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-notify
   creationTimestamp: null
   name: where-for-dinner-notify
 spec:
   packageRef:
     refName: where-for-dinner-notify.apps.local
     versionSelection:
-      constraints: 20240529.1609.24381
+      constraints: 20240628.658.25322
   serviceAccountName: carvel-package-installer
   values:
   - secretRef:

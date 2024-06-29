@@ -1,13 +1,16 @@
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
 metadata:
+  annotations:
+    apps.tanzu.vmware.com/promotable: ""
+    apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-ui
   creationTimestamp: null
   name: where-for-dinner-ui
 spec:
   packageRef:
     refName: where-for-dinner-ui.apps.local
     versionSelection:
-      constraints: 20240529.1609.24381
+      constraints: 20240628.717.7290
   serviceAccountName: carvel-package-installer
   values:
   - secretRef:

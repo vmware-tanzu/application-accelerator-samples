@@ -3,6 +3,9 @@ data:
   values.yml: cmVzb3VyY2VzOgogIGNwdTogMzAwbQogIG1lbW9yeTogMUdpCg==
 kind: Secret
 metadata:
+  annotations:
+    apps.tanzu.vmware.com/promotable: ""
+    apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-search
   creationTimestamp: null
   name: where-for-dinner-search-values
 type: Opaque
