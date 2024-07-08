@@ -27,10 +27,10 @@ jobs:
         test: ${{ fromJson(needs.list-tests.outputs.testnames) }}
     services:
       accelerator:
-        image: dev.registry.tanzu.vmware.com/app-accelerator/acc-engine:latest
+        image: app-accelerator-docker-dev-local.usw1.packages.broadcom.com/acc-engine:latest
         credentials:
-          username: robot$${{secrets.TANZUNET_ROBOT}}
-          password: ${{secrets.TANZUNET_PASS}}
+          username: ${{secrets.ARTIFACTORY_USER}}
+          password: ${{secrets.ARTIFACTORY_PASS}}
         ports:
           - 8888:8080
     steps:
