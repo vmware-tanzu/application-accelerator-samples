@@ -25,10 +25,10 @@ jobs:
         test: ${{ fromJson(needs.list-tests.outputs.testnames) }}
     services:
       accelerator:
-        image: dev.registry.tanzu.vmware.com/app-accelerator/acc-engine:latest
+        image: ghcr.io/app-accelerator-build/acc-engine:latest
         credentials:
-          username: robot$${{secrets.TANZUNET_ROBOT}}
-          password: ${{secrets.TANZUNET_PASS}}
+          username: ${{secrets.GHCR_USER}}
+          password: ${{secrets.GHCR_TOKEN}}
         ports:
           - 8888:8080
     steps:
