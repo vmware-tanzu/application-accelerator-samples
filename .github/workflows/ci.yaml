@@ -19,20 +19,18 @@ jobs:
   run-test:
     needs: list-tests
     runs-on: ubuntu-latest
-    env:
-      ACC_SERVER_URL: ${{ secrets.ACC_SERVER_URL }}
     strategy:
       fail-fast: false
       matrix:
         test: ${{ fromJson(needs.list-tests.outputs.testnames) }}
-    # services:
-    #   accelerator:
-    #     image: app-accelerator-docker-dev-local.usw1.packages.broadcom.com/acc-engine:latest
-    #     credentials:
-    #       username: ${{secrets.ARTIFACTORY_USER}}
-    #       password: ${{secrets.ARTIFACTORY_PASS}}
-    #     ports:
-    #       - 8888:8080
+    services:
+      accelerator:
+        image: ghcr.io/app-accelerator-build/acc-engine:latest
+        credentials:
+          username: ${{secrets.GHCR_USER}}
+          password: ${{secrets.GHCR_TOKEN}}
+        ports:
+          - 8888:8080
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -47,11 +45,11 @@ jobs:
           node-version: '18'
       - name: Install xpath script
         run: sudo apt-get install -y libxml-xpath-perl
-      # - name: Wait for Engine Container
-      #   uses: ifaxity/wait-on-action@v1
-      #   with:
-      #     resource: http://localhost:8888/actuator
-      #     timeout: 10000
+      - name: Wait for Engine Container
+        uses: ifaxity/wait-on-action@v1
+        with:
+          resource: http://localhost:8888/actuator
+          timeout: 10000
       - name: Generate ${{matrix.test}}
         run: .github/tests/generate.sh ${{matrix.test}}
       - name: Test ${{matrix.test}}
