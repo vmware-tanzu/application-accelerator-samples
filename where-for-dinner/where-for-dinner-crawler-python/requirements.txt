@@ -4,7 +4,7 @@ idna==3.7
 gunicorn==22.0.0
 pygeocodio==1.1.0
 requests==2.32.2
-urllib3==1.26.18
+urllib3==1.26.19
 click==8.1.3
 Flask==2.2.5
 gunicorn==22.0.0
