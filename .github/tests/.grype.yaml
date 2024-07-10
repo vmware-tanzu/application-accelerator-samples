@@ -21,4 +21,5 @@ ignore:
   - vulnerability: GHSA-vmq6-5m68-f53m # We are not using logback receiver which is the component that is vulnerable
   - vulnerability: GHSA-gm62-rw4g-vrc4 # We are not using logback receiver which is the component that is vulnerable
   - vulnerability: GHSA-r4q3-7g4q-x89m # The java-server-side-ui accelerator uses versions of spring and spring-security that are not vulnerable
-  - vulnerability: GHSA-ccgv-vj62-xf9h # The java-server-side-ui accelerator does not use UriComponentsBuilder so is not vulnerable
+  - vulnerability: GHSA-ccgv-vj62-xf9h # The java-server-side-ui accelerator does not use UriComponentsBuilder so is not vulnerable  
+  - vulnerability: GHSA-2p57-rm9w-gvfp # TEMPORARY disable grype scan for GHSA-2p57-rm9w-gvfp/CVE-2024-29415 until we have a fix
