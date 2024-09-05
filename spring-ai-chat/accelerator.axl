@@ -35,6 +35,12 @@ engine {
     }
   }
 
+  {
+    Include({'**'})
+    + InvokeFragment("build-wrapper-maven")
+  }
+  UniquePath(strategy: UseLast)
+
   // Create the provenance file
   Provenance()
 
