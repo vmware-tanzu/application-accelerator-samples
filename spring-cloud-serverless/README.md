@@ -1,47 +1,80 @@
 # spring-cloud-serverless repo
 
-This repo provides a simple serverless Hello web app based on Spring Boot and Spring Cloud Function.
-
-It can be deployed as a standalone web app, as a Tanzu Application Platform workload resource or, as a Kubernetes Deployment and Service.
-
-## The code
-
-> **NOTE**: The project uses Spring Boot 3.2 and is configured for Java 17 or 21.
-
-The project contains the following Function bean definition:
-
-```text
-	@Bean
-	public Function<String, String> hello() {
-		return (in) -> {
-			return "Hello " + in;
-		};
-	}
-```
+This repo provides a simple serverless web app based on Spring Boot and Spring Cloud Function.
 
 This simple serverless app returns the input value, prefixed with "Hello ". This is just a simple example what a Spring Cloud Function app can do. 
 It is defined in `src/main/java/com/example/helloapp/HelloAppApplication.java`
 
-## Deployment
+## Dependencies
+1. Tanzu CLI and the apps plugin v0.2.0 which are provided as part of [Tanzu Platform](https://docs.vmware.com/en/VMware-Tanzu-Platform/index.html). Installation instructions can be found at [ VMware Tanzu Platform Product Documentation - Before you begin](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-deploy-app-to-space.html#before-you-begin-0).
 
-This app can be deployed as a stand-alone web app, as a Tanzu Application Platform (TAP) workload resource or, as a Kubernetes Deployment and Service.
+2. You have access to a space for your project and you have used `tanzu login` to authenticate and configure your current Tanzu context and set your project and space using `tanzu project use` and `tanzu space use` respectively.
 
-### Standalone app with embedded Tomcat server
+## Configuring your app environment
 
-You can build the project using Maven:
+Change to the root directory of your generated app.
+### Initialize the ContainerApp
 
-```bash
-mvn clean package
+```sh
+tanzu app init
+```
+### Configure the JDK version
+
+You need to specify the JDK version to be used for the app:
+
+```sh
+tanzu app config build non-secret-env set BP_JVM_VERSION=17
 ```
 
-To run the app using the embedded Tomcat server you can run this command:
+### Configure HTTP Ingress Routing
 
-```bash
-mvn spring-boot:run
+If want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
+
+
+### Configure an image registry to use for the ContainerApp
+
+```sh
+tanzu build config --containerapp-registry REGISTRY
 ```
 
-You can access the app using `curl`:
+> Where `REGISTRY` is your container image registry location. For example, `my-registry.io/my-corp-apps/{name}` or `docker.io/<your-docker-id>/{name}` if you use Docker Hub. Note that use of literal `{name}` is required and it will be replaced with your apps name when you build.
 
-```bash
-curl -w'\n' -H 'Content-Type: text/plain' localhost:8080 -d "Fun"
+## Deploying and building in one step
+
+Change to the root directory of your generated app.
+
+Run this command to build and deploy the app:
+
+```sh
+tanzu deploy
+```
+
+## Using separate build and deploy commands
+
+Change to the root directory of your generated app.
+
+### Building with local source
+
+You can build using source from a locally cloned Git repository or from source on your local disk.
+
+To build the app you can run this command:
+
+```sh
+tanzu build --output-dir ./build
+```
+
+### Deploying the sample for TP for Kubernetes
+
+Start the app deployment by running:
+
+```sh
+tanzu deploy --from-build ./build
+```
+
+### Scale the number of instances
+
+Run this command to scale to 1 instance
+
+```sh
+tanzu app scale hello-fun --instances=1
 ```

@@ -1,52 +1,78 @@
 # tanzu-java-web-app
 
-This is a sample of a Java Spring app that works with Tilt and the Tanzu Application Platform.
+This is a sample of a Java Spring app for the Tanzu Platform for Kubernetes.
 
 ## Dependencies
-1. [kubectl CLI](https://kubernetes.io/docs/tasks/tools/)
-2. [Tilt version >= v0.23.2](https://docs.tilt.dev/install.html)
-3. Tanzu CLI and the apps plugin v0.2.0 which are provided as part of [Tanzu Application Platform](https://network.tanzu.vmware.com/products/tanzu-application-platform)
-4. A cluster with Tanzu Application Platform, and the "Default Supply Chain", plus its dependencies. This supply chains is part of [Tanzu Application Platform](https://network.tanzu.vmware.com/products/tanzu-application-platform).
+1. Tanzu CLI and the apps plugin v0.2.0 which are provided as part of [Tanzu Platform](https://docs.vmware.com/en/VMware-Tanzu-Platform/index.html). Installation instructions can be found at [ VMware Tanzu Platform Product Documentation - Before you begin](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-deploy-app-to-space.html#before-you-begin-0).
 
-## Application Live View
-The workload is set up by default to autoconfigure the actuators. This results in that the Spring Actuators are available at TCP port 8081 and will be used by Application Live View.
-Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
-annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
+2. You have access to a space for your project and you have used `tanzu login` to authenticate and configure your current Tanzu context and set your project and space using `tanzu project use` and `tanzu space use` respectively.
 
-## Building with local source
+## Configuring your app environment
 
-You can build using source from either a Git repository or from source on your local disk.
-The instructions below use the latter option, where you build using the source from your local disk.
-This is specified by adding a `--local-path` option providing the path for the source, and a `--source-image` option providing the OCI repository (e.g. `registry.io/user/tanzu-java-web-app-source`) to use for publishing the local source code.
+Change to the root directory of your generated app.
 
-You can set this as an environment variable before running any of the commands below using: 
+### Initialize the ContainerApp
 
 ```sh
-export SOURCE_IMAGE=registry.io/user/tanzu-java-web-app-source
+tanzu app init
+```
+### Configure the JDK version
+
+You need to specify the JDK version to be used for the app:
+
+```sh
+tanzu app config build non-secret-env set BP_JVM_VERSION=17
 ```
 
-## Deploying the sample for TAP
+### Configure HTTP Ingress Routing
+
+If want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
+
+
+### Configure an image registry to use for the ContainerApp
+
+```sh
+tanzu build config --containerapp-registry REGISTRY
+```
+
+> Where `REGISTRY` is your container image registry location. For example, `my-registry.io/my-corp-apps/{name}` or `docker.io/<your-docker-id>/{name}` if you use Docker Hub. Note that use of literal `{name}` is required and it will be replaced with your apps name when you build.
+
+## Deploying and building in one step
+
+Change to the root directory of your generated app.
+
+Run this command to build and deploy the app:
+
+```sh
+tanzu deploy
+```
+
+## Using separate build and deploy commands
+
+Change to the root directory of your generated app.
+
+### Building with local source
+
+You can build using source from a locally cloned Git repository or from source on your local disk.
+
+To build the app you can run this command:
+
+```sh
+tanzu build --output-dir ./build
+```
+
+### Deploying the sample for TP for Kubernetes
 
 Start the app deployment by running:
 
 ```sh
-tanzu apps workload create tanzu-java-web-app \
-  --file ./config/workload.yaml \
-  --local-path . \
-  --source-image "${SOURCE_IMAGE}"
+tanzu deploy --from-build ./build
 ```
 
-## Running the sample on TAP using Tilt for live update
+### Scale the number of instances
 
-You can use the IDE plugins for VSCode or IntelliJ IDEA to enable live update. You can also use the command line following these steps.
+Run this command to scale to 1 instance
 
-1. Set the environment variable mentioned above specifying the repository to use for the source image. This is where the local source code will be written. As an example, use `export SOURCE_IMAGE=registry.io/user/tanzu-java-web-app-source`.
-2. Start `Tilt` by running `tilt up`
-    > If you see an "Update error" message like the one below, then just follow the instructions and allow that context:
-        ```
-        Stop! tap-beta2 might be production.
-        If you're sure you want to deploy there, add:
-            allow_k8s_contexts('tap-beta2')
-        to your Tiltfile. Otherwise, switch k8s contexts and restart Tilt.
-        ```
-3. You can hit the spacebar to open the Tilt UI in a browser. 
+```sh
+tanzu app scale tanzu-java-web-app --instances=1
+```

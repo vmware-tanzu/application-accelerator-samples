@@ -11,28 +11,16 @@ accelerator:
 
   # options for the UI
   options:
-  - name: javaVersion
-    inputType: select
-    label: Java version to use
-    choices:
-    - value: "17"
-      text: Java 17
-    - value: "21"
-      text: Java 21
-    defaultValue: "17"
   - name: deploymentType
     inputType: select
     label: Deployment type
     choices:
-    - value: workload
-      text: TAP workload
     - value: k8s-simple
       text: Kubernetes deployment and service
     - value: none
       text: Skip Kubernetes deployment
-    defaultValue: workload
+    defaultValue: none
     required: true
   imports:
   - name: java-version
-  - name: tap-workload
   - name: build-wrapper-maven

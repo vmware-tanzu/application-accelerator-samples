@@ -1,0 +1,17 @@
+engine {
+  applyTo("README.md") {
+    ReplaceText(regex: {pattern: "set BP_JVM_VERSION=.*", with: 'set BP_JVM_VERSION=' + #javaVersion})
+  }
+
+  applyTo("pom.xml") {
+    ReplaceText(regex: {pattern: "<java.version>.*<", with: '<java.version>' + #javaVersion + '<'})
+  }
+
+  applyTo("build.gradle") {
+    ReplaceText(regex: {pattern: "sourceCompatibility = .*", with: 'sourceCompatibility = ''' + #javaVersion + ''''})
+  }
+
+  applyTo("build.gradle.kts") {
+    ReplaceText(regex: {pattern: "(?<unmodified>JavaVersion\.VERSION_)(\d+)", with: '${unmodified}' + #javaVersion})
+  }
+}
