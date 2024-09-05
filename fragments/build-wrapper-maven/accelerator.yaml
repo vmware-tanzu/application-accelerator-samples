@@ -7,8 +7,3 @@ accelerator:
       label: Include Build Tool wrapper support
       dataType: boolean
       defaultValue: true
-
-engine:
-  merge:
-    - condition: "#includeBuildToolWrapper"
-      include: [ "mvnw", "mvnw.cmd", ".mvn/**" ]
