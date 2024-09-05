@@ -85,11 +85,13 @@ tanzu app config build non-secret-env set BP_JVM_VERSION=17
 
 The application requires an AI API key to be provided.
 
-You can set the secret environment variable for the app using this command:
+You can set an environment variable for the app using this command:
 
 ```sh
-tanzu app config build secret-env set AI_API_KEY=<your-api-key>
+tanzu app config non-secret-env set AI_API_KEY=<your-api-key>
 ```
+
+> TODO: This needs to be set via a secret
 
 ### Configure HTTP Ingress Routing
 
