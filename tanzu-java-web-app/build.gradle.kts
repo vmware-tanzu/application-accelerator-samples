@@ -1,8 +1,8 @@
 plugins {
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
-    id("org.graalvm.buildtools.native") version "0.9.28"
-    id("java")
+  id("org.springframework.boot") version "3.3.3"
+  id("io.spring.dependency-management") version "1.1.6"
+  id("org.graalvm.buildtools.native") version "0.10.2"
+  id("java")
 }
 
 group = "com.vmware.tap.accelerators"
