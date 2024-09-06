@@ -1,5 +1,6 @@
 engine {
   applyTo("README.md") {
+    UniquePath(strategy: FavorForeign)
     ReplaceText(regex: {pattern: "set BP_JVM_VERSION=.*", with: 'set BP_JVM_VERSION=' + #javaVersion})
   }
 
