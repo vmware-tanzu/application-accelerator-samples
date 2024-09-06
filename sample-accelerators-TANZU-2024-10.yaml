@@ -70,14 +70,14 @@ spec:
   - tanzu
   git:
     ref:
-      branch: main
+      branch: tp-for-k8s-samples
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: spring-cloud-serverless
 ---
 apiVersion: accelerator.tanzu.vmware.com/v2
 kind: Accelerator
 metadata:
-  name: branch: tp-for-k8s-samples-chat
+  name: spring-ai-chat
 spec:
   displayName: Tanzu Spring AI RAG App
   description: A Spring Boot web application using Spring AI to offer an interactive chat experience utilizing RAG
@@ -91,6 +91,6 @@ spec:
     - tanzu
   git:
     ref:
-      branch: main
+      branch: tp-for-k8s-samples
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
-    subPath: branch: tp-for-k8s-samples-chat
+    subPath: spring-ai-chat
