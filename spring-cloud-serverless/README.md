@@ -1,4 +1,4 @@
-# spring-cloud-serverless repo
+# hello-fun
 
 This repo provides a simple serverless web app based on Spring Boot and Spring Cloud Function.
 
@@ -60,7 +60,7 @@ You can build using source from a locally cloned Git repository or from source o
 To build the app you can run this command:
 
 ```sh
-tanzu build --output-dir ./build
+tanzu build --output-dir ./local
 ```
 
 ### Deploying the sample for TP for Kubernetes
@@ -68,7 +68,7 @@ tanzu build --output-dir ./build
 Start the app deployment by running:
 
 ```sh
-tanzu deploy --from-build ./build
+tanzu deploy --from-build ./local
 ```
 
 ### Scale the number of instances

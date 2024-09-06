@@ -17,6 +17,11 @@ engine {
     + InvokeFragment("build-wrapper-maven")
   }
 
+  // Update the artifact name as needed
+  applyTo("README.md") {
+    ReplaceText({{text: "hello-fun", with: #artifactId.toLowerCase()}})
+  }
+
   {
     Include({"**"})
     // Update the java version

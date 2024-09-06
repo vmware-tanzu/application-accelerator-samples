@@ -35,6 +35,11 @@ engine {
     }
   }
 
+  // Update the artifact name as needed
+  applyTo("README.md") {
+    ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
+  }
+
   {
     Include({'**'})
     + InvokeFragment("build-wrapper-maven")

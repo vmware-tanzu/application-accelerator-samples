@@ -81,18 +81,6 @@ You need to specify the JDK version to be used for the app:
 tanzu app config build non-secret-env set BP_JVM_VERSION=17
 ```
 
-### Configure the AI API key
-
-The application requires an AI API key to be provided.
-
-You can set an environment variable for the app using this command:
-
-```sh
-tanzu app config non-secret-env set AI_API_KEY=<your-api-key>
-```
-
-> TODO: This needs to be set via a secret
-
 ### Configure HTTP Ingress Routing
 
 If want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
@@ -127,7 +115,7 @@ You can build using source from a locally cloned Git repository or from source o
 To build the app you can run this command:
 
 ```sh
-tanzu build --output-dir ./build
+tanzu build --output-dir ./local
 ```
 
 ### Deploying the sample for TP for Kubernetes
@@ -135,7 +123,17 @@ tanzu build --output-dir ./build
 Start the app deployment by running:
 
 ```sh
-tanzu deploy --from-build ./build
+tanzu deploy --from-build ./local
+```
+
+### Configure the AI API key
+
+The application requires an AI API key to be provided.
+
+You can set an environment variable for the app using this command:
+
+```sh
+tanzu app env set spring-ai-chat AI_API_KEY=<your-api-key>
 ```
 
 ### Scale the number of instances
@@ -143,7 +141,7 @@ tanzu deploy --from-build ./build
 Run this command to scale to 1 instance
 
 ```sh
-tanzu app scale hello-fun --instances=1
+tanzu app scale spring-ai-chat --instances=1
 ```
 
 ### PostgreSQL/pgvector
