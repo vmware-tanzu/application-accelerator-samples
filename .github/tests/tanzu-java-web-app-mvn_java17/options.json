@@ -1,0 +1,6 @@
+{
+  "projectName": "tanzu-java-web-app",
+  "buildTool": "maven",
+  "javaVersion": "17",
+  "includeBuildToolWrapper": true
+}

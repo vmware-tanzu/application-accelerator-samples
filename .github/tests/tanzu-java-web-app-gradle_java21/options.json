@@ -1,0 +1,6 @@
+{
+  "projectName": "tanzu-java-web-app",
+  "buildTool": "gradle",
+  "javaVersion": "21",
+  "includeBuildToolWrapper": true
+}
