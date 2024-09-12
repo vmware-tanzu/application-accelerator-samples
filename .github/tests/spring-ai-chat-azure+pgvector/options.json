@@ -1,0 +1,7 @@
+{
+  "projectName": "pgVectorAzureOpenAI",
+  "aiService": "azureOpenAI",
+  "openaiModel": "gpt-4",
+  "azureAIEndpoint": "https://azureendpoint",
+  "vectorStoreType": "pgvector"
+}

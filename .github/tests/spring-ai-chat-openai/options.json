@@ -1,0 +1,5 @@
+{
+  "projectName": "explicitOpenAi",
+  "aiService": "openAI",
+  "openaiModel": "gpt-4"
+}
