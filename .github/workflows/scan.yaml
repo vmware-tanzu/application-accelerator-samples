@@ -53,7 +53,7 @@ jobs:
       - name: Download Grype
         uses: anchore/scan-action/download-grype@v3
         with:
-          grype-version: v0.72.0
+          grype-version: v0.80.1
         id: grype
       - name: Generate ${{matrix.test}}
         run: .github/tests/generate.sh ${{matrix.test}}
