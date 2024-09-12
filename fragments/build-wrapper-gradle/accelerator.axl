@@ -1,0 +1,7 @@
+engine {
+
+  if (#includeBuildToolWrapper) {
+    Include({"gradlew*", "gradle/**"})
+  }
+
+}
