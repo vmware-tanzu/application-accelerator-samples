@@ -1,9 +1,0 @@
-apiVersion: backstage.io/v1alpha1
-kind: Resource
-metadata:
-  name: postal-code-db
-  description: Postal code application database
-spec:
-  type: database
-  owner: postal-code-team
-  system: postal-code
