@@ -1,0 +1,26 @@
+accelerator:
+  displayName: Add live update support
+
+  options:
+    - name: liveUpdateIDESupport
+      inputType: checkbox
+      label: Include TAP IDE Support for Java Workloads
+      dataType: boolean
+      defaultValue: true
+
+engine:
+  merge:
+    - condition: "#liveUpdateIDESupport"
+      include: ["Tiltfile"]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: my-project
+              with: "#artifactId"
+    - condition: "#liveUpdateIDESupport"
+      include: ["DEPLOYING.md"]
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: my-project
+              with: "#artifactId"
