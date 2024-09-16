@@ -1,5 +1,7 @@
 # application-accelerator-samples
 
+> **NOTE:** the Application Accelerator samples for Tanzu Application Platform are available in the [tap-og](https://github.com/vmware-tanzu/application-accelerator-samples/tree/tap-og) branch.
+
 ## Overview
 
 Application Accelerators for VMware Tanzu helps you bootstrap developing your applications and deploying them in a discoverable and repeatable way.
