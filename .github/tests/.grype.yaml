@@ -1,0 +1,3 @@
+ignore:
+  - vulnerability: CVE-2016-1000027 # Serialization of untrusted data is not an intended use case, will not fix
+  - vulnerability: GHSA-cx7f-g6mp-7hqm # The Spring Boot samples uses Tomcat and are not vulnerable
