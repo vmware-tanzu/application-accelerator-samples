@@ -1,0 +1,52 @@
+engine {
+
+  TextPreprocessor()
+
+  if (#vectorStoreType != 'simple') {
+    Exclude({"**/SimpleVectorStoreConfig.java"}) 
+  }
+
+  applyTo("pom.xml") {
+    ReplaceText({
+      {text: "<groupId>com.vmware.tap.accelerators</groupId>", with: '<groupId>' + #groupId + '</groupId>'},
+      {text: "<artifactId>ai-chat</artifactId>", with: '<artifactId>' + #artifactId + '</artifactId>'}
+    })
+    if (#aiService == 'azureOpenAI') {
+      ReplaceText({{text: "spring-ai-openai-spring-boot-starter", with: 'spring-ai-azure-openai-spring-boot-starter'}})
+    }
+  }
+
+  applyTo("src/main/resources/application.properties") {
+    if (#aiService == 'openAI') {
+      ReplaceText({{text: "spring.ai.openai.model=gpt-3.5-turbo", with: 'spring.ai.openai.model=' + #openaiModel}})
+    }
+    if (#aiService == 'azureOpenAI') {
+      ReplaceText({
+        {text: "spring.ai.azure.openai.endpoint=TBD", with: 'spring.ai.azure.openai.endpoint=' + #azureAIEndpoint},
+        {text: "spring.ai.openai.model=gpt-3.5-turbo", with: 'spring.ai.azure.openai.model=' + #openaiModel}
+      })
+    }
+  }
+
+  let packageDirectory = #packageName.replace(".", "/") in {
+    applyTo("**/*.java") {
+      ReplaceText({{text: "com.vmware.tap.accelerators.aichat", with: #packageName}})
+      RewritePath(regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)aichat(?<untouchedpath>.*)" , rewriteTo: 'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #untouchedpath)
+    }
+  }
+
+  // Update the artifact name as needed
+  applyTo("README.md") {
+    ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
+  }
+
+  {
+    Include({'**'})
+    + InvokeFragment("build-wrapper-maven")
+  }
+  UniquePath(strategy: UseLast)
+
+  // Create the provenance file
+  Provenance()
+
+}
