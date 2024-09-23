@@ -118,7 +118,7 @@ To build the app you can run this command:
 tanzu build --output-dir ./local
 ```
 
-### Deploying the sample for TP for Kubernetes
+### Deploying the sample on Tanzu Platform for Kubernetes
 
 Start the app deployment by running:
 
@@ -147,86 +147,9 @@ tanzu app scale spring-ai-chat --instances=1
 ### PostgreSQL/pgvector
 
 If you chose PostgreSQL/pgvector as your vector store, you'll need to create
-a PostgresSQL database instance before deploying the application.
+a PostgresSQL database instance before deploying the application. The PostgreSQL database needs to have the "vector" extension available.
 
-#### VMware Postgres Operator
-
-> NOTE: This step would typically be performed by a platform or service operator.
-
-You can use the VMware Postgres Operator with this app, just follow the the installation instructions from the [VMware Postgres Operator documentation](https://docs.vmware.com/en/VMware-SQL-with-Postgres-for-Kubernetes/2.3/vmware-postgres-k8s/GUID-install-operator.html).
-
-#### Creating and configuring the Postgres database
-
-If you installed the VMware Postgres Operator then you can simply create a `postgres.yaml` file with the following contents:
-
-```yaml
-apiVersion: sql.tanzu.vmware.com/v1
-kind: Postgres
-metadata:
-  name: spring-ai-vector
-spec:
-  storageSize: 800M
-  highAvailability:
-    enabled: false
-  imagePullSecret:
-    name: registries-credentials
-```
-
-Once the `postgres.yaml` file is created you can apply it into your workload namespace using:
-
-```sh
-kubectl apply -n <workload-namespace> -f postgres.yaml
-```
-> NOTE: replace `<workload-namespace>` with the name of the namespace for your apps
-
-Wait for the PostgreSQL instance to start up (status should go from `Created` to `Unavailable` to `Running`):
-
-```sh
-kubectl get postgres -w
-```
-
-Once the database is runnig, then run the following series of commands to add the `vector` extension:
-
-1. Exec into the postgres pg-container pod container:
-    ```sh
-    kubectl exec -it -n <workload-namespace> -c pg-container spring-ai-vector-0 -- /bin/bash
-    ```
-1. Start `psql`:
-    ```sh
-    psql
-    ```
-1. Connect to the database:
-    ```sql
-    \connect spring-ai-vector
-    ```
-1. Check that the `vector` extensions is included in the available extensions:
-    ```sql
-    SELECT * FROM pg_available_extensions WHERE name='vector';
-    ```
-    If the "vector" extension isn't available, you won't be able to use this PostgreSQL
-    database with the Spring AI Chat application.
-1. Install the `vector` extension:
-    ```sql
-    CREATE EXTENSION IF NOT EXISTS "vector";
-    ```
-1. Verify that the extension has been created:
-    ```sql
-    SELECT * FROM pg_extension;
-    ```
-1. Exit `psql`:
-    ```sql
-    \q
-    ```
-1. Exit from the postgres pg-container:
-    ```sh
-    exit
-    ```
-
-#### Create the service binding
-
-With the database configured we can finally bind it to our app.
-
-Instructions TBD
+Instructions TBD.
 
 # How to proceed from here?
 
