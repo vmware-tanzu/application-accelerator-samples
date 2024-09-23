@@ -16,10 +16,6 @@ assertPomDoesntHaveDependency ./pom.xml 'org.springframework.ai' 'spring-ai-pgve
 assertPomDoesntHaveDependency ./pom.xml 'org.springframework.boot' 'spring-boot-starter-jdbc'
 assertPomDoesntHaveDependency ./pom.xml 'org.postgresql' 'postgresql'
 
-assertFileExists ./config/workload.yaml
-assertFileDoesntContain ./config/workload.yaml 'serviceClaims'
-assertFileDoesntContain ./config/workload.yaml 'name: vector-store'
-
 assertFileExists ./src/main/java/com/example/aichat/SimpleVectorStoreConfig.java
 
 popd

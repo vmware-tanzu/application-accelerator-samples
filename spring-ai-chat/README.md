@@ -60,179 +60,96 @@ other.
 
 # Deployment
 
-## Tanzu Application Platform (TAP)
-Using the `config/workload.yaml` it is possible to build, test and deploy this application onto a
-Kubernetes cluster that is provisioned with Tanzu Application Platform (https://tanzu.vmware.com/application-platform).
+## Dependencies
+1. Tanzu CLI and the apps plugin v0.2.0 which are provided as part of [Tanzu Platform](https://docs.vmware.com/en/VMware-Tanzu-Platform/index.html). Installation instructions can be found at [ VMware Tanzu Platform Product Documentation - Before you begin](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-deploy-app-to-space.html#before-you-begin-0).
 
-> The workload is set up by default to auto configure the actuators. This results in that the Spring Actuators are available at TCP port 8081 and will be used by Application Live View.
-> Application Live View allows you see all health metrics in the TAP GUI. If you would like to have the Actuators available at TCP port 8080 you can set the
-> annotation `apps.tanzu.vmware.com/auto-configure-actuators` to `false`.
+2. You have access to a space for your project and you have used `tanzu login` to authenticate and configure your current Tanzu context and set your project and space using `tanzu project use` and `tanzu space use` respectively.
 
-### Create a secret for the AI API key
+## Configuring your app environment
 
-The application requires an AI API key to be provided in a Secret resource named `ai-api`.
-You can create the Secret using this command:
+Change to the root directory of your generated app.
+### Initialize the ContainerApp
 
 ```sh
-kubectl create secret generic ai-api --from-literal=api-key='<your-api-key>'
+tanzu app init
+```
+### Configure the JDK version
+
+You need to specify the JDK version to be used for the app:
+
+```sh
+tanzu app config build non-secret-env set BP_JVM_VERSION=17
+```
+
+### Configure HTTP Ingress Routing
+
+If want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
+
+
+### Configure an image registry to use for the ContainerApp
+
+```sh
+tanzu build config --containerapp-registry REGISTRY
+```
+
+> Where `REGISTRY` is your container image registry location. For example, `my-registry.io/my-corp-apps/{name}` or `docker.io/<your-docker-id>/{name}` if you use Docker Hub. Note that use of literal `{name}` is required and it will be replaced with your apps name when you build.
+
+## Deploying and building in one step
+
+Change to the root directory of your generated app.
+
+Run this command to build and deploy the app:
+
+```sh
+tanzu deploy
+```
+
+## Using separate build and deploy commands
+
+Change to the root directory of your generated app.
+
+### Building with local source
+
+You can build using source from a locally cloned Git repository or from source on your local disk.
+
+To build the app you can run this command:
+
+```sh
+tanzu build --output-dir ./local
+```
+
+### Deploying the sample on Tanzu Platform for Kubernetes
+
+Start the app deployment by running:
+
+```sh
+tanzu deploy --from-build ./local
+```
+
+### Configure the AI API key
+
+The application requires an AI API key to be provided.
+
+You can set an environment variable for the app using this command:
+
+```sh
+tanzu app env set spring-ai-chat AI_API_KEY=<your-api-key>
+```
+
+### Scale the number of instances
+
+Run this command to scale to 1 instance
+
+```sh
+tanzu app scale spring-ai-chat --instances=1
 ```
 
 ### PostgreSQL/pgvector
 
 If you chose PostgreSQL/pgvector as your vector store, you'll need to create
-a PostgresSQL database instance before deploying the application.
+a PostgresSQL database instance before deploying the application. The PostgreSQL database needs to have the "vector" extension available.
 
-#### VMware Postgres Operator
-
-> NOTE: This step would typically be performed by a platform or service operator.
-
-You can use the VMware Postgres Operator with this app, just follow the the installation instructions from the [VMware Postgres Operator documentation](https://docs.vmware.com/en/VMware-SQL-with-Postgres-for-Kubernetes/2.3/vmware-postgres-k8s/GUID-install-operator.html).
-
-Here is a cheat-sheet for installing in an existing TAP cluster that we have used for testing:
-
-1. If you relocated your TAP installation packages then you also need to relocate the VMware Postgres Operator packages to the same registry following the docs to [Relocate Images to a Private Registry](https://docs.vmware.com/en/VMware-SQL-with-Postgres-for-Kubernetes/2.3/vmware-postgres-k8s/GUID-install-operator.html#relocate-images-to-a-private-registry).
-1. Create a `data-services` namespace:
-    ```sh
-    kubectl create namespace data-services
-    ```
-1. Create an image-pull secret for this namespace (the credentials from your TAP install will be used to populate this secret)
-    ```sh
-    cat <<EOF | kubectl create -f -
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      annotations:
-        secretgen.carvel.dev/image-pull-secret: ""
-      name: registries-credentials
-      namespace: data-services
-    type: kubernetes.io/dockerconfigjson
-    data:
-      .dockerconfigjson: e30K
-    EOF
-    ```
-    - If you want to use a different set of credentials for TanzuNet, then you could use this command instead:
-        ```sh
-        tanzu secret registry add registries-credentials \
-          --username $TANZUNET_USERNAME \
-          --password $TANZUNET_PASSWORD \
-          --server registry.tanzu.vmware.com \
-          --namespace data-services \
-          --export-to-all-namespaces \
-          --yes
-        ```
-1. Install the package repository using this command (adjust the registry part of the image if you relocated the image):
-    ```sh
-    tanzu package repository add tanzu-data-services-repository \
-      --url registry.tanzu.vmware.com/packages-for-vmware-tanzu-data-services/tds-packages:1.13.0 \
-      --namespace data-services
-    ```
-1. Finally install the VMware Postgres Operator package:
-    ```sh
-    tanzu package install postgres \
-      --package postgres-operator.sql.tanzu.vmware.com \
-      --version 2.3.0 \
-      --namespace data-services
-    ```
-
-#### Creating and configuring the Postgres database
-
-If you installed the VMware Postgres Operator then you can simply create a `postgres.yaml` file with the following contents:
-
-```yaml
-apiVersion: sql.tanzu.vmware.com/v1
-kind: Postgres
-metadata:
-  name: spring-ai-vector
-spec:
-  storageSize: 800M
-  highAvailability:
-    enabled: false
-  imagePullSecret:
-    name: registries-credentials
-```
-
-Once the `postgres.yaml` file is created you can apply it into your workload namespace using:
-
-```sh
-kubectl apply -n <workload-namespace> -f postgres.yaml
-```
-> NOTE: replace `<workload-namespace>` with the name of the namespace for your apps
-
-Wait for the PostgreSQL instance to start up (status should go from `Created` to `Unavailable` to `Running`):
-
-```sh
-kubectl get postgres -w
-```
-
-Once the databse is runnig, then run the following series of commands to add the `vector` extension:
-
-1. Exec into the postgres pg-container pod container:
-    ```sh
-    kubectl exec -it -n <workload-namespace> -c pg-container spring-ai-vector-0 -- /bin/bash
-    ```
-1. Start `psql`:
-    ```sh
-    psql
-    ```
-1. Connect to the database:
-    ```sql
-    \connect spring-ai-vector
-    ```
-1. Check that the `vector` extensions is included in the available extensions:
-    ```sql
-    SELECT * FROM pg_available_extensions WHERE name='vector';
-    ```
-    If the "vector" extension isn't available, you won't be able to use this PostgreSQL
-    database with the Spring AI Chat application.
-1. Install the `vector` extension:
-    ```sql
-    CREATE EXTENSION IF NOT EXISTS "vector";
-    ```
-1. Verify that the extension has been created:
-    ```sql
-    SELECT * FROM pg_extension;
-    ```
-1. Exit `psql`:
-    ```sql
-    \q
-    ```
-1. Exit from the postgres pg-container:
-    ```sh
-    exit
-    ```
-
-#### Create the resource claim
-
-With the database configured we can finally create a resource claim to the database with the name "vector-store"
-to match what is already specified in the `workload.yaml`:
-
-```sh
-tanzu services resource-claims create vector-store \
-  --resource-api-version sql.tanzu.vmware.com/v1 \
-  --resource-kind Postgres \
-  --resource-namespace <workload-namespace> \
-  --resource-name spring-ai-vector
-```
-> NOTE: replace `<workload-namespace>` with the name of the namespace for your apps
-
-### Deploy app using Tanzu CLI
-
-Using the Tanzu CLI one could apply the workload using the local sources:
-
-```bash
-tanzu apps workload apply \
-  --file config/workload.yaml \
-  --namespace -n <workload-namespace> \
-  --local-path . \
-  --yes \
-  --tail
-```
-> NOTE: replace `<workload-namespace>` with the name of the namespace for your apps
-
-### Visual Studio Code Tanzu Plugin
-When developing locally but would like to deploy the local code to the cluster, the Tanzu Plugin could help.
-By using `Tanzu: Apply` on the `workload.yaml` it will create the Workload resource with the local source (pushed to an image registry) as
-starting point.
+Instructions TBD.
 
 # How to proceed from here?
 
