@@ -4,9 +4,8 @@
 
 The Where for Dinner application can technically be deployed on almost any Cloud Native Buildpack enabled platform.  Below are detailed deployment instructions for various platforms:
 
-* [Tanzu Application Platform](doc/TAPDeployment.md)
-* [Tanzu Application Services](doc/TASDeployment.md)
-* Azure Spring Apps Enterprise (TBD)
+* Tanzu Platform for Kubernetes (TBD)
+* Tanzu Platform for Cloud Foundry (TBD)
 
 ## Description
 The Where for Dinner dining search solution is a multi micro-service application that implements a relatively contemporary architecture comprised of the following technologies:
