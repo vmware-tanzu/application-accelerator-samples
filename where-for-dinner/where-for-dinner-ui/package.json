@@ -52,6 +52,7 @@
     "resolve-url-loader": "5.0.0",
     "postcss": "8.4.31",
     "follow-redirects": "1.15.6",
-    "webpack-dev-middleware": "5.3.4"
+    "webpack-dev-middleware": "5.3.4",
+    "rollup": "3.29.5"
   }
 }
