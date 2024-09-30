@@ -1,0 +1,33 @@
+---
+apiVersion: accelerator.tanzu.vmware.com/v2
+kind: Fragment
+metadata:
+  name: java-version
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples
+    subPath: fragments/java-version
+---
+apiVersion: accelerator.tanzu.vmware.com/v2
+kind: Fragment
+metadata:
+  name: build-wrapper-gradle
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples
+    subPath: fragments/build-wrapper-gradle
+---
+apiVersion: accelerator.tanzu.vmware.com/v2
+kind: Fragment
+metadata:
+  name: build-wrapper-maven
+spec:
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples
+    subPath: fragments/build-wrapper-maven
