@@ -22,6 +22,12 @@ engine {
     ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
   }
 
+  // Update the artifact name and path as needed
+  applyTo(".tanzu/config/tanzu-java-web-app.yml") {
+    ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
+    RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
+  }
+
   {
     Include({'**'})
     // Update the java version
