@@ -1,5 +1,9 @@
 engine {
 
+  applyTo("README.md") {
+    UniquePath(strategy: FavorForeign)
+  }
+
   applyTo("pom.xml") {
     ReplaceText(regex: {pattern: "<java.version>.*<", with: '<java.version>' + #javaVersion + '<'})
   }
