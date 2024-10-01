@@ -68,17 +68,13 @@ other.
 ## Configuring your app environment
 
 Change to the root directory of your generated app.
-### Initialize the ContainerApp
+
+### About the ContainerApp
+
+The project contains a `ContainerApp` manifest file that can be used when building and deploying the app. To review the content of this file run:
 
 ```sh
-tanzu app init
-```
-### Configure the JDK version
-
-You need to specify the JDK version to be used for the app:
-
-```sh
-tanzu app config build non-secret-env set BP_JVM_VERSION=17
+cat .tanzu/config/spring-ai-chat.yml
 ```
 
 ### Configure HTTP Ingress Routing

@@ -41,6 +41,12 @@ engine {
     ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
   }
 
+  // Update the artifact name and path as needed
+  applyTo(".tanzu/config/spring-ai-chat.yml") {
+    ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
+    RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
+  }
+
   {
     Include({'**'})
     + InvokeFragment("build-wrapper-maven")
