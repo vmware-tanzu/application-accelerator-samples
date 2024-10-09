@@ -5,10 +5,10 @@ metadata:
     apps.tanzu.vmware.com/promotable: ""
     apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-search-proc
   creationTimestamp: null
-  name: where-for-dinner-search-proc.apps.local.20240628.658.25322
+  name: where-for-dinner-search-proc.apps.local.20241008.1105.54659
 spec:
   refName: where-for-dinner-search-proc.apps.local
-  releasedAt: "2024-06-28T07:07:25Z"
+  releasedAt: "2024-10-08T11:12:40Z"
   template:
     spec:
       deploy:
@@ -17,7 +17,7 @@ spec:
           - --wait=false
       fetch:
       - imgpkgBundle:
-          image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:29af468f177b01c260c1fb1fceeaaa11a31b8c6c22842db495d5260c76ef396b
+          image: quay.io/tpapps/wfd/where-for-dinner-search-proc@sha256:8e2f966f4215a907adb2b019f08ebad54c493ba52781eaf6ce5e72877770e4b3
       template:
       - ytt:
           paths:
@@ -28,4 +28,4 @@ spec:
           - '-'
   valuesSchema:
     openAPIv3: null
-  version: 20240628.658.25322
+  version: 20241008.1105.54659

@@ -5,10 +5,10 @@ metadata:
     apps.tanzu.vmware.com/promotable: ""
     apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-notify
   creationTimestamp: null
-  name: where-for-dinner-notify.apps.local.20240628.658.25322
+  name: where-for-dinner-notify.apps.local.20241008.1105.54659
 spec:
   refName: where-for-dinner-notify.apps.local
-  releasedAt: "2024-06-28T07:05:28Z"
+  releasedAt: "2024-10-08T11:10:57Z"
   template:
     spec:
       deploy:
@@ -17,7 +17,7 @@ spec:
           - --wait=false
       fetch:
       - imgpkgBundle:
-          image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:ae71fba98018b62fb6438acedcd31312970a95b80ee773c9c3b11cbb4ae22897
+          image: quay.io/tpapps/wfd/where-for-dinner-notify@sha256:9dc6f8970a6ece8df63c553c705d4fc11187b8c2068d1805b07b0c10fd2ca588
       template:
       - ytt:
           paths:
@@ -28,4 +28,4 @@ spec:
           - '-'
   valuesSchema:
     openAPIv3: null
-  version: 20240628.658.25322
+  version: 20241008.1105.54659
