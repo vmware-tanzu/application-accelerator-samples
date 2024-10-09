@@ -1,0 +1,106 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "cpe": "cpe:2.3:a:nodejs:node.js:20.13.1:*:*:*:*:*:*:*",
+      "licenses": [
+        {
+          "license": {
+            "id": "0BSD"
+          }
+        },
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        },
+        {
+          "license": {
+            "id": "Artistic-2.0"
+          }
+        },
+        {
+          "license": {
+            "id": "BSD-2-Clause"
+          }
+        },
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        },
+        {
+          "license": {
+            "id": "BSD-4-Clause"
+          }
+        },
+        {
+          "license": {
+            "id": "BSD-Source-Code"
+          }
+        },
+        {
+          "license": {
+            "id": "CC0-1.0"
+          }
+        },
+        {
+          "license": {
+            "id": "ECL-2.0"
+          }
+        },
+        {
+          "license": {
+            "id": "ICU"
+          }
+        },
+        {
+          "license": {
+            "id": "MIT"
+          }
+        },
+        {
+          "license": {
+            "id": "MIT-0"
+          }
+        },
+        {
+          "license": {
+            "id": "SHL-0.5"
+          }
+        },
+        {
+          "license": {
+            "id": "SHL-0.51"
+          }
+        },
+        {
+          "license": {
+            "id": "Unicode-TOU"
+          }
+        }
+      ],
+      "name": "Node Engine",
+      "purl": "pkg:generic/node@v20.13.1?checksum=efc0f295dd878e510ab12ea36bbadc3db03c687ab30c07e86c7cdba7eed879a9\u0026download_url=https://nodejs.org/dist/v20.13.1/node-v20.13.1-linux-x64.tar.xz",
+      "type": "library",
+      "version": "20.13.1"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "bom-ref": "91b93d5276ac5bc6",
+      "name": "/layers/tanzu-buildpacks_node-engine-lite/node",
+      "type": "file",
+      "version": ""
+    },
+    "tools": [
+      {
+        "name": "syft",
+        "vendor": "anchore",
+        "version": "[not provided]"
+      }
+    ]
+  },
+  "specVersion": "1.3",
+  "version": 1
+}

@@ -1,0 +1,47 @@
+{
+ "SPDXID": "SPDXRef-DOCUMENT",
+ "creationInfo": {
+  "created": "0001-01-01T00:00:00Z",
+  "creators": [
+   "Organization: Anchore, Inc",
+   "Tool: syft-"
+  ],
+  "licenseListVersion": "3.16"
+ },
+ "dataLicense": "CC0-1.0",
+ "documentNamespace": "https://paketo.io/packit/dir/layers/tanzu-buildpacks_node-engine-lite/node-7ad955d5-5e99-5996-a40c-4937c1c54c4f",
+ "name": "/layers/tanzu-buildpacks_node-engine-lite/node",
+ "packages": [
+  {
+   "SPDXID": "SPDXRef-Package--Node-Engine-c38a55edfa52ad82",
+   "copyrightText": "NOASSERTION",
+   "downloadLocation": "NOASSERTION",
+   "externalRefs": [
+    {
+     "referenceCategory": "SECURITY",
+     "referenceLocator": "cpe:2.3:a:nodejs:node.js:20.13.1:*:*:*:*:*:*:*",
+     "referenceType": "cpe23Type"
+    },
+    {
+     "referenceCategory": "PACKAGE_MANAGER",
+     "referenceLocator": "pkg:generic/node@v20.13.1?checksum=efc0f295dd878e510ab12ea36bbadc3db03c687ab30c07e86c7cdba7eed879a9\u0026download_url=https://nodejs.org/dist/v20.13.1/node-v20.13.1-linux-x64.tar.xz",
+     "referenceType": "purl"
+    }
+   ],
+   "filesAnalyzed": false,
+   "licenseConcluded": "0BSD AND Apache-2.0 AND Artistic-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSD-Source-Code AND CC0-1.0 AND ECL-2.0 AND ICU AND MIT AND MIT-0 AND SHL-0.5 AND SHL-0.51 AND Unicode-TOU",
+   "licenseDeclared": "0BSD AND Apache-2.0 AND Artistic-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSD-Source-Code AND CC0-1.0 AND ECL-2.0 AND ICU AND MIT AND MIT-0 AND SHL-0.5 AND SHL-0.51 AND Unicode-TOU",
+   "name": "Node Engine",
+   "sourceInfo": "acquired package info from the following paths: ",
+   "versionInfo": "20.13.1"
+  }
+ ],
+ "relationships": [
+  {
+   "relatedSpdxElement": "SPDXRef-DOCUMENT",
+   "relationshipType": "DESCRIBES",
+   "spdxElementId": "SPDXRef-DOCUMENT"
+  }
+ ],
+ "spdxVersion": "SPDX-2.2"
+}

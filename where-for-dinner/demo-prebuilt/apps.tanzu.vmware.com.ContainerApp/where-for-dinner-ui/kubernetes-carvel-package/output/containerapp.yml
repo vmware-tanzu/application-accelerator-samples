@@ -8,13 +8,17 @@ metadata:
   name: where-for-dinner-ui
 spec:
   content:
-    buildTimestamp: "2024-06-28T07:17:07Z"
-    gitCommit: 0a0e1e48befd723c0b186a505ab1b81b082c45ff-dirty
+    buildTimestamp: "2024-10-08T11:05:54Z"
+    gitCommit: 8fb6112c42d26b1ad11840040c8337109364d000-dirty
     gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    packageImage: quay.io/tpapps/wfd/where-for-dinner-ui@sha256:a61c8d8c9c83cb6c324550301932ad25210617cdef712ac63e8e991e615ed478
     packageRefName: where-for-dinner-ui.apps.local
-    summary: git:0a0e1e4 @ 2024-06-28T07:17:07Z
-    version: 20240628.717.7290
-  image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:e8edc9a55ec2114ee13ab34881839e98187b15a7efa429a7c6d9e3acb019e463
+    packageVersion: 20241008.1105.54659
+    summary: git:8fb6112 @ 2024-10-08T11:05:54Z
+    version: 20241008.1105.54659
+  health:
+    maxUnavailableReplicas: 10%
+  image: quay.io/tpapps/wfd/where-for-dinner-ui:20241008.1105.54659@sha256:861af648af057c381b2b2c10a7bbe60295e5cd6d912d712752efb61b31a05a61
   ports:
   - name: main
     port: 8080
@@ -48,12 +52,16 @@ spec:
   - apiGroup: data.packaging.carvel.dev
     for: kubernetes.delete
     kind: Package
-    name: where-for-dinner-ui.apps.local.20240628.717.7290
+    name: where-for-dinner-ui.apps.local.20241008.1105.54659
   - for: kubernetes.delete
     kind: Secret
     name: where-for-dinner-ui-values
   - for: kubernetes.set-content-hash
     keyPath: .data['values.yml']->[yaml].contentHash
+    kind: Secret
+    name: where-for-dinner-ui-values
+  - for: kubernetes.set-content-version
+    keyPath: .data['values.yml']->[yaml].contentVersion
     kind: Secret
     name: where-for-dinner-ui-values
   resources:
