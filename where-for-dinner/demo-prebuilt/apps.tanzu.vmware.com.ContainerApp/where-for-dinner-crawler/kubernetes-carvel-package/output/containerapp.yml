@@ -8,13 +8,17 @@ metadata:
   name: where-for-dinner-crawler
 spec:
   content:
-    buildTimestamp: "2024-06-28T06:58:25Z"
-    gitCommit: 0a0e1e48befd723c0b186a505ab1b81b082c45ff
+    buildTimestamp: "2024-10-08T11:05:54Z"
+    gitCommit: 8fb6112c42d26b1ad11840040c8337109364d000-dirty
     gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    packageImage: quay.io/tpapps/wfd/where-for-dinner-crawler@sha256:1d62d86073f14e16d2fdd63e129217fb7e89a99c9fc55f4f13ffbec8c89b7fb3
     packageRefName: where-for-dinner-crawler.apps.local
-    summary: git:0a0e1e4 @ 2024-06-28T06:58:25Z
-    version: 20240628.658.25322
-  image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:48d6af4bb78cf8934e9092ba5f51907fef1359cc0c60b822634710a25c4a9003
+    packageVersion: 20241008.1105.54659
+    summary: git:8fb6112 @ 2024-10-08T11:05:54Z
+    version: 20241008.1105.54659
+  health:
+    maxUnavailableReplicas: 10%
+  image: quay.io/tpapps/wfd/where-for-dinner-crawler:20241008.1105.54659@sha256:48d6af4bb78cf8934e9092ba5f51907fef1359cc0c60b822634710a25c4a9003
   nonSecretEnv:
   - name: JAVA_TOOL_OPTIONS
     value: -Dmanagement.endpoint.health.probes.add-additional-paths=true -Dmanagement.health.probes.enabled=true
@@ -71,12 +75,16 @@ spec:
   - apiGroup: data.packaging.carvel.dev
     for: kubernetes.delete
     kind: Package
-    name: where-for-dinner-crawler.apps.local.20240628.658.25322
+    name: where-for-dinner-crawler.apps.local.20241008.1105.54659
   - for: kubernetes.delete
     kind: Secret
     name: where-for-dinner-crawler-values
   - for: kubernetes.set-content-hash
     keyPath: .data['values.yml']->[yaml].contentHash
+    kind: Secret
+    name: where-for-dinner-crawler-values
+  - for: kubernetes.set-content-version
+    keyPath: .data['values.yml']->[yaml].contentVersion
     kind: Secret
     name: where-for-dinner-crawler-values
   resources:

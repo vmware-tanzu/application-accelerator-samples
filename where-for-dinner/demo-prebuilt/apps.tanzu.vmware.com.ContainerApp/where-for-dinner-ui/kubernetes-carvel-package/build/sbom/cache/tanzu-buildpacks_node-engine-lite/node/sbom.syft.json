@@ -1,0 +1,48 @@
+{
+ "artifacts": [
+  {
+   "id": "c38a55edfa52ad82",
+   "name": "Node Engine",
+   "version": "20.13.1",
+   "type": "",
+   "foundBy": "",
+   "locations": null,
+   "licenses": [
+    "0BSD",
+    "Apache-2.0",
+    "Artistic-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "BSD-4-Clause",
+    "BSD-Source-Code",
+    "CC0-1.0",
+    "ECL-2.0",
+    "ICU",
+    "MIT",
+    "MIT-0",
+    "SHL-0.5",
+    "SHL-0.51",
+    "Unicode-TOU"
+   ],
+   "language": "",
+   "cpes": [
+    "cpe:2.3:a:nodejs:node.js:20.13.1:*:*:*:*:*:*:*"
+   ],
+   "purl": "pkg:generic/node@v20.13.1?checksum=efc0f295dd878e510ab12ea36bbadc3db03c687ab30c07e86c7cdba7eed879a9&download_url=https://nodejs.org/dist/v20.13.1/node-v20.13.1-linux-x64.tar.xz"
+  }
+ ],
+ "artifactRelationships": [],
+ "source": {
+  "type": "directory",
+  "target": "/layers/tanzu-buildpacks_node-engine-lite/node"
+ },
+ "distro": {},
+ "descriptor": {
+  "name": "",
+  "version": ""
+ },
+ "schema": {
+  "version": "3.0.1",
+  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-3.0.1.json"
+ }
+}

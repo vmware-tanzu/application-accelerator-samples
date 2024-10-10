@@ -5,10 +5,10 @@ metadata:
     apps.tanzu.vmware.com/promotable: ""
     apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-availability
   creationTimestamp: null
-  name: where-for-dinner-availability.apps.local.20240628.658.25322
+  name: where-for-dinner-availability.apps.local.20241008.1105.54659
 spec:
   refName: where-for-dinner-availability.apps.local
-  releasedAt: "2024-06-28T07:01:38Z"
+  releasedAt: "2024-10-08T11:07:44Z"
   template:
     spec:
       deploy:
@@ -17,7 +17,7 @@ spec:
           - --wait=false
       fetch:
       - imgpkgBundle:
-          image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:77d25e8167e26c2f3e0105effc957d4e0b1ecbb14f04451c32f58d746cfa1458
+          image: quay.io/tpapps/wfd/where-for-dinner-availability@sha256:fd6b73a27a5ae4df642da7ceff2c5f086c092062661ce44f3ac024ede5e9c8e3
       template:
       - ytt:
           paths:
@@ -28,4 +28,4 @@ spec:
           - '-'
   valuesSchema:
     openAPIv3: null
-  version: 20240628.658.25322
+  version: 20241008.1105.54659

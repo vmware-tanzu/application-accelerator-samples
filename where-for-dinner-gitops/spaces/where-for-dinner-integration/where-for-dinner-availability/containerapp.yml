@@ -15,13 +15,17 @@ spec:
     types:
     - rabbitmq
   content:
-    buildTimestamp: "2024-06-28T06:58:25Z"
-    gitCommit: 0a0e1e48befd723c0b186a505ab1b81b082c45ff
+    buildTimestamp: "2024-10-08T11:05:54Z"
+    gitCommit: 8fb6112c42d26b1ad11840040c8337109364d000-dirty
     gitURL: github.com/vmware-tanzu/application-accelerator-samples.git
+    packageImage: quay.io/tpapps/wfd/where-for-dinner-availability@sha256:fd6b73a27a5ae4df642da7ceff2c5f086c092062661ce44f3ac024ede5e9c8e3
     packageRefName: where-for-dinner-availability.apps.local
-    summary: git:0a0e1e4 @ 2024-06-28T06:58:25Z
-    version: 20240628.658.25322
-  image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:e4dd076d25ef03f0f24faeaab696888945386460c1ac6e0439c183c7de2b7ec2
+    packageVersion: 20241008.1105.54659
+    summary: git:8fb6112 @ 2024-10-08T11:05:54Z
+    version: 20241008.1105.54659
+  health:
+    maxUnavailableReplicas: 10%
+  image: quay.io/tpapps/wfd/where-for-dinner-availability:20241008.1105.54659@sha256:e4dd076d25ef03f0f24faeaab696888945386460c1ac6e0439c183c7de2b7ec2
   nonSecretEnv:
   - name: spring_profiles_active
     value: mysql
@@ -80,12 +84,16 @@ spec:
   - apiGroup: data.packaging.carvel.dev
     for: kubernetes.delete
     kind: Package
-    name: where-for-dinner-availability.apps.local.20240628.658.25322
+    name: where-for-dinner-availability.apps.local.20241008.1105.54659
   - for: kubernetes.delete
     kind: Secret
     name: where-for-dinner-availability-values
   - for: kubernetes.set-content-hash
     keyPath: .data['values.yml']->[yaml].contentHash
+    kind: Secret
+    name: where-for-dinner-availability-values
+  - for: kubernetes.set-content-version
+    keyPath: .data['values.yml']->[yaml].contentVersion
     kind: Secret
     name: where-for-dinner-availability-values
   resources:

@@ -5,10 +5,10 @@ metadata:
     apps.tanzu.vmware.com/promotable: ""
     apps.tanzu.vmware.com/promote-group: ContainerApp/where-for-dinner-crawler
   creationTimestamp: null
-  name: where-for-dinner-crawler.apps.local.20240628.658.25322
+  name: where-for-dinner-crawler.apps.local.20241008.1105.54659
 spec:
   refName: where-for-dinner-crawler.apps.local
-  releasedAt: "2024-06-28T07:03:35Z"
+  releasedAt: "2024-10-08T11:09:09Z"
   template:
     spec:
       deploy:
@@ -17,7 +17,7 @@ spec:
           - --wait=false
       fetch:
       - imgpkgBundle:
-          image: us-east1-docker.pkg.dev/advanced-editions-engineering/tap-saas/wfd@sha256:049f8405723ad43102d7ddd32c6eb7caa87d139c2646f26ece5b530e933a36d2
+          image: quay.io/tpapps/wfd/where-for-dinner-crawler@sha256:1d62d86073f14e16d2fdd63e129217fb7e89a99c9fc55f4f13ffbec8c89b7fb3
       template:
       - ytt:
           paths:
@@ -28,4 +28,4 @@ spec:
           - '-'
   valuesSchema:
     openAPIv3: null
-  version: 20240628.658.25322
+  version: 20241008.1105.54659
