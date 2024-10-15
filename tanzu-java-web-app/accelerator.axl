@@ -1,6 +1,8 @@
 engine {
 
-  TextPreprocessor()
+  applyTo("README.md") {
+    TextPreprocessor()
+  }
 
   // Include files for the selected build tool
   if (#buildTool == "maven") {

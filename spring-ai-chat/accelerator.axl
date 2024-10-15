@@ -1,6 +1,8 @@
 engine {
 
-  TextPreprocessor()
+  applyTo("pom.xml" || "src/main/resources/application.properties") {
+    TextPreprocessor()
+  }
 
   if (#vectorStoreType != 'simple') {
     Exclude({"**/SimpleVectorStoreConfig.java"}) 
