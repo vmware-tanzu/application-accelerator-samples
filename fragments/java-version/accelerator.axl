@@ -17,7 +17,6 @@ engine {
   }
 
   applyTo(".tanzu/config/*.yml") {
-    OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.spec.build.nonSecretEnv[?(@.name == 'BP_JVM_VERSION')].value", value: #javaVersion})
+    OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.spec.build.nonSecretEnv[?(@.name == 'BP_JVM_VERSION')].value", value: '"' + #javaVersion + '"'})
   }
-
 }
