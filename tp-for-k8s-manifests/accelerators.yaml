@@ -19,7 +19,6 @@ spec:
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: tanzu-java-web-app
 ---
----
 apiVersion: accelerator.tanzu.vmware.com/v2
 kind: Accelerator
 metadata:
