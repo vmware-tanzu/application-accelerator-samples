@@ -30,6 +30,13 @@ engine {
     RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
   }
 
+  // Update the configuration id
+  let uuid = T(java.util.UUID).randomUUID() in {
+    applyTo("tanzu.yml") {
+      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: 'config-' + #uuid.toString()})
+    }
+  }
+
   {
     Include({'**'})
     // Update the java version
