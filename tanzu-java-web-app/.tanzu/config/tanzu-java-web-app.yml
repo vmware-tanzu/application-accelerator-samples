@@ -1,7 +1,6 @@
 apiVersion: apps.tanzu.vmware.com/v1
 kind: ContainerApp
 metadata:
-  creationTimestamp: null
   name: tanzu-java-web-app
 spec:
   build:
@@ -13,3 +12,4 @@ spec:
   ports:
   - name: main
     port: 8080
+  replicas: 1

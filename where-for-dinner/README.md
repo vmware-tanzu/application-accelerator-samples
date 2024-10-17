@@ -52,4 +52,3 @@ The default build and deployment architecture uses Spring Cloud Streams as the a
 ![](doc/images/SCSMessaging.png)
  
 
-

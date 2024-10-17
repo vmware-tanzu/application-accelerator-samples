@@ -81,7 +81,6 @@ cat .tanzu/config/spring-ai-chat.yml
 
 If want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
 
-
 ### Configure an image registry to use for the ContainerApp
 
 ```sh
@@ -111,7 +110,7 @@ You can build using source from a locally cloned Git repository or from source o
 To build the app you can run this command:
 
 ```sh
-tanzu build --output-dir ./local
+tanzu build --output-dir ./prebuilt
 ```
 
 ### Deploying the sample on Tanzu Platform for Kubernetes
@@ -119,7 +118,7 @@ tanzu build --output-dir ./local
 Start the app deployment by running:
 
 ```sh
-tanzu deploy --from-build ./local
+tanzu deploy --from-build ./prebuilt
 ```
 
 ### Configure the AI API key

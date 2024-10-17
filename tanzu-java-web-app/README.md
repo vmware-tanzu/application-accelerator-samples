@@ -130,8 +130,24 @@ tanzu deploy --from-build ./prebuilt
 
 ### Scale the number of instances
 
-Run this command to scale to 1 instance:
+Check the number of instances of you app using:
 
 ```sh
-tanzu app scale tanzu-java-web-app --instances=1
+tanzu app instance tanzu-java-web-app
+```
+
+Run this command to scale to 2 instances:
+
+```sh
+tanzu app scale tanzu-java-web-app --instances=2
+```
+
+### Use port-forward to access an app instance
+
+You can use the `app port-forward` command to access your app instance's endpoint.
+Just select the instance you want when prompted.
+Use the following command to start the port-forward:
+
+```
+tanzu app port-forward tanzu-java-web-app --port 8080
 ```
