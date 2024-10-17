@@ -2,24 +2,19 @@ apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:
   name: where-for-dinner-scg-route
-  annotations:
-    healthcheck.gslb.tanzu.vmware.com/service: spring-cloud-gateway
-    healthcheck.gslb.tanzu.vmware.com/path: /
-    healthcheck.gslb.tanzu.vmware.com/port: "80"
 spec:
   parentRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: default-gateway
-    sectionName: http-where-for-dinner-prod
+    - group: networking.tanzu.vmware.com
+      kind: Entrypoint
+      name: main
   rules:
-  - backendRefs:
-    - group: ""
-      kind: Service
-      name: spring-cloud-gateway
-      port: 80
-      weight: 1
-    matches:
-    - path:
-        type: PathPrefix
-        value: /
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: spring-cloud-gateway
+          port: 80
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /
