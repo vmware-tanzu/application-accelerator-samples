@@ -1,0 +1,27 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  creationTimestamp: null
+  name: spring-music
+spec:
+#IF(#persistenceType != 'jpa')
+  acceptedServiceBindings:
+  - name: music
+    types:
+    #IF(#persistenceType == 'mongodb')
+    - mongodb
+    #ENDIF
+    #IF(#persistenceType == 'redis')
+    - redis
+    #ENDIF
+#ENDIF
+  build:
+    buildpacks: {}
+    nonSecretEnv:
+    - name: BP_JVM_VERSION
+      value: "17"
+    path: ../..
+  ports:
+  - name: main
+    port: 8080
+  replicas: 0
