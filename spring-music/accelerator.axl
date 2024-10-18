@@ -1,0 +1,75 @@
+engine {
+
+  applyTo("build.gradle" || "README.md" || "**/*.yaml" || "**/*.java") {
+    TextPreprocessor()
+  }
+
+  if (#deploymentType == 'none') {
+    Exclude({"deploy/**"})
+  } else {
+    if (#deploymentType == 'tpfork8s') {
+      applyTo("deploy/tpfork8s/tanzu.yml") {
+        ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
+        RewritePath(rewriteTo: #filename)
+      }
+      applyTo("deploy/tpfork8s/.tanzu/config/spring-music.yml") {
+        ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
+        RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
+      }
+    }
+    UniquePath(strategy: UseLast)
+  }
+
+  if (#persistenceType == 'jpa') {
+    Exclude({
+        "src/main/java/com/example/music/config/data/**",
+        "src/main/java/com/example/music/repositories/mongodb/**",
+        "src/main/java/com/example/music/repositories/redis/**"})
+  }
+  if (#persistenceType == 'mongodb') {
+    Exclude({
+        "src/main/java/com/example/music/config/data/**",
+        "src/main/java/com/example/music/domain/RandomIdGenerator.java",
+        "src/main/java/com/example/music/repositories/jpa/**",
+        "src/main/java/com/example/music/repositories/redis/**"})
+  }
+  if (#persistenceType == 'redis') {
+    Exclude({
+        "src/main/java/com/example/music/repositories/mongodb/**",
+        "src/main/java/com/example/music/repositories/jpa/**"})
+  }
+
+  // Update the artifact name as needed
+  applyTo("README.md" || "settings.gradle") {
+    ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
+  }
+
+  applyTo("README.md") {
+    ReplaceText({{text: "JAVA_VERSION", with: #javaVersion}})
+  }
+
+  // Update the configuration id
+  let uuid = T(java.util.UUID).randomUUID() in {
+    applyTo("tanzu.yml") {
+      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: 'config-' + #uuid.toString()})
+    }
+  }
+
+  {
+    Include({"**"})
+    // Update the java version
+    + InvokeFragment("java-version")
+  }
+  UniquePath(strategy: UseLast)
+
+  {
+    Include({"**"})
+    // Add the build wrapper
+    + InvokeFragment("build-wrapper-gradle")
+  }
+  UniquePath(strategy: UseLast)
+
+  // Create the provenance file
+  Provenance()
+
+}
