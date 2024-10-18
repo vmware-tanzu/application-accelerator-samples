@@ -151,3 +151,5 @@ Use the following command to start the port-forward:
 ```
 tanzu app port-forward tanzu-java-web-app --port 8080
 ```
+
+Then you can access the app using http://localhost:8080.

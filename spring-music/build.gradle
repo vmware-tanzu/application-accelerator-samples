@@ -1,0 +1,75 @@
+plugins {
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
+    id 'eclipse-wtp'
+    id 'idea'
+}
+
+group = 'com.vmware.tanzu.samples.music'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+// #IF(#deploymentType == 'cloudfoundry')
+ext {
+    javaCfEnvVersion = '3.1.2'
+}
+
+// #ENDIF
+dependencies {
+    // Spring Boot
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+
+    // #IF(#deploymentType == 'cloudfoundry')
+    // Java CfEnv
+    implementation "io.pivotal.cfenv:java-cfenv-boot:${javaCfEnvVersion}"
+
+    // #ENDIF
+    // #IF(#persistenceType == 'jpa')
+    // JPA Persistence
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    runtimeOnly "org.apache.commons:commons-pool2"
+    runtimeOnly "com.h2database:h2"
+    runtimeOnly "com.mysql:mysql-connector-j"
+    runtimeOnly "org.postgresql:postgresql"
+
+    // #ENDIF
+    // #IF(#persistenceType == 'mongodb')
+    // MongoDB Persistence
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb"
+
+    // #ENDIF
+    // #IF(#persistenceType == 'redis')
+    // Redis Persistence
+    implementation "org.springframework.boot:spring-boot-starter-data-redis"
+    // uncomment to use Lettuce instead of Jedis for Redis connections
+    // runtime "io.lettuce:lettuce-core"
+
+    // #ENDIF
+    // Webjars
+    implementation "org.webjars:bootstrap:3.1.1"
+    implementation "org.webjars:angularjs:1.2.16"
+    implementation "org.webjars:angular-ui:0.4.0-2"
+    implementation "org.webjars:angular-ui-bootstrap:0.10.0-1"
+    implementation "org.webjars:jquery:2.1.0-2"
+
+    // Testing
+    testImplementation "junit:junit"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+jar {
+    enabled = false
+}
+
+tasks.named("bootBuildImage") {
+    builder = "paketobuildpacks/builder-jammy-base:latest"
+}

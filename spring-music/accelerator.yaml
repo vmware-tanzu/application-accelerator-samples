@@ -1,0 +1,25 @@
+accelerator:
+  options:
+  - name: deploymentType
+    inputType: select
+    label: Deployment type
+    choices:
+    - value: tpfork8s
+      text: Tanzu Platform for Kubernetes ContainerApp
+    - value: none
+      text: Skip deployment artifacts
+    defaultValue: tpfork8s
+  - name: persistenceType
+    inputType: select
+    label: Persistence type
+    choices:
+    - value: jpa
+      text: Relational database using JPA
+    - value: redis
+      text: Redis key value store
+    - value: mongodb
+      text: MongoDB document database
+    defaultValue: jpa
+  imports:
+  - name: java-version
+  - name: build-wrapper-gradle
