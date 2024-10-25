@@ -148,6 +148,6 @@ You can use the `app port-forward` command to access your app instance's endpoin
 Just select the instance you want when prompted.
 Use the following command to start the port-forward:
 
-```
+```sh
 tanzu app port-forward tanzu-java-web-app --port 8080
 ```
