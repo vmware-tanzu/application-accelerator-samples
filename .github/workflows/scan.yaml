@@ -1,7 +1,6 @@
 name: Vulnerability Scan
 on:
   workflow_dispatch:
-  push:
   schedule:
     - cron: '0 10 * * *' # Once per day at 10am UTC
 
