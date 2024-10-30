@@ -29,7 +29,7 @@ spring:
   datasource:
     url: "jdbc:mysql://localhost/mysql"
     driver-class-name: com.mysql.jdbc.Driver
-    username: root
+    username: spring
     password: password
   jpa:
     properties:

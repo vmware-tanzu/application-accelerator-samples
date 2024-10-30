@@ -29,20 +29,73 @@ The supported databases are:
 - H2
     - this is an in memory database so it does not need a profile and it gets started during the application startup
 - mysql
-    - add this profile to the java command below `-Dspring.profiles.active=mysql`
+    - add this profile to the java command when starting the app `-Dspring.profiles.active=mysql`
 - postgresql
-    - add this profile to the java command below `-Dspring.profiles.active=postgres`
+    - add this profile to the java command when starting the app `-Dspring.profiles.active=postgres`
 
-The application can be started locally using the following command:
+The application can be started locally using the following commands:
+
+#### Using H2 database
 
 ```shell
 java -jar build/libs/spring-music-1.0.0.jar
 ```
 
-Or, if you want to specify a profile, then use the following command:
+#### Using PostgreSQL database
+
+First, start a Docker container fpr `postgres`
 
 ```shell
-java -Dspring.profiles.active=<database-profile> -jar build/libs/spring-music-1.0.0.jar
+docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
+```
+
+Then start the application:
+
+```shell
+java -Dspring.profiles.active=postgresql -jar build/libs/spring-music-1.0.0.jar
+```
+
+#### Using MySQL database
+
+First, start a Docker container fpr `mysql`
+
+```shell
+docker run --rm --name=mysql -p 3306:3306 -d mysql/mysql-server:latest
+```
+
+First, we need to capture the generated root password, log in and change it:
+
+```shell
+docker logs mysql 2>&1 | grep GENERATED
+```
+
+We can now use the password shown above when logging in:
+
+```shell
+docker exec -it mysql mysql -uroot -p
+```
+
+We should now get a `mysql>` prompt. Run the following command to change the root password:
+
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
+```
+
+Now, we can create a new `spring` user from the same `mysql>` prompt:
+
+```sql
+CREATE USER 'spring'@'%' IDENTIFIED BY 'password';
+GRANT CREATE, SELECT, INSERT, UPDATE ON mysql.album TO 'spring'@'%';
+FLUSH PRIVILEGES;
+exit
+```
+
+We should now have a `spring` MySQL user that we can use for the app.
+
+Once all of this is done, start the application:
+
+```shell
+java -Dspring.profiles.active=mysql -jar build/libs/spring-music-1.0.0.jar
 ```
 
 <!--- #ENDIF -->
@@ -129,7 +182,7 @@ tanzu app config servicebinding set music=mysql
 tanzu app config non-secret-env set SPRING_PROFILES_ACTIVE=mysql
 ```
 
-And, if you are using PostgreSQL the use:
+And, if you are using PostgreSQL then use:
 
 ```shell
 tanzu app config servicebinding set music=postgresql
