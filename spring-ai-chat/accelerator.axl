@@ -60,6 +60,10 @@ engine {
     ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
     RewritePath(rewriteTo: '.tanzu/config/httproute-' + #artifactId.toLowerCase() + '.yml')
   }
+  applyTo(".tanzu/config/egresspoint-spring-ai-chat.yml") {
+    ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
+    RewritePath(rewriteTo: '.tanzu/config/egresspoint-' + #artifactId.toLowerCase() + '.yml')
+  }
 
   // Update the configuration id
   let uuid = T(java.util.UUID).randomUUID() in {
