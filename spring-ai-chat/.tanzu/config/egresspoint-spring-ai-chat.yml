@@ -1,0 +1,15 @@
+apiVersion: networking.tanzu.vmware.com/v1alpha1
+kind: EgressPoint
+metadata:
+  name: spring-ai-chat-egress
+spec:
+  sourceRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: spring-ai-chat
+  targets:
+  - hosts:
+    - api.openai.com
+    port:
+      number: 80
+      protocol: HTTPS

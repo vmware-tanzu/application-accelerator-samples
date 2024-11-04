@@ -31,6 +31,14 @@ engine {
     }
   }
 
+  applyTo(".tanzu/config/egresspoint-spring-ai-chat.yml") {
+    if (#aiService == 'azureOpenAI') {
+      ReplaceText({
+        {text: "api.openai.com", with: 'openai.azure.com'},
+      })
+    }
+  }
+
   let packageDirectory = #packageName.replace(".", "/") in {
     applyTo("**/*.java") {
       ReplaceText({{text: "com.vmware.tap.accelerators.aichat", with: #packageName}})
