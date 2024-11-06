@@ -4,13 +4,14 @@ The spring-ai-chat app provides you an out-of-the-box application setup to fast 
 
 This web application is using Spring AI to offer an interactive chat experience utilizing RAG (Retrieval Augmented Generation) to enable a user to ask questions about their own uploaded documents.
 
+# Local
+
 ## Prerequisites
+
 In order to further develop this application the following tools needs to be setup:
 - Java Development Kit (https://bell-sw.com/)
 - Visual Studio Code or IntelliJ IDEA as Integrated Development Environment (IDE)
 - Tanzu Developer Tools plugin for the mentioned IDE
-
-# Local
 
 ## Build
 In order to compile the production code:
@@ -58,18 +59,19 @@ The security around the application is primarily so that each user will have the
 distinct chat history and so that conversations with the LLM do not bleed into each
 other.
 
-# Deployment
+# Tanzu Platform deployment
 
-## Dependencies
-1. Tanzu CLI and the apps plugin v0.2.0 which are provided as part of [Tanzu Platform](https://docs.vmware.com/en/VMware-Tanzu-Platform/index.html). Installation instructions can be found at [ VMware Tanzu Platform Product Documentation - Before you begin](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-deploy-app-to-space.html#before-you-begin-0).
+## Prerequisites
 
-2. You have access to a space for your project and you have used `tanzu login` to authenticate and configure your current Tanzu context and set your project and space using `tanzu project use` and `tanzu space use` respectively.
+1. Access to [Tanzu Platform](https://docs.vmware.com/en/VMware-Tanzu-Platform/index.html) configured for platform builds.
+1. The latest Tanzu CLI and plugins from `vmware-tanzu/app-developer` group installed. Installation instructions can be found in the Tanzu Platform documentation: [Before you begin](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-deploy-app-to-space.html#before-you-begin-0).
+1. You have access to a space for your project and you have used `tanzu login` to authenticate and configure your current Tanzu context and set your project and space using `tanzu project use` and `tanzu space use` respectively.
 
-## Configuring your app environment
-
-Change to the root directory of your generated app.
+## Your app configuration
 
 ### About the ContainerApp
+
+Change to the root directory of your generated app.
 
 The project contains a `ContainerApp` manifest file that can be used when building and deploying the app. To review the content of this file run:
 
@@ -81,15 +83,7 @@ cat .tanzu/config/spring-ai-chat.yml
 
 If want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
 
-### Configure an image registry to use for the ContainerApp
-
-```sh
-tanzu build config --containerapp-registry REGISTRY
-```
-
-> Where `REGISTRY` is your container image registry location. For example, `my-registry.io/my-corp-apps/{name}` or `docker.io/<your-docker-id>/{name}` if you use Docker Hub. Note that use of literal `{name}` is required and it will be replaced with your apps name when you build.
-
-## Deploying and building in one step
+## Deploying and building your app in one step
 
 Change to the root directory of your generated app.
 
@@ -97,28 +91,6 @@ Run this command to build and deploy the app:
 
 ```sh
 tanzu deploy
-```
-
-## Using separate build and deploy commands
-
-Change to the root directory of your generated app.
-
-### Building with local source
-
-You can build using source from a locally cloned Git repository or from source on your local disk.
-
-To build the app you can run this command:
-
-```sh
-tanzu build --output-dir ./prebuilt
-```
-
-### Deploying the sample on Tanzu Platform for Kubernetes
-
-Start the app deployment by running:
-
-```sh
-tanzu deploy --from-build ./prebuilt
 ```
 
 ### Configure the AI API key

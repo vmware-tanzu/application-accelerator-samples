@@ -53,29 +53,17 @@ You should see the following text:
 Greetings from Spring Boot + Tanzu!
 ```
 
-## Configuring your Tanzu Platform build environment
+## Tanzu Platform deployment
 
 ### Prerequisites
 
-1. Tanzu CLI and the apps plugin v0.2.0 which are provided as part of [Tanzu Platform](https://docs.vmware.com/en/VMware-Tanzu-Platform/index.html). Installation instructions can be found at [VMware Tanzu Platform Product Documentation - Before you begin](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-deploy-app-to-space.html#before-you-begin-0).
-
-2. You have access to a space for your project, and you have used `tanzu login` to authenticate and configure your current Tanzu context, and you have set your project and space using `tanzu project use` and `tanzu space use` respectively.
-
-### Configure an image registry to use for building the app
-
-Before you can build your app, you need to specify the registry where the resulting image from the build can be stored.
-
-```sh
-tanzu build config --containerapp-registry REGISTRY
-```
-
-> Where `REGISTRY` is your container image registry location. For example, `my-registry.io/my-corp-apps/{name}` or `docker.io/<your-docker-id>/{name}` if you use Docker Hub. Note that use of literal `{name}` is required, and it will be replaced with your apps name when you build.
-
-## Configuring your app environment
-
-Change to the root directory of your generated app.
+1. Access to [Tanzu Platform](https://docs.vmware.com/en/VMware-Tanzu-Platform/index.html) configured for platform builds.
+1. The latest Tanzu CLI and plugins from `vmware-tanzu/app-developer` group installed. Installation instructions can be found in the Tanzu Platform documentation: [Before you begin](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/getting-started-deploy-app-to-space.html#before-you-begin-0).
+1. You have access to a space for your project and you have used `tanzu login` to authenticate and configure your current Tanzu context and set your project and space using `tanzu project use` and `tanzu space use` respectively.
 
 ### About the ContainerApp
+
+Change to the root directory of your generated app.
 
 The project contains a `ContainerApp` manifest file that can be used when building and deploying the app. To review the content of this file run:
 
@@ -96,7 +84,7 @@ tanzu app config build non-secret-env set BP_MAVEN_ACTIVE_PROFILES=native
 
 If you want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
 
-### Building and deploying the app to Tanzu Platform for Kubernetes in one step
+### Building and deploying the app in one step
 
 Change to the root directory of your generated app.
 
@@ -104,28 +92,6 @@ Run this command to build and deploy the app:
 
 ```sh
 tanzu deploy
-```
-
-### Using separate build and deploy commands
-
-Change to the root directory of your generated app.
-
-#### Building from local source
-
-You can build using source on your local disk.
-
-To build the app you can run this command:
-
-```sh
-tanzu build --output-dir ./prebuilt
-```
-
-#### Deploying the app to Tanzu Platform for Kubernetes
-
-Start the app deployment by running:
-
-```sh
-tanzu deploy --from-build ./prebuilt
 ```
 
 ### Scale the number of instances
