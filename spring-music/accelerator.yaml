@@ -20,6 +20,21 @@ accelerator:
     - value: mongodb
       text: MongoDB document database
     defaultValue: jpa
+  - name: databaseType
+    inputType: select
+    label: Database type
+    choices:
+      - value: "h2"
+        text: H2 in-memory
+      - value: "postgres"
+        text: PostgreSQL
+      - value: "mysql"
+        text: MySQL
+    defaultValue: "h2"
+    dependsOn:
+      name: persistenceType
+      value: jpa
+
   imports:
   - name: java-version
   - name: build-wrapper-gradle
