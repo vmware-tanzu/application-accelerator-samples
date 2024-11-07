@@ -118,6 +118,28 @@ a PostgresSQL database instance before deploying the application. The PostgreSQL
 
 Instructions TBD.
 
+### Use port-forward to access an app instance
+
+You can use the `app port-forward` command to access your app instance's endpoint.
+Just select the instance you want when prompted.
+Use the following command to start the port-forward:
+
+```sh
+tanzu app port-forward spring-ai-chat --port 8080
+```
+
+Then you can access the app using http://localhost:8080.
+
+You'll be presented with a login page. You may login with either of the following sets
+of credentials:
+
+ - buzz / infinity
+ - woody / bullseye
+
+The security around the application is primarily so that each user will have their own,
+distinct chat history and so that conversations with the LLM do not bleed into each
+other.
+
 # How to proceed from here?
 
 Having the application locally running and deployed to a cluster you could add your domain logic, related persistence and new Spring MVC controllers.
