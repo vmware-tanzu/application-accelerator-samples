@@ -33,14 +33,19 @@ The supported databases are:
 - postgresql
     - add this profile to the java command when starting the app `-Dspring.profiles.active=postgres`
 
-The application can be started locally using the following commands:
+The application can be started locally using the following configurations and commands.
 
+<!--- #IF(#databaseType == 'h2') -->
 #### Using H2 database
+
+Start the application without a profile:
 
 ```shell
 java -jar build/libs/spring-music-1.0.0.jar
 ```
 
+<!--- #ENDIF -->
+<!--- #IF(#databaseType == 'postgres') -->
 #### Using PostgreSQL database
 
 First, start a Docker container fpr `postgres`
@@ -55,6 +60,8 @@ Then start the application:
 java -Dspring.profiles.active=postgresql -jar build/libs/spring-music-1.0.0.jar
 ```
 
+<!--- #ENDIF -->
+<!--- #IF(#databaseType == 'mysql') -->
 #### Using MySQL database
 
 First, start a Docker container fpr `mysql`
@@ -98,6 +105,7 @@ Once all of this is done, start the application:
 java -Dspring.profiles.active=mysql -jar build/libs/spring-music-1.0.0.jar
 ```
 
+<!--- #ENDIF -->
 <!--- #ENDIF -->
 <!--- #IF(#persistenceType == 'redis') -->
 Start the redis server using:
@@ -155,28 +163,6 @@ If you want to expose your application with a domain name and route traffic from
 
 Change to the root directory of your generated app.
 
-<!--- #IF(#persistenceType == 'jpa') -->
-#### Configure service binding for the app
-
-For MySQL and PostgreSQL it is necessary to define the service binding name and type plus setting the active Spring profile.
-
-If you are using MySQL then use:
-
-```shell
-tanzu app config servicebinding set music=mysql
-tanzu app config non-secret-env set SPRING_PROFILES_ACTIVE=mysql
-```
-
-And, if you are using PostgreSQL then use:
-
-```shell
-tanzu app config servicebinding set music=postgresql
-tanzu app config non-secret-env set SPRING_PROFILES_ACTIVE=postgres
-```
-
-<!--- #ENDIF -->
-#### Building and deploying the app in one step
-
 You can build and deploy the app with a single command.
 Just run:
 
@@ -184,9 +170,8 @@ Just run:
 tanzu deploy
 ```
 
-### Create the service and bind it to the app
-
 <!--- #IF(#persistenceType == 'redis') -->
+### Create the service and bind it to the app
 
 You can deploy a Redis instance using a provided service type.
 To list available service types use:
@@ -210,6 +195,7 @@ tanzu services list
 ```
 <!--- #ENDIF -->
 <!--- #IF(#persistenceType == 'mongodb') -->
+### Create the service and bind it to the app
 
 You can deploy a mongoDB instance using a provided service type.
 To list available service types use:
@@ -233,10 +219,17 @@ tanzu services list
 ```
 <!--- #ENDIF -->
 <!--- #IF(#persistenceType == 'jpa') -->
+<!--- #IF(#databaseType == 'h2') -->
 
-You can deploy the application as is if you want to use the embedded `H2` database.
+You can deploy the application as is when using the embedded `H2` database.
+No service binding is necessary.
 
-You can deploy a MySQL or PostgreSQL instance using a provided service type.
+<!--- #ELSE -->
+### Create the service and bind it to the app
+
+<!--- #ENDIF -->
+<!--- #IF(#databaseType == 'mysql') -->
+You can deploy a MySQL instance using a provided service type.
 To list available service types use:
 
 ```shell
@@ -247,6 +240,23 @@ Create a MySQL database service instance using:
 
 ```shell
 tanzu services create MySQLInstance/music
+```
+
+When prompted, bind the service to your deployed app.
+
+You can list the services you have created using:
+
+```shell
+tanzu services list
+```
+
+<!--- #ENDIF -->
+<!--- #IF(#databaseType == 'postgres') -->
+You can deploy a PostgreSQL instance using a provided service type.
+To list available service types use:
+
+```shell
+tanzu services type list
 ```
 
 Create a PostgreSQL database service instance using:
@@ -264,8 +274,9 @@ tanzu services list
 ```
 
 <!--- #ENDIF -->
+<!--- #ENDIF -->
 
-#### Scale the number of instances
+### Scale the number of instances
 
 When the service you created becomes `Ready`, then you can run this command to scale the app to 1 instance:
 

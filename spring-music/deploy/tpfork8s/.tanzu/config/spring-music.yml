@@ -1,10 +1,21 @@
 apiVersion: apps.tanzu.vmware.com/v1
 kind: ContainerApp
 metadata:
-  creationTimestamp: null
   name: spring-music
 spec:
-#IF(#persistenceType != 'jpa')
+#IF(#persistenceType == 'jpa')
+  #IF(#databaseType != 'h2')
+  acceptedServiceBindings:
+  - name: music
+    types:
+    #IF(#databaseType == 'mysql')
+    - mysql
+    #ENDIF
+    #IF(#databaseType == 'postgres')
+    - postgresql
+    #ENDIF
+  #ENDIF
+#ELSE
   acceptedServiceBindings:
   - name: music
     types:
@@ -21,6 +32,18 @@ spec:
     - name: BP_JVM_VERSION
       value: "17"
     path: ../..
+#IF(#persistenceType == 'jpa')
+  #IF(#databaseType != 'h2')
+  nonSecretEnv:
+  - name: SPRING_PROFILES_ACTIVE
+    #IF(#databaseType == 'mysql')
+    value: mysql
+    #ENDIF
+    #IF(#databaseType == 'postgres')
+    value: postgresql
+    #ENDIF
+  #ENDIF
+#ENDIF
   ports:
   - name: main
     port: 8080
