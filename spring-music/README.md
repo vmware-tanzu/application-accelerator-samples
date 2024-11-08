@@ -163,34 +163,6 @@ If you want to expose your application with a domain name and route traffic from
 
 Change to the root directory of your generated app.
 
-<!--- #IF(#persistenceType == 'jpa') -->
-<!--- #IF(#databaseType != 'h2') -->
-#### Configure service binding for the app
-
-It is necessary to define the service binding name and type plus setting the active Spring profile.
-
-<!--- #ENDIF -->
-<!--- #IF(#databaseType == 'mysql') -->
-When using MySQL then use:
-
-```shell
-tanzu app config servicebinding set music=mysql
-tanzu app config non-secret-env set SPRING_PROFILES_ACTIVE=mysql
-```
-
-<!--- #ENDIF -->
-<!--- #IF(#databaseType == 'postgres') -->
-When using PostgreSQL then use:
-
-```shell
-tanzu app config servicebinding set music=postgresql
-tanzu app config non-secret-env set SPRING_PROFILES_ACTIVE=postgres
-```
-
-<!--- #ENDIF -->
-<!--- #ENDIF -->
-#### Building and deploying the app in one step
-
 You can build and deploy the app with a single command.
 Just run:
 
