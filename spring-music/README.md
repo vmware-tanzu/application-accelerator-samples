@@ -171,48 +171,24 @@ tanzu deploy
 ```
 
 <!--- #IF(#persistenceType == 'redis') -->
-### Create the service and bind it to the app
+### Check the status of the service bound to the app
 
-You can deploy a Redis instance using a provided service type.
-To list available service types use:
+The deployment includes a Redis instance using a provided service type.
+The instance is bound to the app.
 
-```shell
-tanzu services type list
-```
-
-Then, create the service instance using:
-
-```shell
-tanzu services create RedisCluster/music
-```
-
-When prompted, bind the service to your deployed app.
-
-You can list the services you have created using:
+You can list the services created using:
 
 ```shell
 tanzu services list
 ```
 <!--- #ENDIF -->
 <!--- #IF(#persistenceType == 'mongodb') -->
-### Create the service and bind it to the app
+### Check the status of the service bound to the app
 
-You can deploy a mongoDB instance using a provided service type.
-To list available service types use:
+The deployment includes a MongoDB instance using a provided service type.
+The instance is bound to the app.
 
-```shell
-tanzu services type list
-```
-
-Then, create the service instance using:
-
-```shell
-tanzu services create MongoDBInstance/music
-```
-
-When prompted, bind the service to your deployed app.
-
-You can list the services you have created using:
+You can list the services created using:
 
 ```shell
 tanzu services list
@@ -229,22 +205,10 @@ No service binding is necessary.
 
 <!--- #ENDIF -->
 <!--- #IF(#databaseType == 'mysql') -->
-You can deploy a MySQL instance using a provided service type.
-To list available service types use:
+The deployment includes a MySQL instance using a provided service type.
+The instance is bound to the app.
 
-```shell
-tanzu services type list
-```
-
-Create a MySQL database service instance using:
-
-```shell
-tanzu services create MySQLInstance/music
-```
-
-When prompted, bind the service to your deployed app.
-
-You can list the services you have created using:
+You can list the services created using:
 
 ```shell
 tanzu services list
@@ -252,22 +216,10 @@ tanzu services list
 
 <!--- #ENDIF -->
 <!--- #IF(#databaseType == 'postgres') -->
-You can deploy a PostgreSQL instance using a provided service type.
-To list available service types use:
+The deployment includes a PostgreSQL instance using a provided service type.
+The instance is bound to the app.
 
-```shell
-tanzu services type list
-```
-
-Create a PostgreSQL database service instance using:
-
-```shell
-tanzu services create PostgreSQLInstance/music
-```
-
-When prompted, bind the service to your deployed app.
-
-You can list the services you have created using:
+You can list the services created using:
 
 ```shell
 tanzu services list
@@ -276,12 +228,12 @@ tanzu services list
 <!--- #ENDIF -->
 <!--- #ENDIF -->
 
-### Scale the number of instances
+### Check the status of the app deployment
 
-When the service you created becomes `Ready`, then you can run this command to scale the app to 1 instance:
+You can run this command to see the status of the app deployment:
 
 ```shell
-tanzu app scale spring-music --instances=1
+tanzu apps get spring-music
 ```
 
 ### Use port-forward to access an app instance

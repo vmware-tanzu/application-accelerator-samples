@@ -1,0 +1,6 @@
+apiVersion: bitnami.database.tanzu.vmware.com/v1alpha1
+kind: MySQLInstance
+metadata:
+  name: music
+spec:
+  storageGB: 1

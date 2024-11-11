@@ -1,0 +1,30 @@
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+    name: music-TBD
+spec:
+  alias: music
+  serviceRef:
+    apiGroup: bitnami.database.tanzu.vmware.com
+#IF(#persistenceType == 'jpa')
+  #IF(#databaseType != 'h2')
+    #IF(#databaseType == 'mysql')
+    kind: MySQLInstance
+    #ENDIF
+    #IF(#databaseType == 'postgres')
+    kind: PostgreSQLInstance
+    #ENDIF
+  #ENDIF
+#ELSE
+    #IF(#persistenceType == 'mongodb')
+    kind: MongoDBInstance
+    #ENDIF
+    #IF(#persistenceType == 'redis')
+    kind: RedisCluster
+    #ENDIF
+#ENDIF
+    name: music
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: spring-music
