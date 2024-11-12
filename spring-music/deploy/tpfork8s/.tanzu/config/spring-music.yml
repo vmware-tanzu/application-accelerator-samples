@@ -47,4 +47,4 @@ spec:
   ports:
   - name: main
     port: 8080
-  replicas: 0
+  replicas: 1
