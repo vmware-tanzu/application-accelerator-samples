@@ -1,0 +1,17 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  annotations:
+    apps.tanzu.vmware.com/promotable: ""
+    apps.tanzu.vmware.com/promote-group: ContainerApp/spring-music
+  name: spring-music-http-route
+spec:
+  parentRefs:
+  - group: networking.tanzu.vmware.com
+    kind: Entrypoint
+    name: spring-music
+  rules:
+  - backendRefs:
+    - kind: Service
+      name: spring-music
+      port: 8080
