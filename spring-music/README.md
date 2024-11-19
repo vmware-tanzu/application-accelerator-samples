@@ -181,6 +181,12 @@ You can list the services created using:
 ```shell
 tanzu services list
 ```
+
+You can show the status of the service using:
+
+```shell
+tanzu services get RedisCluster/music
+```
 <!--- #ENDIF -->
 <!--- #IF(#persistenceType == 'mongodb') -->
 ### Check the status of the service bound to the app
@@ -193,6 +199,12 @@ You can list the services created using:
 ```shell
 tanzu services list
 ```
+
+You can show the status of the service using:
+
+```shell
+tanzu services get MongoDBInstance/music
+```
 <!--- #ENDIF -->
 <!--- #IF(#persistenceType == 'jpa') -->
 <!--- #IF(#databaseType == 'h2') -->
@@ -201,7 +213,7 @@ You can deploy the application as is when using the embedded `H2` database.
 No service binding is necessary.
 
 <!--- #ELSE -->
-### Create the service and bind it to the app
+### Check the status of the service bound to the app
 
 <!--- #ENDIF -->
 <!--- #IF(#databaseType == 'mysql') -->
@@ -214,6 +226,11 @@ You can list the services created using:
 tanzu services list
 ```
 
+You can show the status of the service using:
+
+```shell
+tanzu services get MySQLInstance/music
+```
 <!--- #ENDIF -->
 <!--- #IF(#databaseType == 'postgres') -->
 The deployment includes a PostgreSQL instance using a provided service type.
@@ -225,6 +242,11 @@ You can list the services created using:
 tanzu services list
 ```
 
+You can show the status of the service using:
+
+```shell
+tanzu services get PostgreSQLInstance/music
+```
 <!--- #ENDIF -->
 <!--- #ENDIF -->
 
