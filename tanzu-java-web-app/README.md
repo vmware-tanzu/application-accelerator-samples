@@ -87,7 +87,7 @@ tanzu deploy
 
 ### Scale the number of instances
 
-Check the number of instances of you app using:
+Check the number of instances of your app using:
 
 ```sh
 tanzu app instance tanzu-java-web-app
