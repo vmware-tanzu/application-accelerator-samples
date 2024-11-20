@@ -1,4 +1,4 @@
-apiVersion: bitnami.database.tanzu.vmware.com/v1alpha1
+apiVersion: bitnami.caching.tanzu.vmware.com/v1alpha1
 kind: RedisCluster
 metadata:
   name: music

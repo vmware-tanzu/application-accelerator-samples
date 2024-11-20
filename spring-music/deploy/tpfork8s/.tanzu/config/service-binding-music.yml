@@ -5,21 +5,24 @@ metadata:
 spec:
   alias: music
   serviceRef:
-    apiGroup: bitnami.database.tanzu.vmware.com
 #IF(#persistenceType == 'jpa')
   #IF(#databaseType != 'h2')
     #IF(#databaseType == 'mysql')
+    apiGroup: bitnami.database.tanzu.vmware.com
     kind: MySQLInstance
     #ENDIF
     #IF(#databaseType == 'postgres')
+    apiGroup: bitnami.database.tanzu.vmware.com
     kind: PostgreSQLInstance
     #ENDIF
   #ENDIF
 #ELSE
     #IF(#persistenceType == 'mongodb')
+    apiGroup: bitnami.database.tanzu.vmware.com
     kind: MongoDBInstance
     #ENDIF
     #IF(#persistenceType == 'redis')
+    apiGroup: bitnami.caching.tanzu.vmware.com
     kind: RedisCluster
     #ENDIF
 #ENDIF
