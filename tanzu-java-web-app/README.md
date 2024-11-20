@@ -71,15 +71,6 @@ The project contains a `ContainerApp` manifest file that can be used when buildi
 cat .tanzu/config/tanzu-java-web-app.yml
 ```
 
-### Configure for native build with GraalVM
-
-If you would like the build to use GraalVM for compipling native image then use the following comands:
-
-```sh
-tanzu app config build non-secret-env set BP_NATIVE_IMAGE=true
-tanzu app config build non-secret-env set BP_MAVEN_ACTIVE_PROFILES=native
-```
-
 ### Configure HTTP Ingress Routing
 
 If you want to expose your application with a domain name and route traffic from the domain name to the deployed application, see [Adding HTTP Routing to an Application](https://docs.vmware.com/en/VMware-Tanzu-Platform/SaaS/create-manage-apps-tanzu-platform-k8s/how-to-ingress-to-app.html).
