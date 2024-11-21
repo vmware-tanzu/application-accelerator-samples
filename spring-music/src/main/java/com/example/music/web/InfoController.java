@@ -1,6 +1,7 @@
 package com.example.music.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.example.music.domain.ApplicationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+// #IF(#deploymentType != 'cloudfoundry')
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.core.env.Environment;
+// #ENDIF
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 // #IF(#deploymentType == 'cloudfoundry')
@@ -25,10 +29,12 @@ public class InfoController {
 
 // #ENDIF
     private Environment springEnvironment;
+    private ListableBeanFactory beanFactory;
 
     @Autowired
-    public InfoController(Environment springEnvironment) {
+    public InfoController(Environment springEnvironment, ListableBeanFactory beanFactory) {
         this.springEnvironment = springEnvironment;
+        this.beanFactory = beanFactory;
 // #IF(#deploymentType == 'cloudfoundry')
         this.cfEnv = new CfEnv();
 // #ENDIF
@@ -68,12 +74,36 @@ public class InfoController {
 // #ELSE
     @RequestMapping(value = "/appinfo")
     public ApplicationInfo info() {
-        return new ApplicationInfo(springEnvironment.getActiveProfiles(), new String[0]);
+        return new ApplicationInfo(springEnvironment.getActiveProfiles(), getServiceNames());
     }
 
     @RequestMapping(value = "/service")
     public List<String> showServiceInfo() {
-        return new ArrayList<>();
+        return Arrays.stream(getServiceNames()).toList();
+    }
+
+    private String[] getServiceNames() {
+        List<String> names = Arrays.stream(beanFactory.getBeanDefinitionNames()).toList();
+        List<String> svcNames = new ArrayList<>();
+        if (names.contains("jdbcConnectionDetails")) {
+            if (Arrays.asList(springEnvironment.getActiveProfiles()).contains("mysql")) {
+                svcNames.add("music:mysql");
+            }
+            else if (Arrays.asList(springEnvironment.getActiveProfiles()).contains("postgres")) {
+                svcNames.add("music:postgresql");
+            }
+            else {
+                svcNames.add("music:h2");
+            }
+        }
+        else if (names.contains("mongoConnectionDetails")) {
+            svcNames.add("music:mongo");
+        }
+        else if (names.contains("redisConnectionDetails")) {
+            svcNames.add("music:redis");
+        }
+        String[] ret = new String[svcNames.size()];
+        return svcNames.toArray(ret);
     }
 // #ENDIF
 }

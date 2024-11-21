@@ -40,7 +40,7 @@ spec:
     value: mysql
     #ENDIF
     #IF(#databaseType == 'postgres')
-    value: postgresql
+    value: postgres
     #ENDIF
   #ENDIF
 #ENDIF
