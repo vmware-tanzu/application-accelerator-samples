@@ -57,7 +57,7 @@ docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d po
 Then start the application:
 
 ```shell
-java -Dspring.profiles.active=postgresql -jar build/libs/spring-music-1.0.0.jar
+java -Dspring.profiles.active=postgres -jar build/libs/spring-music-1.0.0.jar
 ```
 
 <!--- #ENDIF -->
