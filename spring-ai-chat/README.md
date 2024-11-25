@@ -111,13 +111,6 @@ Run this command to scale to 1 instance
 tanzu app scale spring-ai-chat --instances=1
 ```
 
-### PostgreSQL/pgvector
-
-If you chose PostgreSQL/pgvector as your vector store, you'll need to create
-a PostgresSQL database instance before deploying the application. The PostgreSQL database needs to have the "vector" extension available.
-
-Instructions TBD.
-
 ### Use port-forward to access an app instance
 
 You can use the `app port-forward` command to access your app instance's endpoint.
