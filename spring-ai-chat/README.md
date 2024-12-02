@@ -20,11 +20,30 @@ In order to compile the production code:
 ./mvnw clean compile
 ```
 
+<!--- #IF(#vectorStoreType == 'simple') -->
+
 After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
 
 ```sh
 ./mvnw verify
 ```
+<!--- #ELSE -->
+### Using PostgreSQL/pgvector
+
+If you chose PostgreSQL/pgvector as your vector store, you'll need to run a PostgresSQL database instance before running the application. The PostgreSQL database needs to have the "vector" extension available.
+
+You can use this command to start a PostgreSQL container that includes the "vector" extension:
+
+```sh
+docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d pgvector/pgvector:pg17
+```
+
+After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
+
+```sh
+./mvnw -Dspring.profiles.active=pgvector verify
+```
+<!--- #ENDIF -->
 
 ## Start and interact
 Spring Boot has its own integrated Web Server (Apache Tomcat (https://tomcat.apache.org/)).
@@ -35,19 +54,35 @@ Set the `AI_API_KEY` environment variable with the API key to be used by your ap
 export AI_API_KEY='<your-api-key>'
 ```
 
-Launch application using default profile:
+<!--- #IF(#vectorStoreType == 'simple') -->
+### Using embedded simple store
+
+Launch application using the default profile:
 
 ```sh
 ./mvnw spring-boot:run
 ```
+<!--- #ELSE -->
+### Using PostgreSQL/pgvector
+
+If you chose PostgreSQL/pgvector as your vector store, you'll need to run a PostgresSQL database instance before running the application. The PostgreSQL database needs to have the "vector" extension available.
+
+You can use this command to start a PostgreSQL container that includes the "vector" extension:
+
+```sh
+docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d pgvector/pgvector:pg17
+```
+
+Run the application using the pgvector profile:
+
+```sh
+./mvnw -Dspring-boot.run.profiles=pgvector spring-boot:run
+```
+<!--- #ENDIF -->
 
 ### Accessing home page
 
-You can access the public page at `http://localhost:8080/` by a web browser or using `curl`:
-
-```sh
-curl -L -H 'Content-Type: application/html' http://localhost:8080/
-```
+You can access the public page at http://localhost:8080/ via a web browser.
 
 You'll be presented with a login page. You may login with either of the following sets
 of credentials:
@@ -103,6 +138,16 @@ You can set an environment variable for the app using this command:
 tanzu app env set spring-ai-chat AI_API_KEY=<your-api-key>
 ```
 
+<!--- #IF(#vectorStoreType == 'simple') -->
+
+### PostgreSQL/pgvector
+
+If you chose PostgreSQL/pgvector as your vector store, you'll need to create
+a PostgresSQL database instance before deploying the application. The PostgreSQL database needs to have the "vector" extension available.
+
+Instructions TBD.
+
+<!--- #ENDIF -->
 ### Scale the number of instances
 
 Run this command to scale to 1 instance

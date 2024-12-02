@@ -1,11 +1,14 @@
 engine {
 
-  applyTo("pom.xml" || "src/main/resources/application.properties") {
+  applyTo("README.md" || "pom.xml" || "src/main/resources/application.properties") {
     TextPreprocessor()
   }
 
-  if (#vectorStoreType != 'simple') {
-    Exclude({"**/SimpleVectorStoreConfig.java"}) 
+  if (#vectorStoreType == 'simple') {
+    Exclude({"**/schema-pgvector.sql", "**/application-pgvector.properties"})
+  }
+  else {
+    Exclude({"**/SimpleVectorStoreConfig.java"})
   }
 
   applyTo("pom.xml") {
