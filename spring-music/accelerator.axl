@@ -60,6 +60,7 @@ engine {
   if (#persistenceType == 'jpa') {
     select(
       !"src/main/java/com/example/music/config/data/**" &&
+      !"src/main/java/com/example/music/domain/RandomIdGenerator.java" &&
       !"src/main/java/com/example/music/repositories/mongodb/**" &&
       !"src/main/java/com/example/music/repositories/redis/**")
   }
