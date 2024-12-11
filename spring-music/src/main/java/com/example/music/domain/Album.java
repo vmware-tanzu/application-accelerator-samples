@@ -1,11 +1,10 @@
 package com.example.music.domain;
 
 // #IF(#persistenceType == 'jpa')
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
@@ -13,9 +12,8 @@ import jakarta.persistence.Id;
 public class Album {
 // #IF(#persistenceType == 'jpa')
     @Id
+    @UuidGenerator
     @Column(length=40)
-    @GeneratedValue(generator="randomId")
-    @GenericGenerator(name="randomId", strategy="com.example.music.domain.RandomIdGenerator")
 // #ENDIF
     private String id;
 
