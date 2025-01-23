@@ -6,7 +6,8 @@ metadata:
 spec:
   git:
     ref:
-      branch: main
+      branch: tp-10.x
+      tag: tp-10.1
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: fragments/java-version
 ---
@@ -17,7 +18,8 @@ metadata:
 spec:
   git:
     ref:
-      branch: main
+      branch: tp-10.x
+      tag: tp-10.1
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: fragments/build-wrapper-gradle
 ---
@@ -28,6 +30,7 @@ metadata:
 spec:
   git:
     ref:
-      branch: main
+      branch: tp-10.x
+      tag: tp-10.1
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: fragments/build-wrapper-maven
