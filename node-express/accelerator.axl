@@ -1,5 +1,9 @@
 engine {
 
+  applyTo("README.md") {
+    TextPreprocessor()
+  }
+
   if (#deploymentType == 'none') {
     select(!"deploy/**")
   } else {
