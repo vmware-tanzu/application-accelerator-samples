@@ -1,0 +1,11 @@
+accelerator:
+  options:
+  - name: deploymentType
+    inputType: select
+    label: Deployment type
+    choices:
+    - value: tpfork8s
+      text: Tanzu Platform for Kubernetes ContainerApp
+    - value: none
+      text: Skip deployment artifacts
+    defaultValue: tpfork8s

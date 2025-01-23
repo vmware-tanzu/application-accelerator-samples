@@ -1,0 +1,34 @@
+engine {
+
+  if (#deploymentType == 'none') {
+    select(!"deploy/**")
+  } else {
+    if (#deploymentType == 'tpfork8s') {
+      let uuid = T(java.util.UUID).randomUUID() in {
+        applyTo("deploy/tpfork8s/tanzu.yml") {
+          ReplaceSnippet(text: "node-express", with: #artifactId.toLowerCase())
+          OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: 'config-' + #uuid.toString() })
+          RewritePath(rewriteTo: #filename)
+        }
+      }
+      applyTo("deploy/tpfork8s/.tanzu/config/node-express.yml") {
+        ReplaceText({{text: "node-express", with: #artifactId.toLowerCase()}})
+        RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
+      }
+      applyTo("deploy/tpfork8s/.tanzu/config/httproute-node-express.yml") {
+        ReplaceText({{text: "node-express", with: #artifactId.toLowerCase()}})
+        RewritePath(rewriteTo: '.tanzu/config/httproute-' + #artifactId.toLowerCase() + '.yml')
+      }
+      select(!"deploy/**")
+    }
+  }
+
+  // Update the artifact name as needed
+  applyTo("README.md" || "package.json") {
+    ReplaceText({{text: "node-express", with: #artifactId.toLowerCase()}})
+  }
+
+  // Create the provenance file
+  Provenance()
+
+}
