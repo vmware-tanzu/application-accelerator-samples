@@ -9,3 +9,4 @@ spec:
   ports:
   - name: main
     port: 3000
+  replicas: 1
