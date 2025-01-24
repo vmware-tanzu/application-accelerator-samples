@@ -1,0 +1,12 @@
+{
+  "name": "node-express",
+  "version": "1.0.0",
+  "description": "accelerator-description",
+  "main": "server.js",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.0.1"
+  }
+}
