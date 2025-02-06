@@ -8,18 +8,12 @@ metadata:
     healthcheck.gslb.tanzu.vmware.com/port: "80"
 spec:
   parentRefs:
-  - group: gateway.networking.k8s.io
-    kind: Gateway
-    name: default-gateway
-    sectionName: http-where-for-dinner
+  - group: networking.tanzu.vmware.com
+    kind: Entrypoint
+    name: main 
   rules:
   - backendRefs:
     - group: ""
       kind: Service
       name: spring-cloud-gateway
       port: 80
-      weight: 1
-    matches:
-    - path:
-        type: PathPrefix
-        value: /
