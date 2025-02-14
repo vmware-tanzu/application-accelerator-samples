@@ -1,0 +1,24 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  name: java-rest-service
+spec:
+  acceptedServiceBindings:
+  - name: customer-profile
+    types:
+    #IF(#databaseType == 'postgres')
+    - postgresql
+    #ENDIF
+    #IF(#databaseType == 'mysql')
+    - mysql
+    #ENDIF
+  build:
+    buildpacks: {}
+    nonSecretEnv:
+    - name: BP_JVM_VERSION
+      value: "21"
+    path: ../..
+  ports:
+  - name: main
+    port: 8080
+  replicas: 1

@@ -1,0 +1,57 @@
+engine {
+
+  // Include files for the selected build tool
+  if (#buildTool == "maven") {
+    applyTo("pom.xml") {
+      ReplaceText({{text: "rest-service-db", with: #projectName}})  
+    }
+    Exclude({"*gradle*"})
+    + InvokeFragment(reference: "build-wrapper-maven")
+  }
+  if (#buildTool == "gradle") {
+    applyTo("settings.gradle") {
+      ReplaceText({{text: "rest-service-db", with: #projectName}})  
+    }
+    {
+      Exclude({"pom.xml"})
+      + InvokeFragment(reference: "build-wrapper-gradle")
+    }
+  }
+
+  applyTo("README.md" || "pom.xml" || "build.gradle.kts" || "docker-compose.yaml" || ".tanzu/config/**" || "src/main/resources/application.properties" || "src/test/resources/application-test.properties") {
+    TextPreprocessor()
+  }
+
+  if (#databaseMigrationTool == "flyway") {
+    Exclude({"src/main/resources/db/changelog/**"})
+  }
+  else {
+    Exclude({"src/main/resources/db/migration/**"})
+  }
+
+  // Update the configuration id and app name
+  let uuid = T(java.util.UUID).randomUUID() in {
+    applyTo("tanzu.yml") {
+      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: 'config-' + #uuid.toString() })
+    }
+  }
+  applyTo(".tanzu/config/java-rest-service.yml") {
+    ReplaceText({{text: "java-rest-service", with: #artifactId.toLowerCase()}})
+  }
+  applyTo(".tanzu/config/httproute-java-rest-service.yml") {
+    ReplaceText({{text: "java-rest-service", with: #artifactId.toLowerCase()}})
+  }
+  let id = T(java.util.UUID).randomUUID().toString().replace("-","").substring(2,8) in {
+    applyTo(".tanzu/config/service-binding-customer-profile.yml") {
+      ReplaceText({{text: "java-rest-service", with: #artifactId.toLowerCase()}})
+      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.metadata.name", value: 'customer-profile-' + #id.toString() })
+    }
+  }
+  if (#databaseType == "postgres") {
+    Exclude({".tanzu/config/mysql-instance-customer-profile.yml"})
+  }
+  else {
+    Exclude({".tanzu/config/postgresql-instance-customer-profile.yml"})
+  }
+
+}

@@ -1,0 +1,4 @@
+databaseChangeLog:
+- include:
+    file: V1.0__create_customer_profile_table.sql
+    relativeToChangelogFile: true

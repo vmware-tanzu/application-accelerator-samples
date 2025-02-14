@@ -1,0 +1,68 @@
+accelerator:
+  options:
+    - name: buildTool
+      label: Build Tool
+      inputType: select
+      required: true
+      defaultValue: maven
+      choices:
+        - value: maven
+          text: Maven (https://maven.apache.org/)
+        - value: gradle
+          text: Gradle (https://gradle.org/)
+    - name: databaseType
+      inputType: select
+      label: Database type to use
+      choices:
+        - value: "postgres"
+          text: PostgreSQL
+        - value: "mysql"
+          text: MySQL
+      defaultValue: "postgres"
+      required: true
+    - name: databaseMigrationTool
+      label: Database Migration Tool
+      inputType: select
+      required: true
+      defaultValue: flyway
+      choices:
+        - value: flyway
+          text: Flyway (https://flywaydb.org/)
+        - value: liquibase
+          text: Liquibase (https://docs.liquibase.com/)
+    - name: databaseIntegrationTestType
+      inputType: select
+      label: Type of database integration testing
+      description: "Testcontainers is preferred since that is using the target database technology."
+      choices:
+        - value: "testcontainers"
+          text: "Testcontainers"
+        - value: "in-memory"
+          text: "Java In-Memory Database (H2)"
+      defaultValue: "testcontainers"
+  imports:
+  # - name: spring-boot-postgresql
+  #   expose:
+  #   - name: databaseName
+  #     dependsOn:
+  #       name: databaseType
+  #       value: postgres
+  # - name: spring-boot-mysql
+  #   expose:
+  #   - name: databaseName
+  #     dependsOn:
+  #       name: databaseType
+  #       value: mysql
+  # - name: spring-boot-database
+  #   expose:
+  #   - name: databaseMigrationTool
+  #   - name: databaseIntegrationTestType
+  # - name: live-update
+  #   expose:
+  #     - name: liveUpdateIDESupport
+  #       dependsOn:
+  #         name: buildTool
+  #         value: 'maven'
+  # - name: tap-workload
+  - name: build-wrapper-maven
+  - name: build-wrapper-gradle
