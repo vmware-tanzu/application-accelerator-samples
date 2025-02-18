@@ -3,14 +3,14 @@ engine {
   // Include files for the selected build tool
   if (#buildTool == "maven") {
     applyTo("pom.xml") {
-      ReplaceText({{text: "rest-service-db", with: #projectName}})  
+      ReplaceSnippet(text: "rest-service-db", with: #projectName)
     }
     Exclude({"*gradle*"})
     + InvokeFragment(reference: "build-wrapper-maven")
   }
   if (#buildTool == "gradle") {
     applyTo("settings.gradle") {
-      ReplaceText({{text: "rest-service-db", with: #projectName}})  
+      ReplaceSnippet(text: "rest-service-db", with: #projectName)  
     }
     {
       Exclude({"pom.xml"})
@@ -36,14 +36,14 @@ engine {
     }
   }
   applyTo(".tanzu/config/java-rest-service.yml") {
-    ReplaceText({{text: "java-rest-service", with: #artifactId.toLowerCase()}})
+    ReplaceSnippet(text: "java-rest-service", with: #artifactId.toLowerCase())
   }
   applyTo(".tanzu/config/httproute-java-rest-service.yml") {
-    ReplaceText({{text: "java-rest-service", with: #artifactId.toLowerCase()}})
+    ReplaceSnippet(text: "java-rest-service", with: #artifactId.toLowerCase())
   }
   let id = T(java.util.UUID).randomUUID().toString().replace("-","").substring(2,8) in {
     applyTo(".tanzu/config/service-binding-customer-profile.yml") {
-      ReplaceText({{text: "java-rest-service", with: #artifactId.toLowerCase()}})
+      ReplaceSnippet(text: "java-rest-service", with: #artifactId.toLowerCase())
       OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.metadata.name", value: 'customer-profile-' + #id.toString() })
     }
   }
