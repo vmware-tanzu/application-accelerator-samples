@@ -1,0 +1,20 @@
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+    name: customer-profile-TBD
+spec:
+  alias: customer-profile
+  serviceRef:
+    #IF(#databaseType == 'postgres')
+    apiGroup: bitnami.database.tanzu.vmware.com
+    kind: PostgreSQLInstance
+    #ENDIF
+    #IF(#databaseType == 'mysql')
+    apiGroup: bitnami.database.tanzu.vmware.com
+    kind: MySQLInstance
+    #ENDIF
+    name: customer-profile
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: java-rest-service

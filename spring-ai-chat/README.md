@@ -20,14 +20,14 @@ In order to compile the production code:
 ./mvnw clean compile
 ```
 
-<!--- #IF(#vectorStoreType == 'simple') -->
+<!-- #IF(#vectorStoreType == 'simple') -->
 
 After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
 
 ```sh
 ./mvnw verify
 ```
-<!--- #ELSE -->
+<!-- #ELSE -->
 ### Using PostgreSQL/pgvector
 
 If you chose PostgreSQL/pgvector as your vector store, you'll need to run a PostgresSQL database instance before running the application. The PostgreSQL database needs to have the "vector" extension available.
@@ -43,7 +43,7 @@ After that it is a good habit to compile the test classes and execute those test
 ```sh
 ./mvnw -Dspring.profiles.active=pgvector verify
 ```
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 
 ## Start and interact
 Spring Boot has its own integrated Web Server (Apache Tomcat (https://tomcat.apache.org/)).
@@ -54,7 +54,7 @@ Set the `AI_API_KEY` environment variable with the API key to be used by your ap
 export AI_API_KEY='<your-api-key>'
 ```
 
-<!--- #IF(#vectorStoreType == 'simple') -->
+<!-- #IF(#vectorStoreType == 'simple') -->
 ### Using embedded simple store
 
 Launch application using the default profile:
@@ -62,7 +62,7 @@ Launch application using the default profile:
 ```sh
 ./mvnw spring-boot:run
 ```
-<!--- #ELSE -->
+<!-- #ELSE -->
 ### Using PostgreSQL/pgvector
 
 If you chose PostgreSQL/pgvector as your vector store, you'll need to run a PostgresSQL database instance before running the application. The PostgreSQL database needs to have the "vector" extension available.
@@ -78,7 +78,7 @@ Run the application using the pgvector profile:
 ```sh
 ./mvnw -Dspring-boot.run.profiles=pgvector spring-boot:run
 ```
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 
 ### Accessing home page
 
@@ -138,7 +138,7 @@ You can set an environment variable for the app using this command:
 tanzu app env set spring-ai-chat AI_API_KEY=<your-api-key>
 ```
 
-<!--- #IF(#vectorStoreType == 'simple') -->
+<!-- #IF(#vectorStoreType == 'simple') -->
 
 ### PostgreSQL/pgvector
 
@@ -147,7 +147,7 @@ a PostgresSQL database instance before deploying the application. The PostgreSQL
 
 Instructions TBD.
 
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 ### Scale the number of instances
 
 Run this command to scale to 1 instance
