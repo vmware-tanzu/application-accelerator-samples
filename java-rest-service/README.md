@@ -28,15 +28,15 @@ In order to further develop this application the following tools needs to be set
 
 In order to compile the production code:
 
-<!--- #IF(#buildTool == 'maven') -->
+<!-- #IF(#buildTool == 'maven') -->
 ```bash
 ./mvnw clean compile
 ```
-<!--- #ELSE -->
+<!-- #ELSE -->
 ```bash
 ./gradlew clean compileJava
 ```
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 
 ### Database
 
@@ -46,15 +46,15 @@ For local development a `docker compose` database instance will be started using
 
 After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
 
-<!--- #IF(#buildTool == 'maven') -->
+<!-- #IF(#buildTool == 'maven') -->
 ```bash
 ./mvnw verify
 ```
-<!--- #ELSE -->
+<!-- #ELSE -->
 ```bash
 ./gradlew compileTestJava build
 ```
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 
 ### Start the app locally
 
@@ -63,15 +63,15 @@ to start the application a database instance should be running.
 
 Launch application using a `docker-compose` database instance:
 
-<!--- #IF(#buildTool == 'maven') -->
+<!-- #IF(#buildTool == 'maven') -->
 ```bash
 ./mvnw spring-boot:run
 ```
-<!--- #ELSE -->
+<!-- #ELSE -->
 ```bash
 ./gradlew bootRun
 ```
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 
 ## Tanzu Platform Deployment
 
@@ -112,7 +112,7 @@ tanzu deploy
 
 ### Check the status of the service bound to the app
 
-<!--- #IF(#databaseType == 'postgres') -->
+<!-- #IF(#databaseType == 'postgres') -->
 The deployment includes a PostgreSQL instance using a provided service type.
 The instance is bound to the app.
 
@@ -127,7 +127,7 @@ You can show the status of the service using:
 ```shell
 tanzu services get PostgreSQLInstance/customer-profile
 ```
-<!--- #ELSE -->
+<!-- #ELSE -->
 The deployment includes a MySQL instance using a provided service type.
 The instance is bound to the app.
 
@@ -142,7 +142,7 @@ You can show the status of the service using:
 ```shell
 tanzu services get MySQLInstance/customer-profile
 ```
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 
 ### Check the status of the app deployment
 

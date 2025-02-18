@@ -25,7 +25,7 @@ npm run server
 
 Access the local application by opening your browser using the URL [http://localhost:3000](http://localhost:300) or use `cURL`.
 
-<!--- #IF(#deploymentType == 'tpfork8s') -->
+<!-- #IF(#deploymentType == 'tpfork8s') -->
 ## Tanzu Platform deployment
 
 ### Prerequisites
@@ -78,4 +78,4 @@ tanzu app port-forward node-express --port 3000
 ```
 
 Then you can access the app using http://localhost:3000.
-<!--- #ENDIF -->
+<!-- #ENDIF -->

@@ -20,7 +20,7 @@ To build a runnable Spring Boot jar file, run the following command:
 
 ### Starting the database server
 
-<!--- #IF(#persistenceType == 'jpa') -->
+<!-- #IF(#persistenceType == 'jpa') -->
 One Spring bean profile should be activated to choose the database provider that the application should use.
 The profile is selected by setting the system property `spring.profiles.active` when starting the app.
 
@@ -35,7 +35,7 @@ The supported databases are:
 
 The application can be started locally using the following configurations and commands.
 
-<!--- #IF(#databaseType == 'h2') -->
+<!-- #IF(#databaseType == 'h2') -->
 #### Using H2 database
 
 Start the application without a profile:
@@ -44,8 +44,8 @@ Start the application without a profile:
 java -jar build/libs/spring-music-1.0.0.jar
 ```
 
-<!--- #ENDIF -->
-<!--- #IF(#databaseType == 'postgres') -->
+<!-- #ENDIF -->
+<!-- #IF(#databaseType == 'postgres') -->
 #### Using PostgreSQL database
 
 First, start a Docker container fpr `postgres`
@@ -60,8 +60,8 @@ Then start the application:
 java -Dspring.profiles.active=postgres -jar build/libs/spring-music-1.0.0.jar
 ```
 
-<!--- #ENDIF -->
-<!--- #IF(#databaseType == 'mysql') -->
+<!-- #ENDIF -->
+<!-- #IF(#databaseType == 'mysql') -->
 #### Using MySQL database
 
 First, start a Docker container fpr `mysql`
@@ -105,9 +105,9 @@ Once all of this is done, start the application:
 java -Dspring.profiles.active=mysql -jar build/libs/spring-music-1.0.0.jar
 ```
 
-<!--- #ENDIF -->
-<!--- #ENDIF -->
-<!--- #IF(#persistenceType == 'redis') -->
+<!-- #ENDIF -->
+<!-- #ENDIF -->
+<!-- #IF(#persistenceType == 'redis') -->
 Start the redis server using:
 
 ```shell
@@ -119,8 +119,8 @@ The application can be started locally using the following command:
 java -jar build/libs/spring-music-1.0.0.jar
 ```
 
-<!--- #ENDIF -->
-<!--- #IF(#persistenceType == 'mongodb') -->
+<!-- #ENDIF -->
+<!-- #IF(#persistenceType == 'mongodb') -->
 Start the MongoDB server using:
 
 ```shell
@@ -133,10 +133,10 @@ The application can be started locally using the following command:
 java -jar build/libs/spring-music-1.0.0.jar
 ```
 
-<!--- #ENDIF -->
+<!-- #ENDIF -->
 Access the application by opening your browser using the URL [http://localhost:8080](http://localhost:8080)
 
-<!--- #IF(#deploymentType == 'tpfork8s') -->
+<!-- #IF(#deploymentType == 'tpfork8s') -->
 ## Tanzu Platform deployment
 
 ### Prerequisites
@@ -170,7 +170,7 @@ Just run:
 tanzu deploy
 ```
 
-<!--- #IF(#persistenceType == 'redis') -->
+<!-- #IF(#persistenceType == 'redis') -->
 ### Check the status of the service bound to the app
 
 The deployment includes a Redis instance using a provided service type.
@@ -187,8 +187,8 @@ You can show the status of the service using:
 ```shell
 tanzu services get RedisCluster/music
 ```
-<!--- #ENDIF -->
-<!--- #IF(#persistenceType == 'mongodb') -->
+<!-- #ENDIF -->
+<!-- #IF(#persistenceType == 'mongodb') -->
 ### Check the status of the service bound to the app
 
 The deployment includes a MongoDB instance using a provided service type.
@@ -205,18 +205,18 @@ You can show the status of the service using:
 ```shell
 tanzu services get MongoDBInstance/music
 ```
-<!--- #ENDIF -->
-<!--- #IF(#persistenceType == 'jpa') -->
-<!--- #IF(#databaseType == 'h2') -->
+<!-- #ENDIF -->
+<!-- #IF(#persistenceType == 'jpa') -->
+<!-- #IF(#databaseType == 'h2') -->
 
 You can deploy the application as is when using the embedded `H2` database.
 No service binding is necessary.
 
-<!--- #ELSE -->
+<!-- #ELSE -->
 ### Check the status of the service bound to the app
 
-<!--- #ENDIF -->
-<!--- #IF(#databaseType == 'mysql') -->
+<!-- #ENDIF -->
+<!-- #IF(#databaseType == 'mysql') -->
 The deployment includes a MySQL instance using a provided service type.
 The instance is bound to the app.
 
@@ -231,8 +231,8 @@ You can show the status of the service using:
 ```shell
 tanzu services get MySQLInstance/music
 ```
-<!--- #ENDIF -->
-<!--- #IF(#databaseType == 'postgres') -->
+<!-- #ENDIF -->
+<!-- #IF(#databaseType == 'postgres') -->
 The deployment includes a PostgreSQL instance using a provided service type.
 The instance is bound to the app.
 
@@ -247,8 +247,8 @@ You can show the status of the service using:
 ```shell
 tanzu services get PostgreSQLInstance/music
 ```
-<!--- #ENDIF -->
-<!--- #ENDIF -->
+<!-- #ENDIF -->
+<!-- #ENDIF -->
 
 ### Check the status of the app deployment
 
@@ -270,4 +270,4 @@ tanzu app port-forward spring-music --port 8080
 
 Then you can access the app using http://localhost:8080.
 
-<!--- #ENDIF -->
+<!-- #ENDIF -->
