@@ -1,0 +1,12 @@
+apiVersion: apps.tanzu.vmware.com/v1
+kind: ContainerApp
+metadata:
+  name: python-flask
+spec:
+  build:
+    buildpacks: {}
+    path: ../..
+  ports:
+  - name: main
+    port: 8080
+  replicas: 1
