@@ -1,0 +1,8 @@
+{
+  "projectName": "customer-profile",
+  "buildTool": "maven",
+  "databaseMigrationTool": "flyway",
+  "databaseType": "postgres",
+  "databaseName": "test",
+  "databaseIntegrationTestType":  "testcontainers"
+}

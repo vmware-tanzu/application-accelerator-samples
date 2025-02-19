@@ -1,0 +1,8 @@
+{
+  "projectName": "customer-profile",
+  "buildTool": "maven",
+  "databaseMigrationTool": "liquibase",
+  "databaseType": "mysql",
+  "databaseName": "test",
+  "databaseIntegrationTestType":  "testcontainers"
+}
