@@ -1,0 +1,8 @@
+{
+  "projectName": "customer-profile",
+  "buildTool": "gradle",
+  "databaseMigrationTool": "liquibase",
+  "databaseType": "postgres",
+  "databaseName": "test",
+  "databaseIntegrationTestType":  "testcontainers"
+}

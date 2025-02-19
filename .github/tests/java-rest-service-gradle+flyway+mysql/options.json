@@ -1,0 +1,8 @@
+{
+  "projectName": "customer-profile",
+  "buildTool": "gradle",
+  "databaseMigrationTool": "flyway",
+  "databaseType": "mysql",
+  "databaseName": "test",
+  "databaseIntegrationTestType":  "testcontainers"
+}
