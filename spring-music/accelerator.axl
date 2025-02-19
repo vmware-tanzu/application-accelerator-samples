@@ -7,22 +7,22 @@ engine {
   if (#deploymentType == 'none') {
     select(!"deploy/**")
   } else {
-    if (#deploymentType == 'tpfork8s') {
-      applyTo("deploy/tpfork8s/tanzu.yml") {
+    if (#deploymentType == 'tanzu') {
+      applyTo("deploy/tanzu/tanzu.yml") {
         ReplaceSnippet(text: "spring-music", with: #artifactId.toLowerCase())
         RewritePath(rewriteTo: #filename)
       }
-      applyTo("deploy/tpfork8s/.tanzu/config/spring-music.yml") {
+      applyTo("deploy/tanzu/.tanzu/config/spring-music.yml") {
         ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
         RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
       }
-      applyTo("deploy/tpfork8s/.tanzu/config/httproute-spring-music.yml") {
+      applyTo("deploy/tanzu/.tanzu/config/httproute-spring-music.yml") {
         ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
         RewritePath(rewriteTo: '.tanzu/config/httproute-' + #artifactId.toLowerCase() + '.yml')
       }
       if ((#persistenceType == 'jpa' && #databaseType != 'h2') || #persistenceType == 'mongodb' || #persistenceType == 'redis') {
         let id = T(java.util.UUID).randomUUID().toString().replace("-","").substring(2,8) in {
-          applyTo("deploy/tpfork8s/.tanzu/config/service-binding-music.yml") {
+          applyTo("deploy/tanzu/.tanzu/config/service-binding-music.yml") {
             ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
             OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.metadata.name", value: 'music-' + #id.toString() })
             RewritePath(rewriteTo: '.tanzu/config/service-binding-music.yml')
@@ -30,25 +30,25 @@ engine {
         }
       }
       if (#persistenceType == 'jpa' && #databaseType == 'mysql') {
-        applyTo("deploy/tpfork8s/.tanzu/config/mysql-instance-music.yml") {
+        applyTo("deploy/tanzu/.tanzu/config/mysql-instance-music.yml") {
           ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
           RewritePath(rewriteTo: '.tanzu/config/mysql-instance-music.yml')
         }
       }
       if (#persistenceType == 'jpa' && #databaseType == 'postgres') {
-        applyTo("deploy/tpfork8s/.tanzu/config/postgresql-instance-music.yml") {
+        applyTo("deploy/tanzu/.tanzu/config/postgresql-instance-music.yml") {
           ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
           RewritePath(rewriteTo: '.tanzu/config/postgresql-instance-music.yml')
         }
       }
       if (#persistenceType == 'mongodb') {
-        applyTo("deploy/tpfork8s/.tanzu/config/mongodb-instance-music.yml") {
+        applyTo("deploy/tanzu/.tanzu/config/mongodb-instance-music.yml") {
           ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
           RewritePath(rewriteTo: '.tanzu/config/mongodb-instance-music.yml')
         }
       }
       if (#persistenceType == 'redis') {
-        applyTo("deploy/tpfork8s/.tanzu/config/redis-instance-music.yml") {
+        applyTo("deploy/tanzu/.tanzu/config/redis-instance-music.yml") {
           ReplaceText({{text: "spring-music", with: #artifactId.toLowerCase()}})
           RewritePath(rewriteTo: '.tanzu/config/redis-instance-music.yml')
         }

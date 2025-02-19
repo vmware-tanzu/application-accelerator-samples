@@ -136,7 +136,7 @@ java -jar build/libs/spring-music-1.0.0.jar
 <!-- #ENDIF -->
 Access the application by opening your browser using the URL [http://localhost:8080](http://localhost:8080)
 
-<!-- #IF(#deploymentType == 'tpfork8s') -->
+<!-- #IF(#deploymentType == 'tanzu') -->
 ## Tanzu Platform deployment
 
 ### Prerequisites
