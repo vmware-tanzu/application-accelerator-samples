@@ -1,0 +1,14 @@
+{
+  "msgBrokerName" : "bar-broker",
+  "applicationRole" : "processor",
+  "resultChannel" : "bar-result",
+  "resultChannelGroup" : "bar-result-group",
+  "includeBuildToolWrapper" : true,
+  "sourceChannel" : "bar-source",
+  "groupId" : "com.example",
+  "artifactId" : "streaming-app",
+  "packageName" : "com.example.stream",
+  "objectModelClassName" : "Bar",
+  "projectName" : "spring-streaming-app",
+  "sourceChannelGroup" : "bar-source-group"
+}

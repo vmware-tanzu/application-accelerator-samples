@@ -1,0 +1,14 @@
+apiVersion: services.tanzu.vmware.com/v1
+kind: ServiceBinding
+metadata:
+    name: foo-broker-000000
+spec:
+  alias: foo-broker
+  serviceRef:
+    apiGroup: bitnami.messaging.tanzu.vmware.com
+    kind: RabbitmqCluster
+    name: foo-broker
+  targetRef:
+    apiGroup: apps.tanzu.vmware.com
+    kind: ContainerApp
+    name: streaming-app
