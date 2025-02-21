@@ -1,0 +1,14 @@
+{
+  "msgBrokerName" : "foo-broker",
+  "applicationRole" : "source",
+  "resultChannel" : "foo-result",
+  "resultChannelGroup" : "foo-result-group",
+  "includeBuildToolWrapper" : true,
+  "sourceChannel" : "foo-source",
+  "groupId" : "com.example",
+  "artifactId" : "streaming-app",
+  "packageName" : "com.example.stream",
+  "objectModelClassName" : "Foo",
+  "projectName" : "spring-streaming-app",
+  "sourceChannelGroup" : "foo-source-group"
+}

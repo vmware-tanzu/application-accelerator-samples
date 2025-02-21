@@ -17,7 +17,7 @@ for test_name in ${PATTERN}; do
     echo "** skipping $test_name **"
   else
     echo "** TESTING $test_name **"
-    ./generate.sh $test_name
+    ./generate-local.sh $test_name
     ./run-test.sh $test_name
   fi
 done

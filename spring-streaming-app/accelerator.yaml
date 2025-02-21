@@ -1,0 +1,77 @@
+accelerator:
+  options:
+    - name: artifactId
+      inputType: text
+      defaultValue: "streaming-app"
+      label: Artifact name
+      description: "The name of the project and artifact that will be created."
+      required: true
+    - name: groupId
+      inputType: text
+      defaultValue: "com.example"
+      label: Group Name
+      description: "The group name of the project that will be created."
+      required: true
+    - name: packageName
+      inputType: text
+      defaultValue: "com.example.stream"
+      label: Service Root Package Name
+      description: "The base Java package name used for the application."
+      required: true
+    - name: objectModelClassName
+      inputType: text
+      defaultValue: "Foo"
+      label: Model Class Name
+      description: "The name of class that will be used for the model object that implements the event/message passed between services."           
+      required: true  
+    - label: Application Role
+      description: "The stream role of the generated application.  The application can be a source, processor, or sink."
+      defaultValue: source
+      name: applicationRole
+      inputType: radio
+      required: true   
+      choices:
+        - text: "Source: If selected, the generated application will contain code to function as a producer/source."
+          value: source
+        - text: "Processor: If selected, the generated application will contain code to function as a processor."
+          value: processor
+        - text: "Sink: If selected, the generated application will contain code to function as a consumer/sink."
+          value: sink             
+    - label: Message Source Channel
+      name: sourceChannel
+      inputType: text
+      defaultValue: "foo-source"
+      description: Name of the source channel that flows from the producer to the processor.  Needed if the application functions as a source or processor.
+      required: true   
+    - label: Message Source Channel Group    
+      name: sourceChannelGroup
+      inputType: text
+      defaultValue: "foo-source-group"
+      description: Name of the source channel group.  Needed if the application functions as a processor.
+      required: true 
+      dependsOn: 
+        name: applicationRole    
+        value: processor
+    - label: Message Result Channel         
+      name: resultChannel
+      inputType: text
+      defaultValue: "foo-result"
+      description: Name of the result channel that flows from the processor to the sink.   Needed if the application functions as a processor or sink.
+      required: true  
+    - label: Message Result Channel Group   
+      name: resultChannelGroup
+      inputType: text
+      defaultValue: "foo-result-group"
+      description: Name of the result channel group.  Needed if the application functions as an event processor or sink.
+      required: true    
+      dependsOn: 
+        name: applicationRole    
+        value: sink
+    - label: Message Broker Name
+      name: msgBrokerName
+      inputType: text
+      defaultValue: "foo-broker"
+      description: The name of the message broker to connect to for sending and receiving messages.
+      required: true
+  imports:
+  - name: build-wrapper-maven
