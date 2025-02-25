@@ -1,0 +1,11 @@
+accelerator:
+  options:
+  - name: deploymentType
+    inputType: select
+    label: Deployment type
+    choices:
+    - value: tanzu
+      text: Tanzu Platform ContainerApp
+    - value: none
+      text: Skip deployment artifacts
+    defaultValue: tanzu
