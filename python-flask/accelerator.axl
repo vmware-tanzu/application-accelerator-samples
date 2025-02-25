@@ -26,7 +26,7 @@ engine {
 
   // Update the artifact name as needed
   applyTo("README.md") {
-    ReplaceText({{text: "python-flask", with: #artifactId.toLowerCase()}})
+    ReplaceSnippet(text: "python-flask", with: #artifactId.toLowerCase())
   }
 
   // Create the provenance file
