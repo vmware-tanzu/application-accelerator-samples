@@ -2,7 +2,7 @@ engine {
   Include({"**"})
 
   applyTo("pom.xml") {
-    ReplaceSnippet("<groupId>com.example</groupId>", '<groupId>' + #groupId.toLowerCase() + '</groupId>')
+    ReplaceSnippet("<groupId>com.example</groupId>", `<groupId>#{#groupId.toLowerCase()}</groupId>`)
     ReplaceSnippet("spring-streaming-app", #artifactId.toLowerCase())
   }
 
@@ -26,19 +26,19 @@ engine {
   let modelObject = #objectModelClassName.toLowerCase() in {
     applyTo("src/main/java/com/example/stream/model/Foo.java") {
       ReplaceSnippet(text: "Foo", with: #objectModelClassName)
-      RewritePath(regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)model(?<untouchedpath>.*)" , rewriteTo: 'src/' + #sourceset + '/java/' + #currentpackage + '/model/' + #objectModelClassName + ".java")
+      RewritePath(regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)model(?<untouchedpath>.*)" , rewriteTo: `src/#{#sourceset}/java/#{#currentpackage}/model/#{#objectModelClassName}.java`)
     }
     applyTo("src/main/java/com/example/stream/functions/**.java") {
       ReplaceSnippet(text: "Foo", with: #objectModelClassName)
       ReplaceSnippet(text: "foo", with: #modelObject)
-      RewritePath(regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)functions/Foo(?<untouchedpath>.*)" , rewriteTo: 'src/' + #sourceset + '/java/' + #currentpackage + '/functions/' + #objectModelClassName + #untouchedpath)
+      RewritePath(regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)functions/Foo(?<untouchedpath>.*)" , rewriteTo: `src/#{#sourceset}/java/#{#currentpackage}/functions/#{#objectModelClassName}#{#untouchedpath}`)
     }
   }
 
   let packageDirectory = #packageName.replace(".", "/") in {
     applyTo("**/*.java") {
-      ReplaceText({{text: "com.example.stream", with: #packageName}})
-      RewritePath(regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)stream(?<untouchedpath>.*)" , rewriteTo: 'src/' + #sourceset + '/java/' + #packageDirectory + '/' + #untouchedpath)
+      ReplaceSnippet(text: "com.example.stream", with: #packageName)
+      RewritePath(regex: "src/(?<sourceset>.*)/java/(?<currentpackage>.*/)stream(?<untouchedpath>.*)" , rewriteTo: `src/#{#sourceset}/java/#{#packageDirectory}/#{#untouchedpath}`)
     }
   }
 
@@ -52,7 +52,7 @@ engine {
     ReplaceText({
           {text: "streaming-app", with: #artifactId.toLowerCase()},
           {text: "foo-broker", with: #msgBrokerName.toLowerCase()}})
-    RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
+    RewritePath(rewriteTo: `.tanzu/config/#{#artifactId.toLowerCase()}.yml`)
   }
 
   // The service binding
@@ -62,7 +62,7 @@ engine {
                 {text: "streaming-app", with: #artifactId.toLowerCase()},
                 {text: "foo-broker", with: #msgBrokerName.toLowerCase()}})
       OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.metadata.name", value: #msgBrokerName.toLowerCase() + '-' + #id.toString() })
-      RewritePath(rewriteTo: '.tanzu/config/service-binding-' + #msgBrokerName.toLowerCase() + '.yml')
+      RewritePath(rewriteTo: `.tanzu/config/service-binding-#{#msgBrokerName.toLowerCase()}.yml`)
     }
   }
 
@@ -70,7 +70,7 @@ engine {
   if (#applicationRole == 'source') {
     applyTo(".tanzu/config/rabbitmq-instance-foo-broker.yml") {
       ReplaceSnippet(text: "foo-broker", with: #msgBrokerName.toLowerCase())
-      RewritePath(rewriteTo: '.tanzu/config/rabbitmq-instance-' + #msgBrokerName.toLowerCase() + '.yml')
+      RewritePath(rewriteTo: `.tanzu/config/rabbitmq-instance-#{#msgBrokerName.toLowerCase()}.yml`)
     }
   }
   else {
@@ -80,7 +80,7 @@ engine {
   // Update the configuration id
   let uuid = T(java.util.UUID).randomUUID() in {
     applyTo("tanzu.yml") {
-      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: 'config-' + #uuid.toString()})
+      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: `config-#{#uuid.toString()}`})
     }
   }
 
