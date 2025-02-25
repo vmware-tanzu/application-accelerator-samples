@@ -14,7 +14,7 @@ engine {
       }
     }
     applyTo("deploy/tanzu/.tanzu/config/python-flask.yml") {
-      ReplaceText({{text: "python-flask", with: #artifactId.toLowerCase()}})
+      ReplaceSnippet(text: "python-flask", with: #artifactId.toLowerCase())
       RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
     }
     applyTo("deploy/tanzu/.tanzu/config/httproute-python-flask.yml") {
