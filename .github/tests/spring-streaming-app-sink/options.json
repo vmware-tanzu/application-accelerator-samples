@@ -1,0 +1,14 @@
+{
+  "msgBrokerName" : "baz-broker",
+  "applicationRole" : "sink",
+  "resultChannel" : "baz-result",
+  "resultChannelGroup" : "baz-result-group",
+  "includeBuildToolWrapper" : true,
+  "sourceChannel" : "baz-source",
+  "groupId" : "com.example",
+  "artifactId" : "streaming-app",
+  "packageName" : "com.example.stream",
+  "objectModelClassName" : "Baz",
+  "projectName" : "spring-streaming-app",
+  "sourceChannelGroup" : "baz-source-group"
+}
