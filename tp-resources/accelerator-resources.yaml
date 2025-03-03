@@ -6,7 +6,7 @@ metadata:
 spec:
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: fragments/java-version
 ---
@@ -17,7 +17,7 @@ metadata:
 spec:
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: fragments/build-wrapper-gradle
 ---
@@ -28,7 +28,7 @@ metadata:
 spec:
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: fragments/build-wrapper-maven
 ---
@@ -49,7 +49,7 @@ spec:
   - tanzu
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: tanzu-java-web-app
 ---
@@ -70,7 +70,7 @@ spec:
     - tanzu
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: spring-ai-chat
 ---
@@ -90,7 +90,7 @@ spec:
   - tanzu
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples.git
     subPath: spring-music
 ---
@@ -108,7 +108,7 @@ spec:
     - tanzu
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: node-express
 ---
@@ -130,7 +130,7 @@ spec:
   - tanzu
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: java-rest-service
 ---
@@ -148,7 +148,7 @@ spec:
   - streaming
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: spring-streaming-app
 ---
@@ -167,7 +167,7 @@ spec:
   - tanzu
   git:
     ref:
-      branch: main
+      tag: tp-10.2
     url: https://github.com/vmware-tanzu/application-accelerator-samples
     subPath: python-flask
 ---
