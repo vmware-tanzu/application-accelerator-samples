@@ -24,23 +24,6 @@ engine {
     ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
   }
 
-  // Update the artifact name and path as needed
-  applyTo(".tanzu/config/tanzu-java-web-app.yml") {
-    ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
-    RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
-  }
-  applyTo(".tanzu/config/httproute-tanzu-java-web-app.yml") {
-    ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
-    RewritePath(rewriteTo: '.tanzu/config/httproute-' + #artifactId.toLowerCase() + '.yml')
-  }
-
-  // Update the configuration id
-  let uuid = T(java.util.UUID).randomUUID() in {
-    applyTo("tanzu.yml") {
-      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: 'config-' + #uuid.toString()})
-    }
-  }
-
   {
     Include({'**'})
     // Update the java version

@@ -1,6 +1,0 @@
-apiVersion: bitnami.database.tanzu.vmware.com/v1alpha1
-kind: MongoDBInstance
-metadata:
-  name: music
-spec:
-  storageGB: 1
