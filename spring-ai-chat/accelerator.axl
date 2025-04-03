@@ -34,14 +34,6 @@ engine {
     }
   }
 
-  applyTo(".tanzu/config/egresspoint-spring-ai-chat.yml") {
-    if (#aiService == 'azureOpenAI') {
-      ReplaceText({
-        {text: "api.openai.com", with: 'openai.azure.com'}
-      })
-    }
-  }
-
   let packageDirectory = #packageName.replace(".", "/") in {
     applyTo("**/*.java") {
       ReplaceText({{text: "com.vmware.tap.accelerators.aichat", with: #packageName}})
@@ -52,27 +44,6 @@ engine {
   // Update the artifact name as needed
   applyTo("README.md") {
     ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
-  }
-
-  // Update the artifact name and path as needed
-  applyTo(".tanzu/config/spring-ai-chat.yml") {
-    ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
-    RewritePath(rewriteTo: '.tanzu/config/' + #artifactId.toLowerCase() + '.yml')
-  }
-  applyTo(".tanzu/config/httproute-spring-ai-chat.yml") {
-    ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
-    RewritePath(rewriteTo: '.tanzu/config/httproute-' + #artifactId.toLowerCase() + '.yml')
-  }
-  applyTo(".tanzu/config/egresspoint-spring-ai-chat.yml") {
-    ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
-    RewritePath(rewriteTo: '.tanzu/config/egresspoint-' + #artifactId.toLowerCase() + '.yml')
-  }
-
-  // Update the configuration id
-  let uuid = T(java.util.UUID).randomUUID() in {
-    applyTo("tanzu.yml") {
-      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: 'config-' + #uuid.toString()})
-    }
   }
 
   {

@@ -1,6 +1,0 @@
-apiVersion: bitnami.messaging.tanzu.vmware.com/v1alpha1
-kind: RabbitmqCluster
-metadata:
-  name: foo-broker
-spec:
-  storageGB: 1

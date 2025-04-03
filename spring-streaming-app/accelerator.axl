@@ -1,5 +1,4 @@
 engine {
-  Include({"**"})
 
   applyTo("pom.xml") {
     ReplaceSnippet("<groupId>com.example</groupId>", `<groupId>#{#groupId.toLowerCase()}</groupId>`)
@@ -45,43 +44,6 @@ engine {
   // Update the artifact name as needed
   applyTo("README.md") {
     ReplaceSnippet(text: "streaming-app", with: #artifactId.toLowerCase())
-  }
-
-  // The ContainerApp, update the artifact name and path as needed
-  applyTo(".tanzu/config/streaming-app.yml") {
-    ReplaceText({
-          {text: "streaming-app", with: #artifactId.toLowerCase()},
-          {text: "foo-broker", with: #msgBrokerName.toLowerCase()}})
-    RewritePath(rewriteTo: `.tanzu/config/#{#artifactId.toLowerCase()}.yml`)
-  }
-
-  // The service binding
-  let id = T(java.util.UUID).randomUUID().toString().replace("-","").substring(2,8) in {
-    applyTo(".tanzu/config/service-binding-foo-broker.yml") {
-          ReplaceText({
-                {text: "streaming-app", with: #artifactId.toLowerCase()},
-                {text: "foo-broker", with: #msgBrokerName.toLowerCase()}})
-      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.metadata.name", value: #msgBrokerName.toLowerCase() + '-' + #id.toString() })
-      RewritePath(rewriteTo: `.tanzu/config/service-binding-#{#msgBrokerName.toLowerCase()}.yml`)
-    }
-  }
-
-  // The service instance
-  if (#applicationRole == 'source') {
-    applyTo(".tanzu/config/rabbitmq-instance-foo-broker.yml") {
-      ReplaceSnippet(text: "foo-broker", with: #msgBrokerName.toLowerCase())
-      RewritePath(rewriteTo: `.tanzu/config/rabbitmq-instance-#{#msgBrokerName.toLowerCase()}.yml`)
-    }
-  }
-  else {
-    Exclude({".tanzu/config/rabbitmq-instance-foo-broker.yml"})
-  }
-
-  // Update the configuration id
-  let uuid = T(java.util.UUID).randomUUID() in {
-    applyTo("tanzu.yml") {
-      OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.configuration.id", value: `config-#{#uuid.toString()}`})
-    }
   }
 
   {

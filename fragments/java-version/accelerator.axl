@@ -15,8 +15,4 @@ engine {
   applyTo("build.gradle.kts") {
     ReplaceText(regex: {pattern: "(?<unmodified>JavaVersion\.VERSION_)(\d+)", with: '${unmodified}' + #javaVersion})
   }
-
-  applyTo(".tanzu/config/*.yml") {
-    OpenRewriteRecipe('org.openrewrite.yaml.ChangeValue', { oldKeyPath: "$.spec.build.nonSecretEnv[?(@.name == 'BP_JVM_VERSION')].value", value: '"' + #javaVersion + '"'})
-  }
 }
