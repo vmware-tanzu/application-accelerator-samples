@@ -6,12 +6,21 @@ engine {
 
   // Include files for the selected build tool
   if (#buildTool == "maven") {
+    applyTo("pom.xml") {
+      ReplaceSnippet(text: "tanzu-java-web-app", with: #projectName.toLowerCase())
+    }
+    applyTo("manifest.yml") {
+      ReplaceSnippet(text: "tanzu-java-web-app", with: #projectName.toLowerCase())
+    }
     Exclude({"*gradle*"})
     + InvokeFragment(reference: "build-wrapper-maven")
   }
   if (#buildTool == "gradle") {
     applyTo("settings.gradle") {
-      ReplaceText({{text: "tanzu-java-web-app", with: #projectName}})  
+      ReplaceSnippet(text: "tanzu-java-web-app", with: #projectName.toLowerCase())
+    }
+    applyTo("manifest.yml") {
+      ReplaceText({{text: "tanzu-java-web-app", with: #projectName.toLowerCase()},{text: "path: target", with: "path: build/libs"}})
     }
     {
       Exclude({"pom.xml"})
@@ -21,7 +30,7 @@ engine {
 
   // Update the artifact name as needed
   applyTo("README.md") {
-    ReplaceText({{text: "tanzu-java-web-app", with: #artifactId.toLowerCase()}})
+    ReplaceSnippet(text: "tanzu-java-web-app", with: #projectName.toLowerCase())
   }
 
   {

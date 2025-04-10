@@ -15,4 +15,8 @@ engine {
   applyTo("build.gradle.kts") {
     ReplaceText(regex: {pattern: "(?<unmodified>JavaVersion\.VERSION_)(\d+)", with: '${unmodified}' + #javaVersion})
   }
+
+  applyTo("manifest.yml") {
+    ReplaceText(regex: {pattern: "JBP_CONFIG_OPEN_JDK_JRE: .*", with: 'JBP_CONFIG_OPEN_JDK_JRE: ''{ jre: { version: ' + #javaVersion + '.+ } }'''})
+  }
 }
