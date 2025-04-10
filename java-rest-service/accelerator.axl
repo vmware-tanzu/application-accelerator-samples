@@ -3,14 +3,20 @@ engine {
   // Include files for the selected build tool
   if (#buildTool == "maven") {
     applyTo("pom.xml") {
-      ReplaceSnippet(text: "rest-service-db", with: #projectName)
+      ReplaceSnippet(text: "rest-service-db", with: #projectName.toLowerCase())
+    }
+    applyTo("manifest.yml") {
+      ReplaceSnippet(text: "rest-service-db", with: #projectName.toLowerCase())
     }
     Exclude({"*gradle*"})
     + InvokeFragment(reference: "build-wrapper-maven")
   }
   if (#buildTool == "gradle") {
-    applyTo("settings.gradle") {
-      ReplaceSnippet(text: "rest-service-db", with: #projectName)  
+    applyTo("settings.gradle.kts") {
+      ReplaceSnippet(text: "rest-service-db", with: #projectName.toLowerCase())  
+    }
+    applyTo("manifest.yml") {
+      ReplaceText({{text: "rest-service-db", with: #projectName.toLowerCase()},{text: "path: target", with: "path: build/libs"}})
     }
     {
       Exclude({"pom.xml"})
