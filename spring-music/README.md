@@ -51,7 +51,7 @@ java -jar build/libs/spring-music-1.0.0.jar
 First, start a Docker container fpr `postgres`
 
 ```shell
-docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
+docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=changeme -d postgres
 ```
 
 Then start the application:
@@ -67,39 +67,10 @@ java -Dspring.profiles.active=postgres -jar build/libs/spring-music-1.0.0.jar
 First, start a Docker container fpr `mysql`
 
 ```shell
-docker run --rm --name=mysql -p 3306:3306 -d mysql/mysql-server:latest
+docker run --rm --name=mysql -e MYSQL_DATABASE=music -e MYSQL_USER=spring -e MYSQL_PASSWORD=changeme -p 3306:3306 -d mysql/mysql-server:latest
 ```
 
-First, we need to capture the generated root password, log in and change it:
-
-```shell
-docker logs mysql 2>&1 | grep GENERATED
-```
-
-We can now use the password shown above when logging in:
-
-```shell
-docker exec -it mysql mysql -uroot -p
-```
-
-We should now get a `mysql>` prompt. Run the following command to change the root password:
-
-```sql
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
-```
-
-Now, we can create a new `spring` user from the same `mysql>` prompt:
-
-```sql
-CREATE USER 'spring'@'%' IDENTIFIED BY 'password';
-GRANT CREATE, SELECT, INSERT, UPDATE ON mysql.album TO 'spring'@'%';
-FLUSH PRIVILEGES;
-exit
-```
-
-We should now have a `spring` MySQL user that we can use for the app.
-
-Once all of this is done, start the application:
+Then start the application:
 
 ```shell
 java -Dspring.profiles.active=mysql -jar build/libs/spring-music-1.0.0.jar
