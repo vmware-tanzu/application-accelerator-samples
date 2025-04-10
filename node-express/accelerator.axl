@@ -1,7 +1,7 @@
 engine {
 
   // Update the artifact name as needed
-  applyTo("README.md" || "package.json") {
+  applyTo("README.md" || "package.json" || "manifest.yml") {
     ReplaceText({{text: "node-express", with: #artifactId.toLowerCase()}})
   }
 

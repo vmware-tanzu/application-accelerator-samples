@@ -1,0 +1,6 @@
+---
+applications:
+- name: node-express
+  memory: 512M
+  random-route: true
+  path: .
