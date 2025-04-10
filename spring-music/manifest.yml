@@ -1,0 +1,14 @@
+---
+applications:
+- name: spring-music
+  memory: 1G
+  random-route: true
+  path: build/libs/spring-music-1.0.0.jar
+  env:
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ } }'
+    SPRING_PROFILES_ACTIVE: "cloud"
+#IF(!(#persistenceType == 'jpa' && #databaseType == 'h2'))
+  services:
+  - music
+#ENDIF
