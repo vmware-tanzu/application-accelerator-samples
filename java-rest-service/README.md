@@ -81,7 +81,7 @@ Set the env var `APP_URL` to the current URL you are using, e.g. `http://localho
 export APP_URL=http://localhost:8080
 ```
 
-This can be used when interacting with the app as described in [Interacting with the running app](#interacting-with-the-running-app)
+This can be used when interacting with the app as described in [Interacting with the running app](#interacting-with-the-running-app).
 
 ## Tanzu Platform deployment
 
