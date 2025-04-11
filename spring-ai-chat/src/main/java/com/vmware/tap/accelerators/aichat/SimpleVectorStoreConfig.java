@@ -1,4 +1,4 @@
-package com.vmware.tap.accelerators.aichat;
+package com.example.aichat;
 
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
@@ -10,7 +10,7 @@ public class SimpleVectorStoreConfig {
 
     @Bean
     SimpleVectorStore simpleVectorStore(EmbeddingModel embeddingModel) {
-        return new SimpleVectorStore(embeddingModel);
+        return SimpleVectorStore.builder(embeddingModel).build();
     }
 
 }
