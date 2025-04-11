@@ -30,12 +30,14 @@ engine {
   }
 
   // Set the profile as needed
-  if (#persistenceType == 'jpa') {
-    if (#databaseType == 'postgres') {
-      ReplaceText(regex: {pattern: "SPRING_PROFILES_ACTIVE: .*", with: 'SPRING_PROFILES_ACTIVE: "cloud,postgres"'})
-    }
-    if (#databaseType == 'mysql') {
-      ReplaceText(regex: {pattern: "SPRING_PROFILES_ACTIVE: .*", with: 'SPRING_PROFILES_ACTIVE: "cloud,mysql"'})
+  applyTo("manifest.yml") {
+    if (#persistenceType == 'jpa') {
+      if (#databaseType == 'postgres') {
+        ReplaceText(regex: {pattern: "SPRING_PROFILES_ACTIVE: .*", with: 'SPRING_PROFILES_ACTIVE: "cloud,postgres"'})
+      }
+      if (#databaseType == 'mysql') {
+        ReplaceText(regex: {pattern: "SPRING_PROFILES_ACTIVE: .*", with: 'SPRING_PROFILES_ACTIVE: "cloud,mysql"'})
+      }
     }
   }
 
