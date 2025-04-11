@@ -75,7 +75,7 @@ Then simply push the application to CloudFoundry:
 cf push
 ```
 
-The manifest includes instructions for binding the application to a service named 
+The manifest includes instructions for binding the application to a service named
 "myllama". If your model is named differently, edit manifest.yml and change the
 service binding to match your model service's name.
 
@@ -105,5 +105,3 @@ To delete the service, run this command:
 ```sh
 cf delete-service myllama
 ```
-
-
