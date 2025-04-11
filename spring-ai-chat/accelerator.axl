@@ -1,6 +1,6 @@
 engine {
 
-  applyTo("README.md" || "pom.xml" || "src/main/resources/application.properties") {
+  applyTo("README.md" || "pom.xml" || "manifest.yml" || "src/main/resources/application.properties") {
     TextPreprocessor()
   }
 
@@ -42,8 +42,15 @@ engine {
   }
 
   // Update the artifact name as needed
-  applyTo("README.md") {
+  applyTo("README.md" || "manifest.yml") {
     ReplaceText({{text: "spring-ai-chat", with: #artifactId.toLowerCase()}})
+  }
+
+  // Set the profile as needed
+  applyTo("manifest.yml") {
+    if (#vectorStoreType == 'pgvector') {
+        ReplaceText(regex: {pattern: "SPRING_PROFILES_ACTIVE: .*", with: 'SPRING_PROFILES_ACTIVE: "cloud,pgvector"'})
+    }
   }
 
   {
