@@ -17,7 +17,7 @@ engine {
       {text: "<artifactId>ai-chat</artifactId>", with: '<artifactId>' + #artifactId + '</artifactId>'}
     })
     if (#aiService == 'azureOpenAI') {
-      ReplaceText({{text: "spring-ai-openai-spring-boot-starter", with: 'spring-ai-azure-openai-spring-boot-starter'}})
+      ReplaceText({{text: "spring-ai-starter-model-openai", with: 'spring-ai-starter-model-azure-openai'}})
     }
   }
 

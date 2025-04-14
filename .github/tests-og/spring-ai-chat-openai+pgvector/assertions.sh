@@ -14,12 +14,12 @@ assertFileContains ./src/main/resources/application.properties 'spring.ai.vector
 
 assertFileExists ./pom.xml
 assertPomHasProjectCoordinates ./pom.xml 'com.example' 'pgVectorOpenAI'
-assertPomHasDependency ./pom.xml 'org.springframework.ai' 'spring-ai-openai-spring-boot-starter' '${SPRING_AI_VERSION}'
+assertPomHasDependency ./pom.xml 'org.springframework.ai' 'spring-ai-starter-model-openai' '${SPRING_AI_VERSION}'
 assertPomHasDependency ./pom.xml 'org.springframework.ai' 'spring-ai-tika-document-reader' '${SPRING_AI_VERSION}'
-assertPomHasDependency ./pom.xml 'org.springframework.ai' 'spring-ai-pgvector-store' '${SPRING_AI_VERSION}'
+assertPomHasDependency ./pom.xml 'org.springframework.ai' 'spring-ai-starter-vector-store-pgvector' '${SPRING_AI_VERSION}'
 assertPomHasDependency ./pom.xml 'org.springframework.boot' 'spring-boot-starter-jdbc'
 assertPomHasDependency ./pom.xml 'org.postgresql' 'postgresql'
-assertPomDoesntHaveDependency ./pom.xml 'org.springframework.ai' 'spring-ai-azure-openai-spring-boot-starter' '${SPRING_AI_VERSION}'
+assertPomDoesntHaveDependency ./pom.xml 'org.springframework.ai' 'spring-ai-starter-model-azure-openai' '${SPRING_AI_VERSION}'
 
 assertFileExists ./config/workload.yaml
 assertFileContains ./config/workload.yaml 'serviceClaims'
