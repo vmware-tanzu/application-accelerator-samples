@@ -41,9 +41,11 @@ engine {
     }
   }
 
-  // Update the artifact name as needed
-  applyTo("README.md") {
-    ReplaceSnippet(text: "streaming-app", with: #artifactId.toLowerCase())
+  // Update with artifact name and message broker name
+  applyTo("README.md" || "manifest.yml") {
+    ReplaceText({
+          {text: "spring-streaming-app", with: #artifactId.toLowerCase()},
+          {text: "foo-broker", with: #msgBrokerName.toLowerCase()}})
   }
 
   {

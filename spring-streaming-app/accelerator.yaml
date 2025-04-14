@@ -4,13 +4,13 @@ accelerator:
       inputType: text
       defaultValue: "streaming-app"
       label: Artifact name
-      description: "The name of the project and artifact that will be created."
+      description: "The name of the artifact that will be created."
       required: true
     - name: groupId
       inputType: text
       defaultValue: "com.example"
-      label: Group Name
-      description: "The group name of the project that will be created."
+      label: Group ID
+      description: "The group ID of the project that will be created."
       required: true
     - name: packageName
       inputType: text
