@@ -6,10 +6,7 @@ engine {
 
   // Include files for the selected build tool
   if (#buildTool == "maven") {
-    applyTo("pom.xml") {
-      ReplaceSnippet(text: "tanzu-java-web-app", with: #projectName.toLowerCase())
-    }
-    applyTo("manifest.yml") {
+    applyTo("pom.xml" || "manifest.yml") {
       ReplaceSnippet(text: "tanzu-java-web-app", with: #projectName.toLowerCase())
     }
     Exclude({"*gradle*"})
@@ -22,10 +19,8 @@ engine {
     applyTo("manifest.yml") {
       ReplaceText({{text: "tanzu-java-web-app", with: #projectName.toLowerCase()},{text: "path: target", with: "path: build/libs"}})
     }
-    {
-      Exclude({"pom.xml"})
-      + InvokeFragment(reference: "build-wrapper-gradle")
-    }
+    Exclude({"pom.xml"})
+    + InvokeFragment(reference: "build-wrapper-gradle")
   }
 
   // Update the artifact name as needed

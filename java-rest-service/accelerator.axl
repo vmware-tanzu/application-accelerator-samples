@@ -2,10 +2,7 @@ engine {
 
   // Include files for the selected build tool
   if (#buildTool == "maven") {
-    applyTo("pom.xml") {
-      ReplaceSnippet(text: "rest-service-db", with: #projectName.toLowerCase())
-    }
-    applyTo("manifest.yml") {
+    applyTo("pom.xml" || "manifest.yml") {
       ReplaceSnippet(text: "rest-service-db", with: #projectName.toLowerCase())
     }
     Exclude({"*gradle*"})

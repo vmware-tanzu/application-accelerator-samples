@@ -5,18 +5,18 @@ engine {
   }
 
   applyTo("pom.xml") {
-    ReplaceText(regex: {pattern: "<java.version>.*<", with: '<java.version>' + #javaVersion + '<'})
+    ReplaceRegex(pattern: "<java.version>.*<", with: '<java.version>' + #javaVersion + '<')
   }
 
   applyTo("build.gradle") {
-    ReplaceText(regex: {pattern: "sourceCompatibility = .*", with: 'sourceCompatibility = ''' + #javaVersion + ''''})
+    ReplaceRegex(pattern: "sourceCompatibility = .*", with: 'sourceCompatibility = ''' + #javaVersion + '''')
   }
 
   applyTo("build.gradle.kts") {
-    ReplaceText(regex: {pattern: "(?<unmodified>JavaVersion\.VERSION_)(\d+)", with: '${unmodified}' + #javaVersion})
+    ReplaceRegex(pattern: "(?<unmodified>JavaVersion\.VERSION_)(\d+)", with: '${unmodified}' + #javaVersion)
   }
 
   applyTo("manifest.yml") {
-    ReplaceText(regex: {pattern: "JBP_CONFIG_OPEN_JDK_JRE: .*", with: 'JBP_CONFIG_OPEN_JDK_JRE: ''{ jre: { version: ' + #javaVersion + '.+ } }'''})
+    ReplaceRegex(pattern: "JBP_CONFIG_OPEN_JDK_JRE: .*", with: 'JBP_CONFIG_OPEN_JDK_JRE: ''{ jre: { version: ' + #javaVersion + '.+ } }''')
   }
 }
