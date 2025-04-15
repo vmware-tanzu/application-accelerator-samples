@@ -1,0 +1,11 @@
+---
+applications:
+- name: rest-service-db
+  memory: 1G
+  random-route: true
+  path: target/rest-service-db-0.0.1-SNAPSHOT.jar
+  env:
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 21.+ } }'
+  services:
+  - customer-database

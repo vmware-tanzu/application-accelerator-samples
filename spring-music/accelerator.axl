@@ -1,6 +1,6 @@
 engine {
 
-  applyTo("build.gradle" || "README.md" || "**/*.yaml" || "**/*.yml" || "**/*.java") {
+  applyTo("build.gradle" || "README.md" || "manifest.yml" || "**/*.yaml" || "**/*.yml" || "**/*.java") {
     TextPreprocessor()
   }
 
@@ -25,8 +25,20 @@ engine {
   }
 
   // Update the artifact name as needed
-  applyTo("README.md" || "settings.gradle") {
+  applyTo("README.md" || "settings.gradle" || "manifest.yml") {
     ReplaceSnippet(text: "spring-music", with: #artifactId.toLowerCase())
+  }
+
+  // Set the profile as needed
+  applyTo("manifest.yml") {
+    if (#persistenceType == 'jpa') {
+      if (#databaseType == 'postgres') {
+        ReplaceRegex(pattern: "SPRING_PROFILES_ACTIVE: .*", with: 'SPRING_PROFILES_ACTIVE: "cloud,postgres"')
+      }
+      if (#databaseType == 'mysql') {
+        ReplaceRegex(pattern: "SPRING_PROFILES_ACTIVE: .*", with: 'SPRING_PROFILES_ACTIVE: "cloud,mysql"')
+      }
+    }
   }
 
   applyTo("README.md") {

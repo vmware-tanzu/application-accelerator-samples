@@ -51,7 +51,7 @@ java -jar build/libs/spring-music-1.0.0.jar
 First, start a Docker container fpr `postgres`
 
 ```shell
-docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
+docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=changeme -d postgres
 ```
 
 Then start the application:
@@ -67,39 +67,10 @@ java -Dspring.profiles.active=postgres -jar build/libs/spring-music-1.0.0.jar
 First, start a Docker container fpr `mysql`
 
 ```shell
-docker run --rm --name=mysql -p 3306:3306 -d mysql/mysql-server:latest
+docker run --rm --name=mysql -e MYSQL_DATABASE=music -e MYSQL_USER=spring -e MYSQL_PASSWORD=changeme -p 3306:3306 -d mysql/mysql-server:latest
 ```
 
-First, we need to capture the generated root password, log in and change it:
-
-```shell
-docker logs mysql 2>&1 | grep GENERATED
-```
-
-We can now use the password shown above when logging in:
-
-```shell
-docker exec -it mysql mysql -uroot -p
-```
-
-We should now get a `mysql>` prompt. Run the following command to change the root password:
-
-```sql
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
-```
-
-Now, we can create a new `spring` user from the same `mysql>` prompt:
-
-```sql
-CREATE USER 'spring'@'%' IDENTIFIED BY 'password';
-GRANT CREATE, SELECT, INSERT, UPDATE ON mysql.album TO 'spring'@'%';
-FLUSH PRIVILEGES;
-exit
-```
-
-We should now have a `spring` MySQL user that we can use for the app.
-
-Once all of this is done, start the application:
+Then start the application:
 
 ```shell
 java -Dspring.profiles.active=mysql -jar build/libs/spring-music-1.0.0.jar
@@ -138,4 +109,106 @@ Access the application by opening your browser using the URL [http://localhost:8
 
 ## Tanzu Platform deployment
 
-*TBD*
+### Prerequisites
+
+You need to be logged in to Tanzu Platform for Cloud Foundry and have set the target org and space.
+
+### Build the app
+
+To compile the application code and create a runnable jar file, use the following command:
+
+```sh
+./gradlew build
+```
+
+### Create a service instance
+
+We will take advantage of service available in the marketplace.
+To review what services are available, run the following command:
+
+```sh
+cf marketplace
+```
+
+Based on the offerings and plans available, you might have to adjust the command below.
+
+<!-- #IF(#persistenceType == 'jpa') -->
+<!-- #IF(#databaseType == 'h2') -->
+#### Using H2 database
+
+The H2 database is an in memory database so there is no need to create a service.
+
+<!-- #ENDIF -->
+<!-- #IF(#databaseType == 'postgres') -->
+#### Using PostgreSQL database
+
+To create a PostgreSQL service, run the following command:
+
+```sh
+cf create-service postgres on-demand-postgres-db music
+```
+<!-- #ENDIF -->
+<!-- #IF(#databaseType == 'mysql') -->
+#### Using MySQL database
+
+To create a MySQL service, run the following command:
+
+```sh
+cf create-service p.mysql db-small music
+```
+<!-- #ENDIF -->
+<!-- #ENDIF -->
+<!-- #IF(#persistenceType == 'redis') -->
+#### Using Redis
+
+To create a Redis service, run the following command:
+
+```sh
+cf create-service p.redis on-demand-cache music
+```
+<!-- #ENDIF -->
+<!-- #IF(#persistenceType == 'mongodb') -->
+#### Using MongoDB
+
+To create a MongoDB service, run the following command:
+
+```sh
+cf create-service mongodb default music
+```
+<!-- #ENDIF -->
+
+### Push the app
+
+To push the app to your space, run this command:
+
+```sh
+cf push
+```
+
+This will deploy the app based on the settings in the `manifest.yml` file, including binding to a service named `music` if applicable.
+
+### Access the app
+
+Find the route assigned to the app using this command:
+
+```sh
+cf app spring-music
+```
+
+The route assigned will be listed under `routes:`.
+
+### Delete the app
+
+To delete the app and remove the assigned route, run the following command:
+
+```sh
+cf delete spring-music -r
+```
+<!-- #IF(!(#persistenceType == 'jpa' && #databaseType == 'h2')) -->
+
+To delete the service, run this command:
+
+```sh
+cf delete-service music
+```
+<!-- #ENDIF -->

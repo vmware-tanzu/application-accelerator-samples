@@ -1,11 +1,7 @@
 engine {
 
-  applyTo("README.md") {
-    TextPreprocessor()
-  }
-
   // Update the artifact name as needed
-  applyTo("README.md") {
+  applyTo("README.md" || "manifest.yml") {
     ReplaceSnippet(text: "python-flask", with: #artifactId.toLowerCase())
   }
 

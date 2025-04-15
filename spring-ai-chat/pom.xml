@@ -16,7 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2024.0.0</spring-cloud.version>
-        <SPRING_AI_VERSION>1.0.0-M4</SPRING_AI_VERSION>
+        <SPRING_AI_VERSION>1.0.0-M7</SPRING_AI_VERSION>
     </properties>
     <dependencies>
         <dependency>
@@ -44,14 +44,21 @@
 
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+            <artifactId>spring-ai-starter-model-openai</artifactId>
             <version>${SPRING_AI_VERSION}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-advisors-vector-store</artifactId>
+            <version>${SPRING_AI_VERSION}</version>
+        </dependency>
+
         <!-- #IF(#vectorStoreType == 'pgvector') -->
 
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-pgvector-store</artifactId>
+            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
             <version>${SPRING_AI_VERSION}</version>
         </dependency>
         <dependency>

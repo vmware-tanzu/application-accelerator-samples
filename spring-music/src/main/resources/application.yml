@@ -27,10 +27,10 @@ spring:
     activate:
       on-profile: mysql
   datasource:
-    url: "jdbc:mysql://localhost/mysql"
+    url: "jdbc:mysql://localhost/music"
     driver-class-name: com.mysql.jdbc.Driver
     username: spring
-    password: password
+    password: changeme
   jpa:
     properties:
       hibernate:
@@ -45,7 +45,7 @@ spring:
     url: "jdbc:postgresql://localhost/postgres"
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: password
+    password: changeme
   jpa:
     properties:
       hibernate:

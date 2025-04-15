@@ -1,8 +1,8 @@
 engine {
 
   // Update the artifact name as needed
-  applyTo("README.md" || "package.json") {
-    ReplaceText({{text: "node-express", with: #artifactId.toLowerCase()}})
+  applyTo("README.md" || "package.json" || "manifest.yml") {
+    ReplaceSnippet(text: "node-express", with: #artifactId.toLowerCase())
   }
 
   // Create the provenance file

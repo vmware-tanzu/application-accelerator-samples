@@ -2,9 +2,8 @@ package com.vmware.tap.accelerators.aichat;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +24,7 @@ public class ChatController {
             VectorStore vectorStore) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(
-                        new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults()),
+                        new QuestionAnswerAdvisor(vectorStore),
                         new PromptChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
     }

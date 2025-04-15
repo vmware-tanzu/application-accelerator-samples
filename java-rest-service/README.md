@@ -73,18 +73,119 @@ Launch application using a `docker-compose` database instance:
 ```
 <!-- #ENDIF -->
 
-## Tanzu Platform Deployment
+### Set env var with app URL
 
-*TBD*
-
-## Intercting with the running app
-
-### OpenApi Definition
-
-Set the env var `APP_URL` to the current URL you are using, e.g. `http://localhost:8080` when running a local server or using port-forward for app deployed to Tanzu Platform.
+Set the env var `APP_URL` to the current URL you are using, e.g. `http://localhost:8080` when running a local server.
 
 ```bash
 export APP_URL=http://localhost:8080
+```
+
+This can be used when interacting with the app as described in [Interacting with the running app](#interacting-with-the-running-app).
+
+## Tanzu Platform deployment
+
+### Prerequisites
+
+You need to be logged in to Tanzu Platform for Cloud Foundry and have set the target org and space.
+
+### Build the app
+
+To compile the application code and create a runnable jar file, use the following command:
+
+```sh
+#IF(#buildTool == "gradle")
+./gradlew build
+#ENDIF
+#IF(#buildTool == "maven")
+./mvnw package
+#ENDIF
+```
+
+### Create a service instance
+
+We will take advantage of service available in the marketplace.
+To review what services are available, run the following command:
+
+```sh
+cf marketplace
+```
+
+Based on the offerings and plans available, you might have to adjust the command below.
+
+<!-- #IF(#databaseType == 'postgres') -->
+#### Using PostgreSQL database
+
+To create a PostgreSQL service, run the following command:
+
+```sh
+cf create-service postgres on-demand-postgres-db customer-database
+```
+<!-- #ENDIF -->
+<!-- #IF(#databaseType == 'mysql') -->
+#### Using MySQL database
+
+To create a MySQL service, run the following command:
+
+```sh
+cf create-service p.mysql db-small customer-database
+```
+<!-- #ENDIF -->
+
+### Push the app
+
+To push the app to your space, run this command:
+
+```sh
+cf push
+```
+
+This will deploy the app based on the settings in the `manifest.yml` file, including binding to a service named `customer-database`.
+
+### Access the app
+
+Find the route assigned to the app using this command:
+
+```sh
+cf app rest-service-db
+```
+
+The route assigned will be listed under `routes:`.
+
+### Set env var with app URL
+
+Set the env var `APP_URL` to the assigned URL from previous step.
+
+```bash
+export APP_URL=http://<assigned-route>
+```
+
+This can be used when interacting with the app as described in [Interacting with the running app](#interacting-with-the-running-app)
+
+### Delete the app
+
+To delete the app and remove the assigned route, run the following command:
+
+```sh
+cf delete rest-service-db -r
+```
+<!-- #IF(!(#persistenceType == 'jpa' && #databaseType == 'h2')) -->
+
+To delete the service, run this command:
+
+```sh
+cf delete-service customer-database
+```
+<!-- #ENDIF -->
+
+## Interacting with the running app
+
+### OpenApi Definition
+
+The env var `APP_URL` should be set to the current URL you are using, e.g. `http://localhost:8080` when running a local server or the assigned route prefixed with `http://`.
+
+```bash
+export APP_URL=<url-for-running-app>
 ```
 
 You can access the API docs using `curl`:

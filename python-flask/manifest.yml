@@ -1,0 +1,6 @@
+---
+applications:
+- name: python-flask
+  memory: 512M
+  random-route: true
+  path: .
