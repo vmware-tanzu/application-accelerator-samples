@@ -6,7 +6,7 @@ applications:
   random-route: true
   path: ./
   memory: 128M
-  buildpacks: 
+  buildpacks:
   - python_buildpack
   health-check-type: http
   health-check-http-endpoint: /health
