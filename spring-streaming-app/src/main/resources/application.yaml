@@ -21,8 +21,6 @@
 #@ end
 
 ---
-server.port: 0
-
 spring:
   application:
     name: #@ data.values.projectName
