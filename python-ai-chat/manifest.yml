@@ -1,7 +1,9 @@
 ---
 applications:
 - name: python-ai-chat
-  random-route: true
+  services:
+  - myllama # Change this to match your model's service name
+  random-route: false
   path: ./
   memory: 128M
   buildpacks: 

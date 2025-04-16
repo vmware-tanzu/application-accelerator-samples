@@ -50,3 +50,30 @@ python main.py
 
 Once started, open your web browser to http://localhost:5000 and chat with the
 LLM.
+
+## Running the application in CloudFoundry
+
+To deploy and run the application in CloudFoundry, first create a new model as a service
+from the AI Tile. For example, here's how to create a Llama 3.2 model named "myllama"
+
+```
+cf create-service genai llama3.2 myllama
+```
+
+Then simply push the application to CloudFoundry:
+
+```
+cf push
+```
+
+The manifest includes instructions for binding the application to a service named 
+"myllama". If your model is named differently, edit manifest.yml and change the
+service binding to match your model service's name.
+
+Once the application has been deployed and started, open your web browser to the
+host that is provided upon completion of `cf push`. From there, you may chat with
+the LLM.
+
+
+
+
