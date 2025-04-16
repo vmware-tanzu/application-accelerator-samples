@@ -1,0 +1,10 @@
+---
+applications:
+- name: python-ai-chat
+  random-route: true
+  path: ./
+  memory: 128M
+  buildpacks: 
+  - python_buildpack
+  health-check-type: http
+  health-check-http-endpoint: /health
