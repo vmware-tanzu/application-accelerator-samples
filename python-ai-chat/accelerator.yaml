@@ -1,0 +1,8 @@
+accelerator:
+  options:
+  - name: serviceName
+    label: AI Service Name
+    inputType: text
+    defaultValue: "myllama"
+    description: Name of the Tanzu Platform AI service providing the OpenAI-compatible LLM
+    required: true

@@ -1,0 +1,12 @@
+engine {
+
+  // Update the artifact name as needed
+  applyTo("README.md" || "manifest.yml") {
+    ReplaceSnippet(text: "python-ai-chat", with: #artifactId.toLowerCase())
+    ReplaceSnippet(text: "myllama", with: #serviceName.toLowerCase())
+  }
+
+  // Create the provenance file
+  Provenance()
+
+}
