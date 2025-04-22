@@ -36,17 +36,16 @@ def stream():
                 llm = ChatOpenAI(base_url=apiModelDetails['apiBase'], model=apiModelDetails['modelName'], api_key=apiModelDetails['apiKey'])
                 promptMessages = memory.copy()
                 promptMessages.append({ 'role':'user', 'content': user_message })
-                stream = llm.stream(promptMessages)
 
-                current_response_id = f"getblock{randint(67, 999999)}"
+                current_response_id = f"getblock{randint(1000, 999999)}"
                 message = ""
                 hx_swap = False
-                for chunk in stream:
+                for chunk in llm.stream(promptMessages):
                     try:
                         word = chunk.content
                         message += word.replace("\n", "<br>")
                         ai_message = message
-                        res = f"""data: <p class="mt-4 overflow-auto" id="{current_response_id}" {"hx-swap-oob='true'" if hx_swap else ""}>{ai_message}</p>\n\n"""
+                        res = f"""data: <p class="mt-4 overflow-auto" id="{current_response_id}" {"hx-swap-oob='true'" if hx_swap else ""} hx-on::after-settle="document.getElementById('message').value = '';scrollToBottom(document.getElementById('chat'));">{ai_message}</p>\n\n"""
                         hx_swap = True
                         yield res
                     except Exception as e:
