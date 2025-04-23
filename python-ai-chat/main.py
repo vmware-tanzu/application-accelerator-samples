@@ -1,33 +1,66 @@
 import os
 import json
-from flask import Flask, request, render_template
+import queue
+import time
+from random import randint
+from flask import Flask, request, render_template, stream_with_context
 from langchain_openai import ChatOpenAI
 
 memory = []
 app = Flask(__name__)
+message_queue = queue.Queue()
 
 @app.route("/", methods=['GET'])
 def home():
     return render_template("index.html")
 
-@app.route("/ask", methods=['POST'])
-def ask():
-    apiModelDetails = getModelApiDetails()
-    llm = ChatOpenAI(base_url=apiModelDetails['apiBase'], model=apiModelDetails['modelName'], api_key=apiModelDetails['apiKey'])
-    message = request.form['message']
-    promptMessages = memory.copy()
-    promptMessages.append({ 'role':'user', 'content': message })
-    answer = llm.invoke(promptMessages)
-    storeInMemory(message, answer.content)
-    model = { 'messageIn': message, 'messageOut': answer.content }
-    return render_template("chatMessage.html", model=model)
+@app.route('/ask', methods=['POST'])
+def chat_input():
+    user_input = request.form.get("message")
+    message_queue.put(user_input)
+    return "Success", 204
+
+@app.route('/stream')
+def stream():
+    def message_stream():
+        global new_conversation
+
+        while True:
+            if not message_queue.empty():
+                user_message = message_queue.get()
+                userMessageTemplate = render_template('userMessage.html', user_message=user_message)
+                userRes = f"""data: {userMessageTemplate}\n\n"""
+                yield userRes
+
+                apiModelDetails = getModelApiDetails()
+                llm = ChatOpenAI(base_url=apiModelDetails['apiBase'], model=apiModelDetails['modelName'], api_key=apiModelDetails['apiKey'])
+                promptMessages = memory.copy()
+                promptMessages.append({ 'role':'user', 'content': user_message })
+
+                current_response_id = f"getblock{randint(1000, 999999)}"
+                message = ""
+                hx_swap = False
+                for chunk in llm.stream(promptMessages):
+                    try:
+                        word = chunk.content
+                        message += word.replace("\n", "<br>")
+                        ai_message = message
+                        res = f"""data: <p class="mt-4 overflow-auto" id="{current_response_id}" {"hx-swap-oob='true'" if hx_swap else ""} hx-on::after-settle="document.getElementById('message').value = '';scrollToBottom(document.getElementById('chat'));">{ai_message}</p>\n\n"""
+                        hx_swap = True
+                        yield res
+                    except Exception as e:
+                        print(e)
+                        return e
+                storeInMemory(user_message, message)
+
+                    
+    return app.response_class(stream_with_context(message_stream()), mimetype="text/event-stream")
 
 @app.route("/health")
 def health():
     return "OK"
 
 def getModelApiDetails():
-
     apiBase = os.environ.get('OPENAI_API_BASE_URL', 'https://api.openai.com/v1')
     apiKey = os.environ.get('OPENAI_API_KEY')
     modelName = os.environ.get('OPENAI_MODEL_NAME', 'gpt-4o-mini')

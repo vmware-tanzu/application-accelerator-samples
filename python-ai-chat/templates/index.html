@@ -5,6 +5,7 @@
         <script src="https://unpkg.com/htmx.org@1.9.12"
                 integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
                 crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/sse.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
             function scrollToBottom(element) {
@@ -17,9 +18,14 @@
             <main class="flex flex-col bg-gradient-to-b from-stone-50 to-stone-950 p-4 w-full max-w-full">
 
                 <div class="bg-red-700 p-4 rounded-lg">
-                    <span class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-stone-50">Python/Flask AI Chat</span>
+                    <span class="mb-4 text-2xl font-extrabold leading-none tracking-tight text-stone-50">Python AI Chat</span>
                 </div>
-                <div id="chat" class="rounded-lg bg-stone-100 flex-1 mb-4 p-4 h-full overflow-auto"></div>
+                <div id="chat" 
+                     hx-ext="sse"
+                     sse-connect="/stream"
+                     sse-swap="message"
+                     hx-swap="beforeend"
+                     class="rounded-lg bg-stone-100 flex-1 mb-4 p-4 h-full overflow-auto"></div>
 
                 <div>
                     <form
@@ -27,7 +33,7 @@
                         hx-post="/ask"
                         hx-swap="beforeend"
                         hx-target="#chat"
-                        hx-on="htmx:afterRequest: document.getElementById('message').value = '';scrollToBottom(document.getElementById('chat'));">
+                        hx-on="htmx:afterRequest: document.getElementById('message').value = '';scrollToBottom(document.getElementById('chat'))">
                         <div class="flex items-center bg-stone-950 rounded-full p-2 shadow-md">
                             <input type="text" name="message" id="message" class="font-extrabold bg-stone-100 outline-1 text-stone-950 rounded-full py-2 px-4 w-full" placeholder="Type your question here"/>
                             <input type="submit" value="Submit" class="bg-red-700 hover:bg-red-700 text-stone-50 font-extrabold rounded-full p-2 ml-2" />
