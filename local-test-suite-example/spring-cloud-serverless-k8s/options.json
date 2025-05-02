@@ -1,6 +1,0 @@
-{
-  "projectName" : "spring-cloud-serverless",
-  "javaVersion" : "21",
-  "deploymentType" : "k8s-simple",
-  "includeBuildToolWrapper" : true
-}
