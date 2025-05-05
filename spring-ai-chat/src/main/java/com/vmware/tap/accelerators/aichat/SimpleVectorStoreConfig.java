@@ -1,4 +1,4 @@
-package com.example.aichat;
+package com.vmware.tap.accelerators.aichat;
 
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
