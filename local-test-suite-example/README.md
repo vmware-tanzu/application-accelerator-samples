@@ -4,9 +4,31 @@ This directory contains an example of a test suite you can create for testing ac
 
 ## Setup
 
-To be able to run this example test suite you need to download the Accelerator Local Server Engine ZIP archive and extract it.
+You need to download the `vmware-tanzu/application-accelerator-samples` repository from GitHub. The URL is https://github.com/vmware-tanzu/application-accelerator-samples/archive/refs/heads/main.zip.
 
-You also need to download the `local-test-suite-example.zip` file and extract it inside he directory where the Accelerator Local Server Engine ZIP file was extracted.
+You can use `wget` using these commands:
+
+```sh
+cd $HOME/Downloads
+wget https://github.com/vmware-tanzu/application-accelerator-samples/archive/refs/heads/main.zip \
+  -O application-accelerator-samples-main.zip
+```
+
+Then, extract the downloaded archive:
+
+```sh
+unzip application-accelerator-samples-main.zip
+```
+
+This should create a directory named `application-accelerator-samples-main` containing all the accelerator samples and a local test suite example.
+To be able to run this local test suite example you need to download the "App Accelerator Local Server Engine" ZIP archive from the [Tanzu Platform Developer Tools](https://support.broadcom.com/group/ecx/productdownloads?subfamily=Tanzu%20Platform%20Developer%20Tools) on the Broadcom Support Portal. Download the "acc-engine" archive that matches your operating system and processor architecture.
+
+Once downloaded extract the "acc-engine" archive:
+
+```sh
+cd $HOME/Downloads
+unzip acc-engine-*-*-v2.1.0*.zip -d application-accelerator-samples-main/local-test-suite-example
+```
 
 ## Creating a test suite
 
@@ -35,7 +57,7 @@ Each test contains two files:
 
 Where `options.json` file is used to specify the configurable options for generating the accelerator and `assertions.sh` is a script the will be run to check the generated content.
 
-The `options.json` file can be created using the [Tanzu App Accelerator VS Code extension](https://marketplace.visualstudio.com/items?itemName=vmware.tanzu-app-accelerator). There is an "Export Options" button for the "Review and Generate" step. You can use this to export the option values selected in the "Configure Accelerator" step.
+The `options.json` file can be created using the "Tanzu Platform Developer Tools" IDE plugin for either IntelliJ or VS Code. These plugins can be downloaded from the the Broadcom Support Portal. There is an "Export Options" button you can use to export the option values selected in the configuration step.
 
 Here is an example of the `options.json` file:
 
@@ -74,13 +96,66 @@ A few things to mention here:
 1. We can provide as many asserts that we think is reasonable to test the accelerator generated content
 1. We can also provide a build command to verify the project can build and run tests
 
+## Using local filesystem accelerators instead of accelerators in a Git repository
+
+The `local-test-suite-example/tests/accelerator-resources.yaml` file defines the location of the accelerators and fragments to be used for the test suite.
+Here is the definition for the `tanzu-java-web-app` accelerator:
+
+```yaml
+---
+apiVersion: accelerator.tanzu.vmware.com/v2
+kind: Accelerator
+metadata:
+  name: tanzu-java-web-app
+spec:
+  displayName: Tanzu Java Web App
+  description: A sample Spring Boot web application for Tanzu Platform for Kubernetes
+  iconURL: ""
+  tags:
+  - java
+  - spring
+  - gradle
+  - maven
+  - web
+  - tanzu
+  git:
+    ref:
+      branch: main
+    url: https://github.com/vmware-tanzu/application-accelerator-samples
+    subPath: tanzu-java-web-app
+```
+
+When testing an accelerator with all files in a local directory, you can specify `localFile.path` property as in the following example (replacing the `<path-to-unzipped-samples-archive>` placeholder with the actual directry where the files are):
+
+```yaml
+---
+apiVersion: accelerator.tanzu.vmware.com/v2
+kind: Accelerator
+metadata:
+  name: tanzu-java-web-app
+spec:
+  displayName: Tanzu Java Web App
+  description: A sample Spring Boot web application for Tanzu Platform for Kubernetes
+  iconURL: ""
+  tags:
+  - java
+  - spring
+  - gradle
+  - maven
+  - web
+  - tanzu
+  localFile:
+    path: <path-to-unzipped-samples-archive>/tanzu-java-web-app
+```
+
 ## Running the test suite
 
-We need to change to the directory with the test suite scripts which should be inside the directory where you extracted the Accelerator Local Server Engine ZIP file. with the :
+We need to change to the directory with the test suite scripts which should be inside the directory where you extracted the `vmware-tanzu/application-accelerator-samples` repository archive ZIP file. 
+Then, we need to change to use the `local-test-suite-example/tests` directory.
 
 ```sh
-cd <local-server-engine-directory>
-cd tests
+cd $HOME/Downloads/application-accelerator-samples-main
+cd local-test-suite-example/tests
 ```
 
 Then, we simply run the `run-test-suite.sh` script:
