@@ -14,17 +14,17 @@ The Application Accelerators user interface(UI) enables you to discover availabl
 
 ## How does Application Accelerators work?
 
-Application Accelerators allow you to generate new projects from files in Git repositories. An accelerator.yaml file in the repository declares input options for the accelerator. This file also contains instructions for processing the files when you generate a new project.
+Application Accelerators allow you to generate new projects from files in Git repositories. An `accelerator.yaml` file in the repository declares input options for the accelerator. An `accelerator.axl` file contains instructions for processing the files when you generate a new project.
 
-Accelerator custom resources (CRs) control which repositories appear in the Application Accelerators UI. You can maintain CRs by using Kubernetes tools such as kubectl or by using the Tanzu CLI accelerator commands. The Accelerator controller reconciles the CRs with a Flux2 Source Controller to fetch files from GitHub or GitLab.
+A metadata Git repository and/or a local metadata file can provide metadata for accelerator resources that should be available in the UI of the Application Accelerators IDE plugin.
 
-The Application Accelerators UI and IDE extension gives you a searchable list of accelerators to choose from. After you select an accelerator, the UI and IDE extension present input fields for any input options.
+The Application Accelerators IDE plugin gives you a searchable list of accelerators to choose from. After you select an accelerator, the IDE plugin present input fields for any input options.
 
-Application Accelerators UI and IDE extension send the input values to the Accelerator Engine for processing. The Engine then returns the project in a ZIP file. You can open the project in your favorite integrated development environment (IDE) to develop further.
+Application Accelerators IDE plugins send the input values to the Accelerator Engine for processing. The Engine then returns the project in a ZIP file. You can open the project in your favorite integrated development environment (IDE) to develop further.
 
 ### Prerequisites
 
-To use these Application Accelerators samples you need to have access to an installation of [VMware Tanzu Application Platform](https://network.tanzu.vmware.com/products/tanzu-application-platform).
+To use these Application Accelerators samples you need to have access to an installation of [VMware Tanzu Platform](https://www.vmware.com/products/app-platform/tanzu).
 
 ### Build & Run
 
@@ -32,27 +32,11 @@ Each Accelerator is provided in a separate directory and is its own self contain
 
 ### Testing
 
-The test suite runs in GitHub actions om each push.
-
-You can run the tests locally by setting the following environment variables:
-
-```sh
-export TANZU_CLI=tanzu
-export CLI_PLUGIN=acc
-export TEST_PATTERN=tanzu-java-web-app-*  # set this to a pattern that matches the tests you want to run
-export TEST_WORKSPACE=$PWD
-export ACC_SERVER_URL=<URL>  # this is the URL for Tanzu Portal (TAP-GUI) in your view cluster
-```
-
-Then run the tests using:
-
-```sh
-./run-test-local.sh
-```
+There is a [local example test suite](local-test-suite-example/README.md) for running tests.
 
 ## Documentation
 
-_Application Accelerators for VMware Tanzu_ documentation is provided as part of the official documentation for [VMware Tanzu Application Platform](https://docs.vmware.com/en/VMware-Tanzu-Application-Platform/index.html)
+_Application Accelerators for VMware Tanzu_ documentation is provided as part of the official documentation for [VMware Tanzu Application Platform](https://techdocs.broadcom.com/us/en/vmware-tanzu/platform.html)
 
 ## Contributing
 
