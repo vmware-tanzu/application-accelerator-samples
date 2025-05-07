@@ -1,6 +1,6 @@
 # tanzu-java-web-app
 
-This is a sample of a Java Spring web app for the Tanzu Platform for Kubernetes.
+This is a sample of a Java Spring web app for the Tanzu Platform.
 
 ## Building and running the app locally
 
