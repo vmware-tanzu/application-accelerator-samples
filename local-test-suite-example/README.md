@@ -109,7 +109,7 @@ metadata:
   name: tanzu-java-web-app
 spec:
   displayName: Tanzu Java Web App
-  description: A sample Spring Boot web application for Tanzu Platform for Kubernetes
+  description: A sample Spring Boot web application for Tanzu Platform
   iconURL: ""
   tags:
   - java
@@ -135,7 +135,7 @@ metadata:
   name: tanzu-java-web-app
 spec:
   displayName: Tanzu Java Web App
-  description: A sample Spring Boot web application for Tanzu Platform for Kubernetes
+  description: A sample Spring Boot web application for Tanzu Platform
   iconURL: ""
   tags:
   - java
