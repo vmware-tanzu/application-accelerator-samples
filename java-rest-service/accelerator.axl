@@ -32,4 +32,12 @@ engine {
     Exclude({"src/main/resources/db/migration/**"})
   }
 
+  // Update the artifact name as needed
+  applyTo("README.md") {
+    ReplaceSnippet(text: "rest-service-db", with: #projectName.toLowerCase())
+  }
+
+  // Create the provenance file
+  Provenance()
+
 }
