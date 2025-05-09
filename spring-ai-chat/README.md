@@ -115,7 +115,7 @@ Based on the offerings and plans available, you might have to adjust the command
 To create a PostgreSQL service, run the following command:
 
 ```sh
-cf create-service postgres on-demand-postgres-db vector-db
+cf create-service postgres db-small vector-db
 ```
 <!-- #ENDIF -->
 

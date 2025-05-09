@@ -145,7 +145,7 @@ The H2 database is an in memory database so there is no need to create a service
 To create a PostgreSQL service, run the following command:
 
 ```sh
-cf create-service postgres on-demand-postgres-db music
+cf create-service postgres db-small music
 ```
 <!-- #ENDIF -->
 <!-- #IF(#databaseType == 'mysql') -->
