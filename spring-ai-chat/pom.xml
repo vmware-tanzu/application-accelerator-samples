@@ -16,7 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2024.0.1</spring-cloud.version>
-        <SPRING_AI_VERSION>1.0.0-M7</SPRING_AI_VERSION>
+        <SPRING_AI_VERSION>1.0.0-M8</SPRING_AI_VERSION>
     </properties>
     <dependencies>
         <dependency>
@@ -118,16 +118,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>spring-milestone</id>
-            <name>Spring Milestone Repository</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
 </project>
