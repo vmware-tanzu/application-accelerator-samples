@@ -23,13 +23,13 @@ engine {
 
   applyTo("src/main/resources/application.properties") {
     if (#aiService == 'openAI') {
-      ReplaceSnippet(text: "spring.ai.openai.model=gpt-3.5-turbo", with: 'spring.ai.openai.model=' + #openaiModel)
+      ReplaceSnippet(text: "spring.ai.openai.model=gpt-4o-mini", with: 'spring.ai.openai.model=' + #openaiModel)
     }
     if (#aiService == 'azureOpenAI') {
       ReplaceText({
         {text: "spring.ai.azure.openai.endpoint=TBD", with: 'spring.ai.azure.openai.endpoint=' + #azureAIEndpoint},
         {text: "spring.ai.openai.api-key", with: 'spring.ai.azure.openai.api-key'},
-        {text: "spring.ai.openai.model=gpt-3.5-turbo", with: 'spring.ai.azure.openai.model=' + #openaiModel}
+        {text: "spring.ai.openai.model=gpt-4o-mini", with: 'spring.ai.azure.openai.model=' + #openaiModel}
       })
     }
   }
