@@ -6,7 +6,7 @@ pushd $1
 
 assertFileExists ./src/main/resources/application.properties
 assertFileContains ./src/main/resources/application.properties 'spring.ai.openai.api-key=${AI_API_KEY}'
-assertFileContains ./src/main/resources/application.properties 'spring.ai.openai.model=gpt-3.5-turbo'
+assertFileContains ./src/main/resources/application.properties 'spring.ai.openai.model=gpt-4o-mini'
 
 assertFileExists ./pom.xml
 assertPomHasProjectCoordinates ./pom.xml 'com.example' 'spring-ai-chat' '0.0.1-SNAPSHOT' 'spring-ai-chat'

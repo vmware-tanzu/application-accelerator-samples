@@ -12,22 +12,7 @@ In order to further develop this application the following tools needs to be set
 - Java Development Kit (https://bell-sw.com/)
 - Visual Studio Code or IntelliJ IDEA as Integrated Development Environment (IDE)
 - Tanzu Developer Tools plugin for the mentioned IDE
-
-### Build
-In order to compile the production code:
-
-```sh
-./mvnw clean compile
-```
-
-<!-- #IF(#vectorStoreType == 'simple') -->
-
-After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
-
-```sh
-./mvnw verify
-```
-<!-- #ELSE -->
+<!-- #IF(#vectorStoreType == 'pgvector') -->
 ### Using PostgreSQL/pgvector
 
 If you chose PostgreSQL/pgvector as your vector store, you'll need to run a PostgresSQL database instance before running the application. The PostgreSQL database needs to have the "vector" extension available.
@@ -38,7 +23,22 @@ You can use this command to start a PostgreSQL container that includes the "vect
 docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d pgvector/pgvector:pg17
 ```
 
+<!-- #ENDIF -->
+
+### Build
+In order to compile the production code:
+
+```sh
+./mvnw clean compile
+```
+
 After that it is a good habit to compile the test classes and execute those tests to see if your application is still behaving as you would expect:
+<!-- #IF(#vectorStoreType == 'simple') -->
+
+```sh
+./mvnw verify
+```
+<!-- #ELSE -->
 
 ```sh
 ./mvnw -Dspring.profiles.active=pgvector verify
@@ -66,14 +66,6 @@ Launch application using the default profile:
 <!-- #ELSE -->
 #### Using PostgreSQL/pgvector
 
-If you chose PostgreSQL/pgvector as your vector store, you'll need to run a PostgresSQL database instance before running the application. The PostgreSQL database needs to have the "vector" extension available.
-
-You can use this command to start a PostgreSQL container that includes the "vector" extension:
-
-```sh
-docker run --rm --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -d pgvector/pgvector:pg17
-```
-
 Run the application using the pgvector profile:
 
 ```sh
@@ -81,8 +73,7 @@ Run the application using the pgvector profile:
 ```
 <!-- #ENDIF -->
 
-TO interact with the app follow the instructions in [Interacting with the running app](#interacting-with-the-running-app).
-
+To interact with the app follow the instructions in [Interacting with the running app](#interacting-with-the-running-app).
 
 ## Tanzu Platform deployment
 
@@ -124,7 +115,7 @@ cf create-service postgres db-small vector-db
 To push the app to your space, run this command:
 
 ```sh
-cf push
+cf push --no-start
 ```
 
 This will deploy the app based on the settings in the `manifest.yml` file.

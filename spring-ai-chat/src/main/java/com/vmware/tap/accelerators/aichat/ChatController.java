@@ -1,9 +1,10 @@
 package com.vmware.tap.accelerators.aichat;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.template.st.StTemplateRenderer;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
+import static org.springframework.ai.chat.memory.ChatMemory.CONVERSATION_ID;
 
 @RestController
 @RequestMapping("/chat")
@@ -24,8 +25,13 @@ public class ChatController {
             VectorStore vectorStore) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(
-                        new QuestionAnswerAdvisor(vectorStore),
-                        new PromptChatMemoryAdvisor(new InMemoryChatMemory()))
+                        QuestionAnswerAdvisor.builder(vectorStore)
+                                .build(),
+                        MessageChatMemoryAdvisor.builder(
+                                MessageWindowChatMemory.builder().build())
+                                .build())
+                .defaultTemplateRenderer(StTemplateRenderer.builder()
+                        .startDelimiterToken('<').endDelimiterToken('>').build())
                 .build();
     }
 
@@ -33,7 +39,7 @@ public class ChatController {
     public Answer chat(@RequestBody Question question, Authentication user) {
         return chatClient.prompt()
                 .user(question.question())
-                .advisors(advisorSpec -> advisorSpec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, user.getPrincipal()))
+                .advisors(advisorSpec -> advisorSpec.param(CONVERSATION_ID, user.getPrincipal()))
                 .call()
                 .entity(Answer.class);
     }
