@@ -48,7 +48,7 @@ Finally, you can run the application:
 python main.py
 ```
 
-Once started, open your web browser to http://localhost:5000 and chat with the
+Once started, open your web browser to http://localhost:8080 and chat with the
 LLM.
 
 ## Tanzu Platform deployment
