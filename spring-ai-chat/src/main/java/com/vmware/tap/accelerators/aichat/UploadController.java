@@ -1,6 +1,5 @@
 package com.vmware.tap.accelerators.aichat;
 
-import org.slf4j.Logger;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
@@ -19,8 +18,6 @@ import java.util.List;
 
 @RestController
 public class UploadController {
-
-    private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(UploadController.class);
 
     private final VectorStore vectorStore;
 
