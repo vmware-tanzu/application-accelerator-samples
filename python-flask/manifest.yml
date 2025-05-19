@@ -1,6 +1,8 @@
 ---
 applications:
 - name: python-flask
-  memory: 512M
+  memory: 128M
   random-route: true
   path: .
+  buildpacks:
+  - python_buildpack
