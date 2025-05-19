@@ -164,7 +164,7 @@ cf create-service p.mysql db-small music
 To create a Redis service, run the following command:
 
 ```sh
-cf create-service p.redis on-demand-cache music
+cf create-service p-redis shared-vm music
 ```
 <!-- #ENDIF -->
 <!-- #IF(#persistenceType == 'mongodb') -->
