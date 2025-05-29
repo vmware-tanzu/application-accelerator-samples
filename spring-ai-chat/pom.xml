@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>3.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vmware.tap.accelerators</groupId>
@@ -15,7 +15,7 @@
     <description>Spring AI Chat</description>
     <properties>
         <java.version>17</java.version>
-        <spring-cloud.version>2024.0.1</spring-cloud.version>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
         <SPRING_AI_VERSION>1.0.0</SPRING_AI_VERSION>
     </properties>
     <dependencies>
