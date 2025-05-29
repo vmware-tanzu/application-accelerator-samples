@@ -15,7 +15,7 @@
     <description>Spring AI Chat</description>
     <properties>
         <java.version>17</java.version>
-        <spring-cloud.version>2024.0.1</spring-cloud.version>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
         <SPRING_AI_VERSION>1.0.0</SPRING_AI_VERSION>
     </properties>
     <dependencies>
