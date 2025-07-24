@@ -1,8 +1,8 @@
 name: Vulnerability Scan
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 10 * * *' # Once per day at 10am UTC
+  # schedule:
+  #   - cron: '0 10 * * *' # Once per day at 10am UTC
 
 jobs:
   list-tests:

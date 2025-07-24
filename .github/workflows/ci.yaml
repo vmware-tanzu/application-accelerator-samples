@@ -1,7 +1,7 @@
 name: CI
 on:
   workflow_dispatch:
-  push:
+  # push:
 
 jobs:
   list-tests:
