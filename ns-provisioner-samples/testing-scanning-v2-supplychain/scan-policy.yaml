@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+stringData:
+  # Comma separated list of CVEs to ignore
+  ignoreCves: ""
+  # Comma separated list of severities to block
+  notAllowedSeverities: "critical,high"
+kind: Secret
+metadata:
+  name: scan-policy
+type: Opaque
