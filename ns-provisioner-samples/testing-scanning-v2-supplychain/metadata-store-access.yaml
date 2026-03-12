@@ -1,0 +1,27 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:base64", "base64")
+---
+apiVersion: v1
+data:
+  accessToken: #@ data.values.imported.metadataStore.accessToken
+kind: Secret
+metadata:
+  name: metadata-store-access-token
+type: Opaque
+---
+apiVersion: v1
+data:
+  caCrt: #@ data.values.imported.metadataStore.caCrt
+kind: Secret
+metadata:
+  name: metadata-store-cert
+type: Opaque
+---
+apiVersion: v1
+data:
+  #! put the right protocol in front of the url
+  url: #@ base64.encode("http://" + data.values.imported.metadataStore.url)
+kind: Secret
+metadata:
+  name: metadata-store-url
+type: Opaque
