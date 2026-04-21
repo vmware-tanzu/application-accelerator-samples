@@ -11,7 +11,7 @@ type: Opaque
 ---
 apiVersion: v1
 data:
-  caCrt: #@ data.values.imported.metadataStore.caCrt
+  ca.crt: #@ data.values.imported.metadataStore.caCrt
 kind: Secret
 metadata:
   name: metadata-store-cert
